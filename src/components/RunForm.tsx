@@ -24,6 +24,12 @@ export default function RunForm() {
     });
 
     alert("✅ Sortie enregistrée !");
+
+    setName("");
+    setDate("");
+    setDistance("");
+    setDuration("");
+    setElevation("");
   }
 
   return (
@@ -35,6 +41,7 @@ export default function RunForm() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        padding: "30px",
         fontFamily: "Arial, sans-serif",
       }}
     >
@@ -54,9 +61,120 @@ export default function RunForm() {
           ➕ Ajouter une sortie
         </h1>
 
-        <p style={{ textAlign: "center", color: "#94a3b8" }}>
-          Le formulaire revient dans l'étape suivante.
-        </p>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "20px",
+          }}
+        >
+          <input
+            type="text"
+            placeholder="Nom de la sortie"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            style={{
+              padding: "16px",
+              borderRadius: "12px",
+              border: "1px solid #24324d",
+              background: "#13213a",
+              color: "white",
+              fontSize: "16px",
+            }}
+          />
+
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            style={{
+              padding: "16px",
+              borderRadius: "12px",
+              border: "1px solid #24324d",
+              background: "#13213a",
+              color: "white",
+              fontSize: "16px",
+            }}
+          />
+
+          <input
+            type="number"
+            placeholder="Distance (km)"
+            value={distance}
+            onChange={(e) => setDistance(e.target.value)}
+            style={{
+              padding: "16px",
+              borderRadius: "12px",
+              border: "1px solid #24324d",
+              background: "#13213a",
+              color: "white",
+              fontSize: "16px",
+            }}
+          />
+
+          <input
+            type="text"
+            placeholder="Temps (hh:mm)"
+            value={duration}
+            onChange={(e) => setDuration(e.target.value)}
+            style={{
+              padding: "16px",
+              borderRadius: "12px",
+              border: "1px solid #24324d",
+              background: "#13213a",
+              color: "white",
+              fontSize: "16px",
+            }}
+          />
+
+          <input
+            type="number"
+            placeholder="Dénivelé positif (m)"
+            value={elevation}
+            onChange={(e) => setElevation(e.target.value)}
+            style={{
+              padding: "16px",
+              borderRadius: "12px",
+              border: "1px solid #24324d",
+              background: "#13213a",
+              color: "white",
+              fontSize: "16px",
+            }}
+          />
+
+          <button
+            onClick={handleSave}
+            style={{
+              background: "#22c55e",
+              color: "white",
+              border: "none",
+              padding: "18px",
+              borderRadius: "12px",
+              fontSize: "18px",
+              fontWeight: "bold",
+              cursor: "pointer",
+            }}
+          >
+            💾 Enregistrer la sortie
+          </button>
+
+          <div
+            style={{
+              marginTop: "20px",
+              background: "#13213a",
+              padding: "20px",
+              borderRadius: "12px",
+            }}
+          >
+            <h3>🔍 Aperçu</h3>
+
+            <p>Nom : {name || "-"}</p>
+            <p>Date : {date || "-"}</p>
+            <p>Distance : {distance || "-"} km</p>
+            <p>Temps : {duration || "-"}</p>
+            <p>Dénivelé : {elevation || "-"} m</p>
+          </div>
+        </div>
       </div>
     </main>
   );
