@@ -1,12 +1,36 @@
-import { useState } from "react";
-import { saveRun } from "../services/storage";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  saveRun,
+  updateRun,
+  getRunById,
+} from "../services/storage";
 
 export default function RunForm() {
+  const navigate = useNavigate();
+  const { id } = useParams();
+
+  const isEditing = Boolean(id);
+
   const [name, setName] = useState("");
   const [date, setDate] = useState("");
   const [distance, setDistance] = useState("");
   const [duration, setDuration] = useState("");
   const [elevation, setElevation] = useState("");
+
+  useEffect(() => {
+    if (!isEditing || !id) return;
+
+    const run = getRunById(Number(id));
+
+    if (!run) return;
+
+    setName(run.name);
+    setDate(run.date);
+    setDistance(run.distance.toString());
+    setDuration(run.duration);
+    setElevation(run.elevation.toString());
+  }, [id, isEditing]);
 
   function handleSave() {
     if (!name || !date || !distance || !duration) {
@@ -14,26 +38,27 @@ export default function RunForm() {
       return;
     }
 
-    saveRun({
-      id: Date.now(),
+    const run = {
+      id: isEditing ? Number(id) : Date.now(),
       name,
       date,
       distance: Number(distance),
       duration,
       elevation: Number(elevation),
-    });
+    };
 
-    alert("✅ Sortie enregistrée !");
+    if (isEditing) {
+      updateRun(run);
+      alert("✅ Sortie mise à jour !");
+    } else {
+      saveRun(run);
+      alert("✅ Sortie enregistrée !");
+    }
 
-    setName("");
-    setDate("");
-    setDistance("");
-    setDuration("");
-    setElevation("");
+    navigate("/history");
   }
 
-  return (
-    <main
+  return (    <main
       style={{
         minHeight: "100vh",
         background: "#081120",
@@ -58,7 +83,9 @@ export default function RunForm() {
             fontSize: "48px",
           }}
         >
-          ➕ Ajouter une sortie
+          {isEditing
+            ? "✏️ Modifier la sortie"
+            : "➕ Ajouter une sortie"}
         </h1>
 
         <div
@@ -155,7 +182,9 @@ export default function RunForm() {
               cursor: "pointer",
             }}
           >
-            💾 Enregistrer la sortie
+            {isEditing
+              ? "💾 Mettre à jour la sortie"
+              : "💾 Enregistrer la sortie"}
           </button>
 
           <div

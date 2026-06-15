@@ -7,6 +7,8 @@ import {
   getWeekDistance,
   getMonthDistance,
   getYearDistance,
+  getTotalRuns,
+  getLastRun,
 } from "../utils/stats";
 
 export default function Home() {
@@ -15,7 +17,8 @@ export default function Home() {
   const weekDistance = getWeekDistance(runs);
   const monthDistance = getMonthDistance(runs);
   const yearDistance = getYearDistance(runs);
-
+  const totalRuns = getTotalRuns(runs);
+  const lastRun = getLastRun(runs);
   return (
     <main
       style={{
@@ -57,7 +60,42 @@ export default function Home() {
           value={`${yearDistance.toFixed(2)} km`}
           icon="🗓️"
         />
+
+        <StatsCard
+  title="Sorties"
+  value={`${totalRuns}`}
+  icon="🏅"
+/>
       </div>
+      {lastRun && (
+  <div
+    style={{
+      maxWidth: "900px",
+      margin: "20px auto",
+      background: "#13213a",
+      borderRadius: "16px",
+      padding: "25px",
+    }}
+  >
+    <h2
+      style={{
+        marginBottom: "20px",
+      }}
+    >
+      🔥 Dernière sortie
+    </h2>
+
+    <h3>{lastRun.name}</h3>
+
+    <p>📅 {lastRun.date}</p>
+
+    <p>📏 {lastRun.distance} km</p>
+
+    <p>⏱ {lastRun.duration}</p>
+
+    <p>⛰ {lastRun.elevation} m</p>
+  </div>
+)}
     </main>
   );
 }
