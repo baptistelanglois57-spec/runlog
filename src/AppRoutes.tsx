@@ -7,6 +7,7 @@ import AddRun from "./pages/AddRun";
 import History from "./pages/History";
 import Statistics from "./pages/Statistics";
 import EditRun from "./pages/EditRun";
+import Records from "./pages/Records";
 
 
 export default function AppRoutes() {
@@ -19,6 +20,7 @@ export default function AppRoutes() {
   <Route path="/edit/:id" element={<EditRun />} />
   <Route path="/history" element={<History />} />
   <Route path="/statistics" element={<Statistics />} />
+  <Route path="/records" element={<Records />} />
 </Routes>
       </Layout>
     </BrowserRouter>

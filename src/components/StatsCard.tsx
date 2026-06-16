@@ -1,3 +1,5 @@
+import { theme } from "../styles/theme";
+
 type StatsCardProps = {
   title: string;
   value: string;
@@ -9,35 +11,92 @@ export default function StatsCard({
   value,
   icon,
 }: StatsCardProps) {
+  const parts = value.split(" ");
+  const number = parts[0];
+  const unit = parts.slice(1).join(" ");
+
   return (
+  <div
+    style={{
+      background: theme.colors.card,
+      border: `1px solid ${theme.colors.primary}`,
+      borderRadius: theme.radius.large,
+      boxShadow: theme.shadow.card,
+      padding: "22px",
+      minHeight: "185px",
+
+      display: "flex",
+      flexDirection: "column",
+    }}
+  >
+    {/* Ligne du haut */}
     <div
       style={{
-        background: "#172554",
-        borderRadius: "18px",
-        padding: "20px",
-        width: "220px",
-        marginTop: "20px",
-        boxShadow: "0 8px 25px rgba(0,0,0,0.3)",
+        display: "flex",
+        alignItems: "center",
+        gap: "12px",
       }}
     >
-      <h3
+      <div
         style={{
-          margin: 0,
-          color: "#94A3B8",
+          width: "44px",
+          height: "44px",
+          borderRadius: "12px",
+          background: "rgba(212,175,55,.12)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          fontSize: "22px",
         }}
       >
-        {icon} {title}
-      </h3>
+        {icon}
+      </div>
 
-      <h2
+      <span
         style={{
-          marginTop: "15px",
-          marginBottom: "5px",
-          fontSize: "32px",
+          fontSize: "19px",
+          fontWeight: 700,
+          color: theme.colors.text,
         }}
       >
-        {value}
-      </h2>
+        {title}
+      </span>
     </div>
-  );
+
+    {/* Centre */}
+    <div
+      style={{
+        flex: 1,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <div
+        style={{
+          fontSize: "48px",
+          fontWeight: 700,
+          color: theme.colors.text,
+          lineHeight: 1,
+        }}
+      >
+        {number}
+      </div>
+
+      {unit && (
+        <div
+          style={{
+            marginTop: "8px",
+            color: theme.colors.primary,
+            fontWeight: 700,
+            fontSize: "22px",
+          }}
+        >
+          {unit}
+        </div>
+      )}
+    </div>
+  </div>
+);
 }

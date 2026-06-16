@@ -5,6 +5,7 @@ import {
   updateRun,
   getRunById,
 } from "../services/storage";
+import { formatDate } from "../utils/date";
 
 export default function RunForm() {
   const navigate = useNavigate();
@@ -13,10 +14,15 @@ export default function RunForm() {
   const isEditing = Boolean(id);
 
   const [name, setName] = useState("");
+  const [type, setType] = useState<"training" | "race">("training");
   const [date, setDate] = useState("");
   const [distance, setDistance] = useState("");
   const [duration, setDuration] = useState("");
   const [elevation, setElevation] = useState("");
+  const [competitionName, setCompetitionName] = useState("");
+const [location, setLocation] = useState("");
+const [position, setPosition] = useState("");
+const [participants, setParticipants] = useState("");
 
   useEffect(() => {
     if (!isEditing || !id) return;
@@ -26,10 +32,15 @@ export default function RunForm() {
     if (!run) return;
 
     setName(run.name);
-    setDate(run.date);
+    setType(run.type);
+    setDate(formatDate(run.date));
     setDistance(run.distance.toString());
     setDuration(run.duration);
     setElevation(run.elevation.toString());
+    setCompetitionName(run.competitionName || "");
+    setLocation(run.location || "");
+    setPosition(run.position?.toString() || "");
+    setParticipants(run.participants?.toString() || "");
   }, [id, isEditing]);
 
   function handleSave() {
@@ -39,13 +50,30 @@ export default function RunForm() {
     }
 
     const run = {
-      id: isEditing ? Number(id) : Date.now(),
-      name,
-      date,
-      distance: Number(distance),
-      duration,
-      elevation: Number(elevation),
-    };
+  id: isEditing ? Number(id) : Date.now(),
+  name,
+  type,
+  date,
+  distance: Number(distance),
+  duration,
+  elevation: Number(elevation),
+
+  competitionName:
+    type === "race" ? competitionName : undefined,
+
+  location:
+    type === "race" ? location : undefined,
+
+  position:
+    type === "race"
+      ? Number(position)
+      : undefined,
+
+  participants:
+    type === "race"
+      ? Number(participants)
+      : undefined,
+};
 
     if (isEditing) {
       updateRun(run);
@@ -73,18 +101,18 @@ export default function RunForm() {
       <div
         style={{
           width: "100%",
-          maxWidth: "550px",
+          maxWidth: "600px",
         }}
       >
         <h1
           style={{
             textAlign: "center",
             marginBottom: "35px",
-            fontSize: "48px",
+            fontSize: "42px",
           }}
         >
           {isEditing
-            ? "✏️ Modifier la sortie"
+            ? "✏️ Modifier une sortie"
             : "➕ Ajouter une sortie"}
         </h1>
 
@@ -109,6 +137,69 @@ export default function RunForm() {
               fontSize: "16px",
             }}
           />
+
+          <div>
+            <p
+              style={{
+                marginBottom: "10px",
+                fontWeight: "bold",
+                fontSize: "17px",
+              }}
+            >
+              🏷️ Type de sortie
+            </p>
+
+            <div
+              style={{
+                display: "flex",
+                gap: "15px",
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => setType("training")}
+                style={{
+                  flex: 1,
+                  padding: "16px",
+                  borderRadius: "12px",
+                  border: "none",
+                  cursor: "pointer",
+                  fontWeight: "bold",
+                  fontSize: "17px",
+                  transition: "0.2s",
+                  background:
+                    type === "training"
+                      ? "#22c55e"
+                      : "#24324d",
+                  color: "white",
+                }}
+              >
+                🏃 Entraînement
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setType("race")}
+                style={{
+                  flex: 1,
+                  padding: "16px",
+                  borderRadius: "12px",
+                  border: "none",
+                  cursor: "pointer",
+                  fontWeight: "bold",
+                  fontSize: "17px",
+                  transition: "0.2s",
+                  background:
+                    type === "race"
+                      ? "#3b82f6"
+                      : "#24324d",
+                  color: "white",
+                }}
+              >
+                🏅 Compétition
+              </button>
+            </div>
+          </div>
 
           <input
             type="date"
@@ -137,9 +228,7 @@ export default function RunForm() {
               color: "white",
               fontSize: "16px",
             }}
-          />
-
-          <input
+          />          <input
             type="text"
             placeholder="Temps (hh:mm)"
             value={duration}
@@ -169,7 +258,84 @@ export default function RunForm() {
             }}
           />
 
+          {type === "race" && (
+            <div
+              style={{
+                background: "#13213a",
+                padding: "20px",
+                borderRadius: "12px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "16px",
+              }}
+            >
+              <h3
+                style={{
+                  margin: 0,
+                  textAlign: "center",
+                }}
+              >
+                🏅 Informations compétition
+              </h3>
+
+              <input
+  type="text"
+  placeholder="Nom de la compétition"
+  value={competitionName}
+  onChange={(e) =>
+    setCompetitionName(e.target.value)
+  }
+/>
+
+              <input
+  type="text"
+  placeholder="Lieu"
+  value={location}
+  onChange={(e) => setLocation(e.target.value)}
+                style={{
+                  padding: "16px",
+                  borderRadius: "12px",
+                  border: "1px solid #24324d",
+                  background: "#081120",
+                  color: "white",
+                  fontSize: "16px",
+                }}
+              />
+
+              <input
+  type="number"
+  placeholder="Classement"
+  value={position}
+  onChange={(e) => setPosition(e.target.value)}
+                style={{
+                  padding: "16px",
+                  borderRadius: "12px",
+                  border: "1px solid #24324d",
+                  background: "#081120",
+                  color: "white",
+                  fontSize: "16px",
+                }}
+              />
+
+              <input
+                type="number"
+                placeholder="Nombre de participants"
+                value={participants}
+                onChange={(e) => setParticipants(e.target.value)}
+                style={{
+                  padding: "16px",
+                  borderRadius: "12px",
+                  border: "1px solid #24324d",
+                  background: "#081120",
+                  color: "white",
+                  fontSize: "16px",
+                }}
+              />
+            </div>
+          )}
+
           <button
+            type="button"
             onClick={handleSave}
             style={{
               background: "#22c55e",
@@ -186,23 +352,6 @@ export default function RunForm() {
               ? "💾 Mettre à jour la sortie"
               : "💾 Enregistrer la sortie"}
           </button>
-
-          <div
-            style={{
-              marginTop: "20px",
-              background: "#13213a",
-              padding: "20px",
-              borderRadius: "12px",
-            }}
-          >
-            <h3>🔍 Aperçu</h3>
-
-            <p>Nom : {name || "-"}</p>
-            <p>Date : {date || "-"}</p>
-            <p>Distance : {distance || "-"} km</p>
-            <p>Temps : {duration || "-"}</p>
-            <p>Dénivelé : {elevation || "-"} m</p>
-          </div>
         </div>
       </div>
     </main>

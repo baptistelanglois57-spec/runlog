@@ -77,3 +77,18 @@ export function getLastRun(runs: Run[]) {
       new Date(a.date).getTime()
   )[0];
 }
+export function getAveragePace(
+  distance: number,
+  duration: string
+) {
+  const [hours, minutes] = duration.split(":").map(Number);
+
+  const totalMinutes = hours * 60 + minutes;
+
+  const pace = totalMinutes / distance;
+
+  const min = Math.floor(pace);
+  const sec = Math.round((pace - min) * 60);
+
+  return `${min}'${sec.toString().padStart(2, "0")}"/km`;
+}
