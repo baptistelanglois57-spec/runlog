@@ -2,6 +2,7 @@ import Header from "../components/Header";
 import StatsCard from "../components/StatsCard";
 import { useNavigate } from "react-router-dom";
 
+
 import { getRuns } from "../services/storage";
 
 import {
@@ -40,20 +41,20 @@ export default function Home() {
   style={{
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "flex-start",
-    marginBottom: "10px",
+    alignItems: "center",
+    marginBottom: "30px",
   }}
 >
   <button
     onClick={() => navigate("/records")}
     style={{
-      width: "52px",
-      height: "52px",
-      borderRadius: "16px",
+      width: "58px",
+      height: "58px",
+      borderRadius: "18px",
       border: `1px solid ${theme.colors.primary}`,
       background: theme.colors.card,
       color: theme.colors.primary,
-      fontSize: "26px",
+      fontSize: "30px",
       cursor: "pointer",
       boxShadow: theme.shadow.card,
       transition: "0.2s",
@@ -63,12 +64,30 @@ export default function Home() {
     🏆
   </button>
 
-  <div style={{ width: "52px" }} />
+  <Header
+    title=" RunLog"
+    subtitle="Bonjour Baptiste 👋"
+  />
+
+  <button
+    onClick={() => navigate("/agenda")}
+    style={{
+      width: "58px",
+      height: "58px",
+      borderRadius: "18px",
+      border: `1px solid ${theme.colors.primary}`,
+      background: theme.colors.card,
+      color: theme.colors.primary,
+      fontSize: "28px",
+      cursor: "pointer",
+      boxShadow: theme.shadow.card,
+      transition: "0.2s",
+    }}
+    title="Agenda"
+  >
+    📅
+  </button>
 </div>
-      <Header
-        title=" RunLog"
-        subtitle="Bonjour Baptiste 👋"
-      />
 
      <div
   style={{

@@ -127,7 +127,7 @@ export default function Records() {
 <RecordCard
   icon="🏃"
   title="Semi-marathon"
-  value={bestSemi ? bestSemi.duration : "-Aucun"}
+  value={bestSemi ? bestSemi.duration : "Aucun"}
   subtitle={bestSemi ? bestSemi.name : ""}
 />
 

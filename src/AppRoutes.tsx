@@ -8,6 +8,8 @@ import History from "./pages/History";
 import Statistics from "./pages/Statistics";
 import EditRun from "./pages/EditRun";
 import Records from "./pages/Records";
+import Agenda from "./pages/Agenda";
+import AddEvent from "./pages/AddEvent";
 
 
 export default function AppRoutes() {
@@ -21,6 +23,8 @@ export default function AppRoutes() {
   <Route path="/history" element={<History />} />
   <Route path="/statistics" element={<Statistics />} />
   <Route path="/records" element={<Records />} />
+  <Route path="/agenda" element={<Agenda />} />
+  <Route path="/add-event" element={<AddEvent />} />
 </Routes>
       </Layout>
     </BrowserRouter>
