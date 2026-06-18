@@ -1,35 +1,72 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { theme } from "../../styles/theme";
-import EventForm from "./EventForm";
 
-import { saveEvent } from "../../services/eventStorage";
+import EventForm from "./EventForm";
+import EventDetails from "./EventDetails";
+
+import type { Event, EventType } from "../../types/Event";
 
 type EventModalProps = {
   isOpen: boolean;
+
   selectedDate: Date | null;
 
+  event?: Event;
+
   onClose: () => void;
-  onSave: () => void;
+
+  onCreate: (event: Event) => void;
+
+  onUpdate: (event: Event) => void;
+
+  onDelete: (id: string) => void;
 };
+
+type View =
+  | "select"
+  | "create"
+  | "details"
+  | "edit";
 
 export default function EventModal({
   isOpen,
   selectedDate,
+  event,
   onClose,
-  onSave,
+  onCreate,
+  onUpdate,
+  onDelete,
 }: EventModalProps) {
-  const [selectedType, setSelectedType] = useState<
-    "training" | "race" | null
-  >(null);
+  const [view, setView] =
+    useState<View>("select");
+
+  const [selectedType, setSelectedType] =
+    useState<EventType>("training");
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    if (event) {
+      setView("details");
+      setSelectedType(event.type);
+    } else {
+      setView("select");
+      setSelectedType("training");
+    }
+  }, [isOpen, event]);
 
   if (!isOpen || !selectedDate) return null;
 
-  const displayDate = selectedDate.toLocaleDateString("fr-FR", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+  const displayDate =
+    selectedDate.toLocaleDateString(
+      "fr-FR",
+      {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }
+    );
 
   return (
     <div
@@ -47,28 +84,40 @@ export default function EventModal({
         style={{
           width: "430px",
           background: theme.colors.card,
-          border: `2px solid ${theme.colors.primary}`,
           borderRadius: "22px",
-          padding: "30px",
+          border: `2px solid ${theme.colors.primary}`,
+          padding: "28px",
           boxShadow: theme.shadow.card,
         }}
       >
-        {!selectedType ? (
+        {/* DETAILS */}
+
+        {view === "details" && event && (
+          <EventDetails
+            event={event}
+            onClose={onClose}
+            onDelete={() => onDelete(event.id)}
+            onEdit={() => setView("edit")}
+          />
+        )}
+
+        {/* CHOIX */}
+
+        {view === "select" && (
           <>
             <h2
               style={{
                 textAlign: "center",
-                marginTop: 0,
                 color: theme.colors.primary,
+                marginTop: 0,
               }}
             >
-              📅 {displayDate}
+               {displayDate}
             </h2>
 
             <p
               style={{
                 textAlign: "center",
-                color: theme.colors.textSecondary,
                 marginBottom: "30px",
               }}
             >
@@ -76,48 +125,51 @@ export default function EventModal({
             </p>
 
             <button
-              onClick={() => setSelectedType("training")}
+              onClick={() => {
+                setSelectedType("training");
+                setView("create");
+              }}
               style={{
                 width: "100%",
                 padding: "15px",
-                marginBottom: "15px",
-                borderRadius: "14px",
                 border: "none",
-                background: theme.colors.primary,
+                borderRadius: "14px",
+                marginBottom: "15px",
+                background:
+                  theme.colors.primary,
                 color: "#000",
                 fontWeight: 700,
                 cursor: "pointer",
-                fontSize: "18px",
               }}
             >
               🏃 Entraînement
             </button>
 
             <button
-              onClick={() => setSelectedType("race")}
+              onClick={() => {
+                setSelectedType("race");
+                setView("create");
+              }}
               style={{
                 width: "100%",
                 padding: "15px",
                 borderRadius: "14px",
                 border: `2px solid ${theme.colors.primary}`,
-                background: theme.colors.background,
+                background:
+                  theme.colors.background,
                 color: theme.colors.primary,
                 fontWeight: 700,
                 cursor: "pointer",
-                fontSize: "18px",
               }}
             >
               🏁 Course
             </button>
 
             <button
-              onClick={() => {
-                setSelectedType(null);
-                onClose();
-              }}
+              onClick={onClose}
               style={{
                 width: "100%",
-                marginTop: "25px",
+                marginTop: "18px",
                 padding: "12px",
                 borderRadius: "12px",
                 border: `1px solid ${theme.colors.border}`,
@@ -129,20 +181,28 @@ export default function EventModal({
               Annuler
             </button>
           </>
-        ) : (
+        )}
+
+        {/* CREATION */}
+
+        {view === "create" && (
           <EventForm
             type={selectedType}
             date={selectedDate}
-            onBack={() => setSelectedType(null)}
-            onSave={(event) => {
-              saveEvent(event);
+            onBack={() => setView("select")}
+            onSave={onCreate}
+          />
+        )}
 
-              setSelectedType(null);
+        {/* MODIFICATION */}
 
-              onClose();
-
-              onSave();
-            }}
+        {view === "edit" && event && (
+          <EventForm
+            type={event.type}
+            date={selectedDate}
+            event={event}
+            onBack={() => setView("details")}
+            onSave={onUpdate}
           />
         )}
       </div>

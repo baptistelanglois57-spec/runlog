@@ -9,7 +9,11 @@ export function getEvents(): Event[] {
     return [];
   }
 
-  return JSON.parse(data);
+  try {
+    return JSON.parse(data);
+  } catch {
+    return [];
+  }
 }
 
 export function saveEvent(event: Event) {
@@ -27,7 +31,9 @@ export function updateEvent(updatedEvent: Event) {
   const events = getEvents();
 
   const updatedEvents = events.map((event) =>
-    event.id === updatedEvent.id ? updatedEvent : event
+    event.id === updatedEvent.id
+      ? updatedEvent
+      : event
   );
 
   localStorage.setItem(
@@ -36,7 +42,7 @@ export function updateEvent(updatedEvent: Event) {
   );
 }
 
-export function deleteEvent(id: number) {
+export function deleteEvent(id: string) {
   const events = getEvents();
 
   const filteredEvents = events.filter(
@@ -49,14 +55,24 @@ export function deleteEvent(id: number) {
   );
 }
 
-export function getEventById(id: number): Event | undefined {
+export function getEventById(id: string) {
   return getEvents().find(
     (event) => event.id === id
   );
 }
 
-export function getEventByDate(date: string): Event | undefined {
+export function getEventByDate(date: string) {
   return getEvents().find(
     (event) => event.date === date
   );
+}
+
+export function eventExists(date: string) {
+  return getEvents().some(
+    (event) => event.date === date
+  );
+}
+
+export function clearEvents() {
+  localStorage.removeItem(STORAGE_KEY);
 }

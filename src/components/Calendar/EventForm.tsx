@@ -3,35 +3,39 @@ import { useState } from "react";
 import { theme } from "../../styles/theme";
 import { formatDateKey } from "../../utils/dateKey";
 
+import type { Event, EventType } from "../../types/Event";
+
 type EventFormProps = {
-  type: "training" | "race";
+  type: EventType;
+
   date: Date;
+
+  event?: Event;
 
   onBack: () => void;
 
-  onSave: (event: {
-    id: number;
-    date: string;
-    type: "training" | "race";
-    name: string;
-    notes: string;
-  }) => void;
+  onSave: (event: Event) => void;
 };
 
 export default function EventForm({
   type,
   date,
+  event,
   onBack,
   onSave,
 }: EventFormProps) {
-  const [name, setName] = useState("");
-  const [notes, setNotes] = useState("");
+  const [name, setName] = useState(event?.name ?? "");
+  const [notes, setNotes] = useState(event?.notes ?? "");
+
+  const isEditing = !!event;
 
   function handleSave() {
-    if (!name.trim()) return;
+    if (!name.trim()) {
+      return;
+    }
 
-    onSave({
-      id: Date.now(),
+    const newEvent: Event = {
+      id: event?.id ?? crypto.randomUUID(),
 
       date: formatDateKey(date),
 
@@ -40,14 +44,19 @@ export default function EventForm({
       name: name.trim(),
 
       notes: notes.trim(),
-    });
+    };
+
+    onSave(newEvent);
   }
 
-  const displayDate = date.toLocaleDateString("fr-FR", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+  const displayDate = date.toLocaleDateString(
+    "fr-FR",
+    {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }
+  );
 
   return (
     <div>
@@ -56,10 +65,14 @@ export default function EventForm({
           textAlign: "center",
           color: theme.colors.primary,
           marginTop: 0,
-          marginBottom: "10px",
+          marginBottom: "8px",
         }}
       >
-        {type === "training"
+        {isEditing
+          ? type === "training"
+            ? "✏️ Modifier l'entraînement"
+            : "✏️ Modifier la course"
+          : type === "training"
           ? "🏃 Nouvel entraînement"
           : "🏁 Nouvelle course"}
       </h2>
@@ -68,19 +81,16 @@ export default function EventForm({
         style={{
           textAlign: "center",
           color: theme.colors.textSecondary,
-          marginBottom: "30px",
+          marginBottom: "28px",
         }}
       >
         📅 {displayDate}
       </p>
 
-      {/* Nom */}
-
       <label
         style={{
           display: "block",
           marginBottom: "8px",
-          color: theme.colors.text,
           fontWeight: 600,
         }}
       >
@@ -89,11 +99,13 @@ export default function EventForm({
 
       <input
         value={name}
-        onChange={(e) => setName(e.target.value)}
+        onChange={(e) =>
+          setName(e.target.value)
+        }
         placeholder={
           type === "training"
-            ? "Ex : Footing EF"
-            : "Ex : Trail des Vosges"
+            ? "Ex : Sortie EF"
+            : "Ex : Semi de Paris"
         }
         style={{
           width: "100%",
@@ -102,19 +114,16 @@ export default function EventForm({
           border: `1px solid ${theme.colors.border}`,
           background: theme.colors.background,
           color: theme.colors.text,
-          marginBottom: "20px",
-          fontSize: "16px",
+          marginBottom: "22px",
           boxSizing: "border-box",
+          fontSize: "16px",
         }}
       />
-
-      {/* Notes */}
 
       <label
         style={{
           display: "block",
           marginBottom: "8px",
-          color: theme.colors.text,
           fontWeight: 600,
         }}
       >
@@ -123,8 +132,10 @@ export default function EventForm({
 
       <textarea
         value={notes}
-        onChange={(e) => setNotes(e.target.value)}
-        rows={4}
+        onChange={(e) =>
+          setNotes(e.target.value)
+        }
+        rows={5}
         placeholder="Ajouter une note..."
         style={{
           width: "100%",
@@ -134,9 +145,9 @@ export default function EventForm({
           background: theme.colors.background,
           color: theme.colors.text,
           resize: "none",
-          marginBottom: "25px",
-          fontSize: "15px",
+          marginBottom: "28px",
           boxSizing: "border-box",
+          fontSize: "15px",
         }}
       />
 
@@ -173,9 +184,12 @@ export default function EventForm({
             color: "#000",
             cursor: "pointer",
             fontWeight: 700,
+            fontSize: "15px",
           }}
         >
-          Enregistrer
+          {isEditing
+            ? "💾 Enregistrer"
+            : "Créer"}
         </button>
       </div>
     </div>

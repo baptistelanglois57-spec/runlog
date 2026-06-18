@@ -5,8 +5,16 @@ import EventModal from "./EventModal";
 
 import { theme } from "../../styles/theme";
 
-import { getEvents } from "../../services/eventStorage";
+import {
+  getEvents,
+  saveEvent,
+  updateEvent,
+  deleteEvent,
+} from "../../services/eventStorage";
+
 import { formatDateKey } from "../../utils/dateKey";
+
+import type { Event } from "../../types/Event";
 
 type CalendarGridProps = {
   month: Date;
@@ -44,7 +52,11 @@ export default function CalendarGrid({
   const year = month.getFullYear();
   const monthIndex = month.getMonth();
 
-  const firstDay = new Date(year, monthIndex, 1);
+  const firstDay = new Date(
+    year,
+    monthIndex,
+    1
+  );
 
   const lastDay = new Date(
     year,
@@ -92,7 +104,7 @@ export default function CalendarGrid({
     });
   }
 
-  // Complète jusqu'à 42 cases
+  // Compléter jusqu'à 42 cases
 
   let nextDay = 1;
 
@@ -118,6 +130,40 @@ export default function CalendarGrid({
 
     setIsModalOpen(true);
   }
+
+  function refreshCalendar() {
+    setRefresh((value) => value + 1);
+  }
+
+  function handleCreate(event: Event) {
+    saveEvent(event);
+
+    refreshCalendar();
+
+    setIsModalOpen(false);
+
+    setSelectedDate(null);
+  }
+
+  function handleUpdate(event: Event) {
+    updateEvent(event);
+
+    refreshCalendar();
+
+    setIsModalOpen(false);
+
+    setSelectedDate(null);
+  }
+
+  function handleDelete(id: string) {
+    deleteEvent(id);
+
+    refreshCalendar();
+
+    setIsModalOpen(false);
+
+    setSelectedDate(null);
+  }
     return (
     <>
       <div
@@ -136,7 +182,7 @@ export default function CalendarGrid({
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(7,1fr)",
+            gridTemplateColumns: "repeat(7, 1fr)",
             marginBottom: "18px",
             textAlign: "center",
             color: theme.colors.primary,
@@ -154,23 +200,21 @@ export default function CalendarGrid({
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(7,1fr)",
+            gridTemplateColumns: "repeat(7, 1fr)",
             gap: "10px",
           }}
         >
           {days.map((day, index) => {
-            let eventType: "training" | "race" | undefined;
+            let event: Event | undefined;
 
             if (day.currentMonth) {
               const dateKey = formatDateKey(
                 new Date(year, monthIndex, day.day)
               );
 
-              const event = events.find(
+              event = events.find(
                 (e) => e.date === dateKey
               );
-
-              eventType = event?.type;
             }
 
             return (
@@ -185,7 +229,7 @@ export default function CalendarGrid({
                   selectedDate.getMonth() === monthIndex &&
                   selectedDate.getFullYear() === year
                 }
-                eventType={eventType}
+                eventType={event?.type}
                 onClick={() => handleDayClick(day)}
               />
             );
@@ -196,13 +240,22 @@ export default function CalendarGrid({
       <EventModal
         isOpen={isModalOpen}
         selectedDate={selectedDate}
+        event={
+          selectedDate
+            ? events.find(
+                (event) =>
+                  event.date ===
+                  formatDateKey(selectedDate)
+              )
+            : undefined
+        }
         onClose={() => {
           setIsModalOpen(false);
           setSelectedDate(null);
         }}
-        onSave={() => {
-          setRefresh((value) => value + 1);
-        }}
+        onCreate={handleCreate}
+        onUpdate={handleUpdate}
+        onDelete={handleDelete}
       />
     </>
   );
