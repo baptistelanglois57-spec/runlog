@@ -1,9 +1,12 @@
-import Header from "../components/Header";
-import StatsCard from "../components/StatsCard";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import Header from "../components/Header";
+import StatsCard from "../components/StatsCard";
 
-import { getRuns } from "../services/storage";
+import { getRuns } from "../services/runService";
+
+import type { Run } from "../types/Run";
 
 import {
   getWeekDistance,
@@ -18,14 +21,24 @@ import { formatDate } from "../utils/date";
 import { theme } from "../styles/theme";
 
 export default function Home() {
-  const runs = getRuns();
+  const navigate = useNavigate();
+
+  const [runs, setRuns] = useState<Run[]>([]);
+
+  useEffect(() => {
+    async function loadRuns() {
+      const data = await getRuns();
+      setRuns(data);
+    }
+
+    loadRuns();
+  }, []);
 
   const weekDistance = getWeekDistance(runs);
   const monthDistance = getMonthDistance(runs);
   const yearDistance = getYearDistance(runs);
   const totalRuns = getTotalRuns(runs);
   const lastRun = getLastRun(runs);
-  const navigate = useNavigate();
 
   return (
     <main

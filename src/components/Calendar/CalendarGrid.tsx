@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import CalendarDay from "./CalendarDay";
 import EventModal from "./EventModal";
@@ -10,7 +10,7 @@ import {
   saveEvent,
   updateEvent,
   deleteEvent,
-} from "../../services/eventStorage";
+} from "../../services/eventService";
 
 import { formatDateKey } from "../../utils/dateKey";
 
@@ -35,9 +35,23 @@ export default function CalendarGrid({
   const [isModalOpen, setIsModalOpen] =
     useState(false);
 
-  const [, setRefresh] = useState(0);
+  const [events, setEvents] = useState<Event[]>([]);
 
-  const events = getEvents();
+  const [loading, setLoading] = useState(true);
+
+  async function loadEvents() {
+    setLoading(true);
+
+    const data = await getEvents();
+
+    setEvents(data);
+
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    loadEvents();
+  }, []);
 
   const weekDays = [
     "LU",
@@ -131,40 +145,50 @@ export default function CalendarGrid({
     setIsModalOpen(true);
   }
 
-  function refreshCalendar() {
-    setRefresh((value) => value + 1);
-  }
+  async function handleCreate(event: Event) {
+    await saveEvent(event);
 
-  function handleCreate(event: Event) {
-    saveEvent(event);
-
-    refreshCalendar();
+    await loadEvents();
 
     setIsModalOpen(false);
 
     setSelectedDate(null);
   }
 
-  function handleUpdate(event: Event) {
-    updateEvent(event);
+  async function handleUpdate(event: Event) {
+    await updateEvent(event);
 
-    refreshCalendar();
+    await loadEvents();
+
+    setIsModalOpen(false);
+
+    setSelectedDate(null);
+  }
+    async function handleDelete(id: string) {
+    await deleteEvent(id);
+
+    await loadEvents();
 
     setIsModalOpen(false);
 
     setSelectedDate(null);
   }
 
-  function handleDelete(id: string) {
-    deleteEvent(id);
-
-    refreshCalendar();
-
-    setIsModalOpen(false);
-
-    setSelectedDate(null);
-  }
+  if (loading) {
     return (
+      <div
+        style={{
+          textAlign: "center",
+          padding: "40px",
+          color: theme.colors.text,
+        }}
+      >
+        Chargement...
+      </div>
+    );
+  }
+
+  return (
     <>
       <div
         style={{
