@@ -1,5 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { theme } from "../styles/theme";
+import RunFormHeader from "./RunForm/RunFormHeader";
+import RunTypeSelector from "./RunForm/RunTypeSelector";
+import NameField from "./RunForm/NameField";
+import RunFields from "./RunForm/RunFields";
+import RaceFields from "./RunForm/RaceFields";
+import RunPreview from "./RunForm/RunPreview";
+import SaveButton from "./RunForm/SaveButton";
+
 
 import {
   saveRun,
@@ -150,293 +159,88 @@ export default function RunForm() {
   }
 
   return (
-    <main
+  <main
+    style={{
+      minHeight: "100vh",
+      background: theme.colors.background,
+      padding: "40px 20px",
+    }}
+  >
+    <div
       style={{
-        minHeight: "100vh",
-        background: "#081120",
-        color: "white",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: "30px",
-        fontFamily: "Arial, sans-serif",
+        maxWidth: "850px",
+        margin: "0 auto",
       }}
     >
+      <RunFormHeader isEditing={isEditing} />
+
       <div
         style={{
-          width: "100%",
-          maxWidth: "600px",
+          background: theme.colors.card,
+          border: `1px solid ${theme.colors.border}`,
+          borderRadius: "22px",
+          padding: "30px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "25px",
+          boxShadow: theme.shadow.card,
         }}
       >
-        <h1
-          style={{
-            textAlign: "center",
-            marginBottom: "35px",
-            fontSize: "42px",
-          }}
-        >
-          {isEditing
-            ? "✏️ Modifier une sortie"
-            : "➕ Ajouter une sortie"}
-        </h1>
+        <NameField
+          name={name}
+          setName={setName}
+        />
 
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "20px",
-          }}
-        >
-          <input
-            type="text"
-            placeholder="Nom de la sortie"
-            value={name}
-            onChange={(e) =>
-              setName(e.target.value)
+        <RunTypeSelector
+          type={type}
+          onChange={setType}
+        />
+
+        <RunFields
+          date={date}
+          setDate={setDate}
+          distance={distance}
+          setDistance={setDistance}
+          duration={duration}
+          setDuration={setDuration}
+          elevation={elevation}
+          setElevation={setElevation}
+        />
+
+        {type === "race" && (
+          <RaceFields
+            competitionName={competitionName}
+            setCompetitionName={
+              setCompetitionName
             }
-            style={{
-              padding: "16px",
-              borderRadius: "12px",
-              border:
-                "1px solid #24324d",
-              background: "#13213a",
-              color: "white",
-              fontSize: "16px",
-            }}
-          />
-                    <div>
-            <p
-              style={{
-                marginBottom: "10px",
-                fontWeight: "bold",
-                fontSize: "17px",
-              }}
-            >
-              🏷️ Type de sortie
-            </p>
-
-            <div
-              style={{
-                display: "flex",
-                gap: "15px",
-              }}
-            >
-              <button
-                type="button"
-                onClick={() => setType("training")}
-                style={{
-                  flex: 1,
-                  padding: "16px",
-                  borderRadius: "12px",
-                  border: "none",
-                  cursor: "pointer",
-                  fontWeight: "bold",
-                  fontSize: "17px",
-                  transition: "0.2s",
-                  background:
-                    type === "training"
-                      ? "#22c55e"
-                      : "#24324d",
-                  color: "white",
-                }}
-              >
-                🏃 Entraînement
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setType("race")}
-                style={{
-                  flex: 1,
-                  padding: "16px",
-                  borderRadius: "12px",
-                  border: "none",
-                  cursor: "pointer",
-                  fontWeight: "bold",
-                  fontSize: "17px",
-                  transition: "0.2s",
-                  background:
-                    type === "race"
-                      ? "#3b82f6"
-                      : "#24324d",
-                  color: "white",
-                }}
-              >
-                🏅 Compétition
-              </button>
-            </div>
-          </div>
-
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            style={{
-              padding: "16px",
-              borderRadius: "12px",
-              border: "1px solid #24324d",
-              background: "#13213a",
-              color: "white",
-              fontSize: "16px",
-            }}
-          />
-
-          <input
-            type="number"
-            placeholder="Distance (km)"
-            value={distance}
-            onChange={(e) =>
-              setDistance(e.target.value)
+            location={location}
+            setLocation={setLocation}
+            position={position}
+            setPosition={setPosition}
+            participants={participants}
+            setParticipants={
+              setParticipants
             }
-            style={{
-              padding: "16px",
-              borderRadius: "12px",
-              border: "1px solid #24324d",
-              background: "#13213a",
-              color: "white",
-              fontSize: "16px",
-            }}
           />
+        )}
 
-          <input
-            type="text"
-            placeholder="Temps (hh:mm)"
-            value={duration}
-            onChange={(e) =>
-              setDuration(e.target.value)
-            }
-            style={{
-              padding: "16px",
-              borderRadius: "12px",
-              border: "1px solid #24324d",
-              background: "#13213a",
-              color: "white",
-              fontSize: "16px",
-            }}
-          />
+        <RunPreview
+          name={name}
+          type={type}
+          date={date}
+          distance={distance}
+          duration={duration}
+          elevation={elevation}
+          competitionName={
+            competitionName
+          }
+        />
 
-          <input
-            type="number"
-            placeholder="Dénivelé positif (m)"
-            value={elevation}
-            onChange={(e) =>
-              setElevation(e.target.value)
-            }
-            style={{
-              padding: "16px",
-              borderRadius: "12px",
-              border: "1px solid #24324d",
-              background: "#13213a",
-              color: "white",
-              fontSize: "16px",
-            }}
-          />
-
-          {type === "race" && (
-            <div
-              style={{
-                background: "#13213a",
-                padding: "20px",
-                borderRadius: "12px",
-                display: "flex",
-                flexDirection: "column",
-                gap: "16px",
-              }}
-            >
-              <h3
-                style={{
-                  margin: 0,
-                  textAlign: "center",
-                }}
-              >
-                🏅 Informations compétition
-              </h3>
-
-              <input
-                type="text"
-                placeholder="Nom de la compétition"
-                value={competitionName}
-                onChange={(e) =>
-                  setCompetitionName(
-                    e.target.value
-                  )
-                }
-              />
-
-              <input
-                type="text"
-                placeholder="Lieu"
-                value={location}
-                onChange={(e) =>
-                  setLocation(e.target.value)
-                }
-                style={{
-                  padding: "16px",
-                  borderRadius: "12px",
-                  border: "1px solid #24324d",
-                  background: "#081120",
-                  color: "white",
-                  fontSize: "16px",
-                }}
-              />
-
-              <input
-                type="number"
-                placeholder="Classement"
-                value={position}
-                onChange={(e) =>
-                  setPosition(e.target.value)
-                }
-                style={{
-                  padding: "16px",
-                  borderRadius: "12px",
-                  border: "1px solid #24324d",
-                  background: "#081120",
-                  color: "white",
-                  fontSize: "16px",
-                }}
-              />
-
-              <input
-                type="number"
-                placeholder="Nombre de participants"
-                value={participants}
-                onChange={(e) =>
-                  setParticipants(
-                    e.target.value
-                  )
-                }
-                style={{
-                  padding: "16px",
-                  borderRadius: "12px",
-                  border: "1px solid #24324d",
-                  background: "#081120",
-                  color: "white",
-                  fontSize: "16px",
-                }}
-              />
-            </div>
-          )}
-                    <button
-            type="button"
-            onClick={handleSave}
-            style={{
-              background: "#22c55e",
-              color: "white",
-              border: "none",
-              padding: "18px",
-              borderRadius: "12px",
-              fontSize: "18px",
-              fontWeight: "bold",
-              cursor: "pointer",
-            }}
-          >
-            {isEditing
-              ? "💾 Mettre à jour la sortie"
-              : "💾 Enregistrer la sortie"}
-          </button>
-        </div>
+        <SaveButton
+          isEditing={isEditing}
+          onClick={handleSave}
+        />
       </div>
-    </main>
-  );
-}
+    </div>
+  </main>
+)}

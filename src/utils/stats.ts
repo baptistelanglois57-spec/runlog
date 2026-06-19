@@ -118,18 +118,26 @@ export function getTotalElevation(
    TEMPS TOTAL
 =========================== */
 
-export function getTotalTime(runs: Run[]) {
+export function getTotalTime(
+  runs: Run[]
+) {
   return runs.reduce((total, run) => {
     const parts = run.duration
       .split(":")
       .map(Number);
 
-    if (parts.length !== 2)
+    if (parts.length !== 3)
       return total;
 
-    const [hours, minutes] = parts;
+    const [hours, minutes, seconds] =
+      parts;
 
-    return total + hours * 60 + minutes;
+    return (
+      total +
+      hours * 3600 +
+      minutes * 60 +
+      seconds
+    );
   }, 0);
 }
 
@@ -138,15 +146,20 @@ export function getTotalTime(runs: Run[]) {
 =========================== */
 
 export function formatMinutes(
-  totalMinutes: number
+  totalSeconds: number
 ) {
   const hours = Math.floor(
-    totalMinutes / 60
+    totalSeconds / 3600
   );
 
-  const minutes = totalMinutes % 60;
+  const minutes = Math.floor(
+    (totalSeconds % 3600) / 60
+  );
 
-  return `${hours}h ${minutes}min`;
+  const seconds =
+    totalSeconds % 60;
+
+  return `${hours}h ${minutes}min ${seconds}s`;
 }
 
 /* ===========================
@@ -173,30 +186,35 @@ export function getAveragePace(
   distance: number,
   duration: string
 ) {
-  if (!distance) return "--";
+  if (!distance || !duration) return "--";
 
   const parts = duration
     .split(":")
     .map(Number);
 
-  if (parts.length !== 2)
+  if (parts.length !== 3)
     return "--";
 
-  const [hours, minutes] = parts;
+  const [hours, minutes, seconds] =
+    parts;
 
-  const totalMinutes =
-    hours * 60 + minutes;
+  const totalSeconds =
+    hours * 3600 +
+    minutes * 60 +
+    seconds;
 
-  const pace =
-    totalMinutes / distance;
+  const secondsPerKm =
+    totalSeconds / distance;
 
-  const min = Math.floor(pace);
-
-  const sec = Math.round(
-    (pace - min) * 60
+  const paceMinutes = Math.floor(
+    secondsPerKm / 60
   );
 
-  return `${min}'${sec
+  const paceSeconds = Math.round(
+    secondsPerKm % 60
+  );
+
+  return `${paceMinutes}'${paceSeconds
     .toString()
     .padStart(2, "0")}" /km`;
 }
