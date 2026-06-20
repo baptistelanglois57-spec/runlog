@@ -1,4 +1,16 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import {
+  House,
+  Plus,
+  BookOpen,
+  ChartColumn,
+} from "lucide-react";
+
+import {
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
+
+import { theme } from "../styles/theme";
 
 export default function BottomNavigation() {
   const navigate = useNavigate();
@@ -7,22 +19,22 @@ export default function BottomNavigation() {
   const items = [
     {
       label: "Accueil",
-      icon: "🏠",
+      icon: House,
       path: "/",
     },
     {
       label: "Ajouter",
-      icon: "➕",
+      icon: Plus,
       path: "/add",
     },
     {
       label: "Historique",
-      icon: "📖",
+      icon: BookOpen,
       path: "/history",
     },
     {
       label: "Stats",
-      icon: "📊",
+      icon: ChartColumn,
       path: "/statistics",
     },
   ];
@@ -34,40 +46,62 @@ export default function BottomNavigation() {
         bottom: 0,
         left: 0,
         right: 0,
-        height: "65px",
-        background: "#13213a",
+        height: "74px",
+        background: theme.colors.card,
+borderTop: `1px solid ${theme.colors.border}`,
+boxShadow: "0 -6px 20px rgba(0,0,0,0.35)",
         display: "flex",
         justifyContent: "space-around",
         alignItems: "center",
-        borderTop: "1px solid #24324d",
+        zIndex: 1000,
       }}
     >
-      {items.map((item) => (
-        <button
-          key={item.path}
-          onClick={() => navigate(item.path)}
-          style={{
-            background: "transparent",
-            border: "none",
-            color:
-              location.pathname === item.path
-                ? "#22c55e"
-                : "white",
-            cursor: "pointer",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            fontSize: "15px",
-            fontWeight: "bold",
-          }}
-        >
-          <span style={{ fontSize: "22px" }}>
-            {item.icon}
-          </span>
+      {items.map((item) => {
+        const Icon = item.icon;
 
-          {item.label}
-        </button>
-      ))}
+        const active =
+          location.pathname === item.path;
+
+        return (
+          <button
+            key={item.path}
+            onClick={() =>
+              navigate(item.path)
+            }
+            style={{
+              background: "transparent",
+              border: "none",
+              cursor: "pointer",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "6px",
+              color: active
+                ? theme.colors.primary
+                : "#c9d1d9",
+              transition: "0.2s",
+              width: "80px",
+            }}
+          >
+            <Icon
+              size={26}
+              strokeWidth={2.3}
+            />
+
+            <span
+              style={{
+                fontSize: "12px",
+                fontWeight: active
+                  ? 700
+                  : 500,
+              }}
+            >
+              {item.label}
+            </span>
+          </button>
+        );
+      })}
     </nav>
   );
 }

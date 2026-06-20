@@ -26,6 +26,6 @@ export const theme = {
   },
 
   shadow: {
-    card: "0px 12px 30px rgba(0,0,0,.35)",
-  },
+    card: "none",
+}
 };

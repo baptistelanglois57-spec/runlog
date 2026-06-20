@@ -2,6 +2,7 @@ import { theme } from "../../styles/theme";
 
 type Props = {
   name: string;
+
   type: "training" | "race";
 
   date: string;
@@ -12,7 +13,13 @@ type Props = {
 
   elevation: string;
 
-  competitionName?: string;
+  competitionName: string;
+
+  location: string;
+
+  position: string;
+
+  participants: string;
 };
 
 function calculatePace(
@@ -61,11 +68,40 @@ export default function RunPreview({
   duration,
   elevation,
   competitionName,
+  location,
+  position,
+  participants,
 }: Props) {
+
   const pace = calculatePace(
     distance,
     duration
   );
+  {type === "race" && (
+  <>
+    <Info
+      icon="🏁"
+      title="Compétition"
+      value={competitionName || "À compléter"}
+    />
+
+    <Info
+      icon="📍"
+      title="Lieu"
+      value={location || "--"}
+    />
+
+    <Info
+      icon="🏆"
+      title="Classement"
+      value={
+        position && participants
+          ? `${position} / ${participants}`
+          : "--"
+      }
+    />
+  </>
+)}
 
   return (
     <div

@@ -1,4 +1,4 @@
-import { theme } from "../../styles/theme";
+import Button from "../UI/Button";
 
 type Props = {
   isEditing: boolean;
@@ -10,35 +10,24 @@ export default function SaveButton({
   onClick,
 }: Props) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
+    <div
       style={{
-        width: "100%",
-        padding: "20px",
-        marginTop: "15px",
-        border: "none",
-        borderRadius: "18px",
-        cursor: "pointer",
-        background: theme.colors.primary,
-        color: "#111",
-        fontSize: "20px",
-        fontWeight: 700,
-        transition: "0.25s",
-        boxShadow: theme.shadow.card,
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform =
-          "translateY(-2px)";
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform =
-          "translateY(0)";
+        marginTop: "35px",
       }}
     >
-      {isEditing
-        ? "✏️ Mettre à jour la sortie"
-        : "💾 Enregistrer la sortie"}
-    </button>
+      <Button
+        variant="success"
+        fullWidth
+        onClick={onClick}
+        style={{
+          padding: "18px",
+          fontSize: "18px",
+        }}
+      >
+        {isEditing
+          ? "💾 Mettre à jour la sortie"
+          : "💾 Enregistrer la sortie"}
+      </Button>
+    </div>
   );
 }

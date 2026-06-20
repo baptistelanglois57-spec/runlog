@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { theme } from "../styles/theme";
-import RunFormHeader from "./RunForm/RunFormHeader";
-import RunTypeSelector from "./RunForm/RunTypeSelector";
-import NameField from "./RunForm/NameField";
-import RunFields from "./RunForm/RunFields";
-import RaceFields from "./RunForm/RaceFields";
-import RunPreview from "./RunForm/RunPreview";
-import SaveButton from "./RunForm/SaveButton";
 
+import AppContainer from "../components/Layout/AppContainer";
+import Section from "../components/Layout/Section";
+import PageCard from "../components/Layout/PageCard";
+
+import RunFormHeader from "../components/RunForm/RunFormHeader";
+import RunFields from "../components/RunForm/RunFields";
+import CompetitionFields from "../components/RunForm/CompetitionFields";
+import RunPreview from "../components/RunForm/RunPreview";
+import SaveButton from "../components/RunForm/SaveButton";
 
 import {
   saveRun,
@@ -65,15 +66,10 @@ export default function RunForm() {
       if (!run) return;
 
       setName(run.name);
-
       setType(run.type);
-
       setDate(formatDate(run.date));
-
       setDistance(run.distance.toString());
-
       setDuration(run.duration);
-
       setElevation(run.elevation.toString());
 
       setCompetitionName(
@@ -93,8 +89,7 @@ export default function RunForm() {
 
     loadRun();
   }, [id, isEditing]);
-
-  async function handleSave() {
+    async function handleSave() {
     if (
       !name ||
       !date ||
@@ -102,7 +97,7 @@ export default function RunForm() {
       !duration
     ) {
       alert(
-        "Merci de remplir tous les champs."
+        "Merci de remplir tous les champs obligatoires."
       );
       return;
     }
@@ -135,12 +130,14 @@ export default function RunForm() {
           : undefined,
 
       position:
-        type === "race"
+        type === "race" &&
+        position !== ""
           ? Number(position)
           : undefined,
 
       participants:
-        type === "race"
+        type === "race" &&
+        participants !== ""
           ? Number(participants)
           : undefined,
     };
@@ -148,99 +145,82 @@ export default function RunForm() {
     if (isEditing) {
       await updateRun(run);
 
-      alert("✅ Sortie mise à jour !");
+      alert(
+        "✅ Sortie mise à jour !"
+      );
     } else {
       await saveRun(run);
 
-      alert("✅ Sortie enregistrée !");
+      alert(
+        "✅ Sortie enregistrée !"
+      );
     }
 
     navigate("/history");
   }
+    return (
+    <AppContainer>
+      <Section>
+        <PageCard>
 
-  return (
-  <main
-    style={{
-      minHeight: "100vh",
-      background: theme.colors.background,
-      padding: "40px 20px",
-    }}
-  >
-    <div
-      style={{
-        maxWidth: "850px",
-        margin: "0 auto",
-      }}
-    >
-      <RunFormHeader isEditing={isEditing} />
+          <RunFormHeader
+            isEditing={isEditing}
+          />
 
-      <div
-        style={{
-          background: theme.colors.card,
-          border: `1px solid ${theme.colors.border}`,
-          borderRadius: "22px",
-          padding: "30px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "25px",
-          boxShadow: theme.shadow.card,
-        }}
-      >
-        <NameField
-          name={name}
-          setName={setName}
-        />
+          <RunFields
+            name={name}
+            setName={setName}
+            type={type}
+            setType={setType}
+            date={date}
+            setDate={setDate}
+            distance={distance}
+            setDistance={setDistance}
+            duration={duration}
+            setDuration={setDuration}
+            elevation={elevation}
+            setElevation={setElevation}
+          />
 
-        <RunTypeSelector
-          type={type}
-          onChange={setType}
-        />
+          {type === "race" && (
+            <CompetitionFields
+              competitionName={competitionName}
+              setCompetitionName={
+                setCompetitionName
+              }
+              location={location}
+              setLocation={setLocation}
+              position={position}
+              setPosition={setPosition}
+              participants={participants}
+              setParticipants={
+                setParticipants
+              }
+            />
+          )}
 
-        <RunFields
-          date={date}
-          setDate={setDate}
-          distance={distance}
-          setDistance={setDistance}
-          duration={duration}
-          setDuration={setDuration}
-          elevation={elevation}
-          setElevation={setElevation}
-        />
-
-        {type === "race" && (
-          <RaceFields
-            competitionName={competitionName}
-            setCompetitionName={
-              setCompetitionName
+          <RunPreview
+            name={name}
+            type={type}
+            date={date}
+            distance={distance}
+            duration={duration}
+            elevation={elevation}
+            competitionName={
+              competitionName
             }
             location={location}
-            setLocation={setLocation}
             position={position}
-            setPosition={setPosition}
             participants={participants}
-            setParticipants={
-              setParticipants
-            }
           />
-        )}
 
-        <RunPreview
-          name={name}
-          type={type}
-          date={date}
-          distance={distance}
-          duration={duration}
-          elevation={elevation}
-          competitionName={
-            competitionName
-          }
-        />
+          <SaveButton
+            isEditing={isEditing}
+            onClick={handleSave}
+          />
 
-        <SaveButton
-          isEditing={isEditing}
-          onClick={handleSave}
-        />
-      </div>
-    </div>
-  </main>
-)}
+        </PageCard>
+      </Section>
+    </AppContainer>
+  );
+}

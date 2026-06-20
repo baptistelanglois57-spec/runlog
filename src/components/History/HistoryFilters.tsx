@@ -21,13 +21,13 @@ export default function HistoryFilters({
     {
       value: "training" as const,
       label: "🏃 Entraînements",
-      activeColor: "#22c55e",
+      activeColor: "#002473",
       activeText: "#fff",
     },
     {
       value: "race" as const,
       label: "🏁 Compétitions",
-      activeColor: "#3b82f6",
+      activeColor: "#4a0101",
       activeText: "#fff",
     },
   ];

@@ -92,7 +92,7 @@ export default function RunTypeSelector({
         icon="🏃"
         title="Entraînement"
         subtitle="Séance personnelle"
-        color="#22c55e"
+        color="#a1a1a1"
         onClick={() =>
           onChange("training")
         }
@@ -103,7 +103,7 @@ export default function RunTypeSelector({
         icon="🏁"
         title="Compétition"
         subtitle="Course officielle"
-        color="#3b82f6"
+        color="#a1a1a1"
         onClick={() =>
           onChange("race")
         }

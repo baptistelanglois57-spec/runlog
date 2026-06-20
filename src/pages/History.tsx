@@ -3,14 +3,13 @@ import { useEffect, useMemo, useState } from "react";
 import HistoryHeader from "../components/History/HistoryHeader";
 import HistoryFilters from "../components/History/HistoryFilters";
 import MonthAccordion from "../components/History/MonthAccordion";
-
 import { getRuns, deleteRun } from "../services/runService";
-
 import type { Run } from "../types/Run";
-
 import { getTotalDistance } from "../utils/stats";
-
 import { theme } from "../styles/theme";
+import AppContainer from "../components/Layout/AppContainer";
+import Section from "../components/Layout/Section";
+import PageCard from "../components/Layout/PageCard";
 
 type Filter =
   | "all"
@@ -102,55 +101,51 @@ export default function History() {
     return groups;
   }, [filteredRuns]);
 
-  if (loading) {
+ if (loading) {
+  return (
+    <AppContainer>
+      <Section>
+        <PageCard>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              minHeight: "250px",
+              fontSize: "22px",
+              color: theme.colors.text,
+            }}
+          >
+            Chargement...
+          </div>
+        </PageCard>
+      </Section>
+    </AppContainer>
+  );
+}
     return (
-      <main
-        style={{
-          minHeight: "100vh",
-          background:
-            theme.colors.background,
-          color: theme.colors.text,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          fontSize: "22px",
-        }}
-      >
-        Chargement...
-      </main>
-    );
-  }
-    return (
-    <main
-      style={{
-        minHeight: "100vh",
-        background: theme.colors.background,
-        padding: "40px",
-      }}
-    >
+  <AppContainer>
+
+    <Section>
       <HistoryHeader
         totalRuns={runs.length}
         totalDistance={getTotalDistance(runs)}
       />
+    </Section>
 
+    <Section>
       <HistoryFilters
         selected={filter}
         onChange={setFilter}
       />
+    </Section>
+
+    <Section>
 
       {Object.entries(groupedRuns).length === 0 ? (
-        <div
-          style={{
-            maxWidth: "900px",
-            margin: "40px auto",
-            background: theme.colors.card,
-            border: `1px solid ${theme.colors.border}`,
-            borderRadius: "20px",
-            padding: "40px",
-            textAlign: "center",
-            boxShadow: theme.shadow.card,
-          }}
-        >
+
+        <PageCard>
+
           <h2
             style={{
               marginTop: 0,
@@ -168,8 +163,11 @@ export default function History() {
           >
             Aucune sortie ne correspond au filtre sélectionné.
           </p>
-        </div>
+
+        </PageCard>
+
       ) : (
+
         Object.entries(groupedRuns).map(
           ([monthKey, monthRuns]) => (
             <MonthAccordion
@@ -189,7 +187,11 @@ export default function History() {
             />
           )
         )
+
       )}
-    </main>
-  );
+
+    </Section>
+
+  </AppContainer>
+);
 }

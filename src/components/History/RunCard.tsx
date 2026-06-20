@@ -1,11 +1,14 @@
 import { useNavigate } from "react-router-dom";
 
-import { theme } from "../../styles/theme";
-
 import { formatDate } from "../../utils/date";
 import { getAveragePace } from "../../utils/stats";
 
 import type { Run } from "../../types/Run";
+
+import PageCard from "../Layout/PageCard";
+import AppGrid from "../Layout/AppGrid";
+import Button from "../UI/Button";
+import Stat from "../UI/Stat";
 
 type RunCardProps = {
   run: Run;
@@ -19,21 +22,13 @@ export default function RunCard({
   const navigate = useNavigate();
 
   return (
-    <div
-      style={{
-        background: theme.colors.card,
-        border: `1px solid ${theme.colors.border}`,
-        borderRadius: "22px",
-        padding: "24px",
-        boxShadow: theme.shadow.card,
-      }}
-    >
+    <PageCard maxWidth="100%">
       <div
         style={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          marginBottom: "22px",
+          marginBottom: "24px",
           flexWrap: "wrap",
           gap: "12px",
         }}
@@ -42,7 +37,6 @@ export default function RunCard({
           <h2
             style={{
               margin: 0,
-              color: theme.colors.text,
             }}
           >
             {run.type === "training"
@@ -54,55 +48,54 @@ export default function RunCard({
           <p
             style={{
               marginTop: "8px",
-              color: theme.colors.textSecondary,
+              opacity: 0.7,
             }}
           >
             📅 {formatDate(run.date)}
           </p>
         </div>
 
-        <div
+        <h2
           style={{
-            color: theme.colors.primary,
-            fontWeight: 700,
-            fontSize: "22px",
+            margin: 0,
           }}
         >
           {run.distance.toFixed(2)} km
-        </div>
+        </h2>
       </div>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit,minmax(180px,1fr))",
-          gap: "18px",
-        }}
+      <AppGrid
+        columns={3}
+        gap={18}
+        maxWidth="100%"
       >
-        <Info
-          title="⏱ Temps"
+        <Stat
+          icon="⏱"
+          title="Temps"
           value={run.duration}
         />
 
-        <Info
-          title="⚡ Allure"
+        <Stat
+          icon="⚡"
+          title="Allure"
           value={getAveragePace(
             run.distance,
             run.duration
           )}
         />
 
-        <Info
-          title="⛰ D+"
+        <Stat
+          icon="⛰"
+          title="D+"
           value={`${run.elevation} m`}
         />
 
         {run.type === "race" && (
           <>
             {run.location && (
-              <Info
-                title="📍 Lieu"
+              <Stat
+                icon="📍"
+                title="Lieu"
                 value={run.location}
               />
             )}
@@ -110,88 +103,51 @@ export default function RunCard({
             {run.position !== undefined &&
               run.participants !==
                 undefined && (
-                <Info
-                  title="🏆 Classement"
+                <Stat
+                  icon="🏆"
+                  title="Classement"
                   value={`${run.position} / ${run.participants}`}
                 />
               )}
 
             {run.competitionName && (
-              <Info
-                title="🏁 Compétition"
+              <Stat
+                icon="🏁"
+                title="Compétition"
                 value={run.competitionName}
               />
             )}
-          </>
+                      </>
         )}
-      </div>
+      </AppGrid>
 
       <div
         style={{
           display: "flex",
           justifyContent: "center",
           gap: "16px",
-          marginTop: "26px",
+          marginTop: "30px",
           flexWrap: "wrap",
         }}
       >
-        <button
+        <Button
+          variant="primary"
           onClick={() =>
             navigate(`/edit/${run.id}`)
           }
-          style={{
-            background: "#3b82f6",
-            color: "white",
-            border: "none",
-            padding: "12px 24px",
-            borderRadius: "12px",
-            cursor: "pointer",
-            fontWeight: 700,
-          }}
         >
           ✏ Modifier
-        </button>
+        </Button>
 
-        <button
-          onClick={() => onDelete(run.id)}
-          style={{
-            background: "#ef4444",
-            color: "white",
-            border: "none",
-            padding: "12px 24px",
-            borderRadius: "12px",
-            cursor: "pointer",
-            fontWeight: 700,
-          }}
+        <Button
+          variant="danger"
+          onClick={() =>
+            onDelete(run.id)
+          }
         >
           🗑 Supprimer
-        </button>
+        </Button>
       </div>
-    </div>
-  );
-}
-
-type InfoProps = {
-  title: string;
-  value: string;
-};
-
-function Info({
-  title,
-  value,
-}: InfoProps) {
-  return (
-    <div>
-      <p
-        style={{
-          color: theme.colors.textSecondary,
-          marginBottom: "6px",
-        }}
-      >
-        {title}
-      </p>
-
-      <strong>{value}</strong>
-    </div>
+    </PageCard>
   );
 }
