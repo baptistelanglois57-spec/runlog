@@ -5,7 +5,7 @@ type CalendarDayProps = {
   isCurrentMonth: boolean;
   isToday?: boolean;
   isSelected?: boolean;
-  eventType?: "training" | "race";
+  eventType?: "training" | "gym" | "race";
   onClick?: () => void;
 };
 
@@ -22,6 +22,8 @@ export default function CalendarDay({
       ? "🏃"
       : eventType === "race"
       ? "🏁"
+      : eventType === "gym"
+      ? "💪"
       : null;
 
   return (

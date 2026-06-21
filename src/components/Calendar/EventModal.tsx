@@ -103,6 +103,8 @@ export default function EventModal({
 
         {/* CHOIX */}
 
+               {/* CHOIX */}
+
         {view === "select" && (
           <>
             <h2
@@ -112,7 +114,7 @@ export default function EventModal({
                 marginTop: 0,
               }}
             >
-               {displayDate}
+              {displayDate}
             </h2>
 
             <p
@@ -131,18 +133,39 @@ export default function EventModal({
               }}
               style={{
                 width: "100%",
-                padding: "15px",
-                border: "none",
+                padding: "18px",
                 borderRadius: "14px",
-                marginBottom: "15px",
-                background:
-                  theme.colors.primary,
-                color: "#000",
+                border: `2px solid ${theme.colors.primary}`,
+                background: theme.colors.background,
+                color: theme.colors.primary,
                 fontWeight: 700,
                 cursor: "pointer",
+                marginBottom: "15px",
+                fontSize: "18px",
               }}
             >
               🏃 Entraînement
+            </button>
+
+            <button
+              onClick={() => {
+                setSelectedType("gym");
+                setView("create");
+              }}
+              style={{
+                width: "100%",
+                padding: "18px",
+                borderRadius: "14px",
+                border: `2px solid ${theme.colors.primary}`,
+                background: theme.colors.background,
+                color: theme.colors.primary,
+                fontWeight: 700,
+                cursor: "pointer",
+                marginBottom: "15px",
+                fontSize: "18px",
+              }}
+            >
+              💪 Salle
             </button>
 
             <button
@@ -152,14 +175,15 @@ export default function EventModal({
               }}
               style={{
                 width: "100%",
-                padding: "15px",
+                padding: "18px",
                 borderRadius: "14px",
                 border: `2px solid ${theme.colors.primary}`,
-                background:
-                  theme.colors.background,
+                background: theme.colors.background,
                 color: theme.colors.primary,
                 fontWeight: 700,
                 cursor: "pointer",
+                marginBottom: "18px",
+                fontSize: "18px",
               }}
             >
               🏁 Course
@@ -169,20 +193,20 @@ export default function EventModal({
               onClick={onClose}
               style={{
                 width: "100%",
-                marginTop: "18px",
-                padding: "12px",
-                borderRadius: "12px",
+                padding: "16px",
+                borderRadius: "14px",
                 border: `1px solid ${theme.colors.border}`,
                 background: "transparent",
                 color: theme.colors.text,
+                fontWeight: 700,
                 cursor: "pointer",
+                fontSize: "16px",
               }}
             >
-              Annuler
+              ✖ Annuler
             </button>
           </>
         )}
-
         {/* CREATION */}
 
         {view === "create" && (

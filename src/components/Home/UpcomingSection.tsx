@@ -30,6 +30,7 @@ export default function UpcomingSection({
       ? formatDate(nextTraining.date)
       : undefined
   }
+  type={nextTraining?.type}
 />
 
       <NextRaceCard

@@ -12,13 +12,15 @@ export function getFastestAveragePace(runs: Run[]) {
   if (runs.length === 0) return null;
 
   function pace(run: Run) {
-    const [hours, minutes] = run.duration
-      .split(":")
-      .map(Number);
+    const [hours, minutes, seconds] =
+      run.duration.split(":").map(Number);
 
-    const totalMinutes = hours * 60 + minutes;
+    const totalSeconds =
+      hours * 3600 +
+      minutes * 60 +
+      seconds;
 
-    return totalMinutes / run.distance;
+    return totalSeconds / run.distance;
   }
 
   return runs.reduce((fastest, run) =>
@@ -165,16 +167,20 @@ export function getRaceRecord(
     return null;
   }
 
-  function totalMinutes(run: Run) {
-    const [hours, minutes] =
+  function totalSeconds(run: Run) {
+    const [hours, minutes, seconds] =
       run.duration.split(":").map(Number);
 
-    return hours * 60 + minutes;
+    return (
+      hours * 3600 +
+      minutes * 60 +
+      seconds
+    );
   }
 
   return races.reduce((best, run) =>
-    totalMinutes(run) <
-    totalMinutes(best)
+    totalSeconds(run) <
+    totalSeconds(best)
       ? run
       : best
   );

@@ -28,12 +28,18 @@ export default function EventDetails({
   );
 
   const icon =
-    event.type === "training" ? "🏃" : "🏁";
+  event.type === "training"
+    ? "🏃"
+    : event.type === "gym"
+    ? "💪"
+    : "🏁";
 
-  const title =
-    event.type === "training"
-      ? "Entraînement"
-      : "Course";
+const title =
+  event.type === "training"
+    ? "Entraînement"
+    : event.type === "gym"
+    ? "Salle"
+    : "Course";
 
   return (
     <div>

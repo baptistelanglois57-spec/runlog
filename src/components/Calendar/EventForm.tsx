@@ -69,12 +69,16 @@ export default function EventForm({
         }}
       >
         {isEditing
-          ? type === "training"
-            ? "✏️ Modifier l'entraînement"
-            : "✏️ Modifier la course"
-          : type === "training"
-          ? "🏃 Nouvel entraînement"
-          : "🏁 Nouvelle course"}
+  ? type === "training"
+    ? "✏️ Modifier l'entraînement"
+    : type === "gym"
+    ? "✏️ Modifier la séance de salle"
+    : "✏️ Modifier la course"
+  : type === "training"
+  ? "🏃 Nouvel entraînement"
+  : type === "gym"
+  ? "💪 Nouvelle séance de salle"
+  : "🏁 Nouvelle course"}
       </h2>
 
       <p
@@ -103,10 +107,12 @@ export default function EventForm({
           setName(e.target.value)
         }
         placeholder={
-          type === "training"
-            ? "Ex : Sortie EF"
-            : "Ex : Semi de Paris"
-        }
+  type === "training"
+    ? "Ex : Sortie EF"
+    : type === "gym"
+    ? "Ex : Haut du corps"
+    : "Ex : Semi de Paris"
+}
         style={{
           width: "100%",
           padding: "14px",
@@ -188,8 +194,12 @@ export default function EventForm({
           }}
         >
           {isEditing
-            ? "💾 Enregistrer"
-            : "Créer"}
+  ? "💾 Enregistrer"
+  : type === "training"
+  ? "🏃 Créer l'entraînement"
+  : type === "gym"
+  ? "💪 Créer la séance"
+  : "🏁 Créer la course"}
         </button>
       </div>
     </div>

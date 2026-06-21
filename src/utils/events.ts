@@ -11,7 +11,8 @@ export function getNextTraining(events: Event[]) {
     date.setHours(0, 0, 0, 0);
 
     return (
-      event.type === "training" &&
+      (event.type === "training" ||
+        event.type === "gym") &&
       date >= today
     );
   });

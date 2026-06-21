@@ -1,15 +1,26 @@
 import { theme } from "../../styles/theme";
 
+import type { EventType } from "../../types/Event";
+
 type Props = {
   title?: string;
   date?: string;
   subtitle?: string;
+  type?: EventType;
 };
 
 export default function NextTrainingCard({
   title = "Aucun entraînement",
   date = "Non planifié",
+  type = "training",
 }: Props) {
+  const icon =
+  type === "gym" ? "💪" : "🏃";
+
+const heading =
+  type === "gym"
+    ? "Prochaine séance"
+    : "Prochain Entraînement";
   return (
     <div
       style={{
@@ -34,7 +45,7 @@ export default function NextTrainingCard({
             marginBottom: "12px",
           }}
         >
-          🏃
+          {icon}
         </div>
 
         <h3
@@ -44,7 +55,7 @@ export default function NextTrainingCard({
             fontSize: "25px",
           }}
         >
-          Prochain Entraînement
+          {heading}
         </h3>
       </div>
 
