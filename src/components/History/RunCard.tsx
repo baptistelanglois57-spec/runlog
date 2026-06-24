@@ -6,7 +6,7 @@ import { getAveragePace } from "../../utils/stats";
 import type { Run } from "../../types/Run";
 
 import PageCard from "../Layout/PageCard";
-import AppGrid from "../Layout/AppGrid";
+
 import Button from "../UI/Button";
 import Stat from "../UI/Stat";
 
@@ -28,7 +28,7 @@ export default function RunCard({
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          marginBottom: "24px",
+          marginBottom: "16px",
           flexWrap: "wrap",
           gap: "12px",
         }}
@@ -64,90 +64,102 @@ export default function RunCard({
         </h2>
       </div>
 
-      <AppGrid
-        columns={3}
-        gap={18}
-        maxWidth="100%"
-      >
+<div
+  style={{
+    display: "grid",
+    gridTemplateColumns:
+      "repeat(auto-fit, minmax(120px, 1fr))",
+    gap: "12px",
+    marginTop: "10px",
+  }}
+>
+  <Stat
+    icon="⏱"
+    title="Temps"
+    value={run.duration}
+  />
+
+  <Stat
+    icon="⚡"
+    title="Allure"
+    value={getAveragePace(
+      run.distance,
+      run.duration
+    )}
+  />
+
+  <Stat
+    icon="⛰"
+    title="D+"
+    value={`${run.elevation} m`}
+  />
+
+  {run.averageHeartRate && (
+    <Stat
+      icon="❤️"
+      title="BPM"
+      value={`${run.averageHeartRate} bpm`}
+    />
+  )}
+
+  {run.type === "race" && (
+    <>
+      {run.location && (
         <Stat
-          icon="⏱"
-          title="Temps"
-          value={run.duration}
+          icon="📍"
+          title="Lieu"
+          value={run.location}
         />
+      )}
 
-        <Stat
-          icon="⚡"
-          title="Allure"
-          value={getAveragePace(
-            run.distance,
-            run.duration
-          )}
-        />
-
-        <Stat
-          icon="⛰"
-          title="D+"
-          value={`${run.elevation} m`}
-        />
-
-        {run.type === "race" && (
-          <>
-            {run.location && (
-              <Stat
-                icon="📍"
-                title="Lieu"
-                value={run.location}
-              />
-            )}
-
-            {run.position !== undefined &&
-              run.participants !==
-                undefined && (
-                <Stat
-                  icon="🏆"
-                  title="Classement"
-                  value={`${run.position} / ${run.participants}`}
-                />
-              )}
-
-            {run.competitionName && (
-              <Stat
-                icon="🏁"
-                title="Compétition"
-                value={run.competitionName}
-              />
-            )}
-                      </>
+      {run.position !== undefined &&
+        run.participants !==
+          undefined && (
+          <Stat
+            icon="🏆"
+            title="Classement"
+            value={`${run.position} / ${run.participants}`}
+          />
         )}
-      </AppGrid>
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          gap: "16px",
-          marginTop: "30px",
-          flexWrap: "wrap",
-        }}
-      >
-        <Button
-          variant="primary"
-          onClick={() =>
-            navigate(`/edit/${run.id}`)
-          }
-        >
-          ✏ Modifier
-        </Button>
+      {run.competitionName && (
+        <Stat
+          icon="🏁"
+          title="Compétition"
+          value={run.competitionName}
+        />
+      )}
+    </>
+  )}
+</div>
 
-        <Button
-          variant="danger"
-          onClick={() =>
-            onDelete(run.id)
-          }
-        >
-          🗑 Supprimer
-        </Button>
-      </div>
+<div
+  style={{
+    display: "flex",
+    justifyContent: "center",
+    gap: "10px",
+    marginTop: "20px",
+    flexWrap: "wrap",
+  }}
+>
+  <Button
+    variant="primary"
+    onClick={() =>
+      navigate(`/edit/${run.id}`)
+    }
+  >
+    ✏ Modifier
+  </Button>
+
+  <Button
+    variant="danger"
+    onClick={() =>
+      onDelete(run.id)
+    }
+  >
+    🗑 Supprimer
+  </Button>
+</div>
     </PageCard>
   );
 }

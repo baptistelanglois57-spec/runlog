@@ -3,10 +3,18 @@ import { useEffect, useMemo, useState } from "react";
 import HistoryHeader from "../components/History/HistoryHeader";
 import HistoryFilters from "../components/History/HistoryFilters";
 import MonthAccordion from "../components/History/MonthAccordion";
-import { getRuns, deleteRun } from "../services/runService";
+
+import {
+  getRuns,
+  deleteRun,
+} from "../services/runService";
+
 import type { Run } from "../types/Run";
+
 import { getTotalDistance } from "../utils/stats";
+
 import { theme } from "../styles/theme";
+
 import AppContainer from "../components/Layout/AppContainer";
 import Section from "../components/Layout/Section";
 import PageCard from "../components/Layout/PageCard";
@@ -26,8 +34,9 @@ export default function History() {
   const [filter, setFilter] =
     useState<Filter>("all");
 
+  // Tous les mois fermés au démarrage
   const [openedMonth, setOpenedMonth] =
-    useState("");
+    useState<string>("");
 
   useEffect(() => {
     loadRuns();
@@ -46,14 +55,6 @@ export default function History() {
 
     setRuns(data);
 
-    if (data.length) {
-      const first = new Date(data[0].date);
-
-      setOpenedMonth(
-        `${first.getFullYear()}-${first.getMonth()}`
-      );
-    }
-
     setLoading(false);
   }
 
@@ -62,8 +63,9 @@ export default function History() {
       !window.confirm(
         "Supprimer cette sortie ?"
       )
-    )
+    ) {
       return;
+    }
 
     await deleteRun(id);
 
@@ -71,8 +73,9 @@ export default function History() {
   }
 
   const filteredRuns = useMemo(() => {
-    if (filter === "all")
+    if (filter === "all") {
       return runs;
+    }
 
     return runs.filter(
       (run) => run.type === filter
@@ -101,97 +104,101 @@ export default function History() {
     return groups;
   }, [filteredRuns]);
 
- if (loading) {
+  if (loading) {
+    return (
+      <AppContainer>
+        <Section>
+          <PageCard>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                minHeight: "250px",
+                fontSize: "22px",
+                color: theme.colors.text,
+              }}
+            >
+              Chargement...
+            </div>
+          </PageCard>
+        </Section>
+      </AppContainer>
+    );
+  }
+
   return (
     <AppContainer>
       <Section>
-        <PageCard>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              minHeight: "250px",
-              fontSize: "22px",
-              color: theme.colors.text,
-            }}
-          >
-            Chargement...
-          </div>
-        </PageCard>
+        <HistoryHeader
+          totalRuns={runs.length}
+          totalDistance={getTotalDistance(
+            runs
+          )}
+        />
+      </Section>
+
+      <Section>
+        <HistoryFilters
+          selected={filter}
+          onChange={setFilter}
+        />
+      </Section>
+
+      <Section>
+        {Object.entries(groupedRuns)
+          .length === 0 ? (
+          <PageCard>
+            <h2
+              style={{
+                marginTop: 0,
+                color: theme.colors.primary,
+              }}
+            >
+              Aucune sortie
+            </h2>
+
+            <p
+              style={{
+                color:
+                  theme.colors
+                    .textSecondary,
+                marginBottom: 0,
+              }}
+            >
+              Aucune sortie ne
+              correspond au filtre
+              sélectionné.
+            </p>
+          </PageCard>
+        ) : (
+          Object.entries(
+            groupedRuns
+          ).map(
+            ([monthKey, monthRuns]) => (
+              <MonthAccordion
+                key={monthKey}
+                runs={monthRuns}
+                isOpen={
+                  openedMonth ===
+                  monthKey
+                }
+                onToggle={() =>
+                  setOpenedMonth(
+                    openedMonth ===
+                      monthKey
+                      ? ""
+                      : monthKey
+                  )
+                }
+                onDelete={
+                  handleDelete
+                }
+              />
+            )
+          )
+        )}
       </Section>
     </AppContainer>
   );
-}
-    return (
-  <AppContainer>
-
-    <Section>
-      <HistoryHeader
-        totalRuns={runs.length}
-        totalDistance={getTotalDistance(runs)}
-      />
-    </Section>
-
-    <Section>
-      <HistoryFilters
-        selected={filter}
-        onChange={setFilter}
-      />
-    </Section>
-
-    <Section>
-
-      {Object.entries(groupedRuns).length === 0 ? (
-
-        <PageCard>
-
-          <h2
-            style={{
-              marginTop: 0,
-              color: theme.colors.primary,
-            }}
-          >
-            Aucune sortie
-          </h2>
-
-          <p
-            style={{
-              color: theme.colors.textSecondary,
-              marginBottom: 0,
-            }}
-          >
-            Aucune sortie ne correspond au filtre sélectionné.
-          </p>
-
-        </PageCard>
-
-      ) : (
-
-        Object.entries(groupedRuns).map(
-          ([monthKey, monthRuns]) => (
-            <MonthAccordion
-              key={monthKey}
-              runs={monthRuns}
-              isOpen={
-                openedMonth === monthKey
-              }
-              onToggle={() =>
-                setOpenedMonth(
-                  openedMonth === monthKey
-                    ? ""
-                    : monthKey
-                )
-              }
-              onDelete={handleDelete}
-            />
-          )
-        )
-
-      )}
-
-    </Section>
-
-  </AppContainer>
-);
 }

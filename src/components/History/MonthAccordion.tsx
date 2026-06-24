@@ -21,6 +21,10 @@ export default function MonthAccordion({
 }: MonthAccordionProps) {
   const stats = useMemo(() => {
     const firstDate = new Date(runs[0].date);
+    const elevation = runs.reduce(
+  (sum, run) => sum + run.elevation,
+  0
+);
 
     const monthLabel =
       firstDate.toLocaleDateString("fr-FR", {
@@ -42,11 +46,12 @@ export default function MonthAccordion({
     ).length;
 
     return {
-      monthLabel,
-      distance,
-      trainings,
-      races,
-    };
+  monthLabel,
+  distance,
+  elevation,
+  trainings,
+  races,
+};
   }, [runs]);
 
   return (
@@ -88,13 +93,17 @@ export default function MonthAccordion({
           >
             📏 {stats.distance.toFixed(1)} km
 
-            {" • "}
+{" • "}
 
-            🏃 {stats.trainings}
+⛰ {stats.elevation} m
 
-            {" • "}
+{" • "}
 
-            🏁 {stats.races}
+🏃 {stats.trainings}
+
+{" • "}
+
+🏁 {stats.races}
           </p>
         </div>
 

@@ -11,6 +11,8 @@ export type Run = {
 
   elevation: number;
 
+  averageHeartRate?: number;
+
   type: "training" | "race";
 
   competitionName?: string;

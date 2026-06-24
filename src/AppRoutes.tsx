@@ -10,6 +10,7 @@ import EditRun from "./pages/EditRun";
 import Records from "./pages/Records";
 import Agenda from "./pages/Agenda";
 import AddEvent from "./pages/AddEvent";
+import Coach from "./pages/Coach";
 
 
 export default function AppRoutes() {
@@ -25,6 +26,7 @@ export default function AppRoutes() {
   <Route path="/records" element={<Records />} />
   <Route path="/agenda" element={<Agenda />} />
   <Route path="/add-event" element={<AddEvent />} />
+  <Route path="/coach" element={<Coach />} />
 </Routes>
       </Layout>
     </BrowserRouter>

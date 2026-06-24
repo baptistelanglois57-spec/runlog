@@ -17,7 +17,6 @@ import {
   getRunById,
 } from "../services/runService";
 
-import { formatDate } from "../utils/date";
 
 export default function RunForm() {
   const navigate = useNavigate();
@@ -42,7 +41,10 @@ export default function RunForm() {
 
   const [elevation, setElevation] =
     useState("");
-
+const [
+  averageHeartRate,
+  setAverageHeartRate,
+] = useState("");
   const [
     competitionName,
     setCompetitionName,
@@ -67,11 +69,13 @@ export default function RunForm() {
 
       setName(run.name);
       setType(run.type);
-      setDate(formatDate(run.date));
+   setDate(run.date);
       setDistance(run.distance.toString());
       setDuration(run.duration);
       setElevation(run.elevation.toString());
-
+setAverageHeartRate(
+  run.averageHeartRate?.toString() || ""
+);
       setCompetitionName(
         run.competitionName || ""
       );
@@ -118,6 +122,10 @@ export default function RunForm() {
       duration,
 
       elevation: Number(elevation),
+      averageHeartRate:
+  averageHeartRate !== ""
+    ? Number(averageHeartRate)
+    : undefined,
 
       competitionName:
         type === "race"
@@ -168,19 +176,23 @@ export default function RunForm() {
           />
 
           <RunFields
-            name={name}
-            setName={setName}
-            type={type}
-            setType={setType}
-            date={date}
-            setDate={setDate}
-            distance={distance}
-            setDistance={setDistance}
-            duration={duration}
-            setDuration={setDuration}
-            elevation={elevation}
-            setElevation={setElevation}
-          />
+  name={name}
+  setName={setName}
+  type={type}
+  setType={setType}
+  date={date}
+  setDate={setDate}
+  distance={distance}
+  setDistance={setDistance}
+  duration={duration}
+  setDuration={setDuration}
+  elevation={elevation}
+  setElevation={setElevation}
+  averageHeartRate={averageHeartRate}
+  setAverageHeartRate={
+    setAverageHeartRate
+  }
+/>
 
           {type === "race" && (
             <CompetitionFields

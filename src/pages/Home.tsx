@@ -177,7 +177,7 @@ export default function Home() {
                 style={{
                   display: "grid",
                   gridTemplateColumns:
-                    "repeat(auto-fit, minmax(180px,1fr))",
+  "repeat(3, 1fr)",
                   gap: "18px",
                 }}
               >
@@ -245,19 +245,36 @@ export default function Home() {
                 </div>
 
                 <div>
-                  <p
-                    style={{
-                      color: theme.colors.textSecondary,
-                      marginBottom: "6px",
-                    }}
-                  >
-                    ⛰ Dénivelé
-                  </p>
+  <p
+    style={{
+      color: theme.colors.textSecondary,
+      marginBottom: "6px",
+    }}
+  >
+    ⛰ Dénivelé
+  </p>
 
-                  <strong>
-                    {lastRun.elevation} m
-                  </strong>
-                </div>
+  <strong>
+    {lastRun.elevation} m
+  </strong>
+</div>
+
+<div>
+  <p
+    style={{
+      color: theme.colors.textSecondary,
+      marginBottom: "6px",
+    }}
+  >
+    ❤️ BPM
+  </p>
+
+  <strong>
+    {lastRun.averageHeartRate
+      ? `${lastRun.averageHeartRate} bpm`
+      : "-"}
+  </strong>
+</div>
 
                 {lastRun.type === "race" && (
                   <>
