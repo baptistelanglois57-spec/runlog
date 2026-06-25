@@ -10,7 +10,11 @@ export async function getRuns(): Promise<Run[]> {
     .order("date", { ascending: false });
 
   if (error) {
-    console.error("Erreur getRuns :", error);
+    console.error(
+      "Erreur getRuns :",
+      error
+    );
+
     return [];
   }
 
@@ -57,8 +61,6 @@ export async function saveRun(
       "Erreur saveRun :",
       error
     );
-
-    alert(JSON.stringify(error));
   }
 }
 
@@ -96,8 +98,6 @@ export async function updateRun(
       "Erreur updateRun :",
       error
     );
-
-    alert(JSON.stringify(error));
   }
 }
 
@@ -120,9 +120,25 @@ export async function deleteRun(
 export async function getRunById(
   id: string
 ): Promise<Run | undefined> {
-  const runs = await getRuns();
+  const { data, error } =
+    await supabase
+      .from(TABLE)
+      .select("*")
+      .eq("id", id)
+      .single();
 
-  return runs.find(
-    (run) => run.id === id
-  );
+  if (error) {
+    console.error(
+      "Erreur getRunById :",
+      error
+    );
+
+    return undefined;
+  }
+
+  return {
+    ...data,
+    averageHeartRate:
+      data.average_heart_rate,
+  } as Run;
 }

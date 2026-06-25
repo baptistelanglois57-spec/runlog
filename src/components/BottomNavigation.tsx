@@ -46,31 +46,29 @@ export default function BottomNavigation() {
   ];
 
   return (
-    <nav
-      style={{
-        position: "fixed",
-        bottom: 0,
-        left: 0,
-        right: 0,
+   <nav
+  style={{
+    position: "fixed",
+    bottom: 0,
+    left: 0,
+    right: 0,
 
-        height: "88px",
-        paddingBottom:
-          "env(safe-area-inset-bottom)",
+    height: "95px",
 
-        background: theme.colors.card,
+    background: theme.colors.card,
 
-        borderTop: `1px solid ${theme.colors.border}`,
+    borderTop: `1px solid ${theme.colors.border}`,
 
-        boxShadow:
-          "0 -8px 24px rgba(0,0,0,0.35)",
+    boxShadow:
+      "0 -10px 30px rgba(0,0,0,0.4)",
 
-        display: "flex",
-        justifyContent: "space-around",
-        alignItems: "center",
+    display: "flex",
+    justifyContent: "space-around",
+    alignItems: "center",
 
-        zIndex: 1000,
-      }}
-    >
+    zIndex: 1000,
+  }}
+>
       {items.map((item) => {
         const Icon = item.icon;
 
@@ -84,38 +82,34 @@ export default function BottomNavigation() {
               navigate(item.path)
             }
             style={{
-              background: "transparent",
-              border: "none",
-              cursor: "pointer",
+  background: "transparent",
+  border: "none",
+  cursor: "pointer",
 
-              display: "flex",
-              flexDirection: "column",
+  display: "flex",
+  flexDirection: "column",
 
-              alignItems: "center",
-              justifyContent: "center",
+  alignItems: "center",
+  justifyContent: "center",
 
-              gap: "8px",
+  gap: "4px",
 
-              color: active
-                ? theme.colors.primary
-                : "#c9d1d9",
+  color: active
+    ? theme.colors.primary
+    : "#c9d1d9",
 
-              transition: "0.2s",
-
-              flex: 1,
-              maxWidth: "90px",
-
-              height: "100%",
-            }}
+  flex: 1,
+  height: "100%",
+}}
           >
             <Icon
-              size={28}
-              strokeWidth={2.4}
+              size={34}
+              strokeWidth={2.5}
             />
 
             <span
               style={{
-                fontSize: "13px",
+                fontSize: "11px",
 
                 fontWeight: active
                   ? 700

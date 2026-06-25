@@ -2,7 +2,15 @@ type HeaderProps = {
   title: string;
   subtitle: string;
 };
+import logo from "../assets/runlog-logo.png";
 
+<img
+  src={logo}
+  alt="RunLog"
+  style={{
+    height: "48px",
+  }}
+/>
 export default function Header({ title, subtitle }: HeaderProps) {
   return (
     <header
