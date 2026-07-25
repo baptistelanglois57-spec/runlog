@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 
 import { theme } from "../../styles/theme";
+import { exportRunsToCSV } from "../../utils/exportCsv";
 
 import type { Run } from "../../types/Run";
 
@@ -21,10 +22,11 @@ export default function MonthAccordion({
 }: MonthAccordionProps) {
   const stats = useMemo(() => {
     const firstDate = new Date(runs[0].date);
+
     const elevation = runs.reduce(
-  (sum, run) => sum + run.elevation,
-  0
-);
+      (sum, run) => sum + run.elevation,
+      0
+    );
 
     const monthLabel =
       firstDate.toLocaleDateString("fr-FR", {
@@ -46,12 +48,12 @@ export default function MonthAccordion({
     ).length;
 
     return {
-  monthLabel,
-  distance,
-  elevation,
-  trainings,
-  races,
-};
+      monthLabel,
+      distance,
+      elevation,
+      trainings,
+      races,
+    };
   }, [runs]);
 
   return (
@@ -62,59 +64,115 @@ export default function MonthAccordion({
       }}
     >
       <div
-        onClick={onToggle}
         style={{
-          cursor: "pointer",
           background: theme.colors.card,
           border: `1px solid ${theme.colors.border}`,
           borderRadius: "20px",
           padding: "22px",
           boxShadow: theme.shadow.card,
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
         }}
       >
-        <div>
-          <h2
-            style={{
-              margin: 0,
-              textTransform: "capitalize",
-            }}
-          >
-            {stats.monthLabel}
-          </h2>
-
-          <p
-            style={{
-              marginTop: "10px",
-              color: theme.colors.textSecondary,
-            }}
-          >
-            📏 {stats.distance.toFixed(1)} km
-
-{" • "}
-
-⛰ {stats.elevation} m
-
-{" • "}
-
-🏃 {stats.trainings}
-
-{" • "}
-
-🏁 {stats.races}
-          </p>
-        </div>
-
         <div
           style={{
-            fontSize: "26px",
-            color: theme.colors.primary,
-            fontWeight: 700,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+            gap: "20px",
           }}
         >
-          {isOpen ? "▼" : "▶"}
+          <div
+            onClick={onToggle}
+            style={{
+              cursor: "pointer",
+              flex: 1,
+            }}
+          >
+            <h2
+              style={{
+                margin: 0,
+                textTransform: "capitalize",
+              }}
+            >
+              {stats.monthLabel}
+            </h2>
+
+            <p
+              style={{
+                marginTop: "10px",
+                color: theme.colors.textSecondary,
+              }}
+            >
+              📏 {stats.distance.toFixed(1)} km
+              {" • "}
+              ⛰ {stats.elevation} m
+              {" • "}
+              🏃 {stats.trainings}
+              {" • "}
+              🏁 {stats.races}
+            </p>
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+            }}
+          >
+            <button
+  onClick={(e) => {
+    e.stopPropagation();
+
+    exportRunsToCSV(
+      runs,
+      `RunLog_${stats.monthLabel.replace(/\s+/g, "_")}.csv`
+    );
+  }}
+  title="Exporter en CSV"
+  style={{
+    width: "42px",
+    height: "42px",
+    background: theme.colors.primary,
+    color: "#000",
+    border: "none",
+    borderRadius: "12px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: "pointer",
+    transition: "0.2s",
+  }}
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="22"
+    height="22"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.4"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M12 3v12" />
+    <path d="m7 10 5 5 5-5" />
+    <path d="M5 21h14" />
+  </svg>
+</button>
+
+            <div
+              onClick={onToggle}
+              style={{
+                cursor: "pointer",
+                fontSize: "26px",
+                color: theme.colors.primary,
+                fontWeight: 700,
+                userSelect: "none",
+              }}
+            >
+              {isOpen ? "▼" : "▶"}
+            </div>
+          </div>
         </div>
       </div>
 

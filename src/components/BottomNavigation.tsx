@@ -2,8 +2,7 @@ import {
   House,
   Plus,
   BookOpen,
-  ChartColumn,
-  Handshake,
+  Scale,
 } from "lucide-react";
 
 import {
@@ -34,41 +33,36 @@ export default function BottomNavigation() {
       path: "/history",
     },
     {
-      label: "Stats",
-      icon: ChartColumn,
-      path: "/statistics",
-    },
-    {
-      label: "Coach",
-      icon: Handshake,
-      path: "/coach",
+      label: "Suivi",
+      icon: Scale,
+      path: "/tracking",
     },
   ];
 
   return (
-   <nav
-  style={{
-    position: "fixed",
-    bottom: 0,
-    left: 0,
-    right: 0,
+    <nav
+      style={{
+        position: "fixed",
+        bottom: 0,
+        left: 0,
+        right: 0,
 
-    height: "95px",
+        height: "95px",
 
-    background: theme.colors.card,
+        background: theme.colors.card,
 
-    borderTop: `1px solid ${theme.colors.border}`,
+        borderTop: `1px solid ${theme.colors.border}`,
 
-    boxShadow:
-      "0 -10px 30px rgba(0,0,0,0.4)",
+        boxShadow:
+          "0 -10px 30px rgba(0,0,0,0.4)",
 
-    display: "flex",
-    justifyContent: "space-around",
-    alignItems: "center",
+        display: "flex",
+        justifyContent: "space-around",
+        alignItems: "center",
 
-    zIndex: 1000,
-  }}
->
+        zIndex: 1000,
+      }}
+    >
       {items.map((item) => {
         const Icon = item.icon;
 
@@ -82,25 +76,25 @@ export default function BottomNavigation() {
               navigate(item.path)
             }
             style={{
-  background: "transparent",
-  border: "none",
-  cursor: "pointer",
+              background: "transparent",
+              border: "none",
+              cursor: "pointer",
 
-  display: "flex",
-  flexDirection: "column",
+              display: "flex",
+              flexDirection: "column",
 
-  alignItems: "center",
-  justifyContent: "center",
+              alignItems: "center",
+              justifyContent: "center",
 
-  gap: "4px",
+              gap: "4px",
 
-  color: active
-    ? theme.colors.primary
-    : "#c9d1d9",
+              color: active
+                ? theme.colors.primary
+                : "#c9d1d9",
 
-  flex: 1,
-  height: "100%",
-}}
+              flex: 1,
+              height: "100%",
+            }}
           >
             <Icon
               size={34}

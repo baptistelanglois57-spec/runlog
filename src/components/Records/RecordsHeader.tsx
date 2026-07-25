@@ -35,7 +35,6 @@ export default function RecordsHeader() {
           letterSpacing: "2px",
         }}
       >
-        NEVER GIVE UP
       </p>
     </div>
   );

@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import Layout from "./components/Layout";
 
@@ -11,25 +11,26 @@ import Records from "./pages/Records";
 import Agenda from "./pages/Agenda";
 import AddEvent from "./pages/AddEvent";
 import Coach from "./pages/Coach";
-
+import Tracking from "./pages/Tracking";
 
 export default function AppRoutes() {
   return (
-    <BrowserRouter>
-      <Layout>
-        <Routes>
-  <Route path="/" element={<Home />} />
-  <Route path="/add" element={<AddRun />} />
-  <Route path="/edit/:id" element={<EditRun />} />
-  <Route path="/history" element={<History />} />
-  <Route path="/statistics" element={<Statistics />} />
-  <Route path="/records" element={<Records />} />
-  <Route path="/agenda" element={<Agenda />} />
-  <Route path="/add-event" element={<AddEvent />} />
-  <Route path="/coach" element={<Coach />} />
-</Routes>
-      </Layout>
-    </BrowserRouter>
+    <Layout>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/add" element={<AddRun />} />
+        <Route path="/edit/:id" element={<EditRun />} />
+        <Route path="/history" element={<History />} />
+        <Route path="/statistics" element={<Statistics />} />
+        <Route path="/records" element={<Records />} />
+        <Route path="/agenda" element={<Agenda />} />
+        <Route path="/add-event" element={<AddEvent />} />
+        <Route path="/coach" element={<Coach />} />
+        <Route
+          path="/tracking"
+          element={<Tracking />}
+        />
+      </Routes>
+    </Layout>
   );
 }
-

@@ -157,31 +157,64 @@ export function getRaceRecord(
   runs: Run[],
   distance: number
 ) {
-  const races = runs.filter(
-    (run) =>
-      run.type === "race" &&
-      Math.abs(run.distance - distance) < 0.2
+  const matchingRuns = runs.filter(
+    (run) => run.distance >= distance
   );
 
-  if (races.length === 0) {
+  if (matchingRuns.length === 0) {
     return null;
   }
 
-  function totalSeconds(run: Run) {
+  function estimatedSeconds(run: Run) {
     const [hours, minutes, seconds] =
       run.duration.split(":").map(Number);
 
-    return (
+    const totalSeconds =
       hours * 3600 +
       minutes * 60 +
-      seconds
-    );
+      seconds;
+
+    const pace =
+      totalSeconds / run.distance;
+
+    return pace * distance;
   }
 
-  return races.reduce((best, run) =>
-    totalSeconds(run) <
-    totalSeconds(best)
-      ? run
-      : best
+  function formatDuration(
+    totalSeconds: number
+  ) {
+    const hours = Math.floor(
+      totalSeconds / 3600
+    );
+
+    const minutes = Math.floor(
+      (totalSeconds % 3600) / 60
+    );
+
+    const seconds = Math.round(
+      totalSeconds % 60
+    );
+
+    return [
+      hours.toString().padStart(2, "0"),
+      minutes.toString().padStart(2, "0"),
+      seconds.toString().padStart(2, "0"),
+    ].join(":");
+  }
+
+  const bestRun = matchingRuns.reduce(
+    (best, run) =>
+      estimatedSeconds(run) <
+      estimatedSeconds(best)
+        ? run
+        : best
   );
+
+  return {
+    ...bestRun,
+    duration: formatDuration(
+      estimatedSeconds(bestRun)
+    ),
+    estimated: bestRun.distance > distance,
+  };
 }

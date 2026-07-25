@@ -12,6 +12,7 @@ import {
 import type { Run } from "../types/Run";
 
 import { getTotalDistance } from "../utils/stats";
+import { exportRunsToCSV } from "../utils/exportCsv";
 
 import { theme } from "../styles/theme";
 
@@ -132,9 +133,7 @@ export default function History() {
       <Section>
         <HistoryHeader
           totalRuns={runs.length}
-          totalDistance={getTotalDistance(
-            runs
-          )}
+          totalDistance={getTotalDistance(runs)}
         />
       </Section>
 
@@ -146,8 +145,36 @@ export default function History() {
       </Section>
 
       <Section>
-        {Object.entries(groupedRuns)
-          .length === 0 ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            marginBottom: "20px",
+          }}
+        >
+          <button
+            onClick={() =>
+              exportRunsToCSV(
+                filteredRuns,
+                "RunLog_Historique.csv"
+              )
+            }
+            style={{
+              background: theme.colors.primary,
+              color: "#000",
+              border: "none",
+              borderRadius: "12px",
+              padding: "10px 18px",
+              fontWeight: 700,
+              fontSize: "15px",
+              cursor: "pointer",
+            }}
+          >
+             Export CSV
+          </button>
+        </div>
+
+        {Object.entries(groupedRuns).length === 0 ? (
           <PageCard>
             <h2
               style={{
@@ -161,39 +188,30 @@ export default function History() {
             <p
               style={{
                 color:
-                  theme.colors
-                    .textSecondary,
+                  theme.colors.textSecondary,
                 marginBottom: 0,
               }}
             >
-              Aucune sortie ne
-              correspond au filtre
-              sélectionné.
+              Aucune sortie ne correspond au filtre sélectionné.
             </p>
           </PageCard>
         ) : (
-          Object.entries(
-            groupedRuns
-          ).map(
+          Object.entries(groupedRuns).map(
             ([monthKey, monthRuns]) => (
               <MonthAccordion
                 key={monthKey}
                 runs={monthRuns}
                 isOpen={
-                  openedMonth ===
-                  monthKey
+                  openedMonth === monthKey
                 }
                 onToggle={() =>
                   setOpenedMonth(
-                    openedMonth ===
-                      monthKey
+                    openedMonth === monthKey
                       ? ""
                       : monthKey
                   )
                 }
-                onDelete={
-                  handleDelete
-                }
+                onDelete={handleDelete}
               />
             )
           )

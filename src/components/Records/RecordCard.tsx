@@ -1,7 +1,8 @@
 import { theme } from "../../styles/theme";
+import type { ReactNode } from "react";
 
 type RecordCardProps = {
-  icon: string;
+  icon: ReactNode;
   title: string;
   value: string;
   subtitle?: string;
@@ -24,30 +25,35 @@ export default function RecordCard({
         }`,
         borderRadius: "20px",
         padding: "22px",
-        boxShadow: theme.shadow.card,
+        minHeight: "180px",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
       }}
     >
       <div
         style={{
           display: "flex",
           alignItems: "center",
-          gap: "12px",
-          marginBottom: "18px",
+          gap: "10px",
         }}
       >
-        <span
+        <div
           style={{
-            fontSize: "28px",
+            color: theme.colors.primary,
+            display: "flex",
+            alignItems: "center",
           }}
         >
           {icon}
-        </span>
+        </div>
 
         <h3
           style={{
             margin: 0,
-            color: theme.colors.text,
+            color: "#FFFFFF",
             fontSize: "22px",
+            fontWeight: 700,
           }}
         >
           {title}
@@ -56,27 +62,37 @@ export default function RecordCard({
 
       <div
         style={{
-          fontSize: "34px",
-          fontWeight: 700,
-          color:
-            color ?? theme.colors.primary,
-          marginBottom: "10px",
+          textAlign: "center",
+          marginTop: "10px",
         }}
       >
-        {value}
-      </div>
-
-      {subtitle && (
-        <p
+        <div
           style={{
-            margin: 0,
-            color: theme.colors.textSecondary,
-            fontSize: "15px",
+            fontSize: "42px",
+            fontWeight: 800,
+            color: "#FFFFFF",
+            lineHeight: 1.1,
           }}
         >
-          {subtitle}
-        </p>
-      )}
+          {value}
+        </div>
+
+        {subtitle && (
+          <p
+            style={{
+              marginTop: "10px",
+              marginBottom: 0,
+              color: "#FFFFFF",
+              fontSize: "14px",
+              fontWeight: 500,
+              lineHeight: 1.4,
+              wordBreak: "break-word",
+            }}
+          >
+            {subtitle}
+          </p>
+        )}
+      </div>
     </div>
   );
 }

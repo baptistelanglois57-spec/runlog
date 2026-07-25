@@ -147,21 +147,29 @@ export default function Home() {
         />
       </div>
             <Section>
-        <PageCard>
+  <UpcomingSection
+    nextTraining={nextTraining}
+    nextRace={nextRace}
+  />
+</Section>
 
-          <h2
-            style={{
-              color: theme.colors.primary,
-              marginBottom: "25px",
-              fontSize: "28px",
-              textAlign: "center",
-            }}
-          >
-            Dernière sortie
-          </h2>
+<Section>
+  <PageCard>
 
-          {lastRun ? (
-            <>
+    <h2
+  style={{
+    color: theme.colors.text,
+    marginBottom: "25px",
+    fontSize: "28px",
+    textAlign: "center",
+    fontWeight: 700,
+  }}
+>
+  Dernière sortie
+</h2>
+
+    {lastRun ? (
+      <>
               <h3
                 style={{
                   fontSize: "26px",
@@ -320,25 +328,19 @@ export default function Home() {
                 )}
               </div>
             </>
-          ) : (
-            <p
-              style={{
-                textAlign: "center",
-                color: theme.colors.textSecondary,
-              }}
-            >
-              Aucune sortie enregistrée.
-            </p>
-          )}
+    ) : (
+      <p
+        style={{
+          textAlign: "center",
+          color: theme.colors.text 
+        }}
+      >
+        Aucune sortie enregistrée.
+      </p>
+    )}
 
-        </PageCard>
-      </Section>
-            <Section>
-        <UpcomingSection
-          nextTraining={nextTraining}
-          nextRace={nextRace}
-        />
-      </Section>
+  </PageCard>
+</Section>
 
     </AppContainer>
   );

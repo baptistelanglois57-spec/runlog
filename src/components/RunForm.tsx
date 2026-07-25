@@ -10,6 +10,7 @@ import RunFields from "../components/RunForm/RunFields";
 import CompetitionFields from "../components/RunForm/CompetitionFields";
 import RunPreview from "../components/RunForm/RunPreview";
 import SaveButton from "../components/RunForm/SaveButton";
+import toast from "react-hot-toast";
 
 import {
   saveRun,
@@ -95,16 +96,16 @@ setAverageHeartRate(
   }, [id, isEditing]);
     async function handleSave() {
     if (
-      !name ||
-      !date ||
-      !distance ||
-      !duration
-    ) {
-      alert(
-        "Merci de remplir tous les champs obligatoires."
-      );
-      return;
-    }
+  !name ||
+  !date ||
+  !distance ||
+  !duration
+) {
+  toast.error(
+    "Merci de remplir tous les champs obligatoires."
+  );
+  return;
+}
 
     const run = {
       id: isEditing
@@ -150,21 +151,17 @@ setAverageHeartRate(
           : undefined,
     };
 
-    if (isEditing) {
-      await updateRun(run);
+   if (isEditing) {
+  await updateRun(run);
 
-      alert(
-        "✅ Sortie mise à jour !"
-      );
-    } else {
-      await saveRun(run);
+  toast.success("✅ Sortie mise à jour !");
+} else {
+  await saveRun(run);
 
-      alert(
-        "✅ Sortie enregistrée !"
-      );
-    }
+  toast.success("✅ Sortie enregistrée !");
+}
 
-    navigate("/history");
+navigate("/history");
   }
     return (
     <AppContainer>

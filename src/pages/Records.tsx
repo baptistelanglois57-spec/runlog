@@ -76,7 +76,8 @@ export default function Records() {
     const record5 = getRaceRecord(runs, 5);
 
 const record10 = getRaceRecord(runs, 10);
-
+const record15 =
+  getRaceRecord(runs, 15);
 const recordSemi =
   getRaceRecord(runs, 21.097);
 
@@ -146,11 +147,11 @@ const top10 =
   subtitle={
     record5
       ? `${record5.name} • ${record5.date}`
-      : "Ajoute une compétition officielle de 5 km"
+      : "Effectue une sortie de 5 km"
   }
 />
 
-        <RecordCard
+<RecordCard
   icon="🥇"
   title="10 km"
   value={
@@ -161,11 +162,25 @@ const top10 =
   subtitle={
     record10
       ? `${record10.name} • ${record10.date}`
-      : "Ajoute une compétition officielle de 10 km"
+      : "Effectue une sortie de 10 km"
+  }
+/>
+<RecordCard
+  icon="🥇"
+  title="15 km"
+  value={
+    record15
+      ? record15.duration
+      : "🔒"
+  }
+  subtitle={
+    record15
+      ? `${record15.name} • ${record15.date}`
+      : "Effectue une sortie de 15 km"
   }
 />
 
-        <RecordCard
+<RecordCard
   icon="🥇"
   title="Semi-marathon"
   value={
@@ -176,11 +191,11 @@ const top10 =
   subtitle={
     recordSemi
       ? `${recordSemi.name} • ${recordSemi.date}`
-      : "Ajoute un semi-marathon"
+      : "Effectue une sortie de 21,1 km"
   }
 />
 
-        <RecordCard
+<RecordCard
   icon="🥇"
   title="Marathon"
   value={
@@ -191,7 +206,7 @@ const top10 =
   subtitle={
     recordMarathon
       ? `${recordMarathon.name} • ${recordMarathon.date}`
-      : "Ajoute un marathon"
+      : "Effectue une sortie de 42,2 km"
   }
 />
       </RecordSection>
