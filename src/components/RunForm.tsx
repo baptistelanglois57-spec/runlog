@@ -10,6 +10,8 @@ import RunFields from "../components/RunForm/RunFields";
 import CompetitionFields from "../components/RunForm/CompetitionFields";
 import RunPreview from "../components/RunForm/RunPreview";
 import SaveButton from "../components/RunForm/SaveButton";
+import GymForm from "./GymForm";
+
 import toast from "react-hot-toast";
 
 import {
@@ -17,7 +19,6 @@ import {
   updateRun,
   getRunById,
 } from "../services/runService";
-
 
 export default function RunForm() {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ export default function RunForm() {
   const [name, setName] = useState("");
 
   const [type, setType] = useState<
-    "training" | "race"
+    "training" | "race" | "gym"
   >("training");
 
   const [date, setDate] = useState("");
@@ -42,10 +43,12 @@ export default function RunForm() {
 
   const [elevation, setElevation] =
     useState("");
-const [
-  averageHeartRate,
-  setAverageHeartRate,
-] = useState("");
+
+  const [
+    averageHeartRate,
+    setAverageHeartRate,
+  ] = useState("");
+
   const [
     competitionName,
     setCompetitionName,
@@ -69,14 +72,23 @@ const [
       if (!run) return;
 
       setName(run.name);
-      setType(run.type);
-   setDate(run.date);
+      setType(run.type as
+        | "training"
+        | "race"
+        | "gym");
+
+      setDate(run.date);
+
       setDistance(run.distance.toString());
+
       setDuration(run.duration);
+
       setElevation(run.elevation.toString());
-setAverageHeartRate(
-  run.averageHeartRate?.toString() || ""
-);
+
+      setAverageHeartRate(
+        run.averageHeartRate?.toString() || ""
+      );
+
       setCompetitionName(
         run.competitionName || ""
       );
@@ -94,18 +106,19 @@ setAverageHeartRate(
 
     loadRun();
   }, [id, isEditing]);
-    async function handleSave() {
+
+  async function handleSave() {
     if (
-  !name ||
-  !date ||
-  !distance ||
-  !duration
-) {
-  toast.error(
-    "Merci de remplir tous les champs obligatoires."
-  );
-  return;
-}
+      !name ||
+      !date ||
+      !distance ||
+      !duration
+    ) {
+      toast.error(
+        "Merci de remplir tous les champs obligatoires."
+      );
+      return;
+    }
 
     const run = {
       id: isEditing
@@ -123,10 +136,11 @@ setAverageHeartRate(
       duration,
 
       elevation: Number(elevation),
+
       averageHeartRate:
-  averageHeartRate !== ""
-    ? Number(averageHeartRate)
-    : undefined,
+        averageHeartRate !== ""
+          ? Number(averageHeartRate)
+          : undefined,
 
       competitionName:
         type === "race"
@@ -151,19 +165,27 @@ setAverageHeartRate(
           : undefined,
     };
 
-   if (isEditing) {
-  await updateRun(run);
+    if (isEditing) {
+      await updateRun(run);
 
-  toast.success("✅ Sortie mise à jour !");
-} else {
-  await saveRun(run);
+      toast.success(
+        "Sortie mise à jour !"
+      );
+    } else {
+      await saveRun(run);
 
-  toast.success("✅ Sortie enregistrée !");
-}
+      toast.success(
+        "Sortie enregistrée !"
+      );
+    }
 
-navigate("/history");
+    navigate("/history");
   }
-    return (
+    if (type === "gym") {
+    return <GymForm />;
+  }
+
+  return (
     <AppContainer>
       <Section>
         <PageCard>
@@ -173,23 +195,23 @@ navigate("/history");
           />
 
           <RunFields
-  name={name}
-  setName={setName}
-  type={type}
-  setType={setType}
-  date={date}
-  setDate={setDate}
-  distance={distance}
-  setDistance={setDistance}
-  duration={duration}
-  setDuration={setDuration}
-  elevation={elevation}
-  setElevation={setElevation}
-  averageHeartRate={averageHeartRate}
-  setAverageHeartRate={
-    setAverageHeartRate
-  }
-/>
+            name={name}
+            setName={setName}
+            type={type}
+            setType={setType}
+            date={date}
+            setDate={setDate}
+            distance={distance}
+            setDistance={setDistance}
+            duration={duration}
+            setDuration={setDuration}
+            elevation={elevation}
+            setElevation={setElevation}
+            averageHeartRate={averageHeartRate}
+            setAverageHeartRate={
+              setAverageHeartRate
+            }
+          />
 
           {type === "race" && (
             <CompetitionFields

@@ -5,10 +5,11 @@ type Props = {
   name: string;
   setName: (value: string) => void;
 
-  type: "training" | "race";
-  setType: (
-    value: "training" | "race"
-  ) => void;
+  type: "training" | "race" | "gym";
+
+setType: (
+  value: "training" | "race" | "gym"
+) => void;
 
   date: string;
   setDate: (value: string) => void;
@@ -139,24 +140,29 @@ export default function RunFields({
   </div>
 
   <select
-    value={type}
-    onChange={(e) =>
-      setType(
-        e.target.value as
-          | "training"
-          | "race"
-      )
-    }
-    style={inputStyle}
-  >
-    <option value="training">
-      Entraînement
-    </option>
+  value={type}
+  onChange={(e) =>
+    setType(
+      e.target.value as
+        | "training"
+        | "race"
+        | "gym"
+    )
+  }
+  style={inputStyle}
+>
+  <option value="training">
+    🏃 Entraînement
+  </option>
 
-    <option value="race">
-      Compétition
-    </option>
-  </select>
+  <option value="race">
+    🏁 Compétition
+  </option>
+
+  <option value="gym">
+    💪 Musculation
+  </option>
+</select>
 </div>
       <div>
         <div style={labelStyle}>📅 Date</div>

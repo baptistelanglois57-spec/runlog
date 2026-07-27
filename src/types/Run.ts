@@ -13,7 +13,7 @@ export type Run = {
 
   averageHeartRate?: number;
 
-  type: "training" | "race";
+  type: "training" | "race" | "gym";
 
   competitionName?: string;
 

@@ -3,6 +3,7 @@ import {
   Plus,
   BookOpen,
   Scale,
+  Dumbbell,
 } from "lucide-react";
 
 import {
@@ -17,27 +18,32 @@ export default function BottomNavigation() {
   const location = useLocation();
 
   const items = [
-    {
-      label: "Accueil",
-      icon: House,
-      path: "/",
-    },
-    {
-      label: "Ajouter",
-      icon: Plus,
-      path: "/add",
-    },
-    {
-      label: "Historique",
-      icon: BookOpen,
-      path: "/history",
-    },
-    {
-      label: "Suivi",
-      icon: Scale,
-      path: "/tracking",
-    },
-  ];
+  {
+    label: "Accueil",
+    icon: House,
+    path: "/",
+  },
+  {
+    label: "Ajouter",
+    icon: Plus,
+    path: "/add",
+  },
+  {
+    label: "Historique",
+    icon: BookOpen,
+    path: "/history",
+  },
+  {
+    label: "Muscu",
+    icon: Dumbbell,
+    path: "/muscu",
+  },
+  {
+    label: "Suivi",
+    icon: Scale,
+    path: "/tracking",
+  },
+];
 
   return (
     <nav
