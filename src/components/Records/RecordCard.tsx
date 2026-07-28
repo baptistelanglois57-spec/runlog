@@ -1,12 +1,19 @@
 import { theme } from "../../styles/theme";
 import type { ReactNode } from "react";
 
+type Detail = {
+  icon: string;
+  label: string;
+  value: string;
+};
+
 type RecordCardProps = {
   icon: ReactNode;
   title: string;
   value: string;
   subtitle?: string;
   color?: string;
+  details?: Detail[];
 };
 
 export default function RecordCard({
@@ -15,20 +22,17 @@ export default function RecordCard({
   value,
   subtitle,
   color,
+  details,
 }: RecordCardProps) {
   return (
     <div
       style={{
         background: theme.colors.card,
-        border: `1px solid ${
-          color ?? theme.colors.border
-        }`,
+        border: `1px solid ${color ?? theme.colors.border}`,
         borderRadius: "20px",
         padding: "22px",
-        minHeight: "180px",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "space-between",
       }}
     >
       <div
@@ -63,7 +67,7 @@ export default function RecordCard({
       <div
         style={{
           textAlign: "center",
-          marginTop: "10px",
+          marginTop: "14px",
         }}
       >
         <div
@@ -93,6 +97,54 @@ export default function RecordCard({
           </p>
         )}
       </div>
+
+      {details && details.length > 0 && (
+        <div
+          style={{
+            marginTop: "22px",
+            borderTop: `1px solid ${theme.colors.border}`,
+            paddingTop: "16px",
+            display: "flex",
+            flexDirection: "column",
+            gap: "10px",
+          }}
+        >
+          {details.map((detail) => (
+            <div
+              key={detail.label}
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  color: theme.colors.textSecondary,
+                  fontSize: "14px",
+                  fontWeight: 600,
+                }}
+              >
+                <span>{detail.icon}</span>
+                <span>{detail.label}</span>
+              </div>
+
+              <span
+                style={{
+                  color: "#FFFFFF",
+                  fontWeight: 700,
+                  fontSize: "15px",
+                }}
+              >
+                {detail.value}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

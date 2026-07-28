@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 import Header from "../components/Header";
 import StatsCard from "../components/StatsCard";
@@ -34,7 +33,7 @@ import { formatDate } from "../utils/date";
 import { theme } from "../styles/theme";
 
 export default function Home() {
-  const navigate = useNavigate();
+  
 
   const [runs, setRuns] = useState<Run[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
@@ -61,55 +60,25 @@ export default function Home() {
   const nextRace = getNextRace(events);
 
   return (
-    <AppContainer>
-
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "30px",
-        }}
-      >
-        <button
-          onClick={() => navigate("/records")}
-          style={{
-            width: "58px",
-            height: "58px",
-            borderRadius: "18px",
-            border: `1px solid ${theme.colors.primary}`,
-            background: theme.colors.card,
-            color: theme.colors.primary,
-            fontSize: "30px",
-            cursor: "pointer",
-            boxShadow: theme.shadow.card,
-          }}
-        >
-          🏆
-        </button>
-
-        <Header
-          title=" RunLog"
-          subtitle="Bonjour Baptiste 👋"
-        />
-
-        <button
-          onClick={() => navigate("/agenda")}
-          style={{
-            width: "58px",
-            height: "58px",
-            borderRadius: "18px",
-            border: `1px solid ${theme.colors.primary}`,
-            background: theme.colors.card,
-            color: theme.colors.primary,
-            fontSize: "28px",
-            cursor: "pointer",
-            boxShadow: theme.shadow.card,
-          }}
-        >
-          📅
-        </button>
-      </div>
+  <AppContainer>
+    <div
+  style={{
+    position: "relative",
+    marginBottom: "30px",
+  }}
+>
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "center",
+    }}
+  >
+    <Header
+      title=" RunLog"
+      subtitle="Bonjour Baptiste 👋"
+    />
+  </div>
+</div>
 
       <div
         style={{

@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ChevronLeft } from "lucide-react";
 
 import AppContainer from "../components/Layout/AppContainer";
 import Section from "../components/Layout/Section";
@@ -15,15 +17,15 @@ import {
 import type { Weight } from "../types/Weight";
 
 export default function Tracking() {
-  const [entries, setEntries] =
-    useState<Weight[]>([]);
+  const navigate = useNavigate();
+
+  const [entries, setEntries] = useState<Weight[]>([]);
 
   const [date, setDate] = useState(
     new Date().toISOString().split("T")[0]
   );
 
-  const [weight, setWeight] =
-    useState("");
+  const [weight, setWeight] = useState("");
 
   useEffect(() => {
     loadWeights();
@@ -55,14 +57,8 @@ export default function Tracking() {
     await loadWeights();
   }
 
-  async function handleDelete(
-    id: string
-  ) {
-    if (
-      !window.confirm(
-        "Supprimer cette pesée ?"
-      )
-    ) {
+  async function handleDelete(id: string) {
+    if (!window.confirm("Supprimer cette pesée ?")) {
       return;
     }
 
@@ -73,6 +69,51 @@ export default function Tracking() {
 
   return (
     <AppContainer>
+      <div
+        style={{
+          position: "relative",
+          maxWidth: "900px",
+          margin: "0 auto 40px",
+          background: theme.colors.card,
+          border: `1px solid ${theme.colors.border}`,
+          borderRadius: "22px",
+          padding: "35px",
+          boxShadow: theme.shadow.card,
+          textAlign: "center",
+        }}
+      >
+        <button
+          onClick={() => navigate("/tools")}
+          style={{
+            position: "absolute",
+            top: "24px",
+            left: "24px",
+            width: "42px",
+            height: "42px",
+            border: "none",
+            background: "transparent",
+            color: theme.colors.primary,
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <ChevronLeft size={34} />
+        </button>
+
+        <h1
+          style={{
+            margin: 0,
+            color: theme.colors.primary,
+            fontSize: "40px",
+            fontWeight: 700,
+          }}
+        >
+          ⚖️ Suivi
+        </h1>
+      </div>
+
       <Section>
         <PageCard>
           <h2
@@ -82,7 +123,7 @@ export default function Tracking() {
               marginTop: 0,
             }}
           >
-            ⚖️ Suivi du poids
+            Ajouter une pesée
           </h2>
 
           <div
@@ -96,18 +137,14 @@ export default function Tracking() {
             <input
               type="date"
               value={date}
-              onChange={(e) =>
-                setDate(e.target.value)
-              }
+              onChange={(e) => setDate(e.target.value)}
               style={{
                 flex: 1,
                 padding: "12px",
                 borderRadius: "12px",
                 border: `1px solid ${theme.colors.border}`,
-                background:
-                  theme.colors.card,
-                color:
-                  theme.colors.text,
+                background: theme.colors.card,
+                color: theme.colors.text,
               }}
             />
 
@@ -116,18 +153,14 @@ export default function Tracking() {
               step="0.1"
               placeholder="Poids (kg)"
               value={weight}
-              onChange={(e) =>
-                setWeight(e.target.value)
-              }
+              onChange={(e) => setWeight(e.target.value)}
               style={{
                 flex: 1,
                 padding: "12px",
                 borderRadius: "12px",
                 border: `1px solid ${theme.colors.border}`,
-                background:
-                  theme.colors.card,
-                color:
-                  theme.colors.text,
+                background: theme.colors.card,
+                color: theme.colors.text,
               }}
             />
 
@@ -137,8 +170,7 @@ export default function Tracking() {
                 padding: "12px 20px",
                 borderRadius: "12px",
                 border: "none",
-                background:
-                  theme.colors.primary,
+                background: theme.colors.primary,
                 color: "#000",
                 fontWeight: 700,
                 cursor: "pointer",
@@ -149,8 +181,7 @@ export default function Tracking() {
           </div>
         </PageCard>
       </Section>
-
-      <Section>
+            <Section>
         <PageCard>
           <h2
             style={{
@@ -160,7 +191,8 @@ export default function Tracking() {
           >
             Historique
           </h2>
-                    {entries.length === 0 ? (
+
+          {entries.length === 0 ? (
             <p
               style={{
                 color: theme.colors.textSecondary,
@@ -221,9 +253,7 @@ export default function Tracking() {
                         borderTop: `1px solid ${theme.colors.border}`,
                       }}
                     >
-                      {new Date(
-                        entry.date
-                      ).toLocaleDateString("fr-FR")}
+                      {new Date(entry.date).toLocaleDateString("fr-FR")}
                     </td>
 
                     <td
@@ -243,9 +273,7 @@ export default function Tracking() {
                       }}
                     >
                       <button
-                        onClick={() =>
-                          handleDelete(entry.id)
-                        }
+                        onClick={() => handleDelete(entry.id)}
                         style={{
                           background: "#EF4444",
                           color: "#fff",

@@ -218,3 +218,36 @@ export function getRaceRecord(
     estimated: bestRun.distance > distance,
   };
 }
+export function getBestPaceHeartRateZone(
+  runs: Run[],
+  minHeartRate: number,
+  maxHeartRate: number
+) {
+  const matchingRuns = runs.filter(
+    (run) =>
+      run.averageHeartRate !== undefined &&
+      run.averageHeartRate >= minHeartRate &&
+      run.averageHeartRate <= maxHeartRate &&
+      run.distance > 0
+  );
+
+  if (matchingRuns.length === 0) {
+    return null;
+  }
+
+  function pace(run: Run) {
+    const [hours, minutes, seconds] =
+      run.duration.split(":").map(Number);
+
+    const totalSeconds =
+      hours * 3600 +
+      minutes * 60 +
+      seconds;
+
+    return totalSeconds / run.distance;
+  }
+
+  return matchingRuns.reduce((best, run) =>
+    pace(run) < pace(best) ? run : best
+  );
+}

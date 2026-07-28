@@ -10,8 +10,6 @@ import RecordsHeader from "../components/Records/RecordsHeader";
 import RecordSection from "../components/Records/RecordSection";
 import RecordCard from "../components/Records/RecordCard";
 
-
-
 import {
   getLongestRun,
   getFastestAveragePace,
@@ -21,10 +19,11 @@ import {
   getBiggestYear,
   getMostRunsInMonth,
   getBestPosition,
-getWins,
-getPodiums,
-getTop10,
-getRaceRecord
+  getWins,
+  getPodiums,
+  getTop10,
+  getRaceRecord,
+  getBestPaceHeartRateZone,
 } from "../utils/records";
 
 import { getAveragePace } from "../utils/stats";
@@ -32,8 +31,7 @@ import { getAveragePace } from "../utils/stats";
 export default function Records() {
   const [runs, setRuns] = useState<Run[]>([]);
 
-  const [loading, setLoading] =
-    useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadRuns();
@@ -52,8 +50,7 @@ export default function Records() {
       <main
         style={{
           minHeight: "100vh",
-          background:
-            theme.colors.background,
+          background: theme.colors.background,
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -68,48 +65,80 @@ export default function Records() {
 
   const longestRun = getLongestRun(runs);
 
-  const fastestRun =
-    getFastestAveragePace(runs);
+  const fastestRun = getFastestAveragePace(runs);
+
+  const hr130 = getBestPaceHeartRateZone(
+    runs,
+    0,
+    130
+  );
+
+  const hr140 = getBestPaceHeartRateZone(
+    runs,
+    131,
+    140
+  );
+
+  const hr150 = getBestPaceHeartRateZone(
+    runs,
+    141,
+    150
+  );
+
+  const hr160 = getBestPaceHeartRateZone(
+    runs,
+    151,
+    160
+  );
 
   const highestElevation =
     getHighestElevation(runs);
-    const record5 = getRaceRecord(runs, 5);
 
-const record10 = getRaceRecord(runs, 10);
-const record15 =
-  getRaceRecord(runs, 15);
-const recordSemi =
-  getRaceRecord(runs, 21.097);
+  const record5 =
+    getRaceRecord(runs, 5);
 
-const recordMarathon =
-  getRaceRecord(runs, 42.195);
-    const biggestWeek =
-  getBiggestWeek(runs);
+  const record10 =
+    getRaceRecord(runs, 10);
 
-const biggestMonth =
-  getBiggestMonth(runs);
+  const record15 =
+    getRaceRecord(runs, 15);
 
-const biggestYear =
-  getBiggestYear(runs);
+  const recordSemi =
+    getRaceRecord(runs, 21.097);
 
-const mostRunsMonth =
-  getMostRunsInMonth(runs);
+  const recordMarathon =
+    getRaceRecord(runs, 42.195);
+
+  const biggestWeek =
+    getBiggestWeek(runs);
+
+  const biggestMonth =
+    getBiggestMonth(runs);
+
+  const biggestYear =
+    getBiggestYear(runs);
+
+  const mostRunsMonth =
+    getMostRunsInMonth(runs);
+
   const bestPosition =
-  getBestPosition(runs);
+    getBestPosition(runs);
 
-const wins =
-  getWins(runs);
+  const wins =
+    getWins(runs);
 
-const podiums =
-  getPodiums(runs);
+  const podiums =
+    getPodiums(runs);
 
-const top10 =
-  getTop10(runs);
-      return (
+  const top10 =
+    getTop10(runs);
+
+  return (
     <main
       style={{
         minHeight: "100vh",
-        background: theme.colors.background,
+        background:
+          theme.colors.background,
         padding: "40px",
       }}
     >
@@ -118,10 +147,10 @@ const top10 =
       {/* DISTANCES */}
 
       <RecordSection
-        title="Distances"
-        icon="🏃"
-      >
-        <RecordCard
+  title="Distances"
+  icon="🏃"
+>
+              <RecordCard
           icon="📏"
           title="Plus longue sortie"
           value={
@@ -137,78 +166,79 @@ const top10 =
         />
 
         <RecordCard
-  icon="🥇"
-  title="5 km"
-  value={
-    record5
-      ? record5.duration
-      : "🔒"
-  }
-  subtitle={
-    record5
-      ? `${record5.name} • ${record5.date}`
-      : "Effectue une sortie de 5 km"
-  }
-/>
+          icon="🥇"
+          title="5 km"
+          value={
+            record5
+              ? record5.duration
+              : "🔒"
+          }
+          subtitle={
+            record5
+              ? `${record5.name} • ${record5.date}`
+              : "Effectue une sortie de 5 km"
+          }
+        />
 
-<RecordCard
-  icon="🥇"
-  title="10 km"
-  value={
-    record10
-      ? record10.duration
-      : "🔒"
-  }
-  subtitle={
-    record10
-      ? `${record10.name} • ${record10.date}`
-      : "Effectue une sortie de 10 km"
-  }
-/>
-<RecordCard
-  icon="🥇"
-  title="15 km"
-  value={
-    record15
-      ? record15.duration
-      : "🔒"
-  }
-  subtitle={
-    record15
-      ? `${record15.name} • ${record15.date}`
-      : "Effectue une sortie de 15 km"
-  }
-/>
+        <RecordCard
+          icon="🥇"
+          title="10 km"
+          value={
+            record10
+              ? record10.duration
+              : "🔒"
+          }
+          subtitle={
+            record10
+              ? `${record10.name} • ${record10.date}`
+              : "Effectue une sortie de 10 km"
+          }
+        />
 
-<RecordCard
-  icon="🥇"
-  title="Semi-marathon"
-  value={
-    recordSemi
-      ? recordSemi.duration
-      : "🔒"
-  }
-  subtitle={
-    recordSemi
-      ? `${recordSemi.name} • ${recordSemi.date}`
-      : "Effectue une sortie de 21,1 km"
-  }
-/>
+        <RecordCard
+          icon="🥇"
+          title="15 km"
+          value={
+            record15
+              ? record15.duration
+              : "🔒"
+          }
+          subtitle={
+            record15
+              ? `${record15.name} • ${record15.date}`
+              : "Effectue une sortie de 15 km"
+          }
+        />
 
-<RecordCard
-  icon="🥇"
-  title="Marathon"
-  value={
-    recordMarathon
-      ? recordMarathon.duration
-      : "🔒"
-  }
-  subtitle={
-    recordMarathon
-      ? `${recordMarathon.name} • ${recordMarathon.date}`
-      : "Effectue une sortie de 42,2 km"
-  }
-/>
+        <RecordCard
+          icon="🥇"
+          title="Semi-marathon"
+          value={
+            recordSemi
+              ? recordSemi.duration
+              : "🔒"
+          }
+          subtitle={
+            recordSemi
+              ? `${recordSemi.name} • ${recordSemi.date}`
+              : "Effectue une sortie de 21,1 km"
+          }
+        />
+
+        <RecordCard
+          icon="🥇"
+          title="Marathon"
+          value={
+            recordMarathon
+              ? recordMarathon.duration
+              : "🔒"
+          }
+          subtitle={
+            recordMarathon
+              ? `${recordMarathon.name} • ${recordMarathon.date}`
+              : "Effectue une sortie de 42,2 km"
+          }
+        />
       </RecordSection>
 
       {/* ALLURES */}
@@ -233,10 +263,51 @@ const top10 =
               ? fastestRun.name
               : "Aucune sortie"
           }
+          details={[
+            {
+              icon: "❤️",
+              label: "≤130 bpm",
+              value: hr130
+                ? getAveragePace(
+                    hr130.distance,
+                    hr130.duration
+                  )
+                : "🔒",
+            },
+            {
+              icon: "💚",
+              label: "≤140 bpm",
+              value: hr140
+                ? getAveragePace(
+                    hr140.distance,
+                    hr140.duration
+                  )
+                : "🔒",
+            },
+            {
+              icon: "💛",
+              label: "≤150 bpm",
+              value: hr150
+                ? getAveragePace(
+                    hr150.distance,
+                    hr150.duration
+                  )
+                : "🔒",
+            },
+            {
+              icon: "🧡",
+              label: "≤160 bpm",
+              value: hr160
+                ? getAveragePace(
+                    hr160.distance,
+                    hr160.duration
+                  )
+                : "🔒",
+            },
+          ]}
         />
       </RecordSection>
-
-      {/* DÉNIVELÉ */}
+            {/* DÉNIVELÉ */}
 
       <RecordSection
         title="Dénivelé"
@@ -257,7 +328,8 @@ const top10 =
           }
         />
       </RecordSection>
-            {/* VOLUMES */}
+
+      {/* VOLUMES */}
 
       <RecordSection
         title="Volumes"
@@ -292,13 +364,14 @@ const top10 =
           }
         />
       </RecordSection>
-            {/* COMPÉTITIONS */}
+
+      {/* COMPÉTITIONS */}
 
       <RecordSection
-        title="Compétitions"
-        icon="🏁"
-      >
-        <RecordCard
+  title="Compétitions"
+  icon="🏁"
+>
+              <RecordCard
           icon="🏆"
           title="Meilleure place"
           value={

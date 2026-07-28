@@ -60,21 +60,23 @@ export default function SetRow({
       </td>
 
       <td style={{ padding: "8px" }}>
-        <input
-          type="number"
-          min={0}
-          step="0.5"
-          value={set.weight}
-          onChange={(e) =>
-            onChange(
-              index,
-              "weight",
-              Number(e.target.value)
-            )
-          }
-          style={inputStyle}
-        />
-      </td>
+  <input
+    type="number"
+    min={0}
+    step="0.1"
+    value={set.weight}
+    onChange={(e) =>
+      onChange(
+        index,
+        "weight",
+        e.target.value === ""
+          ? 0
+          : Number(e.target.value.replace(",", "."))
+      )
+    }
+    style={inputStyle}
+  />
+</td>
 
       <td
         style={{
@@ -86,18 +88,18 @@ export default function SetRow({
           type="button"
           onClick={() => onDelete(index)}
           style={{
-  width: "34px",
-  height: "34px",
-  border: "none",
-  borderRadius: "10px",
-  background: theme.colors.danger,
-  color: "#fff",
-  cursor: "pointer",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  margin: "auto",
-}}
+            width: "34px",
+            height: "34px",
+            border: "none",
+            borderRadius: "10px",
+            background: theme.colors.danger,
+            color: "#fff",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            margin: "auto",
+          }}
         >
           🗑
         </button>
