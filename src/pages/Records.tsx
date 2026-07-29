@@ -264,46 +264,46 @@ export default function Records() {
               : "Aucune sortie"
           }
           details={[
-            {
-              icon: "❤️",
-              label: "≤130 bpm",
-              value: hr130
-                ? getAveragePace(
-                    hr130.distance,
-                    hr130.duration
-                  )
-                : "🔒",
-            },
-            {
-              icon: "💚",
-              label: "≤140 bpm",
-              value: hr140
-                ? getAveragePace(
-                    hr140.distance,
-                    hr140.duration
-                  )
-                : "🔒",
-            },
-            {
-              icon: "💛",
-              label: "≤150 bpm",
-              value: hr150
-                ? getAveragePace(
-                    hr150.distance,
-                    hr150.duration
-                  )
-                : "🔒",
-            },
-            {
-              icon: "🧡",
-              label: "≤160 bpm",
-              value: hr160
-                ? getAveragePace(
-                    hr160.distance,
-                    hr160.duration
-                  )
-                : "🔒",
-            },
+           {
+  icon: "❤️",
+  label: "≤130 bpm",
+  value: hr130
+    ? getAveragePace(
+        hr130.distance,
+        hr130.duration
+      )
+    : "🔒",
+},
+{
+  icon: "💚",
+  label: "131-140 bpm",
+  value: hr140
+    ? getAveragePace(
+        hr140.distance,
+        hr140.duration
+      )
+    : "🔒",
+},
+{
+  icon: "💛",
+  label: "141-150 bpm",
+  value: hr150
+    ? getAveragePace(
+        hr150.distance,
+        hr150.duration
+      )
+    : "🔒",
+},
+{
+  icon: "🧡",
+  label: "151-160 bpm",
+  value: hr160
+    ? getAveragePace(
+        hr160.distance,
+        hr160.duration
+      )
+    : "🔒",
+},
           ]}
         />
       </RecordSection>
@@ -336,22 +336,49 @@ export default function Records() {
         icon="🔥"
       >
         <RecordCard
-          icon="📅"
-          title="Plus grosse semaine"
-          value={`${biggestWeek.toFixed(2)} km`}
-        />
+  icon="📅"
+  title="Plus grosse semaine"
+  value={
+    biggestWeek
+      ? `${biggestWeek.total.toFixed(2)} km`
+      : "--"
+  }
+    subtitle={
+    biggestWeek
+      ? biggestWeek.date
+      : "Aucune donnée"
+  }
+/>
 
-        <RecordCard
-          icon="📆"
-          title="Plus gros mois"
-          value={`${biggestMonth.toFixed(2)} km`}
-        />
+<RecordCard
+  icon="📆"
+  title="Plus gros mois"
+  value={
+    biggestMonth
+      ? `${biggestMonth.total.toFixed(2)} km`
+      : "--"
+  }
+  subtitle={
+    biggestMonth
+      ? biggestMonth.date
+      : "Aucune donnée"
+  }
+/>
 
-        <RecordCard
-          icon="🗓️"
-          title="Plus grosse année"
-          value={`${biggestYear.toFixed(2)} km`}
-        />
+<RecordCard
+  icon="🗓️"
+  title="Plus grosse année"
+  value={
+    biggestYear
+      ? `${biggestYear.total.toFixed(2)} km`
+      : "--"
+  }
+  subtitle={
+    biggestYear
+      ? biggestYear.date
+      : "Aucune donnée"
+  }
+/>
 
         <RecordCard
           icon="🏃"

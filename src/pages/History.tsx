@@ -19,6 +19,7 @@ import { theme } from "../styles/theme";
 import AppContainer from "../components/Layout/AppContainer";
 import Section from "../components/Layout/Section";
 import PageCard from "../components/Layout/PageCard";
+import { syncRunRecords } from "../services/recordEngine";
 
 type Filter =
   | "all"
@@ -70,7 +71,9 @@ export default function History() {
 
     await deleteRun(id);
 
-    await loadRuns();
+await syncRunRecords();
+
+await loadRuns();
   }
 
   const filteredRuns = useMemo(() => {

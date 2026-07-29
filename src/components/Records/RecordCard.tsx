@@ -72,10 +72,11 @@ export default function RecordCard({
       >
         <div
           style={{
-            fontSize: "42px",
-            fontWeight: 800,
+            fontSize: "36px",
+            fontWeight: 700,
             color: "#FFFFFF",
-            lineHeight: 1.1,
+            lineHeight: 1.15,
+            letterSpacing: "-0.5px",
           }}
         >
           {value}
@@ -103,32 +104,45 @@ export default function RecordCard({
           style={{
             marginTop: "22px",
             borderTop: `1px solid ${theme.colors.border}`,
-            paddingTop: "16px",
+            paddingTop: "20px",
             display: "flex",
             flexDirection: "column",
-            gap: "10px",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "14px",
           }}
         >
           {details.map((detail) => (
             <div
               key={detail.label}
               style={{
-                display: "flex",
-                justifyContent: "space-between",
+                display: "grid",
+                gridTemplateColumns: "190px 100px",
+                justifyContent: "center",
                 alignItems: "center",
+                gap: "16px",
               }}
             >
               <div
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  gap: "8px",
+                  gap: "10px",
                   color: theme.colors.textSecondary,
-                  fontSize: "14px",
+                  fontSize: "16px",
                   fontWeight: 600,
                 }}
               >
-                <span>{detail.icon}</span>
+                <span
+                  style={{
+                    width: 24,
+                    textAlign: "center",
+                    fontSize: "18px",
+                  }}
+                >
+                  {detail.icon}
+                </span>
+
                 <span>{detail.label}</span>
               </div>
 
@@ -136,7 +150,8 @@ export default function RecordCard({
                 style={{
                   color: "#FFFFFF",
                   fontWeight: 700,
-                  fontSize: "15px",
+                  fontSize: "17px",
+                  textAlign: "right",
                 }}
               >
                 {detail.value}

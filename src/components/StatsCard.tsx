@@ -1,102 +1,108 @@
 import { theme } from "../styles/theme";
+import type { LucideIcon } from "lucide-react";
 
 type StatsCardProps = {
   title: string;
   value: string;
-  icon: string;
+  icon: LucideIcon;
 };
 
 export default function StatsCard({
   title,
   value,
-  icon,
+  icon: Icon,
 }: StatsCardProps) {
   const parts = value.split(" ");
   const number = parts[0];
   const unit = parts.slice(1).join(" ");
 
   return (
-  <div
-    style={{
-      background: theme.colors.card,
-      border: `1px solid ${theme.colors.primary}`,
-      borderRadius: theme.radius.large,
-      boxShadow: theme.shadow.card,
-      padding: "22px",
-      minHeight: "185px",
-
-      display: "flex",
-      flexDirection: "column",
-    }}
-  >
-    {/* Ligne du haut */}
     <div
       style={{
-        display: "flex",
-        alignItems: "center",
-        gap: "12px",
-      }}
-    >
-      <div
-        style={{
-          width: "44px",
-          height: "44px",
-          borderRadius: "12px",
-          background: "rgba(212,175,55,.12)",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          fontSize: "22px",
-        }}
-      >
-        {icon}
-      </div>
-
-      <span
-        style={{
-          fontSize: "19px",
-          fontWeight: 700,
-          color: theme.colors.text,
-        }}
-      >
-        {title}
-      </span>
-    </div>
-
-    {/* Centre */}
-    <div
-      style={{
-        flex: 1,
+        background: theme.colors.card,
+        border: "1px solid rgba(212,175,55,.18)",
+        borderRadius: 24,
+        padding: 18,
+        minHeight: 140,
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
+        transition: ".25s",
       }}
     >
+      {/* Header */}
       <div
         style={{
-          fontSize: "48px",
-          fontWeight: 700,
-          color: theme.colors.text,
-          lineHeight: 1,
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+          marginBottom: 6,
         }}
       >
-        {number}
-      </div>
-
-      {unit && (
         <div
           style={{
-            marginTop: "8px",
-            color: theme.colors.primary,
-            fontWeight: 700,
-            fontSize: "22px",
+            width: 40,
+            height: 40,
+            borderRadius: 12,
+            background: "rgba(212,175,55,.10)",
+            border: "1px solid rgba(212,175,55,.15)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
-          {unit}
+          <Icon
+            size={19}
+            color={theme.colors.primary}
+            strokeWidth={2.2}
+          />
         </div>
-      )}
+
+        <span
+          style={{
+            fontSize: 16,
+            fontWeight: 700,
+            color: theme.colors.text,
+          }}
+        >
+          {title}
+        </span>
+      </div>
+
+      {/* Valeur */}
+      <div
+        style={{
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: -8,
+        }}
+      >
+        <div
+          style={{
+            fontSize: 38,
+            fontWeight: 800,
+            color: "#FFF",
+            lineHeight: 1,
+          }}
+        >
+          {number}
+        </div>
+
+        {unit && (
+          <div
+            style={{
+              marginTop: 2,
+              color: theme.colors.primary,
+              fontWeight: 700,
+              fontSize: 17,
+            }}
+          >
+            {unit}
+          </div>
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
 }

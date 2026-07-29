@@ -38,9 +38,12 @@ export function getHighestElevation(runs: Run[]) {
   );
 }
 export function getBiggestWeek(runs: Run[]) {
-  if (runs.length === 0) return 0;
+  if (runs.length === 0) return null;
 
-  let maxDistance = 0;
+  let best = {
+    total: 0,
+    date: "",
+  };
 
   runs.forEach((run) => {
     const current = new Date(run.date);
@@ -51,23 +54,41 @@ export function getBiggestWeek(runs: Run[]) {
     const end = new Date(start);
     end.setDate(start.getDate() + 6);
 
-    const total = runs
-      .filter((r) => {
-        const d = new Date(r.date);
-        return d >= start && d <= end;
-      })
-      .reduce((sum, r) => sum + r.distance, 0);
+    const weekRuns = runs.filter((r) => {
+      const d = new Date(r.date);
+      return d >= start && d <= end;
+    });
 
-    if (total > maxDistance) {
-      maxDistance = total;
+    const total = weekRuns.reduce(
+      (sum, r) => sum + r.distance,
+      0
+    );
+
+    if (total > best.total) {
+      const lastRun = weekRuns.reduce((a, b) =>
+        new Date(a.date) > new Date(b.date) ? a : b
+      );
+
+      best = {
+        total,
+        date: lastRun.date,
+      };
     }
   });
 
-  return maxDistance;
+  return best;
 }
 
 export function getBiggestMonth(runs: Run[]) {
-  const months: Record<string, number> = {};
+  if (runs.length === 0) return null;
+
+  const months: Record<
+    string,
+    {
+      total: number;
+      date: string;
+    }
+  > = {};
 
   runs.forEach((run) => {
     const date = new Date(run.date);
@@ -75,24 +96,68 @@ export function getBiggestMonth(runs: Run[]) {
     const key =
       `${date.getFullYear()}-${date.getMonth()}`;
 
-    months[key] =
-      (months[key] ?? 0) + run.distance;
+    if (!months[key]) {
+      months[key] = {
+        total: 0,
+        date: run.date,
+      };
+    }
+
+    months[key].total += run.distance;
+
+    if (
+      new Date(run.date) >
+      new Date(months[key].date)
+    ) {
+      months[key].date = run.date;
+    }
   });
 
-  return Math.max(...Object.values(months), 0);
+  return Object.values(months).reduce(
+    (best, current) =>
+      current.total > best.total
+        ? current
+        : best
+  );
 }
-
 export function getBiggestYear(runs: Run[]) {
-  const years: Record<number, number> = {};
+  if (runs.length === 0) return null;
+
+  const years: Record<
+    number,
+    {
+      total: number;
+      date: string;
+    }
+  > = {};
 
   runs.forEach((run) => {
-    const year = new Date(run.date).getFullYear();
+    const year =
+      new Date(run.date).getFullYear();
 
-    years[year] =
-      (years[year] ?? 0) + run.distance;
+    if (!years[year]) {
+      years[year] = {
+        total: 0,
+        date: run.date,
+      };
+    }
+
+    years[year].total += run.distance;
+
+    if (
+      new Date(run.date) >
+      new Date(years[year].date)
+    ) {
+      years[year].date = run.date;
+    }
   });
 
-  return Math.max(...Object.values(years), 0);
+  return Object.values(years).reduce(
+    (best, current) =>
+      current.total > best.total
+        ? current
+        : best
+  );
 }
 
 export function getMostRunsInMonth(

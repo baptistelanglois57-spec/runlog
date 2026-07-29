@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import AppContainer from "../components/Layout/AppContainer";
 import Section from "../components/Layout/Section";
 import PageCard from "../components/Layout/PageCard";
-
+import { syncLongestRunNotification } from "../services/recordNotificationService";
 import RunFormHeader from "../components/RunForm/RunFormHeader";
 import RunFields from "../components/RunForm/RunFields";
 import CompetitionFields from "../components/RunForm/CompetitionFields";
@@ -19,6 +19,7 @@ import {
   updateRun,
   getRunById,
 } from "../services/runService";
+import { syncRunRecords } from "../services/recordEngine";
 
 export default function RunForm() {
   const navigate = useNavigate();
@@ -167,12 +168,17 @@ export default function RunForm() {
 
     if (isEditing) {
       await updateRun(run);
-
+      await updateRun(run);
+await syncRunRecords();
+await syncLongestRunNotification();
       toast.success(
         "Sortie mise à jour !"
       );
     } else {
       await saveRun(run);
+      await syncLongestRunNotification();
+      await saveRun(run);
+await syncRunRecords();
 
       toast.success(
         "Sortie enregistrée !"

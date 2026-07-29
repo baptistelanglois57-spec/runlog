@@ -1,11 +1,14 @@
 import { theme } from "../../styles/theme";
-
 import type { EventType } from "../../types/Event";
+import {
+  Dumbbell,
+  PersonStanding,
+  CalendarDays,
+} from "lucide-react";
 
 type Props = {
   title?: string;
   date?: string;
-  subtitle?: string;
   type?: EventType;
 };
 
@@ -14,79 +17,108 @@ export default function NextTrainingCard({
   date = "Non planifié",
   type = "training",
 }: Props) {
-  const icon =
-  type === "gym" ? "💪" : "🏃";
+  const Icon =
+    type === "gym" ? Dumbbell : PersonStanding;
 
-const heading =
-  type === "gym"
-    ? "Prochaine séance"
-    : "Prochain Entraînement";
   return (
     <div
       style={{
-        flex: 1,
         background: theme.colors.card,
-        border: `1px solid ${theme.colors.border}`,
-        borderRadius: "20px",
-        padding: "22px",
-        boxShadow: theme.shadow.card,
-        cursor: "pointer",
-        transition: "0.2s",
-        minHeight: "145px",
+        border: "1px solid rgba(212,175,55,.18)",
+        borderRadius: 24,
+        padding: 22,
+        minHeight: 165,
         display: "flex",
         flexDirection: "column",
-        justifyContent: "space-between",
+        transition: ".25s",
       }}
     >
-      <div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: 24,
+        }}
+      >
         <div
           style={{
-            fontSize: "36px",
-            marginBottom: "12px",
+            display: "flex",
+            alignItems: "center",
+            gap: 12,
           }}
         >
-          {icon}
+          <div
+            style={{
+              width: 46,
+              height: 46,
+              borderRadius: 14,
+              background: "rgba(212,175,55,.10)",
+              border: "1px solid rgba(212,175,55,.15)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Icon
+              size={22}
+              color={theme.colors.primary}
+            />
+          </div>
+
+          <span
+            style={{
+              color: theme.colors.text,
+              fontWeight: 700,
+              fontSize: 18,
+            }}
+          >
+            Prochaine séance
+          </span>
         </div>
 
-        <h3
+        <div
           style={{
-            margin: 0,
-            color: theme.colors.text,
-            fontSize: "25px",
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            padding: "5px 10px",
+            borderRadius: 10,
+            background: "rgba(212,175,55,.08)",
+            border: "1px solid rgba(212,175,55,.15)",
+            color: theme.colors.textSecondary,
+            fontSize: 15,
+            fontWeight: 700,
           }}
         >
-          {heading}
-        </h3>
+          <CalendarDays
+            size={17}
+            color={theme.colors.primary}
+          />
+          {date}
+        </div>
       </div>
 
-      <div>
-        <h2
+      <div
+        style={{
+          flex: 1,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          textAlign: "center",
+        }}
+      >
+        <div
           style={{
-            margin: "16px 0 8px",
-            color: theme.colors.primary,
-            fontSize: "22px",
+            fontSize: 20,
+            fontWeight: 700,
+            color: theme.colors.text,
+            maxWidth: 220,
+            lineHeight: 1.35,
           }}
         >
           {title}
-        </h2>
-
-        <p
-          style={{
-            margin: "16px 0 8px",
-            color: theme.colors.text,
-            fontWeight: 600,
-          }}
-        >
-          📅 {date}
-        </p>
-
-        <p
-          style={{
-            marginTop: "10px",
-            color: theme.colors.textSecondary,
-          }}
-        >
-        </p>
+        </div>
       </div>
     </div>
   );

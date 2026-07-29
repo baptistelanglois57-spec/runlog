@@ -8,14 +8,14 @@ type Props = {
 
 export default function PageCard({
   children,
-  maxWidth = "650px",
+  
 }: Props) {
   return (
     <div
       style={{
-        width: "100%",
-        maxWidth,
-        margin: "0 auto",
+        maxWidth: "660px",
+width: "100%",
+margin: "0 auto",
         background: theme.colors.card,
         border: `1px solid ${theme.colors.border}`,
         borderRadius: "22px",
