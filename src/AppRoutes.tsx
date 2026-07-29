@@ -10,7 +10,6 @@ import EditRun from "./pages/EditRun";
 import Records from "./pages/Records";
 import Agenda from "./pages/Agenda";
 import AddEvent from "./pages/AddEvent";
-import Coach from "./pages/Coach";
 import Tracking from "./pages/Tracking";
 import Muscu from "./pages/Muscu";
 import Tools from "./pages/Tools";
@@ -26,7 +25,6 @@ export default function AppRoutes() {
         <Route path="/records" element={<Records />} />
         <Route path="/agenda" element={<Agenda />} />
         <Route path="/add-event" element={<AddEvent />} />
-        <Route path="/coach" element={<Coach />} />
         <Route path="/muscu" element={<Muscu />} />
         <Route
   path="/tools"
