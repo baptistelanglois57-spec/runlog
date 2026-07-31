@@ -49,32 +49,32 @@ export default function BottomNavigation() {
     <nav
       style={{
         position: "fixed",
-        bottom: "18px",
+
         left: "50%",
+        bottom: "max(18px, env(safe-area-inset-bottom))",
         transform: "translateX(-50%)",
 
-        width: "92%",
-        maxWidth: "620px",
+        width: "min(92%, 620px)",
+        height: "76px",
 
-        height: "74px",
+        background: "rgba(23,23,23,.96)",
 
-        background: "rgba(23,23,23,0.96)",
+        backdropFilter: "blur(18px)",
+        WebkitBackdropFilter: "blur(18px)",
 
-        backdropFilter: "blur(14px)",
-        WebkitBackdropFilter: "blur(14px)",
-
-        border: "1px solid #2E2E2E",
+        border: `1px solid ${theme.colors.border}`,
 
         borderRadius: "999px",
 
-        boxShadow:
-          "0 15px 40px rgba(0,0,0,.45)",
+        boxShadow: "0 14px 35px rgba(0,0,0,.40)",
 
         display: "flex",
         justifyContent: "space-evenly",
         alignItems: "center",
 
         padding: "0 8px",
+
+        boxSizing: "border-box",
 
         zIndex: 1000,
       }}
@@ -90,60 +90,47 @@ export default function BottomNavigation() {
             key={item.path}
             onClick={() => navigate(item.path)}
             style={{
-              background: active
-                ? "#2A2A2A"
-                : "transparent",
+  width: active ? 80 : 60,
+  height: 60,
 
-              border: "none",
+  border: "none",
 
-              cursor: "pointer",
+  borderRadius: "999px",
 
-              width: active
-                ? "78px"
-                : "58px",
+  background: "transparent",
 
-              height: "58px",
+  color: active
+    ? theme.colors.primary
+    : theme.colors.textSecondary,
 
-              borderRadius: "999px",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
 
-              transition: "all .25s ease",
+  cursor: "pointer",
 
-              display: "flex",
-              flexDirection: "column",
+  transition: "all .20s ease",
 
-              alignItems: "center",
-              justifyContent: "center",
-
-              color: active
-                ? theme.colors.primary
-                : "#D0D0D0",
-
-              transform: active
-                ? "scale(1.03)"
-                : "scale(1)",
-            }}
+  flexShrink: 0,
+}}
           >
             <Icon
-              size={30}
-              strokeWidth={
-                active
-                  ? 2.8
-                  : 2.3
-              }
+              size={28}
+              strokeWidth={active ? 2.7 : 2.3}
             />
 
             <span
               style={{
-                fontSize: "10px",
-                marginTop: "4px",
+                marginTop: 4,
 
-                fontWeight: active
-                  ? 700
-                  : 500,
+                fontSize: 10,
+
+                fontWeight: active ? 700 : 500,
 
                 color: active
                   ? theme.colors.primary
-                  : "#BEBEBE",
+                  : theme.colors.textSecondary,
               }}
             >
               {item.label}

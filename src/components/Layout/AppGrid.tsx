@@ -17,11 +17,19 @@ export default function AppGrid({
     <div
       style={{
         display: "grid",
-        gridTemplateColumns: `repeat(${columns}, minmax(280px,1fr))`,
-        gap,
+
+        gridTemplateColumns:
+          columns === 1
+            ? "1fr"
+            : "repeat(auto-fit, minmax(min(280px, 100%), 1fr))",
+
+        gap: `${gap}px`,
+
         width: "100%",
         maxWidth,
         margin: "0 auto",
+
+        boxSizing: "border-box",
       }}
     >
       {children}

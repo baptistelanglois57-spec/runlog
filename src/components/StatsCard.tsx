@@ -19,39 +19,55 @@ export default function StatsCard({
   return (
     <div
       style={{
+        width: "100%",
+        minHeight: "150px",
+
         background: theme.colors.card,
-        border: "1px solid rgba(212,175,55,.18)",
-        borderRadius: 24,
-        padding: 18,
-        minHeight: 140,
+
+        border: `1px solid ${theme.colors.border}`,
+
+        borderRadius: "22px",
+
+        padding: "clamp(18px,4vw,24px)",
+
         display: "flex",
         flexDirection: "column",
-        transition: ".25s",
+
+        boxSizing: "border-box",
+
+        transition:
+          "transform .2s ease, border-color .2s ease, box-shadow .2s ease",
+
+        cursor: "default",
       }}
     >
-      {/* Header */}
       <div
         style={{
           display: "flex",
           alignItems: "center",
-          gap: 10,
-          marginBottom: 6,
+          gap: "12px",
         }}
       >
         <div
           style={{
-            width: 40,
-            height: 40,
-            borderRadius: 12,
+            width: "46px",
+            height: "46px",
+
+            borderRadius: "14px",
+
             background: "rgba(212,175,55,.10)",
+
             border: "1px solid rgba(212,175,55,.15)",
+
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+
+            flexShrink: 0,
           }}
         >
           <Icon
-            size={19}
+            size={22}
             color={theme.colors.primary}
             strokeWidth={2.2}
           />
@@ -59,31 +75,39 @@ export default function StatsCard({
 
         <span
           style={{
-            fontSize: 16,
-            fontWeight: 700,
             color: theme.colors.text,
+
+            fontWeight: 700,
+
+            fontSize: "clamp(15px,4vw,17px)",
+
+            lineHeight: 1.3,
           }}
         >
           {title}
         </span>
       </div>
 
-      {/* Valeur */}
       <div
         style={{
           flex: 1,
+
           display: "flex",
           flexDirection: "column",
+
           justifyContent: "center",
+
           alignItems: "center",
-          marginTop: -8,
         }}
       >
         <div
           style={{
-            fontSize: 38,
+            fontSize: "clamp(34px,9vw,42px)",
+
             fontWeight: 800,
-            color: "#FFF",
+
+            color: theme.colors.text,
+
             lineHeight: 1,
           }}
         >
@@ -93,10 +117,13 @@ export default function StatsCard({
         {unit && (
           <div
             style={{
-              marginTop: 2,
+              marginTop: "6px",
+
               color: theme.colors.primary,
+
               fontWeight: 700,
-              fontSize: 17,
+
+              fontSize: "clamp(15px,4vw,18px)",
             }}
           >
             {unit}

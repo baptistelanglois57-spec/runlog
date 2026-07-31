@@ -167,23 +167,20 @@ export default function RunForm() {
     };
 
     if (isEditing) {
-      await updateRun(run);
-      await updateRun(run);
-await syncRunRecords();
-await syncLongestRunNotification();
-      toast.success(
-        "Sortie mise à jour !"
-      );
-    } else {
-      await saveRun(run);
-      await syncLongestRunNotification();
-      await saveRun(run);
-await syncRunRecords();
+  await updateRun(run);
 
-      toast.success(
-        "Sortie enregistrée !"
-      );
-    }
+  await syncRunRecords();
+  await syncLongestRunNotification();
+
+  toast.success("Sortie mise à jour !");
+} else {
+  await saveRun(run);
+
+  await syncRunRecords();
+  await syncLongestRunNotification();
+
+  toast.success("Sortie enregistrée !");
+}
 
     navigate("/history");
   }

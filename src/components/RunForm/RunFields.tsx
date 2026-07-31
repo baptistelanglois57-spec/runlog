@@ -7,9 +7,9 @@ type Props = {
 
   type: "training" | "race" | "gym";
 
-setType: (
-  value: "training" | "race" | "gym"
-) => void;
+  setType: (
+    value: "training" | "race" | "gym"
+  ) => void;
 
   date: string;
   setDate: (value: string) => void;
@@ -72,32 +72,58 @@ export default function RunFields({
 
   const inputStyle = {
     width: "100%",
-    padding: "16px",
+    minHeight: "54px",
+
+    padding: "14px 16px",
+
     borderRadius: "16px",
+
     border: `1px solid ${theme.colors.border}`,
+
     background: theme.colors.background,
+
     color: theme.colors.text,
-    fontSize: "17px",
+
+    fontSize: "16px",
+
     outline: "none",
+
     boxSizing: "border-box" as const,
+
+    WebkitAppearance: "none" as const,
   };
 
   const labelStyle = {
     fontWeight: 700,
-    marginBottom: "8px",
+    marginBottom: "10px",
+    fontSize: "15px",
     color: theme.colors.text,
   };
 
   const timeInputStyle = {
     flex: 1,
-    padding: "18px",
+
+    minHeight: "68px",
+
+    padding: "14px",
+
     borderRadius: "16px",
+
     border: `1px solid ${theme.colors.border}`,
+
     background: theme.colors.background,
+
     color: theme.colors.text,
-    fontSize: "26px",
+
+    fontSize: "24px",
+
+    fontWeight: 700,
+
     textAlign: "center" as const,
+
     outline: "none",
+
+    WebkitAppearance: "none" as const,
   };
 
   function formatTime(value: string, max: number) {
@@ -115,55 +141,54 @@ export default function RunFields({
       style={{
         display: "flex",
         flexDirection: "column",
-        gap: "22px",
+        gap: "20px",
       }}
     >
       <div>
-  <div style={labelStyle}>
-    🏷️ Nom 
-  </div>
+        <div style={labelStyle}>
+          🏷️ Nom
+        </div>
 
-  <input
-    type="text"
-    placeholder="Ex : Sortie EF"
-    value={name}
-    onChange={(e) =>
-      setName(e.target.value)
-    }
-    style={inputStyle}
-  />
-</div>
+        <input
+          type="text"
+          placeholder="Ex : Sortie EF"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          style={inputStyle}
+        />
+      </div>
 
-<div>
-  <div style={labelStyle}>
-    🏃 Type de sortie
-  </div>
+      <div>
+        <div style={labelStyle}>
+          🏃 Type de sortie
+        </div>
 
-  <select
-  value={type}
-  onChange={(e) =>
-    setType(
-      e.target.value as
-        | "training"
-        | "race"
-        | "gym"
-    )
-  }
-  style={inputStyle}
->
-  <option value="training">
-    🏃 Entraînement
-  </option>
+        <select
+          value={type}
+          onChange={(e) =>
+            setType(
+              e.target.value as
+                | "training"
+                | "race"
+                | "gym"
+            )
+          }
+          style={inputStyle}
+        >
+          <option value="training">
+            🏃 Entraînement
+          </option>
 
-  <option value="race">
-    🏁 Compétition
-  </option>
+          <option value="race">
+            🏁 Compétition
+          </option>
 
-  <option value="gym">
-    💪 Musculation
-  </option>
-</select>
-</div>
+          <option value="gym">
+            💪 Musculation
+          </option>
+        </select>
+      </div>
+
       <div>
         <div style={labelStyle}>📅 Date</div>
 
@@ -184,17 +209,20 @@ export default function RunFields({
 
         <input
           type="number"
+          inputMode="decimal"
           step="0.01"
           placeholder="Ex : 12.50"
           value={distance}
           onChange={(e) =>
             setDistance(e.target.value)
           }
-          style={inputStyle}
+          style={{
+            ...inputStyle,
+            MozAppearance: "textfield",
+          }}
         />
       </div>
-
-      <div>
+            <div>
         <div style={labelStyle}>
           ⏱ Temps
         </div>
@@ -202,11 +230,12 @@ export default function RunFields({
         <div
           style={{
             display: "flex",
-            gap: "14px",
+            gap: "12px",
           }}
         >
           <input
             type="number"
+            inputMode="numeric"
             min={0}
             max={99}
             value={hours}
@@ -218,11 +247,15 @@ export default function RunFields({
                 )
               )
             }
-            style={timeInputStyle}
+            style={{
+              ...timeInputStyle,
+              MozAppearance: "textfield",
+            }}
           />
 
           <input
             type="number"
+            inputMode="numeric"
             min={0}
             max={59}
             value={minutes}
@@ -234,11 +267,15 @@ export default function RunFields({
                 )
               )
             }
-            style={timeInputStyle}
+            style={{
+              ...timeInputStyle,
+              MozAppearance: "textfield",
+            }}
           />
 
           <input
             type="number"
+            inputMode="numeric"
             min={0}
             max={59}
             value={seconds}
@@ -250,7 +287,10 @@ export default function RunFields({
                 )
               )
             }
-            style={timeInputStyle}
+            style={{
+              ...timeInputStyle,
+              MozAppearance: "textfield",
+            }}
           />
         </div>
 
@@ -259,7 +299,8 @@ export default function RunFields({
             display: "flex",
             marginTop: "10px",
             color: "#9ca3af",
-            fontSize: "13px",
+            fontSize: "12px",
+            letterSpacing: "0.3px",
           }}
         >
           <div
@@ -298,12 +339,16 @@ export default function RunFields({
 
         <input
           type="number"
+          inputMode="numeric"
           placeholder="Ex : 250"
           value={elevation}
           onChange={(e) =>
             setElevation(e.target.value)
           }
-          style={inputStyle}
+          style={{
+            ...inputStyle,
+            MozAppearance: "textfield",
+          }}
         />
       </div>
 
@@ -314,6 +359,7 @@ export default function RunFields({
 
         <input
           type="number"
+          inputMode="numeric"
           placeholder="Ex : 152"
           value={averageHeartRate}
           onChange={(e) =>
@@ -321,7 +367,10 @@ export default function RunFields({
               e.target.value
             )
           }
-          style={inputStyle}
+          style={{
+            ...inputStyle,
+            MozAppearance: "textfield",
+          }}
         />
       </div>
     </div>

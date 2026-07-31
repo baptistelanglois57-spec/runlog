@@ -17,13 +17,10 @@ type Props = {
 export default function CompetitionFields({
   competitionName,
   setCompetitionName,
-
   location,
   setLocation,
-
   position,
   setPosition,
-
   participants,
   setParticipants,
 }: Props) {
@@ -32,15 +29,16 @@ export default function CompetitionFields({
       style={{
         display: "flex",
         flexDirection: "column",
-        gap: "22px",
-        marginTop: "30px",
+        gap: "20px",
+        marginTop: "28px",
       }}
     >
       <h2
         style={{
           textAlign: "center",
           margin: 0,
-          fontSize: "24px",
+          fontSize: "clamp(20px, 5vw, 24px)",
+          color: "#FFF",
         }}
       >
         🏁 Informations compétition
@@ -67,6 +65,7 @@ export default function CompetitionFields({
       <Input
         label="Classement"
         type="number"
+        inputMode="numeric"
         placeholder="25"
         value={position}
         onChange={(e) =>
@@ -77,6 +76,7 @@ export default function CompetitionFields({
       <Input
         label="Nombre de participants"
         type="number"
+        inputMode="numeric"
         placeholder="1200"
         value={participants}
         onChange={(e) =>

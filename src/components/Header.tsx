@@ -1,3 +1,5 @@
+import { theme } from "../styles/theme";
+
 type HeaderProps = {
   title: string;
   subtitle: string;
@@ -10,21 +12,25 @@ export default function Header({
   return (
     <header
       style={{
-        marginBottom: 40,
+        marginBottom: "clamp(28px, 5vw, 40px)",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: 10,
+        justifyContent: "center",
+        gap: "12px",
+        textAlign: "center",
+        width: "100%",
       }}
     >
       <h1
         style={{
           margin: 0,
-          color: "#FFFFFF",
-          fontSize: 42,
+          color: theme.colors.text,
+          fontSize: "clamp(34px, 8vw, 42px)",
           fontWeight: 800,
           letterSpacing: "-1px",
-          lineHeight: 1,
+          lineHeight: 1.1,
+          wordBreak: "break-word",
         }}
       >
         {title}
@@ -33,9 +39,11 @@ export default function Header({
       <p
         style={{
           margin: 0,
-          color: "#9CA3AF",
-          fontSize: 18,
+          color: theme.colors.textSecondary,
+          fontSize: "clamp(15px, 4vw, 18px)",
           fontWeight: 500,
+          lineHeight: 1.4,
+          maxWidth: "500px",
         }}
       >
         {subtitle}
