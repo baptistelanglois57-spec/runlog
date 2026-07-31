@@ -1,3 +1,4 @@
+import { UI } from "../styles/ui";
 import { theme } from "../styles/theme";
 
 type HeaderProps = {
@@ -12,25 +13,30 @@ export default function Header({
   return (
     <header
       style={{
-        marginBottom: "clamp(28px, 5vw, 40px)",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center",
-        gap: "12px",
+
+        gap: 4,
+
+        marginBottom: UI.SECTION_GAP,
+
         textAlign: "center",
-        width: "100%",
       }}
     >
       <h1
         style={{
           margin: 0,
+
           color: theme.colors.text,
-          fontSize: "clamp(34px, 8vw, 42px)",
+
+          fontSize: UI.FONT_HERO,
+
           fontWeight: 800,
-          letterSpacing: "-1px",
-          lineHeight: 1.1,
-          wordBreak: "break-word",
+
+          letterSpacing: "-1.5px",
+
+          lineHeight: 1,
         }}
       >
         {title}
@@ -39,11 +45,14 @@ export default function Header({
       <p
         style={{
           margin: 0,
+
           color: theme.colors.textSecondary,
-          fontSize: "clamp(15px, 4vw, 18px)",
+
+          fontSize: UI.FONT_SMALL,
+
           fontWeight: 500,
-          lineHeight: 1.4,
-          maxWidth: "500px",
+
+          lineHeight: 1.2,
         }}
       >
         {subtitle}

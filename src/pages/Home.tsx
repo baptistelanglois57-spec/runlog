@@ -14,12 +14,13 @@ import { getEvents } from "../services/eventService";
 
 import type { Run } from "../types/Run";
 import type { Event } from "../types/Event";
+import type { Notification } from "../types/Notification";
 
 import {
   CalendarDays,
-  Trophy,
   CalendarRange,
   Calendar,
+  Trophy,
   Bell,
 } from "lucide-react";
 
@@ -31,6 +32,11 @@ import {
   getLastRun,
 } from "../utils/stats";
 
+import {
+  getNextTraining,
+  getNextRace,
+} from "../utils/events";
+
 import NotificationModal from "../components/Notifications/NotificationModal";
 
 import {
@@ -38,26 +44,24 @@ import {
   markAllAsRead,
 } from "../services/notificationService";
 
-import type { Notification } from "../types/Notification";
-
-import {
-  getNextTraining,
-  getNextRace,
-} from "../utils/events";
-
 import { theme } from "../styles/theme";
+import { UI } from "../styles/ui";
+import { value } from "../styles/responsive";
 
 export default function Home() {
   const [runs, setRuns] = useState<Run[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [notifications, setNotifications] =
+    useState<Notification[]>([]);
+  const [notificationOpen, setNotificationOpen] =
+    useState(false);
 
   useEffect(() => {
     async function loadData() {
       const runData = await getRuns();
       const eventData = await getEvents();
-      const notificationData = await getNotifications();
+      const notificationData =
+        await getNotifications();
 
       setRuns(runData);
       setEvents(eventData);
@@ -67,69 +71,105 @@ export default function Home() {
     loadData();
   }, []);
 
-  const weekDistance = getWeekDistance(runs);
-  const monthDistance = getMonthDistance(runs);
-  const yearDistance = getYearDistance(runs);
-  const totalRuns = getTotalRuns(runs);
+  const weekDistance =
+    getWeekDistance(runs);
 
-  const lastRun = getLastRun(runs);
+  const monthDistance =
+    getMonthDistance(runs);
 
-  const nextTraining = getNextTraining(events);
-  const nextRace = getNextRace(events);
+  const yearDistance =
+    getYearDistance(runs);
+
+  const totalRuns =
+    getTotalRuns(runs);
+
+  const lastRun =
+    getLastRun(runs);
+
+  const nextTraining =
+    getNextTraining(events);
+
+  const nextRace =
+    getNextRace(events);
 
   return (
     <AppContainer>
+      {/* Header */}
+
       <div
         style={{
           position: "relative",
-          marginBottom: 30,
+
+          maxWidth: value(
+            UI.PAGE_MAX_WIDTH,
+            "760px"
+          ),
+
+          margin: `0 auto ${UI.HEADER_MARGIN}px`,
         }}
       >
         <button
-          onClick={() => setNotificationOpen(true)}
+          onClick={() =>
+            setNotificationOpen(true)
+          }
           style={{
             position: "absolute",
+
             right: 0,
             top: 0,
-            width: 46,
-            height: 46,
-            borderRadius: 14,
+
+            width: 42,
+            height: 42,
+
+            borderRadius:
+              UI.BUTTON_RADIUS,
+
             border: `1px solid ${theme.colors.border}`,
-            background: theme.colors.card,
+
+            background:
+              theme.colors.card,
+
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+
             cursor: "pointer",
+
+            transition:
+              UI.TRANSITION,
           }}
         >
           <Bell
-            size={22}
+            size={20}
             color={theme.colors.primary}
           />
         </button>
 
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <Header
-            title=" RunLog"
-            subtitle="Bonjour Baptiste 👋"
-          />
-        </div>
+        <Header
+          title="RunLog"
+          subtitle=""
+        />
       </div>
 
-      <div
+      {/* Stats */}
+            <div
         style={{
           display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit, minmax(min(300px,100%),1fr))",
-          gap: "20px",
+
+          gridTemplateColumns: "repeat(2,1fr)",
+
+          gap: UI.GRID_GAP,
+
           width: "100%",
-          maxWidth: "760px",
-          margin: "40px auto",
+
+          maxWidth: value(
+            UI.PAGE_MAX_WIDTH,
+            "760px"
+          ),
+
+          margin: "0 auto",
+
+          boxSizing: "border-box",
         }}
       >
         <StatsCard
@@ -165,17 +205,23 @@ export default function Home() {
       </Section>
 
       <Section>
-        <LastRunCard run={lastRun} />
+        <LastRunCard
+          run={lastRun}
+        />
       </Section>
 
       <NotificationModal
         open={notificationOpen}
         notifications={notifications}
-        onClose={() => setNotificationOpen(false)}
+        onClose={() =>
+          setNotificationOpen(false)
+        }
         onReadAll={async () => {
           await markAllAsRead();
 
-          const updated = await getNotifications();
+          const updated =
+            await getNotifications();
+
           setNotifications(updated);
         }}
       />

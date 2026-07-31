@@ -1,4 +1,6 @@
 import { theme } from "../styles/theme";
+import { UI } from "../styles/ui";
+
 import type { LucideIcon } from "lucide-react";
 
 type StatsCardProps = {
@@ -13,63 +15,72 @@ export default function StatsCard({
   icon: Icon,
 }: StatsCardProps) {
   const parts = value.split(" ");
+
   const number = parts[0];
+
   const unit = parts.slice(1).join(" ");
 
   return (
     <div
       style={{
         width: "100%",
-        minHeight: "150px",
+
+        minHeight: 112,
 
         background: theme.colors.card,
 
         border: `1px solid ${theme.colors.border}`,
 
-        borderRadius: "22px",
+        borderRadius: UI.RADIUS,
 
-        padding: "clamp(18px,4vw,24px)",
-
-        display: "flex",
-        flexDirection: "column",
+        padding: 14,
 
         boxSizing: "border-box",
 
-        transition:
-          "transform .2s ease, border-color .2s ease, box-shadow .2s ease",
+        display: "flex",
 
-        cursor: "default",
+        flexDirection: "column",
+
+        justifyContent: "space-between",
+
+        transition: UI.TRANSITION,
       }}
     >
+      {/* Header */}
+
       <div
         style={{
           display: "flex",
+
           alignItems: "center",
-          gap: "12px",
+
+          gap: 8,
         }}
       >
         <div
           style={{
-            width: "46px",
-            height: "46px",
+            width: 34,
 
-            borderRadius: "14px",
+            height: 34,
 
-            background: "rgba(212,175,55,.10)",
+            borderRadius: 10,
 
-            border: "1px solid rgba(212,175,55,.15)",
+            background:
+              "rgba(212,175,55,.10)",
 
             display: "flex",
+
             justifyContent: "center",
+
             alignItems: "center",
 
             flexShrink: 0,
           }}
         >
           <Icon
-            size={22}
+            size={18}
             color={theme.colors.primary}
-            strokeWidth={2.2}
+            strokeWidth={2.3}
           />
         </div>
 
@@ -79,30 +90,35 @@ export default function StatsCard({
 
             fontWeight: 700,
 
-            fontSize: "clamp(15px,4vw,17px)",
+            fontSize: 14,
 
-            lineHeight: 1.3,
+            lineHeight: 1.15,
           }}
         >
           {title}
         </span>
       </div>
 
+      {/* Valeur */}
+
       <div
         style={{
-          flex: 1,
-
           display: "flex",
+
           flexDirection: "column",
 
           justifyContent: "center",
 
           alignItems: "center",
+
+          flex: 1,
+
+          marginTop: 4,
         }}
       >
         <div
           style={{
-            fontSize: "clamp(34px,9vw,42px)",
+            fontSize: 30,
 
             fontWeight: 800,
 
@@ -117,13 +133,13 @@ export default function StatsCard({
         {unit && (
           <div
             style={{
-              marginTop: "6px",
+              marginTop: 2,
 
               color: theme.colors.primary,
 
               fontWeight: 700,
 
-              fontSize: "clamp(15px,4vw,18px)",
+              fontSize: 13,
             }}
           >
             {unit}

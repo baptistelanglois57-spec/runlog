@@ -1,4 +1,6 @@
 import { theme } from "../../styles/theme";
+import { UI } from "../../styles/ui";
+
 import {
   Trophy,
   CalendarDays,
@@ -16,98 +18,157 @@ export default function NextRaceCard({
   return (
     <div
       style={{
+        width: "100%",
+
+        minHeight: 120,
+
         background: theme.colors.card,
-        border: "1px solid rgba(212,175,55,.18)",
-        borderRadius: 24,
-        padding: 22,
-        minHeight: 165,
+
+        border: `1px solid ${theme.colors.border}`,
+
+        borderRadius: UI.RADIUS,
+
+        padding: 14,
+
+        boxSizing: "border-box",
+
         display: "flex",
         flexDirection: "column",
-        transition: ".25s",
+
+        justifyContent: "space-between",
+
+        transition: UI.TRANSITION,
       }}
     >
+      {/* Header */}
+
       <div
         style={{
           display: "flex",
+
           justifyContent: "space-between",
+
           alignItems: "center",
-          marginBottom: 24,
+
+          gap: 8,
         }}
       >
         <div
           style={{
             display: "flex",
+
             alignItems: "center",
-            gap: 12,
+
+            gap: 8,
+
+            minWidth: 0,
           }}
         >
           <div
             style={{
-              width: 46,
-              height: 46,
-              borderRadius: 14,
-              background: "rgba(212,175,55,.10)",
-              border: "1px solid rgba(212,175,55,.15)",
+              width: 34,
+
+              height: 34,
+
+              borderRadius: 10,
+
+              background:
+                "rgba(212,175,55,.10)",
+
               display: "flex",
+
               justifyContent: "center",
+
               alignItems: "center",
+
+              flexShrink: 0,
             }}
           >
-            <Trophy
-              size={22}
-              color={theme.colors.primary}
-            />
+              <Trophy
+                size={18}
+                color={theme.colors.primary}
+                strokeWidth={2.3}
+              />
           </div>
 
           <span
             style={{
               color: theme.colors.text,
+
               fontWeight: 700,
-              fontSize: 18,
+
+              fontSize: 14,
+
+              lineHeight: 1.15,
             }}
           >
-            Prochaine compétition
+            Course
           </span>
         </div>
 
         <div
           style={{
             display: "flex",
+
             alignItems: "center",
-            gap: 8,
-            padding: "5px 10px",
-            borderRadius: 10,
-            background: "rgba(212,175,55,.08)",
-            border: "1px solid rgba(212,175,55,.15)",
-            color: theme.colors.textSecondary,
-            fontSize: 15,
-            fontWeight: 700,
+
+            gap: 4,
+
+            color:
+              theme.colors.textSecondary,
+
+            fontSize: 11,
+
+            fontWeight: 600,
+
+            flexShrink: 0,
           }}
         >
           <CalendarDays
-            size={17}
+            size={13}
             color={theme.colors.primary}
           />
+
           {date}
         </div>
       </div>
 
+      {/* Contenu */}
+
       <div
         style={{
           flex: 1,
+
           display: "flex",
+
           justifyContent: "center",
+
           alignItems: "center",
+
           textAlign: "center",
+
+          paddingTop: 8,
         }}
       >
         <div
           style={{
-            fontSize: 20,
-            fontWeight: 700,
             color: theme.colors.text,
-            maxWidth: 220,
-            lineHeight: 1.35,
+
+            fontWeight: 700,
+
+            fontSize: 17,
+
+            lineHeight: 1.25,
+
+            maxWidth: 180,
+
+            overflow: "hidden",
+
+            display: "-webkit-box",
+
+            WebkitLineClamp: 2,
+
+            WebkitBoxOrient: "vertical",
           }}
         >
           {title}

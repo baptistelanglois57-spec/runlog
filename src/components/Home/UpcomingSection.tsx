@@ -1,8 +1,12 @@
 import type { Event } from "../../types/Event";
+
 import { formatDate } from "../../utils/date";
 
 import NextTrainingCard from "./NextTrainingCard";
 import NextRaceCard from "./NextRaceCard";
+
+import { UI } from "../../styles/ui";
+import { value } from "../../styles/responsive";
 
 type Props = {
   nextTraining?: Event;
@@ -16,12 +20,24 @@ export default function UpcomingSection({
   return (
     <section
       style={{
-       maxWidth: "760px",
-width: "100%",
-margin: "35px auto",
+        width: "100%",
+
+        maxWidth: value(
+          UI.PAGE_MAX_WIDTH,
+          "760px"
+        ),
+
+        margin: "0 auto",
+
         display: "grid",
-        gridTemplateColumns: "repeat(2,minmax(320px,1fr))",
-        gap: "18px",
+
+        gridTemplateColumns: "repeat(2, 1fr)",
+
+        gap: 12,
+
+        alignItems: "stretch",
+
+        boxSizing: "border-box",
       }}
     >
       <NextTrainingCard
