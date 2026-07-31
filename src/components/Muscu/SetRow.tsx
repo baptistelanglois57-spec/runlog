@@ -45,37 +45,39 @@ export default function SetRow({
 
       <td style={{ padding: "8px" }}>
         <input
-          type="number"
-          min={0}
-          value={set.reps}
-          onChange={(e) =>
-            onChange(
-              index,
-              "reps",
-              Number(e.target.value)
-            )
-          }
-          style={inputStyle}
-        />
+  type="number"
+  min={0}
+  value={set.reps ?? ""}
+  onChange={(e) =>
+    onChange(
+      index,
+      "reps",
+      e.target.value === ""
+        ? undefined!
+        : Number(e.target.value)
+    )
+  }
+  style={inputStyle}
+/>
       </td>
 
       <td style={{ padding: "8px" }}>
   <input
-    type="number"
-    min={0}
-    step="0.1"
-    value={set.weight}
-    onChange={(e) =>
-      onChange(
-        index,
-        "weight",
-        e.target.value === ""
-          ? 0
-          : Number(e.target.value.replace(",", "."))
-      )
-    }
-    style={inputStyle}
-  />
+  type="number"
+  min={0}
+  step="0.1"
+  value={set.weight ?? ""}
+  onChange={(e) =>
+    onChange(
+      index,
+      "weight",
+      e.target.value === ""
+        ? undefined!
+        : Number(e.target.value.replace(",", "."))
+    )
+  }
+  style={inputStyle}
+/>
 </td>
 
       <td

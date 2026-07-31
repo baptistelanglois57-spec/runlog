@@ -30,11 +30,15 @@ export default function MonthGymAccordion({
       }}
     >
       <div
+        onClick={onToggle}
         style={{
           background: theme.colors.card,
           border: `1px solid ${theme.colors.border}`,
           borderRadius: "20px",
           padding: "22px",
+          boxShadow: theme.shadow.card,
+          cursor: "pointer",
+          transition: "0.2s ease",
         }}
       >
         <div
@@ -45,9 +49,7 @@ export default function MonthGymAccordion({
           }}
         >
           <div
-            onClick={onToggle}
             style={{
-              cursor: "pointer",
               flex: 1,
             }}
           >
@@ -68,17 +70,6 @@ export default function MonthGymAccordion({
             >
               💪 {total} séance{total > 1 ? "s" : ""}
             </p>
-          </div>
-
-          <div
-            onClick={onToggle}
-            style={{
-              cursor: "pointer",
-              fontSize: 28,
-              color: theme.colors.primary,
-            }}
-          >
-            {isOpen ? "▼" : "▶"}
           </div>
         </div>
       </div>

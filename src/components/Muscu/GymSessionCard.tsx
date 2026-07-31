@@ -1,4 +1,6 @@
 import { useNavigate } from "react-router-dom";
+import { Eye, Pencil, Trash2 } from "lucide-react";
+
 import type { GymSession } from "../../types/GymSession";
 import { theme } from "../../styles/theme";
 
@@ -57,51 +59,36 @@ export default function GymSessionCard({
       <div
         style={{
           display: "flex",
-          gap: "10px",
-          flexWrap: "wrap",
-          justifyContent: "flex-end",
+          alignItems: "center",
+          gap: "18px",
         }}
       >
-        <button
+        <Eye
+          size={22}
+          color="#ffffff"
+          strokeWidth={2.2}
+          style={{ cursor: "pointer" }}
           onClick={() => onView(session)}
-          style={buttonStyle(theme.colors.primary, "#000")}
-        >
-          👀 Voir
-        </button>
+        />
 
-        <button
+        <Pencil
+          size={22}
+          color="#ffffff"
+          strokeWidth={2.2}
+          style={{ cursor: "pointer" }}
           onClick={() =>
             navigate(`/muscu/edit/${session.id}`)
           }
-          style={buttonStyle("#2563EB", "#FFF")}
-        >
-          ✏️ Modifier
-        </button>
+        />
 
-        <button
+        <Trash2
+          size={22}
+          color="#ffffff"
+          strokeWidth={2.2}
+          style={{ cursor: "pointer" }}
           onClick={() => onDelete(session.id)}
-          style={buttonStyle(theme.colors.danger, "#FFF")}
-        >
-          🗑 Supprimer
-        </button>
+        />
       </div>
     </div>
   );
-}
-
-function buttonStyle(
-  background: string,
-  color: string
-): React.CSSProperties {
-  return {
-    background,
-    color,
-    border: "none",
-    borderRadius: "12px",
-    padding: "10px 16px",
-    cursor: "pointer",
-    fontWeight: 700,
-    fontSize: "14px",
-    transition: "0.2s",
-  };
 }

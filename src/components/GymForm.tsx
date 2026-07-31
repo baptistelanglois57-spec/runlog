@@ -27,11 +27,19 @@ export default function GymForm() {
       id: crypto.randomUUID(),
       name: "",
       sets: [
-        {
-          reps: 10,
-          weight: 0,
-        },
-      ],
+  {
+    reps: undefined,
+    weight: undefined,
+  },
+  {
+    reps: undefined,
+    weight: undefined,
+  },
+  {
+    reps: undefined,
+    weight: undefined,
+  },
+],
     },
   ]);
 
@@ -80,9 +88,9 @@ export default function GymForm() {
     const copy = [...exercises];
 
     copy[exerciseIndex].sets.push({
-      reps: 10,
-      weight: 0,
-    });
+  reps: undefined,
+  weight: undefined,
+});
 
     setExercises(copy);
   }
@@ -113,11 +121,19 @@ export default function GymForm() {
         id: crypto.randomUUID(),
         name: "",
         sets: [
-          {
-            reps: 10,
-            weight: 0,
-          },
-        ],
+  {
+    reps: undefined,
+    weight: undefined,
+  },
+  {
+    reps: undefined,
+    weight: undefined,
+  },
+  {
+    reps: undefined,
+    weight: undefined,
+  },
+],
       },
     ]);
   }
@@ -254,8 +270,8 @@ export default function GymForm() {
             padding: "14px",
             border: "none",
             borderRadius: "14px",
-            background: "#2563EB",
-            color: "#fff",
+            background: "#ffffff",
+            color: "#050404",
             fontSize: "16px",
             fontWeight: 700,
             cursor: "pointer",

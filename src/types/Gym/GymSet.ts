@@ -1,4 +1,4 @@
 export type GymSet = {
-  reps: number;
-  weight: number;
+  reps?: number;
+  weight?: number;
 };
