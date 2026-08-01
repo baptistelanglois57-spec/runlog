@@ -6,7 +6,7 @@ type Props = {
   maxWidth?: string;
 };
 
-export default function PageCard({
+export default function CompactCard({
   children,
   maxWidth = "660px",
 }: Props) {
@@ -19,9 +19,9 @@ export default function PageCard({
 
         background: theme.colors.card,
         border: `1px solid ${theme.colors.border}`,
-        borderRadius: 22,
+        borderRadius: 18,
 
-        padding: "clamp(14px, 3vw, 22px)",
+        padding: "14px",
 
         boxSizing: "border-box",
 

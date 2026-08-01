@@ -27,35 +27,38 @@ export default function MonthNavigation({
     <div
       style={{
         display: "grid",
-        gridTemplateColumns:
-          "44px 1fr 44px",
+        gridTemplateColumns: "48px 1fr 48px",
+
         alignItems: "center",
-        gap: 16,
-        marginBottom: 22,
+
+        gap: 12,
+
+        width: "100%",
+
+        marginBottom: 18,
       }}
     >
       <button
         onClick={onPrevious}
         style={{
-          width: 44,
-          height: 44,
+          width: 48,
+          height: 48,
 
-          border: "none",
+          border: `1px solid ${theme.colors.border}`,
 
-          borderRadius: 12,
+          borderRadius: 14,
 
-          background:
-            theme.colors.background,
+          background: theme.colors.card,
 
           color: theme.colors.primary,
 
           display: "flex",
-
           alignItems: "center",
-
           justifyContent: "center",
 
           cursor: "pointer",
+
+          transition: UI.TRANSITION,
         }}
       >
         <ChevronLeft size={22} />
@@ -69,9 +72,9 @@ export default function MonthNavigation({
 
           color: theme.colors.text,
 
-          fontSize: UI.FONT_H2,
+          fontSize: 24,
 
-          fontWeight: 700,
+          fontWeight: 800,
 
           textTransform: "capitalize",
 
@@ -84,25 +87,24 @@ export default function MonthNavigation({
       <button
         onClick={onNext}
         style={{
-          width: 44,
-          height: 44,
+          width: 48,
+          height: 48,
 
-          border: "none",
+          border: `1px solid ${theme.colors.border}`,
 
-          borderRadius: 12,
+          borderRadius: 14,
 
-          background:
-            theme.colors.background,
+          background: theme.colors.card,
 
           color: theme.colors.primary,
 
           display: "flex",
-
           alignItems: "center",
-
           justifyContent: "center",
 
           cursor: "pointer",
+
+          transition: UI.TRANSITION,
         }}
       >
         <ChevronRight size={22} />

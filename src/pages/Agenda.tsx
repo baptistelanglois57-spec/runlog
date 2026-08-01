@@ -10,7 +10,6 @@ import { UI } from "../styles/ui";
 
 import AppContainer from "../components/Layout/AppContainer";
 import Section from "../components/Layout/Section";
-import PageCard from "../components/Layout/PageCard";
 
 import MonthNavigation from "../components/Calendar/MonthNavigation";
 import Calendar from "../components/Calendar/Calendar";
@@ -43,86 +42,86 @@ export default function Agenda() {
 
   return (
     <AppContainer>
-      <Section>
-        <PageCard>
+      <Section marginTop={8}>
+        {/* HEADER */}
+
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginBottom: 26,
+          }}
+        >
+          <button
+            onClick={() =>
+              navigate("/tools")
+            }
+            style={{
+              width: 44,
+              height: 44,
+
+              border: `1px solid ${theme.colors.border}`,
+              borderRadius: 14,
+
+              background: theme.colors.card,
+
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+
+              cursor: "pointer",
+            }}
+          >
+            <ChevronLeft
+              size={22}
+              color={theme.colors.primary}
+            />
+          </button>
+
           <div
             style={{
               display: "flex",
               alignItems: "center",
-              justifyContent: "space-between",
-              marginBottom: 24,
+              gap: 10,
             }}
           >
-            <button
-              onClick={() =>
-                navigate("/tools")
-              }
-              style={{
-                width: 42,
-                height: 42,
-
-                border: "none",
-
-                borderRadius: 12,
-
-                background:
-                  theme.colors.background,
-
-                color: theme.colors.primary,
-
-                display: "flex",
-
-                alignItems: "center",
-
-                justifyContent: "center",
-
-                cursor: "pointer",
-              }}
-            >
-              <ChevronLeft size={22} />
-            </button>
-
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-              }}
-            >
-              <CalendarDays
-                size={24}
-                color={theme.colors.primary}
-              />
-
-              <h1
-                style={{
-                  margin: 0,
-                  fontSize: UI.FONT_H1,
-                  color:
-                    theme.colors.primary,
-                }}
-              >
-                Agenda
-              </h1>
-            </div>
-
-            <div
-              style={{
-                width: 42,
-              }}
+            <CalendarDays
+              size={24}
+              color={theme.colors.primary}
             />
+
+            <h1
+              style={{
+                margin: 0,
+                color: theme.colors.primary,
+                fontSize: UI.FONT_H1,
+              }}
+            >
+              Agenda
+            </h1>
           </div>
 
-          <MonthNavigation
-            month={currentMonth}
-            onPrevious={previousMonth}
-            onNext={nextMonth}
+          <div
+            style={{
+              width: 44,
+            }}
           />
+        </div>
 
-          <Calendar
-            month={currentMonth}
-          />
-        </PageCard>
+        {/* MOIS */}
+
+        <MonthNavigation
+          month={currentMonth}
+          onPrevious={previousMonth}
+          onNext={nextMonth}
+        />
+
+        {/* CALENDRIER */}
+
+        <Calendar
+          month={currentMonth}
+        />
       </Section>
     </AppContainer>
   );

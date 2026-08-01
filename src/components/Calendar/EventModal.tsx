@@ -73,7 +73,8 @@ export default function EventModal({
       style={{
         position: "fixed",
         inset: 0,
-        background: "rgba(0,0,0,.65)",
+        background: "rgba(0,0,0,.78)",
+backdropFilter: "blur(8px)",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -82,13 +83,20 @@ export default function EventModal({
     >
       <div
         style={{
-          width: "430px",
-          background: theme.colors.card,
-          borderRadius: "22px",
-          border: `2px solid ${theme.colors.primary}`,
-          padding: "28px",
-          boxShadow: theme.shadow.card,
-        }}
+    width: "min(92vw,460px)",
+
+    background: theme.colors.card,
+
+    borderRadius: 22,
+
+    border: `1px solid ${theme.colors.border}`,
+
+    padding: 20,
+
+    boxShadow: theme.shadow.card,
+
+    boxSizing: "border-box",
+}}
       >
         {/* DETAILS */}
 
@@ -117,32 +125,34 @@ export default function EventModal({
               {displayDate}
             </h2>
 
-            <p
-              style={{
-                textAlign: "center",
-                marginBottom: "30px",
-              }}
-            >
-              Que souhaites-tu ajouter ?
-            </p>
-
             <button
               onClick={() => {
                 setSelectedType("training");
                 setView("create");
               }}
               style={{
-                width: "100%",
-                padding: "18px",
-                borderRadius: "14px",
-                border: `2px solid ${theme.colors.primary}`,
-                background: theme.colors.background,
-                color: theme.colors.primary,
-                fontWeight: 700,
-                cursor: "pointer",
-                marginBottom: "15px",
-                fontSize: "18px",
-              }}
+  width: "100%",
+  padding: "18px",
+
+  borderRadius: "14px",
+
+  background: theme.colors.card,
+
+  border: "none",
+  outline: "none",
+  boxShadow: "none",
+
+  color: theme.colors.text,
+
+  fontWeight: 700,
+  fontSize: "18px",
+
+  cursor: "pointer",
+
+  marginBottom: "15px",
+
+  WebkitTapHighlightColor: "transparent",
+}}
             >
               🏃 Entraînement
             </button>
@@ -153,17 +163,28 @@ export default function EventModal({
                 setView("create");
               }}
               style={{
-                width: "100%",
-                padding: "18px",
-                borderRadius: "14px",
-                border: `2px solid ${theme.colors.primary}`,
-                background: theme.colors.background,
-                color: theme.colors.primary,
-                fontWeight: 700,
-                cursor: "pointer",
-                marginBottom: "15px",
-                fontSize: "18px",
-              }}
+  width: "100%",
+  padding: "18px",
+
+  borderRadius: "14px",
+
+  background: theme.colors.card,
+
+  border: "none",
+  outline: "none",
+  boxShadow: "none",
+
+  color: theme.colors.text,
+
+  fontWeight: 700,
+  fontSize: "18px",
+
+  cursor: "pointer",
+
+  marginBottom: "15px",
+
+  WebkitTapHighlightColor: "transparent",
+}}
             >
               💪 Salle
             </button>
@@ -174,17 +195,28 @@ export default function EventModal({
                 setView("create");
               }}
               style={{
-                width: "100%",
-                padding: "18px",
-                borderRadius: "14px",
-                border: `2px solid ${theme.colors.primary}`,
-                background: theme.colors.background,
-                color: theme.colors.primary,
-                fontWeight: 700,
-                cursor: "pointer",
-                marginBottom: "18px",
-                fontSize: "18px",
-              }}
+  width: "100%",
+  padding: "18px",
+
+  borderRadius: "14px",
+
+  background: theme.colors.card,
+
+  border: "none",
+  outline: "none",
+  boxShadow: "none",
+
+  color: theme.colors.text,
+
+  fontWeight: 700,
+  fontSize: "18px",
+
+  cursor: "pointer",
+
+  marginBottom: "15px",
+
+  WebkitTapHighlightColor: "transparent",
+}}
             >
               🏁 Course
             </button>
@@ -192,16 +224,28 @@ export default function EventModal({
             <button
               onClick={onClose}
               style={{
-                width: "100%",
-                padding: "16px",
-                borderRadius: "14px",
-                border: `1px solid ${theme.colors.border}`,
-                background: "transparent",
-                color: theme.colors.text,
-                fontWeight: 700,
-                cursor: "pointer",
-                fontSize: "16px",
-              }}
+  width: "100%",
+  padding: "18px",
+
+  borderRadius: "14px",
+
+  background: theme.colors.card,
+
+  border: "none",
+  outline: "none",
+  boxShadow: "none",
+
+  color: theme.colors.text,
+
+  fontWeight: 700,
+  fontSize: "18px",
+
+  cursor: "pointer",
+
+  marginBottom: "15px",
+
+  WebkitTapHighlightColor: "transparent",
+}}
             >
               ✖ Annuler
             </button>

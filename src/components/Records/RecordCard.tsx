@@ -34,18 +34,20 @@ export default function RecordCard({
           color ?? theme.colors.border
         }`,
 
-        borderRadius: 18,
+        borderRadius: 20,
 
-        padding: 16,
+        padding: 18,
 
         display: "flex",
 
         flexDirection: "column",
 
+        transition: ".18s",
+
         boxShadow: theme.shadow.card,
       }}
     >
-      {/* Header */}
+      {/* HEADER */}
 
       <div
         style={{
@@ -63,6 +65,8 @@ export default function RecordCard({
             alignItems: "center",
 
             justifyContent: "center",
+
+            flexShrink: 0,
           }}
         >
           {icon}
@@ -74,56 +78,67 @@ export default function RecordCard({
 
             color: theme.colors.text,
 
-            fontSize: 15,
+            fontSize: 14,
 
             fontWeight: 700,
+
+            lineHeight: 1.2,
           }}
         >
           {title}
         </h3>
       </div>
 
-      {/* Valeur */}
+      {/* RECORD */}
 
-     <div
-  style={{
-    marginTop: 14,
-    textAlign: "center",
-  }}
->
-  <div
-    style={{
-      fontSize: 22,
-      fontWeight: 800,
-      color: theme.colors.primary,
-      lineHeight: 1.1,
-      whiteSpace: "nowrap",
-    }}
-  >
-    {value}
-  </div>
+      <div
+        style={{
+          marginTop: 18,
 
-  {subtitle && (
-    <div
-      style={{
-        marginTop: 6,
-        color: theme.colors.textSecondary,
-        fontSize: 12,
-        lineHeight: 1.4,
-      }}
-    >
-      {subtitle}
-    </div>
-  )}
-</div>
-            {/* Détails */}
+          textAlign: "center",
+        }}
+      >
+        <div
+          style={{
+            fontSize: 34,
+
+            fontWeight: 800,
+
+            color: theme.colors.primary,
+
+            lineHeight: 1.05,
+
+            whiteSpace: "nowrap",
+          }}
+        >
+          {value}
+        </div>
+
+        {subtitle && (
+          <div
+            style={{
+              marginTop: 8,
+
+              color: theme.colors.textSecondary,
+
+              fontSize: 13,
+
+              lineHeight: 1.4,
+            }}
+          >
+            {subtitle}
+          </div>
+        )}
+      </div>
+
+      {/* DETAILS */}
 
       {details && details.length > 0 && (
         <div
           style={{
-            marginTop: 20,
+            marginTop: 18,
 
-            paddingTop: 18,
+            paddingTop: 16,
 
             borderTop: `1px solid ${theme.colors.border}`,
 
@@ -131,7 +146,7 @@ export default function RecordCard({
 
             flexDirection: "column",
 
-            gap: 12,
+            gap: 10,
           }}
         >
           {details.map((detail) => (
@@ -139,39 +154,47 @@ export default function RecordCard({
               key={detail.label}
               style={{
                 display: "flex",
+
                 justifyContent: "space-between",
+
                 alignItems: "center",
-                gap: 12,
               }}
             >
               <div
                 style={{
                   display: "flex",
+
                   alignItems: "center",
+
                   gap: 8,
-                  color:
-                    theme.colors.textSecondary,
-                  fontSize: 14,
+
+                  color: theme.colors.textSecondary,
+
+                  fontSize: 13,
+
                   fontWeight: 600,
                 }}
               >
                 <span
                   style={{
-                    width: 20,
+                    width: 18,
+
                     textAlign: "center",
                   }}
                 >
                   {detail.icon}
                 </span>
 
-                <span>{detail.label}</span>
+                {detail.label}
               </div>
 
               <span
                 style={{
                   color: theme.colors.text,
+
                   fontWeight: 700,
-                  fontSize: 15,
+
+                  fontSize: 14,
                 }}
               >
                 {detail.value}

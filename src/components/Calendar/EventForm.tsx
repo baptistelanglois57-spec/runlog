@@ -3,6 +3,12 @@ import { useState } from "react";
 import { theme } from "../../styles/theme";
 import { formatDateKey } from "../../utils/dateKey";
 
+import FormLabel from "../UI/FormLabel";
+import InputField from "../UI/InputField";
+import TextareaField from "../UI/TextareaField";
+import PrimaryButton from "../UI/PrimaryButton";
+import SecondaryButton from "../UI/SecondaryButton";
+
 import type { Event, EventType } from "../../types/Event";
 
 type EventFormProps = {
@@ -49,159 +55,97 @@ export default function EventForm({
     onSave(newEvent);
   }
 
-  const displayDate = date.toLocaleDateString(
-    "fr-FR",
-    {
+  const displayDate = date
+  ? date.toLocaleDateString("fr-FR", {
       day: "numeric",
       month: "long",
       year: "numeric",
-    }
-  );
+    })
+  : "";
 
   return (
-    <div>
-      <h2
+  <div>
+    <h2
+      style={{
+        textAlign: "center",
+        marginTop: 0,
+        marginBottom: 8,
+        color: theme.colors.text,
+        fontSize: 30,
+        fontWeight: 700,
+      }}
+    >
+      {type === "training"
+        ? "🏃 Entraînement"
+        : type === "gym"
+        ? "💪 Salle"
+        : "🏁 Course"}
+    </h2>
+
+    <p
+      style={{
+        textAlign: "center",
+        color: theme.colors.textSecondary,
+        marginBottom: 28,
+        fontSize: 16,
+      }}
+    >
+      📅 {displayDate}
+    </p>
+
+    <FormLabel>Nom</FormLabel>
+
+    <InputField
+      value={name}
+      onChange={(e) => setName(e.target.value)}
+      placeholder={
+        type === "training"
+          ? "Ex : Sortie EF"
+          : type === "gym"
+          ? "Ex : Haut du corps"
+          : "Ex : Semi de Paris"
+      }
+      style={{
+        marginBottom: 24,
+      }}
+    />
+
+    <FormLabel>Notes</FormLabel>
+
+    <TextareaField
+      value={notes}
+      onChange={(e) => setNotes(e.target.value)}
+      placeholder="Ajouter une note..."
+      rows={6}
+      style={{
+        marginBottom: 28,
+      }}
+    />
+
+    <div
+      style={{
+        display: "flex",
+        gap: 12,
+      }}
+    >
+      <SecondaryButton
+        onClick={onBack}
         style={{
-          textAlign: "center",
-          color: theme.colors.primary,
-          marginTop: 0,
-          marginBottom: "8px",
+          flex: 1,
         }}
       >
-        {isEditing
-  ? type === "training"
-    ? "✏️ Modifier l'entraînement"
-    : type === "gym"
-    ? "✏️ Modifier la séance de salle"
-    : "✏️ Modifier la course"
-  : type === "training"
-  ? "🏃 Nouvel entraînement"
-  : type === "gym"
-  ? "💪 Nouvelle séance de salle"
-  : "🏁 Nouvelle course"}
-      </h2>
+        Retour
+      </SecondaryButton>
 
-      <p
+      <PrimaryButton
+        onClick={handleSave}
         style={{
-          textAlign: "center",
-          color: theme.colors.textSecondary,
-          marginBottom: "28px",
+          flex: 2,
         }}
       >
-        📅 {displayDate}
-      </p>
-
-      <label
-        style={{
-          display: "block",
-          marginBottom: "8px",
-          fontWeight: 600,
-        }}
-      >
-        Nom
-      </label>
-
-      <input
-        value={name}
-        onChange={(e) =>
-          setName(e.target.value)
-        }
-        placeholder={
-  type === "training"
-    ? "Ex : Sortie EF"
-    : type === "gym"
-    ? "Ex : Haut du corps"
-    : "Ex : Semi de Paris"
-}
-        style={{
-          width: "100%",
-          padding: "14px",
-          borderRadius: "12px",
-          border: `1px solid ${theme.colors.border}`,
-          background: theme.colors.background,
-          color: theme.colors.text,
-          marginBottom: "22px",
-          boxSizing: "border-box",
-          fontSize: "16px",
-        }}
-      />
-
-      <label
-        style={{
-          display: "block",
-          marginBottom: "8px",
-          fontWeight: 600,
-        }}
-      >
-        Notes
-      </label>
-
-      <textarea
-        value={notes}
-        onChange={(e) =>
-          setNotes(e.target.value)
-        }
-        rows={5}
-        placeholder="Ajouter une note..."
-        style={{
-          width: "100%",
-          padding: "14px",
-          borderRadius: "12px",
-          border: `1px solid ${theme.colors.border}`,
-          background: theme.colors.background,
-          color: theme.colors.text,
-          resize: "none",
-          marginBottom: "28px",
-          boxSizing: "border-box",
-          fontSize: "15px",
-        }}
-      />
-
-      <div
-        style={{
-          display: "flex",
-          gap: "12px",
-        }}
-      >
-        <button
-          onClick={onBack}
-          style={{
-            flex: 1,
-            padding: "14px",
-            borderRadius: "12px",
-            border: `1px solid ${theme.colors.border}`,
-            background: "transparent",
-            color: theme.colors.text,
-            cursor: "pointer",
-            fontWeight: 600,
-          }}
-        >
-          ← Retour
-        </button>
-
-        <button
-          onClick={handleSave}
-          style={{
-            flex: 2,
-            padding: "14px",
-            borderRadius: "12px",
-            border: "none",
-            background: theme.colors.primary,
-            color: "#000",
-            cursor: "pointer",
-            fontWeight: 700,
-            fontSize: "15px",
-          }}
-        >
-          {isEditing
-  ? "💾 Enregistrer"
-  : type === "training"
-  ? "🏃 Créer l'entraînement"
-  : type === "gym"
-  ? "💪 Créer la séance"
-  : "🏁 Créer la course"}
-        </button>
-      </div>
+        {isEditing ? "Enregistrer" : "Créer"}
+      </PrimaryButton>
     </div>
-  );
+  </div>
+);
 }

@@ -32,10 +32,6 @@ export default function CalendarDay({
 
         padding: 0,
 
-        borderRadius: 14,
-
-        background: theme.colors.background,
-
         border: `2px solid ${
           isSelected
             ? theme.colors.primary
@@ -44,32 +40,38 @@ export default function CalendarDay({
             : theme.colors.border
         }`,
 
-        boxShadow: isSelected
-          ? "0 0 14px rgba(212,175,55,.28)"
-          : "none",
+        borderRadius: 18,
+
+        background: isSelected
+          ? "rgba(212,175,55,.10)"
+          : theme.colors.card,
+
+        boxSizing: "border-box",
 
         cursor: "pointer",
-
-        transition: ".18s",
 
         position: "relative",
 
         display: "flex",
-
+        justifyContent: "center",
         alignItems: "center",
 
-        justifyContent: "center",
+        transition: "all .18s ease",
 
         color: isCurrentMonth
           ? theme.colors.text
-          : "#666",
+          : "#6B6B6B",
 
-        fontSize: 18,
+        fontSize: 20,
 
         fontWeight: 700,
 
+        boxShadow: isSelected
+          ? "0 0 14px rgba(212,175,55,.22)"
+          : "none",
+
         transform: isSelected
-          ? "scale(1.02)"
+          ? "scale(1.03)"
           : "scale(1)",
       }}
     >
@@ -77,39 +79,39 @@ export default function CalendarDay({
 
       {eventType === "training" && (
         <Footprints
-          size={13}
+          size={15}
           strokeWidth={2.3}
           color={theme.colors.primary}
           style={{
             position: "absolute",
-            top: 5,
-            right: 5,
+            top: 6,
+            right: 6,
           }}
         />
       )}
 
       {eventType === "race" && (
         <Flag
-          size={13}
+          size={15}
           strokeWidth={2.3}
           color={theme.colors.primary}
           style={{
             position: "absolute",
-            top: 5,
-            right: 5,
+            top: 6,
+            right: 6,
           }}
         />
       )}
 
       {eventType === "gym" && (
         <Dumbbell
-          size={13}
+          size={15}
           strokeWidth={2.3}
           color={theme.colors.primary}
           style={{
             position: "absolute",
-            top: 5,
-            right: 5,
+            top: 6,
+            right: 6,
           }}
         />
       )}

@@ -19,6 +19,7 @@ export default function NextRaceCard({
     <div
       style={{
         width: "100%",
+        minWidth: 0,
 
         minHeight: 120,
 
@@ -37,6 +38,8 @@ export default function NextRaceCard({
 
         justifyContent: "space-between",
 
+        overflow: "hidden",
+
         transition: UI.TRANSITION,
       }}
     >
@@ -45,61 +48,50 @@ export default function NextRaceCard({
       <div
         style={{
           display: "flex",
-
           justifyContent: "space-between",
-
           alignItems: "center",
-
           gap: 8,
+          minWidth: 0,
         }}
       >
         <div
           style={{
             display: "flex",
-
             alignItems: "center",
-
             gap: 8,
-
             minWidth: 0,
+            flex: 1,
           }}
         >
           <div
             style={{
               width: 34,
-
               height: 34,
-
               borderRadius: 10,
-
               background:
                 "rgba(212,175,55,.10)",
 
               display: "flex",
-
               justifyContent: "center",
-
               alignItems: "center",
 
               flexShrink: 0,
             }}
           >
-              <Trophy
-                size={18}
-                color={theme.colors.primary}
-                strokeWidth={2.3}
-              />
+            <Trophy
+              size={18}
+              color={theme.colors.primary}
+              strokeWidth={2.3}
+            />
           </div>
 
           <span
             style={{
               color: theme.colors.text,
-
               fontWeight: 700,
-
               fontSize: 14,
-
               lineHeight: 1.15,
+              whiteSpace: "nowrap",
             }}
           >
             Course
@@ -109,19 +101,21 @@ export default function NextRaceCard({
         <div
           style={{
             display: "flex",
-
             alignItems: "center",
-
             gap: 4,
 
             color:
               theme.colors.textSecondary,
 
             fontSize: 11,
-
             fontWeight: 600,
 
-            flexShrink: 0,
+            flexShrink: 1,
+            minWidth: 0,
+
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+            textOverflow: "ellipsis",
           }}
         >
           <CalendarDays
@@ -140,14 +134,14 @@ export default function NextRaceCard({
           flex: 1,
 
           display: "flex",
-
           justifyContent: "center",
-
           alignItems: "center",
 
           textAlign: "center",
 
           paddingTop: 8,
+
+          minWidth: 0,
         }}
       >
         <div
@@ -160,7 +154,7 @@ export default function NextRaceCard({
 
             lineHeight: 1.25,
 
-            maxWidth: 180,
+            width: "100%",
 
             overflow: "hidden",
 
@@ -169,6 +163,8 @@ export default function NextRaceCard({
             WebkitLineClamp: 2,
 
             WebkitBoxOrient: "vertical",
+
+            wordBreak: "break-word",
           }}
         >
           {title}

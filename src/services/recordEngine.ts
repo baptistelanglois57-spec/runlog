@@ -8,6 +8,13 @@ import {
   syncRaceRecordNotification,
   syncHeartRateRecordNotification,
 } from "./recordNotificationService";
+
+import {
+  shouldCheckWeekRecord,
+  shouldCheckMonthRecord,
+  shouldCheckYearRecord,
+} from "../utils/recordSchedule";
+
 export async function syncRunRecords() {
   await syncLongestRunNotification();
 
@@ -15,42 +22,31 @@ export async function syncRunRecords() {
 
   await syncHighestElevationNotification();
 
-  await syncBiggestWeekNotification();
+  if (shouldCheckWeekRecord()) {
+    await syncBiggestWeekNotification();
+  }
 
-  await syncBiggestMonthNotification();
+  if (shouldCheckMonthRecord()) {
+    await syncBiggestMonthNotification();
+  }
 
-  await syncBiggestYearNotification();
+  if (shouldCheckYearRecord()) {
+    await syncBiggestYearNotification();
+  }
+
+  await syncRaceRecordNotification(5);
+
+  await syncRaceRecordNotification(10);
+
+  await syncRaceRecordNotification(15);
+
+  await syncRaceRecordNotification(21.097);
+
+  await syncRaceRecordNotification(42.195);
+
+  // À mon avis on supprimera ces notifications ensuite
+  await syncHeartRateRecordNotification(0, 130);
+  await syncHeartRateRecordNotification(131, 140);
+  await syncHeartRateRecordNotification(141, 150);
+  await syncHeartRateRecordNotification(151, 160);
 }
-await syncRaceRecordNotification(5);
-
-await syncRaceRecordNotification(10);
-
-await syncRaceRecordNotification(15);
-
-await syncRaceRecordNotification(
-  21.097
-);
-
-await syncRaceRecordNotification(
-  42.195
-);
-
-await syncHeartRateRecordNotification(
-  0,
-  130
-);
-
-await syncHeartRateRecordNotification(
-  131,
-  140
-);
-
-await syncHeartRateRecordNotification(
-  141,
-  150
-);
-
-await syncHeartRateRecordNotification(
-  151,
-  160
-);

@@ -1,29 +1,36 @@
 import { useNavigate } from "react-router-dom";
 
-import AppContainer from "../../components/Layout/AppContainer";
-import PageCard from "../../components/Layout/PageCard";
 import Header from "../../components/Header";
+import AppContainer from "../../components/Layout/AppContainer";
+import CompactCard from "../../components/Layout/CompactCard";
 
 import { theme } from "../../styles/theme";
+
+import {
+  Trophy,
+  CalendarDays,
+  Scale,
+  ChevronRight,
+} from "lucide-react";
 
 export default function Tools() {
   const navigate = useNavigate();
 
   const cards = [
     {
-      emoji: "🏆",
+      icon: Trophy,
       title: "Records",
       subtitle: "Consulter vos records personnels",
       path: "/records",
     },
     {
-      emoji: "📅",
+      icon: CalendarDays,
       title: "Agenda",
       subtitle: "Entraînements et compétitions",
       path: "/agenda",
     },
     {
-      emoji: "⚖️",
+      icon: Scale,
       title: "Suivi",
       subtitle: "Poids et évolution",
       path: "/tracking",
@@ -33,7 +40,7 @@ export default function Tools() {
   return (
     <AppContainer>
       <Header
-        title=" Outils"
+        title="Outils"
         subtitle=""
       />
 
@@ -41,65 +48,102 @@ export default function Tools() {
         style={{
           display: "flex",
           flexDirection: "column",
-          gap: "18px",
+          gap: 12,
         }}
       >
-        {cards.map((card) => (
-          <PageCard key={card.title}>
-            <button
-  onClick={() => navigate(card.path)}
-  style={{
-    width: "100%",
-    background: "transparent",
-    border: "none",
-    cursor: "pointer",
+        {cards.map((card) => {
+          const Icon = card.icon;
 
-    color: theme.colors.text,
+          return (
+            <CompactCard key={card.title}>
+              <button
+                onClick={() => navigate(card.path)}
+                style={{
+                  width: "100%",
+                  border: "none",
+                  background: "transparent",
+                  cursor: "pointer",
 
-    display: "flex",
-    flexDirection: "column",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
 
-    justifyContent: "center",
-    alignItems: "center",
+                  color: theme.colors.text,
 
-    padding: "22px 12px",
-  }}
->
-  <div
-    style={{
-      fontSize: "52px",
-      marginBottom: "14px",
-      lineHeight: 1,
-    }}
-  >
-    {card.emoji}
-  </div>
+                  padding: "2px",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 14,
+                    flex: 1,
+                    minWidth: 0,
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 48,
+                      height: 48,
+                      borderRadius: 14,
 
-  <div
-    style={{
-      fontSize: "22px",
-      fontWeight: 700,
-      textAlign: "center",
-      marginBottom: "8px",
-    }}
-  >
-    {card.title}
-  </div>
+                      background:
+                        "rgba(212,175,55,.10)",
 
-  <div
-    style={{
-      color: theme.colors.textSecondary,
-      fontSize: "14px",
-      textAlign: "center",
-      lineHeight: 1.4,
-      maxWidth: "230px",
-    }}
-  >
-    {card.subtitle}
-  </div>
-</button>
-          </PageCard>
-        ))}
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+
+                      flexShrink: 0,
+                    }}
+                  >
+                    <Icon
+                      size={24}
+                      color={theme.colors.primary}
+                      strokeWidth={2.2}
+                    />
+                  </div>
+
+                  <div
+                    style={{
+                      flex: 1,
+                      textAlign: "left",
+                      minWidth: 0,
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontSize: 18,
+                        fontWeight: 700,
+                        marginBottom: 3,
+                        color: theme.colors.text,
+                      }}
+                    >
+                      {card.title}
+                    </div>
+
+                    <div
+                      style={{
+                        color:
+                          theme.colors.textSecondary,
+                        fontSize: 13,
+                        lineHeight: 1.35,
+                      }}
+                    >
+                      {card.subtitle}
+                    </div>
+                  </div>
+                </div>
+
+                <ChevronRight
+                  size={20}
+                  color={theme.colors.textSecondary}
+                />
+              </button>
+            </CompactCard>
+          );
+        })}
       </div>
     </AppContainer>
   );

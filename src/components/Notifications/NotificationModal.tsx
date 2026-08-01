@@ -21,64 +21,69 @@ export default function NotificationModal({
   return (
     <>
       <style>
-  {`
-    .notification-scroll::-webkit-scrollbar {
-      width: 8px;
-    }
+        {`
+          .notification-scroll::-webkit-scrollbar {
+            width: 6px;
+          }
 
-    .notification-scroll::-webkit-scrollbar-track {
-      background: transparent;
-    }
+          .notification-scroll::-webkit-scrollbar-track {
+            background: transparent;
+          }
 
-    .notification-scroll::-webkit-scrollbar-thumb {
-      background: #0B0B0B;
-      border-radius: 999px;
-      border: 2px solid transparent;
-    }
+          .notification-scroll::-webkit-scrollbar-thumb {
+            background: #0B0B0B;
+            border-radius: 999px;
+          }
 
-    .notification-scroll::-webkit-scrollbar-thumb:hover {
-      background: #1A1A1A;
-    }
-
-    .notification-scroll {
-      scrollbar-width: thin;
-      scrollbar-color: #0B0B0B transparent;
-    }
-  `}
-</style>
+          .notification-scroll {
+            scrollbar-width: thin;
+            scrollbar-color: #0B0B0B transparent;
+          }
+        `}
+      </style>
 
       <div
         onClick={onClose}
         style={{
           position: "fixed",
           inset: 0,
-          background: "rgba(0,0,0,.75)",
+          background: "rgba(0,0,0,.82)",
           display: "flex",
           justifyContent: "center",
-          alignItems: "center",
+          alignItems: "stretch",
           zIndex: 9999,
         }}
       >
         <div
           onClick={(e) => e.stopPropagation()}
           style={{
-            width: "95%",
-            maxWidth: 500,
+            width: "100%",
+            maxWidth: 520,
+            height: "100dvh",
+
             background: theme.colors.card,
-            borderRadius: 20,
-            padding: 24,
-            maxHeight: "90vh",
+
             display: "flex",
             flexDirection: "column",
+
+            boxSizing: "border-box",
+
+            padding: `
+              calc(18px + env(safe-area-inset-top))
+              16px
+              calc(18px + env(safe-area-inset-bottom))
+            `,
           }}
         >
+          {/* HEADER */}
+
           <div
             style={{
               position: "relative",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              marginBottom: 20,
+              marginBottom: 16,
             }}
           >
             <button
@@ -87,72 +92,96 @@ export default function NotificationModal({
               style={{
                 position: "absolute",
                 left: 0,
-                width: 42,
-                height: 42,
+
+                width: 40,
+                height: 40,
+
                 border: `1px solid ${theme.colors.border}`,
                 borderRadius: 12,
-                background: theme.colors.card,
+
+                background: theme.colors.background,
+
                 display: "flex",
-                alignItems: "center",
                 justifyContent: "center",
+                alignItems: "center",
+
                 cursor: "pointer",
-                transition: "0.2s",
               }}
             >
               <ArrowLeft
-                size={22}
+                size={20}
                 color={theme.colors.primary}
-                strokeWidth={2.5}
+                strokeWidth={2.4}
               />
             </button>
 
             <h2
               style={{
                 margin: 0,
-                color: theme.colors.primary,
-                fontSize: 26,
-                fontWeight: 700,
+
                 display: "flex",
                 alignItems: "center",
-                gap: 8,
+                gap: 10,
+
+                color: theme.colors.primary,
+
+                fontSize: 22,
+                fontWeight: 800,
               }}
             >
-              <span>🔔</span>
-              <span>Notifications</span>
+              🔔 Notifications
             </h2>
           </div>
+
+          {/* LISTE */}
 
           <div
             className="notification-scroll"
             style={{
+              flex: 1,
+
+              overflowY: "auto",
+
               display: "flex",
               flexDirection: "column",
-              gap: 12,
-              overflowY: "auto",
-              flex: 1,
-              paddingRight: 8,
+
+              gap: 10,
+
+              paddingBottom: 12,
             }}
           >
-            {notifications.map((n) => (
+            {notifications.map((notification) => (
               <NotificationCard
-                key={n.id}
-                notification={n}
+                key={notification.id}
+                notification={notification}
               />
             ))}
           </div>
 
+          {/* BOUTON */}
+
           <button
             onClick={onReadAll}
             style={{
-              marginTop: 20,
+              marginTop: 16,
+
               width: "100%",
-              padding: 12,
+
+              padding: 16,
+
               border: "none",
-              borderRadius: 12,
+
+              borderRadius: 16,
+
               background: theme.colors.primary,
+
               color: "#000",
-              fontWeight: 700,
+
+              fontSize: 17,
+              fontWeight: 800,
+
               cursor: "pointer",
+
               flexShrink: 0,
             }}
           >

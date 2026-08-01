@@ -147,3 +147,68 @@ export async function replaceNotification(
 
   await addNotification(notification);
 }
+export async function upsertNotification(
+  notification: Notification
+): Promise<void> {
+  const existing =
+    await getNotificationByEntity(
+      notification.entity,
+      notification.entityId
+    );
+
+  // La notification n'existe pas
+  if (!existing) {
+    await addNotification(notification);
+    return;
+  }
+
+  const changed =
+    existing.title !== notification.title ||
+    existing.message !== notification.message ||
+    existing.icon !== notification.icon ||
+    existing.runId !== notification.runId;
+
+  // Rien n'a changé
+  if (!changed) {
+    return;
+  }
+
+  const { error } = await supabase
+    .from(TABLE)
+    .update({
+      title: notification.title,
+      message: notification.message,
+      icon: notification.icon,
+      runId: notification.runId,
+      createdAt: notification.createdAt,
+
+      // Nouveau record → notification non lue
+      read: false,
+    })
+    .eq("id", existing.id);
+
+  if (error) {
+    console.error(
+      "Erreur upsertNotification :",
+      error
+    );
+  }
+}
+export async function cleanupNotifications(): Promise<void> {
+  const limit = new Date(
+    Date.now() - 48 * 60 * 60 * 1000
+  ).toISOString();
+
+  const { error } = await supabase
+    .from(TABLE)
+    .delete()
+    .eq("read", true)
+    .lt("createdAt", limit);
+
+  if (error) {
+    console.error(
+      "Erreur cleanupNotifications :",
+      error
+    );
+  }
+}

@@ -15,7 +15,6 @@ import {
   Gauge,
   Mountain,
   Flame,
-  Flag,
   Trophy,
 } from "lucide-react";
 
@@ -161,14 +160,8 @@ export default function Records() {
       {/* À LA UNE */}
 
       <RecordSection
-        title="À la une"
-        icon={
-          <Trophy
-            size={22}
-            color={theme.colors.primary}
-          />
-        }
-      >
+  title="À la une"
+>
               <RecordCard
         icon={
           <Route
@@ -238,14 +231,8 @@ export default function Records() {
     {/* DISTANCES */}
 
     <RecordSection
-      title="Distances"
-      icon={
-        <Route
-          size={22}
-          color={theme.colors.primary}
-        />
-      }
-    >
+  title="Distances"
+>
       <RecordCard
         icon={
           <Trophy
@@ -350,12 +337,6 @@ export default function Records() {
 
 <RecordSection
   title="Allures"
-  icon={
-    <Gauge
-      size={22}
-      color={theme.colors.primary}
-    />
-  }
 >
   <div
     style={{
@@ -439,49 +420,22 @@ export default function Records() {
   </div>
 </RecordSection>
 
-    {/* DÉNIVELÉ */}
-
-    <RecordSection
-      title="Dénivelé"
-      icon={
-        <Mountain
-          size={22}
-          color={theme.colors.primary}
-        />
-      }
-    >
-      <RecordCard
-        icon={
-          <Mountain
-            size={18}
-            color={theme.colors.primary}
-          />
-        }
-        title="Plus gros D+"
-        value={
-          highestElevation
-            ? `${highestElevation.elevation} m`
-            : "--"
-        }
-        subtitle={
-          highestElevation
-            ? highestElevation.name
-            : "Aucune sortie"
-        }
-      />
-    </RecordSection>
-
     {/* VOLUMES */}
 
     <RecordSection
-      title="Volumes"
-      icon={
-        <Flame
-          size={22}
-          color={theme.colors.primary}
-        />
-      }
-    >
+  title="Volumes"
+>
+      <RecordCard
+  icon={
+    <Mountain
+      size={18}
+      color={theme.colors.primary}
+    />
+  }
+  title="Dénivelé total"
+  value="--"
+  subtitle="Depuis le début"
+/>
       <RecordCard
         icon={
           <Flame
@@ -568,14 +522,8 @@ export default function Records() {
     {/* COMPÉTITIONS */}
 
     <RecordSection
-      title="Compétitions"
-      icon={
-        <Flag
-          size={22}
-          color={theme.colors.primary}
-        />
-      }
-    >
+  title="Compétitions"
+>
       <RecordCard
         icon={
           <Trophy

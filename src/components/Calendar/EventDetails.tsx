@@ -2,13 +2,13 @@ import { theme } from "../../styles/theme";
 
 import type { Event } from "../../types/Event";
 
+import PrimaryButton from "../UI/PrimaryButton";
+import SecondaryButton from "../UI/SecondaryButton";
+
 type EventDetailsProps = {
   event: Event;
-
   onEdit: () => void;
-
   onDelete: () => void;
-
   onClose: () => void;
 };
 
@@ -28,149 +28,172 @@ export default function EventDetails({
   );
 
   const icon =
-  event.type === "training"
-    ? "🏃"
-    : event.type === "gym"
-    ? "💪"
-    : "🏁";
+    event.type === "training"
+      ? "🏃"
+      : event.type === "gym"
+      ? "💪"
+      : "🏁";
 
-const title =
-  event.type === "training"
-    ? "Entraînement"
-    : event.type === "gym"
-    ? "Salle"
-    : "Course";
+  const title =
+    event.type === "training"
+      ? "Entraînement"
+      : event.type === "gym"
+      ? "Salle"
+      : "Course";
 
   return (
     <div>
-      <h2
+      {/* HEADER */}
+
+      <div
         style={{
           textAlign: "center",
-          marginTop: 0,
-          marginBottom: "10px",
-          color: theme.colors.primary,
-          fontSize: "28px",
+          marginBottom: 18,
         }}
       >
-        {icon} {title}
-      </h2>
+        <h2
+          style={{
+            margin: 0,
+            color: theme.colors.text,
+            fontSize: 28,
+            fontWeight: 800,
+          }}
+        >
+          {icon} {title}
+        </h2>
 
-      <p
-        style={{
-          textAlign: "center",
-          color: theme.colors.textSecondary,
-          marginBottom: "28px",
-        }}
-      >
-        📅 {displayDate}
-      </p>
+        <div
+          style={{
+            marginTop: 6,
+            color: theme.colors.textSecondary,
+            fontSize: 15,
+            fontWeight: 500,
+          }}
+        >
+          📅 {displayDate}
+        </div>
+      </div>
 
-      {/* Carte */}
+      {/* NOM */}
 
       <div
         style={{
           background: theme.colors.background,
           border: `1px solid ${theme.colors.border}`,
-          borderRadius: "16px",
-          padding: "20px",
-          marginBottom: "25px",
+          borderRadius: 16,
+          padding: 16,
+          marginBottom: 14,
         }}
       >
         <div
           style={{
             color: theme.colors.primary,
+            fontSize: 13,
             fontWeight: 700,
-            marginBottom: "8px",
+            marginBottom: 8,
+            textTransform: "uppercase",
+            letterSpacing: 0.5,
           }}
         >
-          🏷️ Nom
+          Nom
         </div>
 
         <div
           style={{
-            fontSize: "18px",
-            marginBottom: "20px",
+            color: theme.colors.text,
+            fontSize: 20,
+            fontWeight: 700,
+            lineHeight: 1.3,
           }}
         >
           {event.name}
         </div>
-
-        <div
-          style={{
-            color: theme.colors.primary,
-            fontWeight: 700,
-            marginBottom: "8px",
-          }}
-        >
-          📝 Notes
-        </div>
-
-        <div
-          style={{
-            minHeight: "90px",
-            whiteSpace: "pre-wrap",
-            color: theme.colors.text,
-            lineHeight: 1.5,
-          }}
-        >
-          {event.notes || "Aucune note"}
-        </div>
       </div>
+
+      {/* NOTES */}
 
       <div
         style={{
-          display: "flex",
-          gap: "12px",
+          background: theme.colors.background,
+          border: `1px solid ${theme.colors.border}`,
+          borderRadius: 16,
+          padding: 16,
+          marginBottom: 20,
         }}
       >
-        <button
-          onClick={onEdit}
+        <div
           style={{
-            flex: 1,
-            padding: "14px",
-            borderRadius: "12px",
-            border: "none",
-            background: theme.colors.primary,
-            color: "#000",
+            color: theme.colors.primary,
+            fontSize: 13,
             fontWeight: 700,
-            cursor: "pointer",
+            marginBottom: 8,
+            textTransform: "uppercase",
+            letterSpacing: 0.5,
           }}
         >
-          ✏️ Modifier
-        </button>
+          Notes
+        </div>
+
+        <div
+          style={{
+            color: theme.colors.text,
+            lineHeight: 1.5,
+            minHeight: 40,
+            whiteSpace: "pre-wrap",
+          }}
+        >
+          {event.notes?.trim()
+            ? event.notes
+            : "Aucune note"}
+        </div>
+      </div>
+
+      {/* ACTIONS */}
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: 10,
+          marginBottom: 10,
+        }}
+      >
+        <PrimaryButton onClick={onEdit}>
+          Modifier
+        </PrimaryButton>
 
         <button
           onClick={onDelete}
           style={{
-            flex: 1,
-            padding: "14px",
-            borderRadius: "12px",
+            height: 52,
+
             border: "none",
-            background: "#c0392b",
+
+            borderRadius: 14,
+
+            background: "#d14334",
+
             color: "#fff",
+
             fontWeight: 700,
+
+            fontSize: 16,
+
             cursor: "pointer",
           }}
         >
-          🗑️ Supprimer
+          Supprimer
         </button>
       </div>
 
-      <button
+      <SecondaryButton
         onClick={onClose}
         style={{
           width: "100%",
-          marginTop: "15px",
-          padding: "12px",
-          borderRadius: "12px",
-          border: `1px solid ${theme.colors.border}`,
-          background: "transparent",
-          color: theme.colors.text,
-          cursor: "pointer",
         }}
       >
         Fermer
-      </button>
+      </SecondaryButton>
     </div>
   );
 }

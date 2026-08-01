@@ -1,8 +1,11 @@
 import { getRuns } from "./runService";
-
+import {
+  getISOWeek,
+  getISOWeekYear,
+} from "../utils/date";
 import {
   getNotificationByEntity,
-  replaceNotification,
+  upsertNotification,
   deleteNotificationsByEntity,
 } from "./notificationService";
 
@@ -44,7 +47,7 @@ async function syncRecordNotification(
     return;
   }
 
-  await replaceNotification({
+  await upsertNotification({
     id: crypto.randomUUID(),
 
     type: "record",
@@ -168,21 +171,23 @@ export async function syncBiggestWeekNotification() {
   const record = getBiggestWeek(runs);
 
   if (!record) {
-    await deleteNotificationsByEntity(
-      "record",
-      "biggest_week"
-    );
-    return;
-  }
+  return;
+}
+const date = new Date(record.date);
 
-  await syncRecordNotification(
-    "biggest_week",
-    "📅",
-    "Nouveau record",
-    `Plus grosse semaine : ${record.total.toFixed(2)} km`,
-    "biggest_week",
-    record.date
-  );
+const year = getISOWeekYear(date);
+
+const week = getISOWeek(date);
+
+const entityId = `biggest_week_${year}_${week}`;
+await syncRecordNotification(
+  entityId,
+  "📅",
+  "Nouveau record",
+  `Plus grosse semaine : ${record.total.toFixed(2)} km`,
+  entityId,
+  record.date
+);
 }
 
 export async function syncBiggestMonthNotification() {
@@ -191,21 +196,30 @@ export async function syncBiggestMonthNotification() {
   const record = getBiggestMonth(runs);
 
   if (!record) {
-    await deleteNotificationsByEntity(
-      "record",
-      "biggest_month"
-    );
-    return;
-  }
+  return;
+}
 
-  await syncRecordNotification(
-    "biggest_month",
-    "📆",
-    "Nouveau record",
-    `Plus gros mois : ${record.total.toFixed(2)} km`,
-    "biggest_month",
-    record.date
-  );
+ const now = new Date();
+
+const previousMonth = new Date(
+  now.getFullYear(),
+  now.getMonth() - 1,
+  1
+);
+
+const entityId =
+  `biggest_month_${previousMonth.getFullYear()}_${String(
+    previousMonth.getMonth() + 1
+  ).padStart(2, "0")}`;
+
+await syncRecordNotification(
+  entityId,
+  "📆",
+  "Nouveau record",
+  `Plus gros mois : ${record.total.toFixed(2)} km`,
+  entityId,
+  record.date
+);
 }
 
 export async function syncBiggestYearNotification() {
@@ -214,21 +228,21 @@ export async function syncBiggestYearNotification() {
   const record = getBiggestYear(runs);
 
   if (!record) {
-    await deleteNotificationsByEntity(
-      "record",
-      "biggest_year"
-    );
-    return;
-  }
+  return;
+}
 
-  await syncRecordNotification(
-    "biggest_year",
-    "🗓️",
-    "Nouveau record",
-    `Plus grosse année : ${record.total.toFixed(2)} km`,
-    "biggest_year",
-    record.date
-  );
+  const year = new Date().getFullYear() - 1;
+
+const entityId = `biggest_year_${year}`;
+
+await syncRecordNotification(
+  entityId,
+  "🗓️",
+  "Nouveau record",
+  `Plus grosse année : ${record.total.toFixed(2)} km`,
+  entityId,
+  record.date
+);
 }
 export async function syncRaceRecordNotification(
   distance: number

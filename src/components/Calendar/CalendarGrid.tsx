@@ -192,13 +192,11 @@ export default function CalendarGrid({
   <>
     <div
       style={{
-        background: theme.colors.card,
+        background: "transparent",
 
-        border: `1px solid ${theme.colors.border}`,
+border: "none",
 
-        borderRadius: 18,
-
-        padding: 16,
+padding: 0,
 
         width: "100%",
 

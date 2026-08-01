@@ -21,43 +21,52 @@ export default function UpcomingSection({
     <section
       style={{
         width: "100%",
-
-        maxWidth: value(
-          UI.PAGE_MAX_WIDTH,
-          "760px"
-        ),
-
+        maxWidth: value(UI.PAGE_MAX_WIDTH, "760px"),
         margin: "0 auto",
 
         display: "grid",
+        gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
 
-        gridTemplateColumns: "repeat(2, 1fr)",
-
-        gap: 12,
+        gap: value(10, 12),
 
         alignItems: "stretch",
 
         boxSizing: "border-box",
+        overflow: "hidden",
       }}
     >
-      <NextTrainingCard
-        title={nextTraining?.name}
-        date={
-          nextTraining
-            ? formatDate(nextTraining.date)
-            : undefined
-        }
-        type={nextTraining?.type}
-      />
+      <div
+        style={{
+          width: "100%",
+          minWidth: 0,
+        }}
+      >
+        <NextTrainingCard
+          title={nextTraining?.name}
+          date={
+            nextTraining
+              ? formatDate(nextTraining.date)
+              : undefined
+          }
+          type={nextTraining?.type}
+        />
+      </div>
 
-      <NextRaceCard
-        title={nextRace?.name}
-        date={
-          nextRace
-            ? formatDate(nextRace.date)
-            : undefined
-        }
-      />
+      <div
+        style={{
+          width: "100%",
+          minWidth: 0,
+        }}
+      >
+        <NextRaceCard
+          title={nextRace?.name}
+          date={
+            nextRace
+              ? formatDate(nextRace.date)
+              : undefined
+          }
+        />
+      </div>
     </section>
   );
 }

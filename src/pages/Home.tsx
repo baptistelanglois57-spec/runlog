@@ -42,6 +42,7 @@ import NotificationModal from "../components/Notifications/NotificationModal";
 import {
   getNotifications,
   markAllAsRead,
+  cleanupNotifications,
 } from "../services/notificationService";
 
 import { theme } from "../styles/theme";
@@ -60,9 +61,10 @@ export default function Home() {
     async function loadData() {
       const runData = await getRuns();
       const eventData = await getEvents();
-      const notificationData =
-        await getNotifications();
+      await cleanupNotifications();
 
+const notificationData =
+  await getNotifications();    
       setRuns(runData);
       setEvents(eventData);
       setNotifications(notificationData);
@@ -91,7 +93,10 @@ export default function Home() {
 
   const nextRace =
     getNextRace(events);
-
+const hasUnreadNotifications =
+  notifications.some(
+    (notification) => !notification.read
+  );
   return (
     <AppContainer>
       {/* Header */}
@@ -139,10 +144,38 @@ export default function Home() {
               UI.TRANSITION,
           }}
         >
-          <Bell
-            size={20}
-            color={theme.colors.primary}
-          />
+          <div
+  style={{
+    position: "relative",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  }}
+>
+  <Bell
+    size={20}
+    color={theme.colors.primary}
+  />
+
+  {hasUnreadNotifications && (
+    <div
+      style={{
+        position: "absolute",
+        top: -1,
+        right: -1,
+
+        width: 8,
+        height: 8,
+
+        borderRadius: "50%",
+
+        background: "#EF4444",
+
+        border: `2px solid ${theme.colors.card}`,
+      }}
+    />
+  )}
+</div>
         </button>
 
         <Header
@@ -156,7 +189,7 @@ export default function Home() {
         style={{
           display: "grid",
 
-          gridTemplateColumns: "repeat(2,1fr)",
+          gridTemplateColumns: "repeat(2,minmax(0,1fr))",
 
           gap: UI.GRID_GAP,
 

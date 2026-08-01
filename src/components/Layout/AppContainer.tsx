@@ -17,15 +17,22 @@ export default function AppContainer({
         color: theme.colors.text,
 
         width: "100%",
+        maxWidth: "100vw",
+
+        overflowX: "hidden",
 
         display: "flex",
         justifyContent: "center",
 
-        padding: `
-          calc(20px + env(safe-area-inset-top))
-          clamp(16px, 4vw, 24px)
-          calc(110px + env(safe-area-inset-bottom))
-        `,
+        paddingTop:
+          "calc(20px + env(safe-area-inset-top))",
+
+        paddingRight: "16px",
+
+        paddingBottom:
+          "calc(110px + env(safe-area-inset-bottom))",
+
+        paddingLeft: "16px",
 
         boxSizing: "border-box",
       }}
@@ -34,7 +41,12 @@ export default function AppContainer({
         style={{
           width: "100%",
           maxWidth: "680px",
+
           margin: "0 auto",
+
+          minWidth: 0,
+
+          boxSizing: "border-box",
         }}
       >
         {children}

@@ -14,60 +14,103 @@ export default function NotificationCard({
     "biggest_year",
   ].includes(notification.entityId);
 
+  const date = new Date(
+    notification.createdAt
+  ).toLocaleDateString("fr-FR", {
+    day: "numeric",
+    month: "short",
+  });
+
   return (
     <div
       style={{
-        padding: 16,
-        borderRadius: 12,
-        border: `1px solid ${theme.colors.border}`,
+        padding: "14px 16px",
+        borderRadius: 16,
+        border: `1px solid ${
+          notification.read
+            ? theme.colors.border
+            : theme.colors.primary
+        }`,
         background: notification.read
           ? theme.colors.card
-          : "#2A2410",
+          : "rgba(212,175,55,.08)",
+        transition: "0.2s",
       }}
     >
       <div
         style={{
           display: "flex",
-          gap: 12,
-          alignItems: "center",
+          alignItems: "flex-start",
+          gap: 14,
         }}
       >
-        <div style={{ fontSize: 28 }}>
+        <div
+          style={{
+            width: 42,
+            height: 42,
+            borderRadius: 12,
+            background: "rgba(212,175,55,.10)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexShrink: 0,
+            fontSize: 22,
+          }}
+        >
           {notification.icon}
         </div>
 
-        <div style={{ flex: 1 }}>
+        <div
+          style={{
+            flex: 1,
+            minWidth: 0,
+          }}
+        >
           <div
             style={{
-              fontWeight: 700,
-              color: theme.colors.text,
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "flex-start",
+              gap: 12,
             }}
           >
-            {notification.title}
+            <div
+              style={{
+                color: theme.colors.text,
+                fontWeight: 700,
+                fontSize: 16,
+                lineHeight: 1.2,
+              }}
+            >
+              {notification.title}
+            </div>
+
+            {!hideDate && (
+              <span
+                style={{
+                  color:
+                    theme.colors.textSecondary,
+                  fontSize: 12,
+                  whiteSpace: "nowrap",
+                  flexShrink: 0,
+                }}
+              >
+                {date}
+              </span>
+            )}
           </div>
 
           <div
             style={{
-              marginTop: 4,
-              color: theme.colors.textSecondary,
+              marginTop: 6,
+              color:
+                theme.colors.textSecondary,
+              fontSize: 14,
+              lineHeight: 1.35,
             }}
           >
             {notification.message}
           </div>
-
-          {!hideDate && (
-            <div
-              style={{
-                marginTop: 8,
-                fontSize: 12,
-                color: "#999",
-              }}
-            >
-              {new Date(
-                notification.createdAt
-              ).toLocaleString("fr-FR")}
-            </div>
-          )}
         </div>
       </div>
     </div>

@@ -1,31 +1,57 @@
+import { supabase } from "../lib/supabase";
 import type { Weight } from "../types/Weight";
 
-const STORAGE_KEY = "runlog_weights";
+const TABLE = "weights";
 
 export async function getWeights(): Promise<Weight[]> {
-  const data = localStorage.getItem(STORAGE_KEY);
+  const { data, error } = await supabase
+    .from(TABLE)
+    .select("*")
+    .order("date", { ascending: false });
 
-  return data ? JSON.parse(data) : [];
+  if (error) {
+    console.error(
+      "Erreur getWeights :",
+      error
+    );
+
+    return [];
+  }
+
+  return (data ?? []) as Weight[];
 }
 
-export async function saveWeight(weight: Weight) {
-  const weights = await getWeights();
+export async function saveWeight(
+  weight: Weight
+): Promise<void> {
+  const { error } = await supabase
+    .from(TABLE)
+    .insert({
+      id: weight.id,
+      date: weight.date,
+      weight: weight.weight,
+    });
 
-  weights.unshift(weight);
-
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(weights)
-  );
+  if (error) {
+    console.error(
+      "Erreur saveWeight :",
+      error
+    );
+  }
 }
 
-export async function deleteWeight(id: string) {
-  const weights = await getWeights();
+export async function deleteWeight(
+  id: string
+): Promise<void> {
+  const { error } = await supabase
+    .from(TABLE)
+    .delete()
+    .eq("id", id);
 
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(
-      weights.filter((w) => w.id !== id)
-    )
-  );
+  if (error) {
+    console.error(
+      "Erreur deleteWeight :",
+      error
+    );
+  }
 }
