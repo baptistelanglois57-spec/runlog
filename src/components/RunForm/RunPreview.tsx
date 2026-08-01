@@ -1,9 +1,10 @@
 import { theme } from "../../styles/theme";
+import { UI } from "../../styles/ui";
 
 type Props = {
   name: string;
 
- type: "training" | "race" | "gym";
+  type: "training" | "race" | "gym";
 
   date: string;
 
@@ -43,9 +44,11 @@ function calculatePace(
 
   const km = Number(distance);
 
-  if (!km || totalSeconds <= 0) return "--";
+  if (!km || totalSeconds <= 0)
+    return "--";
 
-  const secondsPerKm = totalSeconds / km;
+  const secondsPerKm =
+    totalSeconds / km;
 
   const min = Math.floor(
     secondsPerKm / 60
@@ -68,72 +71,123 @@ export default function RunPreview({
   duration,
   elevation,
   competitionName,
-}: Props) {
-
+  location,
+  position,
+  participants,
+}: Props){
   const pace = calculatePace(
     distance,
     duration
   );
+
   return (
     <div
       style={{
         background: theme.colors.card,
+
         border: `1px solid ${theme.colors.border}`,
-        borderRadius: "22px",
-        padding: "28px",
+
+        borderRadius: UI.RADIUS_LARGE,
+
+        padding: 22,
+
         boxShadow: theme.shadow.card,
       }}
     >
       <h2
         style={{
-          marginTop: 0,
-          marginBottom: "25px",
-          color: theme.colors.primary,
+          margin: "0 0 22px",
+
           textAlign: "center",
-          fontSize: "28px",
+
+          color: theme.colors.primary,
+
+          fontSize: UI.FONT_H2,
+
+          fontWeight: 800,
         }}
       >
-        👀 Aperçu de la sortie
+        👀 Aperçu
       </h2>
 
       <div
         style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit,minmax(220px,1fr))",
-          gap: "18px",
+          display: "flex",
+
+          justifyContent: "space-between",
+
+          alignItems: "flex-start",
+
+          marginBottom: 16,
+
+          gap: 16,
         }}
       >
-        <Info
-          icon="🏃"
-          title="Nom"
-          value={
-            name || "Nouvelle sortie"
-          }
-        />
+        <div>
+          <h3
+            style={{
+              margin: 0,
 
-        <Info
-          icon="📅"
-          title="Date"
-          value={date || "--"}
-        />
+              color: theme.colors.text,
 
-        <Info
-          icon="📏"
-          title="Distance"
-          value={
-            distance
-              ? `${distance} km`
-              : "-- km"
-          }
-        />
+              fontSize: 30,
 
-        <Info
+              fontWeight: 700,
+            }}
+          >
+            {type === "training"
+              ? "🏃"
+              : type === "race"
+              ? "🏁"
+              : "💪"}{" "}
+            {name || "Nouvelle sortie"}
+          </h3>
+
+          <div
+            style={{
+              marginTop: 8,
+
+              color:
+                theme.colors.textSecondary,
+
+              fontSize: UI.FONT_SMALL,
+            }}
+          >
+            📅 {date || "--"}
+          </div>
+        </div>
+
+        <div
+          style={{
+            color: theme.colors.text,
+
+            fontWeight: 800,
+
+            fontSize: 32,
+
+            whiteSpace: "nowrap",
+          }}
+        >
+          {distance
+            ? `${distance} km`
+            : "-- km"}
+        </div>
+      </div>
+
+      <div
+        style={{
+          display: "grid",
+
+          gridTemplateColumns:
+            "repeat(2,1fr)",
+
+          gap: 14,
+        }}
+      >
+                <Info
           icon="⏱"
           title="Temps"
-          value={
-            duration || "--:--:--"
-          }
+          value={duration || "--:--:--"}
         />
 
         <Info
@@ -156,23 +210,44 @@ export default function RunPreview({
           icon="🏷"
           title="Type"
           value={
-  type === "training"
-    ? "Entraînement"
-    : type === "race"
-    ? "Compétition"
-    : "Musculation"
-}
+            type === "training"
+              ? "Entraînement"
+              : type === "race"
+              ? "Compétition"
+              : "Musculation"
+          }
         />
 
         {type === "race" && (
-          <Info
-            icon="🏁"
-            title="Compétition"
-            value={
-              competitionName ||
-              "À compléter"
-            }
-          />
+          <>
+            <Info
+              icon="🏁"
+              title="Compétition"
+              value={
+                competitionName ||
+                "À compléter"
+              }
+            />
+
+            <Info
+              icon="📍"
+              title="Lieu"
+              value={
+                location ||
+                "À compléter"
+              }
+            />
+
+            <Info
+              icon="🏆"
+              title="Classement"
+              value={
+                position && participants
+                  ? `${position} / ${participants}`
+                  : "--"
+              }
+            />
+          </>
         )}
       </div>
     </div>
@@ -193,34 +268,51 @@ function Info({
   return (
     <div
       style={{
-        background:
-          theme.colors.background,
+        background: "rgba(255,255,255,.02)",
+
         border: `1px solid ${theme.colors.border}`,
-        borderRadius: "16px",
-        padding: "18px",
+
+        borderRadius: UI.RADIUS,
+
+        padding: 16,
+
+        display: "flex",
+
+        flexDirection: "column",
+
+        justifyContent: "center",
+
+        gap: 6,
+
+        minHeight: 88,
       }}
     >
-      <div
+      <span
         style={{
-          fontSize: "14px",
           color:
             theme.colors.textSecondary,
-          marginBottom: "8px",
+
+          fontSize: UI.FONT_TINY,
+
           fontWeight: 600,
         }}
       >
         {icon} {title}
-      </div>
+      </span>
 
-      <div
+      <strong
         style={{
-          fontSize: "18px",
-          fontWeight: 700,
           color: theme.colors.text,
+
+          fontSize: UI.FONT_BODY,
+
+          lineHeight: 1.25,
+
+          wordBreak: "break-word",
         }}
       >
         {value}
-      </div>
+      </strong>
     </div>
   );
 }

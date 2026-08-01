@@ -1,4 +1,14 @@
+import {
+  Calendar,
+  Dumbbell,
+  MessageSquare,
+  X,
+} from "lucide-react";
+
+import Button from "../UI/Button";
+
 import type { GymSession } from "../../types/GymSession";
+
 import { theme } from "../../styles/theme";
 
 type Props = {
@@ -7,7 +17,9 @@ type Props = {
 };
 
 function formatDate(date: string) {
-  return new Date(date).toLocaleDateString("fr-FR");
+  return new Date(date).toLocaleDateString(
+    "fr-FR"
+  );
 }
 
 export default function GymSessionModal({
@@ -22,180 +34,274 @@ export default function GymSessionModal({
       style={{
         position: "fixed",
         inset: 0,
-        background: "rgba(0,0,0,0.75)",
+        background: "rgba(0,0,0,.75)",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        padding: "20px",
+        padding: 18,
         zIndex: 9999,
       }}
     >
       <div
-        onClick={(e) => e.stopPropagation()}
+        onClick={(e) =>
+          e.stopPropagation()
+        }
         style={{
           width: "100%",
-          maxWidth: "600px",
-          maxHeight: "88vh",
+          maxWidth: 520,
+          maxHeight: "90vh",
           overflowY: "auto",
+
           background: theme.colors.card,
+
           border: `1px solid ${theme.colors.border}`,
-          borderRadius: "18px",
-          padding: "22px",
+
+          borderRadius: 22,
+
+          padding: 20,
         }}
       >
+        {/* Header */}
+
         <div
           style={{
             display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: "20px",
+            justifyContent:
+              "space-between",
+            alignItems: "flex-start",
+            gap: 16,
+            marginBottom: 22,
           }}
         >
-          <div>
+          <div
+            style={{
+              minWidth: 0,
+              flex: 1,
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 6,
+                color:
+                  theme.colors.textSecondary,
+                fontSize: 13,
+                marginBottom: 8,
+              }}
+            >
+              <Calendar
+                size={14}
+                color={
+                  theme.colors.primary
+                }
+              />
+
+              {formatDate(session.date)}
+            </div>
+
             <h2
               style={{
                 margin: 0,
-                color: theme.colors.primary,
-                fontSize: "24px",
+                color:
+                  theme.colors.text,
+                fontSize: 24,
+                fontWeight: 800,
               }}
             >
-              💪 {session.name}
+              {session.name}
             </h2>
-
-            <p
-              style={{
-                marginTop: "6px",
-                color: theme.colors.textSecondary,
-                fontSize: "14px",
-              }}
-            >
-              📅 {formatDate(session.date)}
-            </p>
           </div>
 
           <button
             onClick={onClose}
             style={{
-              width: "38px",
-              height: "38px",
+              width: 38,
+              height: 38,
               border: "none",
-              borderRadius: "10px",
-              background: theme.colors.primary,
-              color: "#000",
+              background:
+                "transparent",
+              color:
+                theme.colors.primary,
               cursor: "pointer",
-              fontWeight: 700,
-              fontSize: "16px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            ✕
+            <X size={22} />
           </button>
         </div>
+                {/* Exercices */}
 
-        {session.exercises.map((exercise) => (
-  <div
-    key={exercise.id}
-    style={{
-      marginBottom: "18px",
-      border: `1px solid ${theme.colors.border}`,
-      borderRadius: "14px",
-      padding: "14px",
-      background: theme.colors.background,
-    }}
-  >
-    <h3
-      style={{
-        margin: 0,
-        marginBottom: "12px",
-        color: theme.colors.primary,
-        fontSize: "18px",
-      }}
-    >
-      🏋️ {exercise.name}
-    </h3>
+        {session.exercises.map(
+          (exercise) => (
+            <div
+              key={exercise.id}
+              style={{
+                marginBottom: 18,
 
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "8px",
-      }}
-    >
-{exercise.sets.map((set, index) => (
-  <div
-    key={index}
-    style={{
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      padding: "10px 12px",
-      borderRadius: "10px",
-      background: theme.colors.card,
-      border: `1px solid ${theme.colors.border}`,
-    }}
-  >
-    <div
-      style={{
-        fontWeight: 700,
-        color: theme.colors.primary,
-        minWidth: "38px",
-      }}
-    >
-      S{index + 1}
-    </div>
+                border: `1px solid ${theme.colors.border}`,
 
-    <div
-      style={{
-        flex: 1,
-        textAlign: "center",
-        color: theme.colors.text,
-        fontWeight: 500,
-      }}
-    >
-      {set.reps} reps
-    </div>
+                borderRadius: 18,
 
-    <div
-      style={{
-        minWidth: "70px",
-        textAlign: "right",
-        color: theme.colors.text,
-        fontWeight: 700,
-      }}
-    >
-      {set.weight} kg
-    </div>
-  </div>
-))}
-    </div>
-  </div>
-))}
+                padding: 16,
+
+                background:
+                  theme.colors.background,
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                  marginBottom: 14,
+                }}
+              >
+                <Dumbbell
+                  size={18}
+                  color={theme.colors.primary}
+                />
+
+                <h3
+                  style={{
+                    margin: 0,
+                    color:
+                      theme.colors.primary,
+                    fontSize: 18,
+                    fontWeight: 700,
+                  }}
+                >
+                  {exercise.name}
+                </h3>
+              </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection:
+                    "column",
+                  gap: 8,
+                }}
+              >
+                {exercise.sets.map(
+                  (set, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns:
+                          "55px 1fr 1fr",
+
+                        alignItems:
+                          "center",
+
+                        gap: 12,
+
+                        padding:
+                          "12px 14px",
+
+                        borderRadius: 14,
+
+                        background:
+                          theme.colors.card,
+
+                        border: `1px solid ${theme.colors.border}`,
+                      }}
+                    >
+                      <div
+                        style={{
+                          fontWeight: 700,
+                          color:
+                            theme.colors.primary,
+                        }}
+                      >
+                        S{index + 1}
+                      </div>
+
+                      <div
+                        style={{
+                          textAlign:
+                            "center",
+                          color:
+                            theme.colors.text,
+                        }}
+                      >
+                        {set.reps} reps
+                      </div>
+
+                      <div
+                        style={{
+                          textAlign:
+                            "right",
+                          fontWeight: 700,
+                          color:
+                            theme.colors.text,
+                        }}
+                      >
+                        {set.weight} kg
+                      </div>
+                    </div>
+                  )
+                )}
+              </div>
+            </div>
+          )
+        )}
+
+        {/* Commentaire */}
+
         {session.comment && (
           <div
             style={{
-              marginTop: "22px",
-              padding: "16px",
-              background: theme.colors.background,
+              marginTop: 8,
+
+              padding: 18,
+
+              borderRadius: 18,
+
+              background:
+                theme.colors.background,
+
               border: `1px solid ${theme.colors.border}`,
-              borderRadius: "14px",
             }}
           >
             <div
               style={{
-                color: theme.colors.primary,
-                fontWeight: 700,
-                marginBottom: "10px",
-                fontSize: "16px",
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                marginBottom: 12,
               }}
             >
-              📝 Commentaire
+              <MessageSquare
+                size={18}
+                color={theme.colors.primary}
+              />
+
+              <span
+                style={{
+                  color:
+                    theme.colors.primary,
+                  fontWeight: 700,
+                }}
+              >
+                Commentaire
+              </span>
             </div>
 
             <div
               style={{
-                whiteSpace: "pre-wrap",
-                color: theme.colors.text,
-                lineHeight: 1.5,
-                fontSize: "15px",
+                whiteSpace:
+                  "pre-wrap",
+
+                color:
+                  theme.colors.text,
+
+                lineHeight: 1.6,
+
+                fontSize: 15,
               }}
             >
               {session.comment}
@@ -203,23 +309,19 @@ export default function GymSessionModal({
           </div>
         )}
 
-        <button
-          onClick={onClose}
+        <div
           style={{
-            marginTop: "22px",
-            width: "100%",
-            padding: "14px",
-            border: "none",
-            borderRadius: "12px",
-            background: theme.colors.primary,
-            color: "#000",
-            fontWeight: 700,
-            fontSize: "15px",
-            cursor: "pointer",
+            marginTop: 22,
           }}
         >
-          Fermer
-        </button>
+          <Button
+            variant="primary"
+            fullWidth
+            onClick={onClose}
+          >
+            Fermer
+          </Button>
+        </div>
       </div>
     </div>
   );

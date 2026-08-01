@@ -189,98 +189,134 @@ export default function CalendarGrid({
   }
 
   return (
-    <>
+  <>
+    <div
+      style={{
+        background: theme.colors.card,
+
+        border: `1px solid ${theme.colors.border}`,
+
+        borderRadius: 18,
+
+        padding: 16,
+
+        width: "100%",
+
+        boxSizing: "border-box",
+
+        boxShadow: theme.shadow.card,
+      }}
+    >
+      {/* Jours */}
+
       <div
         style={{
-          background: theme.colors.card,
-          border: `1px solid ${theme.colors.border}`,
-          borderRadius: "22px",
-          padding: "25px",
-          maxWidth: "920px",
-          margin: "0 auto",
-          boxShadow: theme.shadow.card,
+          display: "grid",
+
+          gridTemplateColumns:
+            "repeat(7,1fr)",
+
+          marginBottom: 12,
+
+          textAlign: "center",
+
+          color: theme.colors.primary,
+
+          fontWeight: 700,
+
+          fontSize: 13,
         }}
       >
-        {/* Jours de la semaine */}
-
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(7, 1fr)",
-            marginBottom: "18px",
-            textAlign: "center",
-            color: theme.colors.primary,
-            fontWeight: 700,
-            fontSize: "15px",
-          }}
-        >
-          {weekDays.map((dayName) => (
-            <div key={dayName}>{dayName}</div>
-          ))}
-        </div>
-
-        {/* Calendrier */}
-
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(7, 1fr)",
-            gap: "10px",
-          }}
-        >
-          {days.map((day, index) => {
-            let event: Event | undefined;
-
-            if (day.currentMonth) {
-              const dateKey = formatDateKey(
-                new Date(year, monthIndex, day.day)
-              );
-
-              event = events.find(
-                (e) => e.date === dateKey
-              );
-            }
-
-            return (
-              <CalendarDay
-                key={index}
-                day={day.day}
-                isCurrentMonth={day.currentMonth}
-                isToday={day.isToday}
-                isSelected={
-                  selectedDate !== null &&
-                  selectedDate.getDate() === day.day &&
-                  selectedDate.getMonth() === monthIndex &&
-                  selectedDate.getFullYear() === year
-                }
-                eventType={event?.type}
-                onClick={() => handleDayClick(day)}
-              />
-            );
-          })}
-        </div>
+        {weekDays.map((dayName) => (
+          <div
+            key={dayName}
+            style={{
+              paddingBottom: 6,
+            }}
+          >
+            {dayName}
+          </div>
+        ))}
       </div>
 
-      <EventModal
-        isOpen={isModalOpen}
-        selectedDate={selectedDate}
-        event={
-          selectedDate
-            ? events.find(
-                (event) =>
-                  event.date ===
-                  formatDateKey(selectedDate)
-              )
-            : undefined
-        }
-        onClose={() => {
-          setIsModalOpen(false);
-          setSelectedDate(null);
+      {/* Calendrier */}
+
+      <div
+        style={{
+          display: "grid",
+
+          gridTemplateColumns:
+            "repeat(7,1fr)",
+
+          gap: 6,
         }}
-        onCreate={handleCreate}
-        onUpdate={handleUpdate}
-        onDelete={handleDelete}
-      />
-    </>
-  );
+      >
+        {days.map((day, index) => {
+          let event: Event | undefined;
+
+          if (day.currentMonth) {
+            const dateKey = formatDateKey(
+              new Date(
+                year,
+                monthIndex,
+                day.day
+              )
+            );
+
+            event = events.find(
+              (e) => e.date === dateKey
+            );
+          }
+
+          return (
+            <CalendarDay
+              key={index}
+              day={day.day}
+              isCurrentMonth={
+                day.currentMonth
+              }
+              isToday={day.isToday}
+              isSelected={
+                selectedDate !== null &&
+                selectedDate.getDate() ===
+                  day.day &&
+                selectedDate.getMonth() ===
+                  monthIndex &&
+                selectedDate.getFullYear() ===
+                  year
+              }
+              eventType={event?.type}
+              onClick={() =>
+                handleDayClick(day)
+              }
+            />
+          );
+        })}
+      </div>
+    </div>
+
+    <EventModal
+      isOpen={isModalOpen}
+      selectedDate={selectedDate}
+      event={
+        selectedDate
+          ? events.find(
+              (event) =>
+                event.date ===
+                formatDateKey(
+                  selectedDate
+                )
+            )
+          : undefined
+      }
+      onClose={() => {
+        setIsModalOpen(false);
+        setSelectedDate(null);
+      }}
+      onCreate={handleCreate}
+      onUpdate={handleUpdate}
+      onDelete={handleDelete}
+    />
+  </>
+);
 }

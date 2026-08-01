@@ -1,30 +1,38 @@
+import { Tag } from "lucide-react";
+
 import { theme } from "../../styles/theme";
+import { UI } from "../../styles/ui";
 
 type RunFormHeaderProps = {
   isEditing: boolean;
 };
 
-export default function RunFormHeader({
-  isEditing,
-}: RunFormHeaderProps) {
+export default function RunFormHeader(
+  {}: RunFormHeaderProps
+) {
   return (
     <div
       style={{
-        marginBottom: "20px",
+        display: "flex",
+        alignItems: "center",
+        gap: 10,
+        marginBottom: 10,
       }}
     >
-      <h1
+      <Tag
+        size={20}
+        color={theme.colors.primary}
+      />
+
+      <span
         style={{
-          margin: 0,
-          color: theme.colors.primary,
-          fontSize: "26px",
+          color: theme.colors.text,
+          fontSize: UI.FONT_H2,
           fontWeight: 700,
         }}
       >
-        {isEditing
-          ? "✏️ Modifier une sortie"
-          : "🏃 Nouvelle sortie"}
-      </h1>
+        Nom
+      </span>
     </div>
   );
 }

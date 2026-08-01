@@ -59,9 +59,20 @@ export default function MonthAccordion({
   return (
     <div
       style={{
-        maxWidth: "900px",
-        margin: "0 auto 22px",
-      }}
+  background: theme.colors.card,
+
+  border: `1px solid ${theme.colors.border}`,
+
+  borderRadius: 18,
+
+  padding: 16,
+
+  cursor: "pointer",
+
+  transition: ".2s",
+
+  boxSizing: "border-box",
+}}
     >
       <div
         onClick={onToggle}
@@ -76,42 +87,91 @@ export default function MonthAccordion({
         }}
       >
         <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "flex-start",
-            gap: "20px",
-          }}
-        >
-          <div
-            style={{
-              flex: 1,
-            }}
-          >
-            <h2
-              style={{
-                margin: 0,
-                textTransform: "capitalize",
-              }}
-            >
-              {stats.monthLabel}
-            </h2>
+  style={{
+    display: "flex",
 
-            <p
-              style={{
-                marginTop: "10px",
-                color: theme.colors.textSecondary,
-              }}
-            >
-              📏 {stats.distance.toFixed(1)} km
-              {" • "}
-              ⛰ {stats.elevation} m
-              {" • "}
-              🏃 {stats.trainings}
-              {" • "}
-              🏁 {stats.races}
-            </p>
-          </div>
+    justifyContent: "space-between",
+
+    alignItems: "center",
+
+    gap: 14,
+  }}
+>
+  <div
+    style={{
+      flex: 1,
+    }}
+  >
+    <h2
+      style={{
+        margin: 0,
+
+        textTransform: "capitalize",
+
+        color: theme.colors.text,
+
+        fontSize: 22,
+
+        fontWeight: 800,
+      }}
+    >
+      {stats.monthLabel}
+    </h2>
+
+    <div
+      style={{
+        display: "flex",
+
+        flexWrap: "wrap",
+
+        gap: 8,
+
+        marginTop: 10,
+      }}
+    >
+      <span
+        style={{
+          color: theme.colors.primary,
+
+          fontSize: 13,
+
+          fontWeight: 700,
+        }}
+      >
+        📏 {stats.distance.toFixed(1)} km
+      </span>
+
+      <span
+        style={{
+          color: theme.colors.textSecondary,
+
+          fontSize: 13,
+        }}
+      >
+        ⛰ {stats.elevation} m
+      </span>
+
+      <span
+        style={{
+          color: theme.colors.textSecondary,
+
+          fontSize: 13,
+        }}
+      >
+        🏃 {stats.trainings}
+      </span>
+
+      <span
+        style={{
+          color: theme.colors.textSecondary,
+
+          fontSize: 13,
+        }}
+      >
+        🏁 {stats.races}
+      </span>
+    </div>
+  </div>
 
           <button
             onClick={(e) => {
@@ -124,19 +184,28 @@ export default function MonthAccordion({
             }}
             title="Exporter en CSV"
             style={{
-              width: "42px",
-              height: "42px",
-              background: theme.colors.primary,
-              color: "#000",
-              border: "none",
-              borderRadius: "12px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-              transition: "0.2s",
-              flexShrink: 0,
-            }}
+  width: 38,
+
+  height: 38,
+
+  background: "transparent",
+
+  color: theme.colors.primary,
+
+  border: `1px solid ${theme.colors.border}`,
+
+  borderRadius: 12,
+
+  display: "flex",
+
+  justifyContent: "center",
+
+  alignItems: "center",
+
+  cursor: "pointer",
+
+  flexShrink: 0,
+}}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -160,10 +229,10 @@ export default function MonthAccordion({
       {isOpen && (
         <div
           style={{
-            marginTop: "18px",
+            marginTop: 12,
             display: "flex",
             flexDirection: "column",
-            gap: "18px",
+            gap: 12,
           }}
         >
           {runs.map((run) => (

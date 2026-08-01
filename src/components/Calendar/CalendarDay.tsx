@@ -1,3 +1,9 @@
+import {
+  Footprints,
+  Flag,
+  Dumbbell,
+} from "lucide-react";
+
 import { theme } from "../../styles/theme";
 
 type CalendarDayProps = {
@@ -17,73 +23,96 @@ export default function CalendarDay({
   eventType,
   onClick,
 }: CalendarDayProps) {
-  const icon =
-    eventType === "training"
-      ? "🏃"
-      : eventType === "race"
-      ? "🏁"
-      : eventType === "gym"
-      ? "💪"
-      : null;
-
   return (
-    <div
+    <button
       onClick={onClick}
       style={{
-        height: "78px",
-        borderRadius: "14px",
+        width: "100%",
+        aspectRatio: "1",
+
+        padding: 0,
+
+        borderRadius: 14,
 
         background: theme.colors.background,
 
         border: `2px solid ${
           isSelected
-            ? "#FFD700"
+            ? theme.colors.primary
             : isToday
             ? theme.colors.primary
             : theme.colors.border
         }`,
 
         boxShadow: isSelected
-          ? "0 0 18px rgba(212,175,55,.35)"
+          ? "0 0 14px rgba(212,175,55,.28)"
           : "none",
 
         cursor: "pointer",
 
-        transition: "all .18s ease",
+        transition: ".18s",
 
         position: "relative",
 
         display: "flex",
-        justifyContent: "center",
+
         alignItems: "center",
+
+        justifyContent: "center",
 
         color: isCurrentMonth
           ? theme.colors.text
           : "#666",
 
-        fontSize: "20px",
+        fontSize: 18,
+
         fontWeight: 700,
 
         transform: isSelected
-          ? "scale(1.03)"
+          ? "scale(1.02)"
           : "scale(1)",
       }}
     >
       {day}
 
-      {icon && (
-        <span
+      {eventType === "training" && (
+        <Footprints
+          size={13}
+          strokeWidth={2.3}
+          color={theme.colors.primary}
           style={{
             position: "absolute",
-            top: "6px",
-            right: "6px",
-            fontSize: "18px",
-            lineHeight: 1,
+            top: 5,
+            right: 5,
           }}
-        >
-          {icon}
-        </span>
+        />
       )}
-    </div>
+
+      {eventType === "race" && (
+        <Flag
+          size={13}
+          strokeWidth={2.3}
+          color={theme.colors.primary}
+          style={{
+            position: "absolute",
+            top: 5,
+            right: 5,
+          }}
+        />
+      )}
+
+      {eventType === "gym" && (
+        <Dumbbell
+          size={13}
+          strokeWidth={2.3}
+          color={theme.colors.primary}
+          style={{
+            position: "absolute",
+            top: 5,
+            right: 5,
+          }}
+        />
+      )}
+    </button>
   );
 }

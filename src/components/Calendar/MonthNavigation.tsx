@@ -1,4 +1,10 @@
+import {
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+
 import { theme } from "../../styles/theme";
+import { UI } from "../../styles/ui";
 
 type MonthNavigationProps = {
   month: Date;
@@ -11,42 +17,65 @@ export default function MonthNavigation({
   onPrevious,
   onNext,
 }: MonthNavigationProps) {
-  const monthName = month.toLocaleDateString("fr-FR", {
-    month: "long",
-    year: "numeric",
-  });
+  const monthName =
+    month.toLocaleDateString("fr-FR", {
+      month: "long",
+      year: "numeric",
+    });
 
   return (
     <div
       style={{
-        display: "flex",
-        justifyContent: "space-between",
+        display: "grid",
+        gridTemplateColumns:
+          "44px 1fr 44px",
         alignItems: "center",
-        marginBottom: "35px",
+        gap: 16,
+        marginBottom: 22,
       }}
     >
       <button
         onClick={onPrevious}
         style={{
-          width: "46px",
-          height: "46px",
-          borderRadius: "50%",
-          border: `1px solid ${theme.colors.primary}`,
-          background: theme.colors.card,
+          width: 44,
+          height: 44,
+
+          border: "none",
+
+          borderRadius: 12,
+
+          background:
+            theme.colors.background,
+
           color: theme.colors.primary,
-          fontSize: "22px",
+
+          display: "flex",
+
+          alignItems: "center",
+
+          justifyContent: "center",
+
           cursor: "pointer",
         }}
       >
-        ←
+        <ChevronLeft size={22} />
       </button>
 
       <h2
         style={{
           margin: 0,
+
+          textAlign: "center",
+
           color: theme.colors.text,
-          fontSize: "32px",
+
+          fontSize: UI.FONT_H2,
+
+          fontWeight: 700,
+
           textTransform: "capitalize",
+
+          whiteSpace: "nowrap",
         }}
       >
         {monthName}
@@ -55,17 +84,28 @@ export default function MonthNavigation({
       <button
         onClick={onNext}
         style={{
-          width: "46px",
-          height: "46px",
-          borderRadius: "50%",
-          border: `1px solid ${theme.colors.primary}`,
-          background: theme.colors.card,
+          width: 44,
+          height: 44,
+
+          border: "none",
+
+          borderRadius: 12,
+
+          background:
+            theme.colors.background,
+
           color: theme.colors.primary,
-          fontSize: "22px",
+
+          display: "flex",
+
+          alignItems: "center",
+
+          justifyContent: "center",
+
           cursor: "pointer",
         }}
       >
-        →
+        <ChevronRight size={22} />
       </button>
     </div>
   );

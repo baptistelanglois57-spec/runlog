@@ -1,4 +1,16 @@
+import type { ReactNode } from "react";
+
 import { useNavigate } from "react-router-dom";
+
+import {
+  Calendar,
+  Clock3,
+  Gauge,
+  Mountain,
+  Heart,
+  Pencil,
+  Trash2,
+} from "lucide-react";
 
 import { formatDate } from "../../utils/date";
 import { getAveragePace } from "../../utils/stats";
@@ -7,17 +19,18 @@ import type { Run } from "../../types/Run";
 
 import PageCard from "../Layout/PageCard";
 
-import Button from "../UI/Button";
-import Stat from "../UI/Stat";
+import { theme } from "../../styles/theme";
 
 type RunCardProps = {
   run: Run;
-  onDelete: (id: string) => void;
+  onDelete?: (id: string) => void;
+  showActions?: boolean;
 };
 
 export default function RunCard({
   run,
   onDelete,
+  showActions = true,
 }: RunCardProps) {
   const navigate = useNavigate();
 
@@ -25,141 +38,261 @@ export default function RunCard({
     <PageCard maxWidth="100%">
       <div
         style={{
-          display: "flex",
-          justifyContent: "space-between",
+          display: "grid",
+          gridTemplateColumns: "1fr auto 1fr",
           alignItems: "center",
-          marginBottom: "16px",
-          flexWrap: "wrap",
-          gap: "12px",
+          gap: 12,
+          marginBottom: 18,
         }}
       >
-        <div>
-          <h2
-            style={{
-              margin: 0,
-            }}
-          >
-            {run.type === "training"
-              ? "🏃"
-              : "🏁"}{" "}
-            {run.name}
-          </h2>
-
-          <p
-            style={{
-              marginTop: "8px",
-              opacity: 0.7,
-            }}
-          >
-            📅 {formatDate(run.date)}
-          </p>
-        </div>
-
-        <h2
+        <div
           style={{
-            margin: 0,
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+            color: theme.colors.textSecondary,
+            fontSize: 13,
+            fontWeight: 600,
           }}
         >
-          {run.distance.toFixed(2)} km
-        </h2>
-      </div>
+          <Calendar
+            size={15}
+            color={theme.colors.primary}
+          />
 
-<div
+          {formatDate(run.date)}
+        </div>
+
+        <div
+          style={{
+            textAlign: "center",
+            fontSize: 18,
+            fontWeight: 800,
+            color: theme.colors.text,
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
+          {run.type === "training"
+            ? "🏃"
+            : "🏁"}{" "}
+          {run.name}
+        </div>
+
+        <div
+          style={{
+            textAlign: "right",
+            color: theme.colors.primary,
+            fontWeight: 800,
+            fontSize: 22,
+            whiteSpace: "nowrap",
+          }}
+        >
+          {run.distance.toFixed(1)} km
+        </div>
+      </div>
+      <div
   style={{
     display: "grid",
     gridTemplateColumns:
-      "repeat(auto-fit, minmax(120px, 1fr))",
-    gap: "12px",
-    marginTop: "10px",
+      "repeat(4,minmax(0,1fr))",
+    gap: 10,
+    marginTop: 6,
   }}
 >
-  <Stat
-    icon="⏱"
-    title="Temps"
+  <MiniStat
+    icon={
+      <Clock3
+        size={16}
+        color={theme.colors.primary}
+      />
+    }
     value={run.duration}
   />
 
-  <Stat
-    icon="⚡"
-    title="Allure"
+  <MiniStat
+    icon={
+      <Gauge
+        size={16}
+        color={theme.colors.primary}
+      />
+    }
     value={getAveragePace(
       run.distance,
       run.duration
     )}
   />
 
-  <Stat
-    icon="⛰"
-    title="D+"
+  <MiniStat
+    icon={
+      <Mountain
+        size={16}
+        color={theme.colors.primary}
+      />
+    }
     value={`${run.elevation} m`}
   />
 
-  {run.averageHeartRate && (
-    <Stat
-      icon="❤️"
-      title="BPM"
-      value={`${run.averageHeartRate} bpm`}
-    />
-  )}
+  <MiniStat
+    icon={
+      <Heart
+        size={16}
+        color="#ef4444"
+      />
+    }
+    value={
+      run.averageHeartRate
+        ? `${run.averageHeartRate}`
+        : "--"
+    }
+  />
+</div>
 
-  {run.type === "race" && (
-    <>
-      {run.location && (
-        <Stat
-          icon="📍"
-          title="Lieu"
-          value={run.location}
+{run.type === "race" && (
+  <div
+    style={{
+      display: "grid",
+      gridTemplateColumns:
+        "repeat(auto-fit,minmax(180px,1fr))",
+      gap: 10,
+      marginTop: 14,
+    }}
+  >
+    {run.location && (
+      <MiniStat
+        icon="📍"
+        value={run.location}
+      />
+    )}
+
+    {run.position !== undefined &&
+      run.participants !==
+        undefined && (
+        <MiniStat
+          icon="🏆"
+          value={`${run.position} / ${run.participants}`}
         />
       )}
 
-      {run.position !== undefined &&
-        run.participants !==
-          undefined && (
-          <Stat
-            icon="🏆"
-            title="Classement"
-            value={`${run.position} / ${run.participants}`}
-          />
-        )}
-
-      {run.competitionName && (
-        <Stat
-          icon="🏁"
-          title="Compétition"
-          value={run.competitionName}
-        />
-      )}
-    </>
-  )}
-</div>
-
-<div
-  style={{
-    display: "flex",
-    justifyContent: "center",
-    gap: "10px",
-    marginTop: "20px",
-    flexWrap: "wrap",
-  }}
->
-  <Button
-    variant="primary"
-    onClick={() =>
-      navigate(`/edit/${run.id}`)
-    }
+    {run.competitionName && (
+      <MiniStat
+        icon="🏁"
+        value={run.competitionName}
+      />
+    )}
+  </div>
+)}
+{showActions && onDelete && (
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "flex-end",
+      alignItems: "center",
+      gap: 10,
+      marginTop: 14,
+    }}
   >
-    ✏ Modifier
-  </Button>
+    <button
+      onClick={() =>
+        navigate(`/edit/${run.id}`)
+      }
+      style={{
+        background: "transparent",
+        border: "none",
+        padding: 4,
+        cursor: "pointer",
+        display: "flex",
+        alignItems: "center",
+        color: theme.colors.primary,
+      }}
+    >
+      <Pencil size={18} />
+    </button>
 
-  <Button
-    variant="danger"
-    onClick={() =>
-      onDelete(run.id)
-    }
-  >
-    🗑 Supprimer
-  </Button>
-</div>
+    <button
+      onClick={() =>
+        onDelete(run.id)
+      }
+      style={{
+        background: "transparent",
+        border: "none",
+        padding: 4,
+        cursor: "pointer",
+        display: "flex",
+        alignItems: "center",
+        color: "#ef4444",
+      }}
+    >
+      <Trash2 size={18} />
+    </button>
+  </div>
+)}
+
     </PageCard>
+  );
+}
+
+type MiniStatProps = {
+  icon: ReactNode | string;
+  value: string;
+};
+
+function MiniStat({
+  icon,
+  value,
+}: MiniStatProps) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+
+        gap: 8,
+
+        minHeight: 82,
+
+        padding: "12px 8px",
+
+        background:
+          theme.colors.background,
+
+        border: `1px solid ${theme.colors.border}`,
+
+        borderRadius: 14,
+      }}
+    >
+      {typeof icon === "string" ? (
+        <span
+          style={{
+            fontSize: 18,
+          }}
+        >
+          {icon}
+        </span>
+      ) : (
+        icon
+      )}
+
+      <span
+        style={{
+          color: theme.colors.text,
+
+          fontSize: 15,
+
+          fontWeight: 700,
+
+          textAlign: "center",
+
+          lineHeight: 1.2,
+
+          whiteSpace: "nowrap",
+        }}
+      >
+        {value}
+      </span>
+    </div>
   );
 }

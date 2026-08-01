@@ -11,6 +11,15 @@ import RecordSection from "../components/Records/RecordSection";
 import RecordCard from "../components/Records/RecordCard";
 
 import {
+  Route,
+  Gauge,
+  Mountain,
+  Flame,
+  Flag,
+  Trophy,
+} from "lucide-react";
+
+import {
   getLongestRun,
   getFastestAveragePace,
   getHighestElevation,
@@ -30,8 +39,8 @@ import { getAveragePace } from "../utils/stats";
 
 export default function Records() {
   const [runs, setRuns] = useState<Run[]>([]);
-
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] =
+    useState(true);
 
   useEffect(() => {
     loadRuns();
@@ -50,12 +59,13 @@ export default function Records() {
       <main
         style={{
           minHeight: "100vh",
-          background: theme.colors.background,
+          background:
+            theme.colors.background,
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
           color: theme.colors.text,
-          fontSize: "22px",
+          fontSize: 22,
         }}
       >
         Chargement...
@@ -63,36 +73,42 @@ export default function Records() {
     );
   }
 
-  const longestRun = getLongestRun(runs);
+  const longestRun =
+    getLongestRun(runs);
 
-  const fastestRun = getFastestAveragePace(runs);
-
-  const hr130 = getBestPaceHeartRateZone(
-    runs,
-    0,
-    130
-  );
-
-  const hr140 = getBestPaceHeartRateZone(
-    runs,
-    131,
-    140
-  );
-
-  const hr150 = getBestPaceHeartRateZone(
-    runs,
-    141,
-    150
-  );
-
-  const hr160 = getBestPaceHeartRateZone(
-    runs,
-    151,
-    160
-  );
+  const fastestRun =
+    getFastestAveragePace(runs);
 
   const highestElevation =
     getHighestElevation(runs);
+
+  const hr130 =
+    getBestPaceHeartRateZone(
+      runs,
+      0,
+      130
+    );
+
+  const hr140 =
+    getBestPaceHeartRateZone(
+      runs,
+      131,
+      140
+    );
+
+  const hr150 =
+    getBestPaceHeartRateZone(
+      runs,
+      141,
+      150
+    );
+
+  const hr160 =
+    getBestPaceHeartRateZone(
+      runs,
+      151,
+      160
+    );
 
   const record5 =
     getRaceRecord(runs, 5);
@@ -124,14 +140,12 @@ export default function Records() {
   const bestPosition =
     getBestPosition(runs);
 
-  const wins =
-    getWins(runs);
+  const wins = getWins(runs);
 
   const podiums =
     getPodiums(runs);
 
-  const top10 =
-    getTop10(runs);
+  const top10 = getTop10(runs);
 
   return (
     <main
@@ -139,301 +153,485 @@ export default function Records() {
         minHeight: "100vh",
         background:
           theme.colors.background,
-        padding: "40px",
+        padding: "24px 18px 120px",
       }}
     >
       <RecordsHeader />
 
-      {/* DISTANCES */}
+      {/* À LA UNE */}
 
       <RecordSection
-  title="Distances"
-  icon="🏃"
->
+        title="À la une"
+        icon={
+          <Trophy
+            size={22}
+            color={theme.colors.primary}
+          />
+        }
+      >
               <RecordCard
-          icon="📏"
-          title="Plus longue sortie"
-          value={
-            longestRun
-              ? `${longestRun.distance.toFixed(2)} km`
-              : "--"
-          }
-          subtitle={
-            longestRun
-              ? longestRun.name
-              : "Aucune sortie"
-          }
+        icon={
+          <Route
+            size={20}
+            color={theme.colors.primary}
+          />
+        }
+        title="Plus longue sortie"
+        value={
+          longestRun
+            ? `${longestRun.distance.toFixed(
+                2
+              )} km`
+            : "--"
+        }
+        subtitle={
+          longestRun
+            ? `${longestRun.name} • ${longestRun.date}`
+            : "Aucune sortie"
+        }
+      />
+
+      <RecordCard
+        icon={
+          <Gauge
+            size={20}
+            color={theme.colors.primary}
+          />
+        }
+        title="Meilleure allure"
+        value={
+          fastestRun
+            ? getAveragePace(
+                fastestRun.distance,
+                fastestRun.duration
+              )
+            : "--"
+        }
+        subtitle={
+          fastestRun
+            ? fastestRun.name
+            : "Aucune sortie"
+        }
+      />
+
+      <RecordCard
+        icon={
+          <Mountain
+            size={20}
+            color={theme.colors.primary}
+          />
+        }
+        title="Plus gros D+"
+        value={
+          highestElevation
+            ? `${highestElevation.elevation} m`
+            : "--"
+        }
+        subtitle={
+          highestElevation
+            ? highestElevation.name
+            : "Aucune sortie"
+        }
+      />
+    </RecordSection>
+
+    {/* DISTANCES */}
+
+    <RecordSection
+      title="Distances"
+      icon={
+        <Route
+          size={22}
+          color={theme.colors.primary}
         />
+      }
+    >
+      <RecordCard
+        icon={
+          <Trophy
+            size={18}
+            color={theme.colors.primary}
+          />
+        }
+        title="5 km"
+        value={
+          record5
+            ? record5.duration
+            : "🔒"
+        }
+        subtitle={
+          record5
+            ? `${record5.name} • ${record5.date}`
+            : "Effectue une sortie de 5 km"
+        }
+      />
 
-        <RecordCard
-          icon="🥇"
-          title="5 km"
-          value={
-            record5
-              ? record5.duration
-              : "🔒"
-          }
-          subtitle={
-            record5
-              ? `${record5.name} • ${record5.date}`
-              : "Effectue une sortie de 5 km"
-          }
-        />
+      <RecordCard
+        icon={
+          <Trophy
+            size={18}
+            color={theme.colors.primary}
+          />
+        }
+        title="10 km"
+        value={
+          record10
+            ? record10.duration
+            : "🔒"
+        }
+        subtitle={
+          record10
+            ? `${record10.name} • ${record10.date}`
+            : "Effectue une sortie de 10 km"
+        }
+      />
 
-        <RecordCard
-          icon="🥇"
-          title="10 km"
-          value={
-            record10
-              ? record10.duration
-              : "🔒"
-          }
-          subtitle={
-            record10
-              ? `${record10.name} • ${record10.date}`
-              : "Effectue une sortie de 10 km"
-          }
-        />
+      <RecordCard
+        icon={
+          <Trophy
+            size={18}
+            color={theme.colors.primary}
+          />
+        }
+        title="15 km"
+        value={
+          record15
+            ? record15.duration
+            : "🔒"
+        }
+        subtitle={
+          record15
+            ? `${record15.name} • ${record15.date}`
+            : "Effectue une sortie de 15 km"
+        }
+      />
 
-        <RecordCard
-          icon="🥇"
-          title="15 km"
-          value={
-            record15
-              ? record15.duration
-              : "🔒"
-          }
-          subtitle={
-            record15
-              ? `${record15.name} • ${record15.date}`
-              : "Effectue une sortie de 15 km"
-          }
-        />
+      <RecordCard
+        icon={
+          <Trophy
+            size={18}
+            color={theme.colors.primary}
+          />
+        }
+        title="Semi-marathon"
+        value={
+          recordSemi
+            ? recordSemi.duration
+            : "🔒"
+        }
+        subtitle={
+          recordSemi
+            ? `${recordSemi.name} • ${recordSemi.date}`
+            : "Effectue une sortie de 21,1 km"
+        }
+      />
 
-        <RecordCard
-          icon="🥇"
-          title="Semi-marathon"
-          value={
-            recordSemi
-              ? recordSemi.duration
-              : "🔒"
-          }
-          subtitle={
-            recordSemi
-              ? `${recordSemi.name} • ${recordSemi.date}`
-              : "Effectue une sortie de 21,1 km"
-          }
-        />
+      <RecordCard
+        icon={
+          <Trophy
+            size={18}
+            color={theme.colors.primary}
+          />
+        }
+        title="Marathon"
+        value={
+          recordMarathon
+            ? recordMarathon.duration
+            : "🔒"
+        }
+        subtitle={
+          recordMarathon
+            ? `${recordMarathon.name} • ${recordMarathon.date}`
+            : "Effectue une sortie de 42,2 km"
+        }
+      />
+    </RecordSection>
+        {/* ALLURES */}
 
-        <RecordCard
-          icon="🥇"
-          title="Marathon"
-          value={
-            recordMarathon
-              ? recordMarathon.duration
-              : "🔒"
-          }
-          subtitle={
-            recordMarathon
-              ? `${recordMarathon.name} • ${recordMarathon.date}`
-              : "Effectue une sortie de 42,2 km"
-          }
-        />
-      </RecordSection>
-
-      {/* ALLURES */}
-
-      <RecordSection
-        title="Allures"
-        icon="⚡"
-      >
-        <RecordCard
-          icon="⚡"
-          title="Allure moyenne la plus rapide"
-          value={
-            fastestRun
-              ? getAveragePace(
-                  fastestRun.distance,
-                  fastestRun.duration
-                )
-              : "--"
-          }
-          subtitle={
-            fastestRun
-              ? fastestRun.name
-              : "Aucune sortie"
-          }
-          details={[
-           {
-  icon: "❤️",
-  label: "≤130 bpm",
-  value: hr130
-    ? getAveragePace(
-        hr130.distance,
-        hr130.duration
-      )
-    : "🔒",
-},
-{
-  icon: "💚",
-  label: "131-140 bpm",
-  value: hr140
-    ? getAveragePace(
-        hr140.distance,
-        hr140.duration
-      )
-    : "🔒",
-},
-{
-  icon: "💛",
-  label: "141-150 bpm",
-  value: hr150
-    ? getAveragePace(
-        hr150.distance,
-        hr150.duration
-      )
-    : "🔒",
-},
-{
-  icon: "🧡",
-  label: "151-160 bpm",
-  value: hr160
-    ? getAveragePace(
-        hr160.distance,
-        hr160.duration
-      )
-    : "🔒",
-},
-          ]}
-        />
-      </RecordSection>
-            {/* DÉNIVELÉ */}
-
-      <RecordSection
-        title="Dénivelé"
-        icon="⛰"
-      >
-        <RecordCard
-          icon="⛰"
-          title="Plus gros D+"
-          value={
-            highestElevation
-              ? `${highestElevation.elevation} m`
-              : "--"
-          }
-          subtitle={
-            highestElevation
-              ? highestElevation.name
-              : "Aucune sortie"
-          }
-        />
-      </RecordSection>
-
-      {/* VOLUMES */}
-
-      <RecordSection
-        title="Volumes"
-        icon="🔥"
-      >
-        <RecordCard
-  icon="📅"
-  title="Plus grosse semaine"
-  value={
-    biggestWeek
-      ? `${biggestWeek.total.toFixed(2)} km`
-      : "--"
+<RecordSection
+  title="Allures"
+  icon={
+    <Gauge
+      size={22}
+      color={theme.colors.primary}
+    />
   }
-    subtitle={
-    biggestWeek
-      ? biggestWeek.date
-      : "Aucune donnée"
-  }
-/>
-
-<RecordCard
-  icon="📆"
-  title="Plus gros mois"
-  value={
-    biggestMonth
-      ? `${biggestMonth.total.toFixed(2)} km`
-      : "--"
-  }
-  subtitle={
-    biggestMonth
-      ? biggestMonth.date
-      : "Aucune donnée"
-  }
-/>
-
-<RecordCard
-  icon="🗓️"
-  title="Plus grosse année"
-  value={
-    biggestYear
-      ? `${biggestYear.total.toFixed(2)} km`
-      : "--"
-  }
-  subtitle={
-    biggestYear
-      ? biggestYear.date
-      : "Aucune donnée"
-  }
-/>
-
-        <RecordCard
-          icon="🏃"
-          title="Plus de sorties sur un mois"
-          value={`${mostRunsMonth}`}
-          subtitle={
-            mostRunsMonth > 1
-              ? "sorties"
-              : "sortie"
-          }
-        />
-      </RecordSection>
-
-      {/* COMPÉTITIONS */}
-
-      <RecordSection
-  title="Compétitions"
-  icon="🏁"
 >
-              <RecordCard
-          icon="🏆"
-          title="Meilleure place"
-          value={
-            bestPosition
-              ? `${bestPosition.position}ᵉ`
-              : "🔒"
-          }
-          subtitle={
-            bestPosition
-              ? bestPosition.name
-              : "Aucune compétition"
-          }
+  <div
+    style={{
+      display: "grid",
+      gridTemplateColumns:
+        "repeat(5,minmax(0,1fr))",
+      gap: 14,
+      width: "100%",
+      gridColumn: "1 / -1",
+    }}
+  >
+    <RecordCard
+      icon={
+        <Gauge
+          size={18}
+          color={theme.colors.primary}
         />
+      }
+      title="Meilleure"
+      value={
+        fastestRun
+          ? getAveragePace(
+              fastestRun.distance,
+              fastestRun.duration
+            )
+          : "--"
+      }
+    />
 
-        <RecordCard
-          icon="🥇"
-          title="Victoires"
-          value={`${wins}`}
-          subtitle="1ʳᵉ place"
-        />
+    <RecordCard
+      icon="❤️"
+      title="≤130"
+      value={
+        hr130
+          ? getAveragePace(
+              hr130.distance,
+              hr130.duration
+            )
+          : "🔒"
+      }
+    />
 
-        <RecordCard
-          icon="🥈"
-          title="Podiums"
-          value={`${podiums}`}
-          subtitle="Top 3"
-        />
+    <RecordCard
+      icon="💚"
+      title="131-140"
+      value={
+        hr140
+          ? getAveragePace(
+              hr140.distance,
+              hr140.duration
+            )
+          : "🔒"
+      }
+    />
 
-        <RecordCard
-          icon="🔟"
-          title="Top 10"
-          value={`${top10}`}
-          subtitle="Top 10"
+    <RecordCard
+      icon="💛"
+      title="141-150"
+      value={
+        hr150
+          ? getAveragePace(
+              hr150.distance,
+              hr150.duration
+            )
+          : "🔒"
+      }
+    />
+
+    <RecordCard
+      icon="🧡"
+      title="151-160"
+      value={
+        hr160
+          ? getAveragePace(
+              hr160.distance,
+              hr160.duration
+            )
+          : "🔒"
+      }
+    />
+  </div>
+</RecordSection>
+
+    {/* DÉNIVELÉ */}
+
+    <RecordSection
+      title="Dénivelé"
+      icon={
+        <Mountain
+          size={22}
+          color={theme.colors.primary}
         />
-      </RecordSection>
-    </main>
-  );
+      }
+    >
+      <RecordCard
+        icon={
+          <Mountain
+            size={18}
+            color={theme.colors.primary}
+          />
+        }
+        title="Plus gros D+"
+        value={
+          highestElevation
+            ? `${highestElevation.elevation} m`
+            : "--"
+        }
+        subtitle={
+          highestElevation
+            ? highestElevation.name
+            : "Aucune sortie"
+        }
+      />
+    </RecordSection>
+
+    {/* VOLUMES */}
+
+    <RecordSection
+      title="Volumes"
+      icon={
+        <Flame
+          size={22}
+          color={theme.colors.primary}
+        />
+      }
+    >
+      <RecordCard
+        icon={
+          <Flame
+            size={18}
+            color={theme.colors.primary}
+          />
+        }
+        title="Plus grosse semaine"
+        value={
+          biggestWeek
+            ? `${biggestWeek.total.toFixed(
+                2
+              )} km`
+            : "--"
+        }
+        subtitle={
+          biggestWeek
+            ? biggestWeek.date
+            : "Aucune donnée"
+        }
+      />
+
+      <RecordCard
+        icon={
+          <Flame
+            size={18}
+            color={theme.colors.primary}
+          />
+        }
+        title="Plus gros mois"
+        value={
+          biggestMonth
+            ? `${biggestMonth.total.toFixed(
+                2
+              )} km`
+            : "--"
+        }
+        subtitle={
+          biggestMonth
+            ? biggestMonth.date
+            : "Aucune donnée"
+        }
+      />
+
+      <RecordCard
+        icon={
+          <Flame
+            size={18}
+            color={theme.colors.primary}
+          />
+        }
+        title="Plus grosse année"
+        value={
+          biggestYear
+            ? `${biggestYear.total.toFixed(
+                2
+              )} km`
+            : "--"
+        }
+        subtitle={
+          biggestYear
+            ? biggestYear.date
+            : "Aucune donnée"
+        }
+      />
+
+      <RecordCard
+        icon={
+          <Route
+            size={18}
+            color={theme.colors.primary}
+          />
+        }
+        title="Sorties sur un mois"
+        value={`${mostRunsMonth}`}
+        subtitle={
+          mostRunsMonth > 1
+            ? "sorties"
+            : "sortie"
+        }
+      />
+    </RecordSection>
+
+    {/* COMPÉTITIONS */}
+
+    <RecordSection
+      title="Compétitions"
+      icon={
+        <Flag
+          size={22}
+          color={theme.colors.primary}
+        />
+      }
+    >
+      <RecordCard
+        icon={
+          <Trophy
+            size={18}
+            color={theme.colors.primary}
+          />
+        }
+        title="Meilleure place"
+        value={
+          bestPosition
+            ? `${bestPosition.position}ᵉ`
+            : "🔒"
+        }
+        subtitle={
+          bestPosition
+            ? bestPosition.name
+            : "Aucune compétition"
+        }
+      />
+
+      <RecordCard
+        icon={
+          <Trophy
+            size={18}
+            color={theme.colors.primary}
+          />
+        }
+        title="Victoires"
+        value={`${wins}`}
+        subtitle="1ʳᵉ place"
+      />
+
+      <RecordCard
+        icon={
+          <Trophy
+            size={18}
+            color={theme.colors.primary}
+          />
+        }
+        title="Podiums"
+        value={`${podiums}`}
+        subtitle="Top 3"
+      />
+
+      <RecordCard
+        icon={
+          <Trophy
+            size={18}
+            color={theme.colors.primary}
+          />
+        }
+        title="Top 10"
+        value={`${top10}`}
+        subtitle="Top 10"
+      />
+    </RecordSection>
+  </main>
+);
 }

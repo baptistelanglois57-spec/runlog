@@ -1,4 +1,8 @@
-import type { ButtonHTMLAttributes, ReactNode } from "react";
+import type {
+  ButtonHTMLAttributes,
+  ReactNode,
+} from "react";
+
 import { theme } from "../../styles/theme";
 
 type Variant =
@@ -7,11 +11,12 @@ type Variant =
   | "danger"
   | "secondary";
 
-type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
-  children: ReactNode;
-  variant?: Variant;
-  fullWidth?: boolean;
-};
+type Props =
+  ButtonHTMLAttributes<HTMLButtonElement> & {
+    children: ReactNode;
+    variant?: Variant;
+    fullWidth?: boolean;
+  };
 
 export default function Button({
   children,
@@ -21,8 +26,8 @@ export default function Button({
   ...props
 }: Props) {
   const colors = {
-    primary: "#3b82f6",
-    success: "#22c55e",
+    primary: theme.colors.primary,
+    success: theme.colors.primary,
     danger: "#ef4444",
     secondary: theme.colors.card,
   };
@@ -32,10 +37,11 @@ export default function Button({
       {...props}
       style={{
         background: colors[variant],
+
         color:
           variant === "secondary"
             ? theme.colors.text
-            : "white",
+            : "#000",
 
         border:
           variant === "secondary"
@@ -52,9 +58,11 @@ export default function Button({
 
         cursor: "pointer",
 
-        transition: "all .2s",
+        transition: "all .2s ease",
 
-        width: fullWidth ? "100%" : undefined,
+        width: fullWidth
+          ? "100%"
+          : undefined,
 
         boxShadow: theme.shadow.card,
 

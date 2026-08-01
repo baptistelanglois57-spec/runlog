@@ -1,8 +1,16 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChevronLeft } from "lucide-react";
+import {
+  ChevronLeft,
+  CalendarDays,
+} from "lucide-react";
 
 import { theme } from "../styles/theme";
+import { UI } from "../styles/ui";
+
+import AppContainer from "../components/Layout/AppContainer";
+import Section from "../components/Layout/Section";
+import PageCard from "../components/Layout/PageCard";
 
 import MonthNavigation from "../components/Calendar/MonthNavigation";
 import Calendar from "../components/Calendar/Calendar";
@@ -10,7 +18,8 @@ import Calendar from "../components/Calendar/Calendar";
 export default function Agenda() {
   const navigate = useNavigate();
 
-  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [currentMonth, setCurrentMonth] =
+    useState(new Date());
 
   function previousMonth() {
     setCurrentMonth(
@@ -33,66 +42,88 @@ export default function Agenda() {
   }
 
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        background: theme.colors.background,
-        color: theme.colors.text,
-        padding: "40px",
-      }}
-    >
-      <div
-        style={{
-          position: "relative",
-          maxWidth: "900px",
-          margin: "0 auto 40px",
-          background: theme.colors.card,
-          border: `1px solid ${theme.colors.border}`,
-          borderRadius: "22px",
-          padding: "35px",
-          boxShadow: theme.shadow.card,
-          textAlign: "center",
-        }}
-      >
-        <button
-          onClick={() => navigate("/tools")}
-          style={{
-            position: "absolute",
-            top: "24px",
-            left: "24px",
-            width: "42px",
-            height: "42px",
-            border: "none",
-            background: "transparent",
-            color: theme.colors.primary,
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <ChevronLeft size={34} />
-        </button>
+    <AppContainer>
+      <Section>
+        <PageCard>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginBottom: 24,
+            }}
+          >
+            <button
+              onClick={() =>
+                navigate("/tools")
+              }
+              style={{
+                width: 42,
+                height: 42,
 
-        <h1
-          style={{
-            margin: 0,
-            color: theme.colors.primary,
-            fontSize: "40px",
-            fontWeight: 700,
-          }}
-        >
-          📅 Agenda
-        </h1>
-      </div>
+                border: "none",
 
-      <MonthNavigation
-        month={currentMonth}
-        onPrevious={previousMonth}
-        onNext={nextMonth}
-      />
+                borderRadius: 12,
 
-      <Calendar month={currentMonth} />
-    </main>
+                background:
+                  theme.colors.background,
+
+                color: theme.colors.primary,
+
+                display: "flex",
+
+                alignItems: "center",
+
+                justifyContent: "center",
+
+                cursor: "pointer",
+              }}
+            >
+              <ChevronLeft size={22} />
+            </button>
+
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+              }}
+            >
+              <CalendarDays
+                size={24}
+                color={theme.colors.primary}
+              />
+
+              <h1
+                style={{
+                  margin: 0,
+                  fontSize: UI.FONT_H1,
+                  color:
+                    theme.colors.primary,
+                }}
+              >
+                Agenda
+              </h1>
+            </div>
+
+            <div
+              style={{
+                width: 42,
+              }}
+            />
+          </div>
+
+          <MonthNavigation
+            month={currentMonth}
+            onPrevious={previousMonth}
+            onNext={nextMonth}
+          />
+
+          <Calendar
+            month={currentMonth}
+          />
+        </PageCard>
+      </Section>
+    </AppContainer>
   );
 }

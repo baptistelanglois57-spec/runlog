@@ -1,5 +1,11 @@
-import { ChevronLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+
+import {
+  ChevronLeft,
+  Trophy,
+} from "lucide-react";
+
+import PageCard from "../Layout/PageCard";
 
 import { theme } from "../../styles/theme";
 
@@ -7,61 +13,60 @@ export default function RecordsHeader() {
   const navigate = useNavigate();
 
   return (
-    <div
-      style={{
-        position: "relative",
-        maxWidth: "900px",
-        margin: "0 auto 40px",
-        background: theme.colors.card,
-        border: `1px solid ${theme.colors.border}`,
-        borderRadius: "22px",
-        padding: "35px",
-        boxShadow: theme.shadow.card,
-        textAlign: "center",
-      }}
-    >
-      <button
-        onClick={() => navigate("/tools")}
+    <PageCard maxWidth="100%">
+      <div
         style={{
-          position: "absolute",
-          top: "24px",
-          left: "24px",
-          width: "42px",
-          height: "42px",
-          border: "none",
-          background: "transparent",
-          color: theme.colors.primary,
-          cursor: "pointer",
-          display: "flex",
+          display: "grid",
+          gridTemplateColumns: "40px 1fr 40px",
           alignItems: "center",
-          justifyContent: "center",
         }}
       >
-        <ChevronLeft size={34} />
-      </button>
+        <button
+          onClick={() =>
+            navigate("/tools")
+          }
+          style={{
+            background: "transparent",
+            border: "none",
+            cursor: "pointer",
+            color: theme.colors.primary,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 0,
+          }}
+        >
+          <ChevronLeft size={24} />
+        </button>
 
-      <h1
-        style={{
-          margin: 0,
-          color: theme.colors.primary,
-          fontSize: "40px",
-          fontWeight: 700,
-        }}
-      >
-        🏆 Records
-      </h1>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 10,
+          }}
+        >
+          <Trophy
+            size={30}
+            color={theme.colors.primary}
+          />
 
-      <p
-        style={{
-          marginTop: "18px",
-          marginBottom: "8px",
-          color: "white",
-          fontSize: "18px",
-          fontWeight: 700,
-          letterSpacing: "2px",
-        }}
-      >
-      </p>
-    </div>
+          <h1
+            style={{
+              margin: 0,
+              color: theme.colors.primary,
+              fontSize: 32,
+              fontWeight: 800,
+            }}
+          >
+            Records
+          </h1>
+        </div>
+
+        {/* espace pour centrer le titre */}
+        <div />
+      </div>
+    </PageCard>
   );
 }

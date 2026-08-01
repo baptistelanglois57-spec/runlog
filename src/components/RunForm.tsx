@@ -4,12 +4,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import AppContainer from "../components/Layout/AppContainer";
 import Section from "../components/Layout/Section";
 import PageCard from "../components/Layout/PageCard";
+import { theme } from "../styles/theme";
 import { syncLongestRunNotification } from "../services/recordNotificationService";
+
 import RunFormHeader from "../components/RunForm/RunFormHeader";
 import RunFields from "../components/RunForm/RunFields";
 import CompetitionFields from "../components/RunForm/CompetitionFields";
-import RunPreview from "../components/RunForm/RunPreview";
 import SaveButton from "../components/RunForm/SaveButton";
+
 import GymForm from "./GymForm";
 
 import toast from "react-hot-toast";
@@ -19,6 +21,7 @@ import {
   updateRun,
   getRunById,
 } from "../services/runService";
+
 import { syncRunRecords } from "../services/recordEngine";
 
 export default function RunForm() {
@@ -73,21 +76,29 @@ export default function RunForm() {
       if (!run) return;
 
       setName(run.name);
-      setType(run.type as
-        | "training"
-        | "race"
-        | "gym");
+
+      setType(
+        run.type as
+          | "training"
+          | "race"
+          | "gym"
+      );
 
       setDate(run.date);
 
-      setDistance(run.distance.toString());
+      setDistance(
+        run.distance.toString()
+      );
 
       setDuration(run.duration);
 
-      setElevation(run.elevation.toString());
+      setElevation(
+        run.elevation.toString()
+      );
 
       setAverageHeartRate(
-        run.averageHeartRate?.toString() || ""
+        run.averageHeartRate?.toString() ||
+          ""
       );
 
       setCompetitionName(
@@ -167,92 +178,132 @@ export default function RunForm() {
     };
 
     if (isEditing) {
-  await updateRun(run);
+      await updateRun(run);
 
-  await syncRunRecords();
-  await syncLongestRunNotification();
+      await syncRunRecords();
 
-  toast.success("Sortie mise à jour !");
-} else {
-  await saveRun(run);
+      await syncLongestRunNotification();
 
-  await syncRunRecords();
-  await syncLongestRunNotification();
+      toast.success("Sortie mise à jour !");
+    } else {
+      await saveRun(run);
 
-  toast.success("Sortie enregistrée !");
-}
+      await syncRunRecords();
+
+      await syncLongestRunNotification();
+
+      toast.success("Sortie enregistrée !");
+    }
 
     navigate("/history");
   }
-    if (type === "gym") {
+
+  if (type === "gym") {
     return <GymForm />;
   }
-
-  return (
+    return (
     <AppContainer>
       <Section>
         <PageCard>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 20,
+            }}
+          >
+           <div
+  style={{
+    display: "grid",
+    gridTemplateColumns: "1fr auto",
+    gap: 16,
+    alignItems: "end",
+    marginBottom: 20,
+  }}
+>
+  <div>
+    <RunFormHeader
+      isEditing={isEditing}
+    />
 
-          <RunFormHeader
-            isEditing={isEditing}
-          />
+    <input
+      type="text"
+      placeholder="Ex : Sortie EF"
+      value={name}
+      onChange={(e) =>
+        setName(e.target.value)
+      }
+      style={{
+        width: "100%",
 
-          <RunFields
-            name={name}
-            setName={setName}
-            type={type}
-            setType={setType}
-            date={date}
-            setDate={setDate}
-            distance={distance}
-            setDistance={setDistance}
-            duration={duration}
-            setDuration={setDuration}
-            elevation={elevation}
-            setElevation={setElevation}
-            averageHeartRate={averageHeartRate}
-            setAverageHeartRate={
-              setAverageHeartRate
-            }
-          />
+        height: 56,
 
-          {type === "race" && (
-            <CompetitionFields
-              competitionName={competitionName}
-              setCompetitionName={
-                setCompetitionName
-              }
-              location={location}
-              setLocation={setLocation}
-              position={position}
-              setPosition={setPosition}
-              participants={participants}
-              setParticipants={
-                setParticipants
-              }
-            />
-          )}
+        padding: "0 16px",
 
-          <RunPreview
-            name={name}
-            type={type}
-            date={date}
-            distance={distance}
-            duration={duration}
-            elevation={elevation}
-            competitionName={
-              competitionName
-            }
-            location={location}
-            position={position}
-            participants={participants}
-          />
+        borderRadius: 16,
 
-          <SaveButton
-            isEditing={isEditing}
-            onClick={handleSave}
-          />
+        border: `1px solid ${theme.colors.border}`,
 
+        background:
+          theme.colors.background,
+
+        color: theme.colors.text,
+
+        fontSize: 16,
+
+        outline: "none",
+
+        boxSizing: "border-box",
+      }}
+    />
+  </div>
+
+  <div
+    style={{
+      width: 175,
+    }}
+  >
+    <SaveButton
+      isEditing={isEditing}
+      onClick={handleSave}
+    />
+  </div>
+</div>
+
+<RunFields
+  type={type}
+  setType={setType}
+  date={date}
+  setDate={setDate}
+  distance={distance}
+  setDistance={setDistance}
+  duration={duration}
+  setDuration={setDuration}
+  elevation={elevation}
+  setElevation={setElevation}
+  averageHeartRate={averageHeartRate}
+  setAverageHeartRate={
+    setAverageHeartRate
+  }
+/>
+
+            {type === "race" && (
+              <CompetitionFields
+                competitionName={competitionName}
+                setCompetitionName={
+                  setCompetitionName
+                }
+                location={location}
+                setLocation={setLocation}
+                position={position}
+                setPosition={setPosition}
+                participants={participants}
+                setParticipants={
+                  setParticipants
+                }
+              />
+            )}
+          </div>
         </PageCard>
       </Section>
     </AppContainer>

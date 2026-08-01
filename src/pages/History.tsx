@@ -118,8 +118,9 @@ await loadRuns();
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                minHeight: "250px",
-                fontSize: "22px",
+                minHeight: 180,
+fontSize: 18,
+fontWeight: 600,
                 color: theme.colors.text,
               }}
             >
@@ -152,7 +153,7 @@ await loadRuns();
           style={{
             display: "flex",
             justifyContent: "flex-end",
-            marginBottom: "20px",
+            marginBottom: "14px",
           }}
         >
           <button
@@ -163,15 +164,24 @@ await loadRuns();
               )
             }
             style={{
-              background: theme.colors.primary,
-              color: "#000",
-              border: "none",
-              borderRadius: "12px",
-              padding: "10px 18px",
-              fontWeight: 700,
-              fontSize: "15px",
-              cursor: "pointer",
-            }}
+  background: theme.colors.card,
+
+  color: theme.colors.primary,
+
+  border: `1px solid ${theme.colors.border}`,
+
+  borderRadius: 14,
+
+  padding: "10px 16px",
+
+  fontWeight: 700,
+
+  fontSize: 14,
+
+  cursor: "pointer",
+
+  transition: ".2s",
+}}
           >
              Export CSV
           </button>

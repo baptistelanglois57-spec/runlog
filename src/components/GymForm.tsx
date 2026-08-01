@@ -10,6 +10,7 @@ import { saveGymSession } from "../services/gymService";
 
 import type { GymSession } from "../types/GymSession";
 import type { GymExercise } from "../types/Gym/GymExercise";
+import SaveButton from "./RunForm/SaveButton";
 
 export default function GymForm() {
   const navigate = useNavigate();
@@ -178,40 +179,57 @@ export default function GymForm() {
     <PageCard maxWidth="700px">
       <div
   style={{
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: "30px",
+    display: "grid",
+    gridTemplateColumns: "1fr auto",
+    gap: 16,
+    alignItems: "end",
+    marginBottom: 22,
   }}
 >
-  <h2
-    style={{
-      margin: 0,
-      color: theme.colors.primary,
-      fontSize: "30px",
-    }}
-  >
-    💪 Nouvelle séance
-  </h2>
+  <div>
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+        marginBottom: 10,
+        color: theme.colors.primary,
+        fontSize: 17,
+        fontWeight: 700,
+      }}
+    >
+      💪 Nom de la séance
+    </div>
 
-  <button
-    type="submit"
-    form="gym-form"
-    style={{
-      padding: "10px 16px",
-      border: "none",
-      borderRadius: "10px",
-      background: theme.colors.primary,
-      color: "#fff",
-      fontWeight: 700,
-      fontSize: "14px",
-      cursor: "pointer",
-    }}
-  >
-    💾 Enregistrer
-  </button>
+    <input
+      type="text"
+      placeholder=""
+      value={name}
+      onChange={(e) => setName(e.target.value)}
+      style={{
+        width: "100%",
+        height: 56,
+        padding: "0 16px",
+        borderRadius: 16,
+        border: `1px solid ${theme.colors.border}`,
+        background: theme.colors.background,
+        color: theme.colors.text,
+        fontSize: 16,
+        outline: "none",
+        boxSizing: "border-box",
+      }}
+    />
+  </div>
+
+  <SaveButton
+  isEditing={false}
+  onClick={() => {
+    const form = document.getElementById("gym-form") as HTMLFormElement;
+
+    form?.requestSubmit();
+  }}
+/>
 </div>
-
       <form
         id="gym-form"
         onSubmit={handleSubmit}
@@ -222,20 +240,6 @@ export default function GymForm() {
           paddingBottom: "120px",
         }}
       >
-        <div>
-          <div style={labelStyle}>
-            🏷️ Nom de la séance
-          </div>
-
-          <input
-            type="text"
-            placeholder="Push • Pull • Legs..."
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            style={inputStyle}
-          />
-        </div>
-
         <div>
           <div style={labelStyle}>
             📅 Date
@@ -292,7 +296,7 @@ export default function GymForm() {
           <textarea
             value={comment}
             onChange={(e) => setComment(e.target.value)}
-            placeholder="Comment s'est passée la séance ?"
+            placeholder=""
             style={{
               ...inputStyle,
               minHeight: "140px",

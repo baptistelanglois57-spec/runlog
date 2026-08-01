@@ -1,7 +1,17 @@
 import { useNavigate } from "react-router-dom";
-import { Eye, Pencil, Trash2 } from "lucide-react";
+
+import {
+  Calendar,
+  Dumbbell,
+  Eye,
+  Pencil,
+  Trash2,
+} from "lucide-react";
 
 import type { GymSession } from "../../types/GymSession";
+
+import PageCard from "../Layout/PageCard";
+
 import { theme } from "../../styles/theme";
 
 type Props = {
@@ -18,77 +28,254 @@ export default function GymSessionCard({
   const navigate = useNavigate();
 
   function formatDate(date: string) {
-    return new Date(date).toLocaleDateString("fr-FR");
+    return new Date(date).toLocaleDateString(
+      "fr-FR"
+    );
   }
 
-  return (
-    <div
-      style={{
-        background: theme.colors.card,
-        border: `1px solid ${theme.colors.border}`,
-        borderRadius: "20px",
-        padding: "22px",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        gap: "20px",
-      }}
-    >
-      <div>
-        <h3
-          style={{
-            margin: 0,
-            color: theme.colors.text,
-            fontSize: "21px",
-          }}
-        >
-          {session.name}
-        </h3>
+  const totalSets =
+    session.exercises.reduce(
+      (total, exercise) =>
+        total + exercise.sets.length,
+      0
+    );
 
-        <p
-          style={{
-            marginTop: "8px",
-            color: theme.colors.textSecondary,
-            fontSize: "15px",
-          }}
-        >
-          📅 {formatDate(session.date)}
-        </p>
-      </div>
+  return (
+    <PageCard maxWidth="100%">
+      {/* Header */}
 
       <div
         style={{
           display: "flex",
+          justifyContent:
+            "space-between",
           alignItems: "center",
-          gap: "18px",
+          marginBottom: 14,
+          gap: 12,
         }}
       >
-        <Eye
-          size={22}
-          color="#ffffff"
-          strokeWidth={2.2}
-          style={{ cursor: "pointer" }}
-          onClick={() => onView(session)}
-        />
+        <div
+          style={{
+            minWidth: 0,
+            flex: 1,
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+              color:
+                theme.colors.textSecondary,
+              fontSize: 13,
+              marginBottom: 6,
+            }}
+          >
+            <Calendar
+              size={14}
+              color={
+                theme.colors.primary
+              }
+            />
 
-        <Pencil
-          size={22}
-          color="#ffffff"
-          strokeWidth={2.2}
-          style={{ cursor: "pointer" }}
-          onClick={() =>
-            navigate(`/muscu/edit/${session.id}`)
-          }
-        />
+            {formatDate(session.date)}
+          </div>
 
-        <Trash2
-          size={22}
-          color="#ffffff"
-          strokeWidth={2.2}
-          style={{ cursor: "pointer" }}
-          onClick={() => onDelete(session.id)}
-        />
+          <h2
+            style={{
+              margin: 0,
+              fontSize: 19,
+              fontWeight: 800,
+              color:
+                theme.colors.text,
+            }}
+          >
+            {session.name}
+          </h2>
+        </div>
+
+        <div
+          style={{
+            textAlign: "right",
+          }}
+        >
+          <div
+            style={{
+              color:
+                theme.colors.primary,
+              fontWeight: 800,
+              fontSize: 20,
+            }}
+          >
+            {session.exercises.length}
+          </div>
+
+          <div
+            style={{
+              color:
+                theme.colors.textSecondary,
+              fontSize: 12,
+            }}
+          >
+            exercices
+          </div>
+        </div>
       </div>
-    </div>
+
+      {/* Stats */}
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns:
+            "repeat(2,1fr)",
+          gap: 12,
+          marginBottom: 14,
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            padding: 12,
+            borderRadius: 14,
+            background:
+              "rgba(255,255,255,.02)",
+            border: `1px solid ${theme.colors.border}`,
+          }}
+        >
+          <Dumbbell
+            size={18}
+            color={
+              theme.colors.primary
+            }
+          />
+
+          <div>
+            <div
+              style={{
+                fontSize: 12,
+                color:
+                  theme.colors.textSecondary,
+              }}
+            >
+              Exercices
+            </div>
+
+            <div
+              style={{
+                fontWeight: 700,
+              }}
+            >
+              {session.exercises.length}
+            </div>
+          </div>
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            padding: 12,
+            borderRadius: 14,
+            background:
+              "rgba(255,255,255,.02)",
+            border: `1px solid ${theme.colors.border}`,
+          }}
+        >
+          <Dumbbell
+            size={18}
+            color={
+              theme.colors.primary
+            }
+          />
+
+          <div>
+            <div
+              style={{
+                fontSize: 12,
+                color:
+                  theme.colors.textSecondary,
+              }}
+            >
+              Séries
+            </div>
+
+            <div
+              style={{
+                fontWeight: 700,
+              }}
+            >
+              {totalSets}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Actions */}
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          gap: 16,
+        }}
+      >
+        <button
+          onClick={() =>
+            onView(session)
+          }
+          style={{
+            background: "transparent",
+            border: "none",
+            cursor: "pointer",
+            color:
+              theme.colors.primary,
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <Eye size={18} />
+        </button>
+
+        <button
+          onClick={() =>
+            navigate(
+              `/muscu/edit/${session.id}`
+            )
+          }
+          style={{
+            background: "transparent",
+            border: "none",
+            cursor: "pointer",
+            color:
+              theme.colors.primary,
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <Pencil size={18} />
+        </button>
+
+        <button
+          onClick={() =>
+            onDelete(session.id)
+          }
+          style={{
+            background: "transparent",
+            border: "none",
+            cursor: "pointer",
+            color:
+              theme.colors.danger,
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <Trash2 size={18} />
+        </button>
+      </div>
+    </PageCard>
   );
 }

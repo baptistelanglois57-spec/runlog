@@ -1,4 +1,5 @@
 import { theme } from "../../styles/theme";
+import { UI } from "../../styles/ui";
 
 type HistoryHeaderProps = {
   totalRuns: number;
@@ -14,64 +15,158 @@ export default function HistoryHeader({
       style={{
         width: "100%",
         maxWidth: "660px",
-        margin: "0 auto clamp(24px, 5vw, 35px)",
+        margin: "0 auto",
 
         background: theme.colors.card,
+
         border: `1px solid ${theme.colors.border}`,
-        borderRadius: "22px",
 
-        padding: "clamp(20px, 5vw, 28px)",
+        borderRadius: UI.RADIUS,
 
-        boxShadow: theme.shadow.card,
+        padding: 18,
+
         boxSizing: "border-box",
-
-        textAlign: "center",
       }}
     >
       <h1
         style={{
           margin: 0,
+
+          textAlign: "center",
+
           color: theme.colors.primary,
-          fontSize: "clamp(30px, 7vw, 38px)",
-          lineHeight: 1.2,
+
+          fontSize: UI.FONT_H2,
+
+          fontWeight: 800,
         }}
       >
         📖 Historique
       </h1>
 
-      <p
+      <div
         style={{
-          marginTop: "16px",
-          color: theme.colors.textSecondary,
-          fontSize: "clamp(15px, 4vw, 18px)",
-        }}
-      >
-        {totalRuns} sortie
-        {totalRuns > 1 ? "s" : ""}
-      </p>
+          display: "grid",
 
-      <h2
-        style={{
-          marginTop: "10px",
-          marginBottom: 0,
-          color: theme.colors.text,
-          fontSize: "clamp(28px, 6vw, 34px)",
-          lineHeight: 1.1,
-        }}
-      >
-        {totalDistance.toFixed(1)} km
-      </h2>
+          gridTemplateColumns: "repeat(2,1fr)",
 
-      <p
-        style={{
-          marginTop: "8px",
-          marginBottom: 0,
-          color: theme.colors.textSecondary,
-          fontSize: "clamp(14px, 3.8vw, 16px)",
+          gap: 14,
+
+          marginTop: 18,
         }}
       >
-        Distance totale parcourue
-      </p>
+        <div
+          style={{
+            background: "rgba(255,255,255,.02)",
+
+            border: `1px solid ${theme.colors.border}`,
+
+            borderRadius: 14,
+
+            padding: 14,
+
+            textAlign: "center",
+          }}
+        >
+          <div
+            style={{
+              color: theme.colors.textSecondary,
+
+              fontSize: 12,
+
+              fontWeight: 600,
+
+              marginBottom: 6,
+            }}
+          >
+            Distance
+          </div>
+
+          <div
+            style={{
+              color: theme.colors.text,
+
+              fontSize: 26,
+
+              fontWeight: 800,
+
+              lineHeight: 1,
+            }}
+          >
+            {totalDistance.toFixed(1)}
+          </div>
+
+          <div
+            style={{
+              color: theme.colors.primary,
+
+              fontSize: 13,
+
+              fontWeight: 700,
+
+              marginTop: 4,
+            }}
+          >
+            km
+          </div>
+        </div>
+
+        <div
+          style={{
+            background: "rgba(255,255,255,.02)",
+
+            border: `1px solid ${theme.colors.border}`,
+
+            borderRadius: 14,
+
+            padding: 14,
+
+            textAlign: "center",
+          }}
+        >
+          <div
+            style={{
+              color: theme.colors.textSecondary,
+
+              fontSize: 12,
+
+              fontWeight: 600,
+
+              marginBottom: 6,
+            }}
+          >
+            Sorties
+          </div>
+
+          <div
+            style={{
+              color: theme.colors.text,
+
+              fontSize: 26,
+
+              fontWeight: 800,
+
+              lineHeight: 1,
+            }}
+          >
+            {totalRuns}
+          </div>
+
+          <div
+            style={{
+              color: theme.colors.primary,
+
+              fontSize: 13,
+
+              fontWeight: 700,
+
+              marginTop: 4,
+            }}
+          >
+            séance{totalRuns > 1 ? "s" : ""}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

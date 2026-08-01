@@ -1,4 +1,5 @@
 import { theme } from "../../styles/theme";
+
 import type { ReactNode } from "react";
 
 type Detail = {
@@ -28,25 +29,40 @@ export default function RecordCard({
     <div
       style={{
         background: theme.colors.card,
-        border: `1px solid ${color ?? theme.colors.border}`,
-        borderRadius: "20px",
-        padding: "22px",
+
+        border: `1px solid ${
+          color ?? theme.colors.border
+        }`,
+
+        borderRadius: 18,
+
+        padding: 16,
+
         display: "flex",
+
         flexDirection: "column",
+
+        boxShadow: theme.shadow.card,
       }}
     >
+      {/* Header */}
+
       <div
         style={{
           display: "flex",
           alignItems: "center",
-          gap: "10px",
+          gap: 10,
         }}
       >
         <div
           style={{
             color: theme.colors.primary,
+
             display: "flex",
+
             alignItems: "center",
+
+            justifyContent: "center",
           }}
         >
           {icon}
@@ -55,8 +71,11 @@ export default function RecordCard({
         <h3
           style={{
             margin: 0,
-            color: "#FFFFFF",
-            fontSize: "22px",
+
+            color: theme.colors.text,
+
+            fontSize: 15,
+
             fontWeight: 700,
           }}
         >
@@ -64,80 +83,82 @@ export default function RecordCard({
         </h3>
       </div>
 
-      <div
-        style={{
-          textAlign: "center",
-          marginTop: "14px",
-        }}
-      >
-        <div
-          style={{
-            fontSize: "36px",
-            fontWeight: 700,
-            color: "#FFFFFF",
-            lineHeight: 1.15,
-            letterSpacing: "-0.5px",
-          }}
-        >
-          {value}
-        </div>
+      {/* Valeur */}
 
-        {subtitle && (
-          <p
-            style={{
-              marginTop: "10px",
-              marginBottom: 0,
-              color: "#FFFFFF",
-              fontSize: "14px",
-              fontWeight: 500,
-              lineHeight: 1.4,
-              wordBreak: "break-word",
-            }}
-          >
-            {subtitle}
-          </p>
-        )}
-      </div>
+     <div
+  style={{
+    marginTop: 14,
+    textAlign: "center",
+  }}
+>
+  <div
+    style={{
+      fontSize: 22,
+      fontWeight: 800,
+      color: theme.colors.primary,
+      lineHeight: 1.1,
+      whiteSpace: "nowrap",
+    }}
+  >
+    {value}
+  </div>
+
+  {subtitle && (
+    <div
+      style={{
+        marginTop: 6,
+        color: theme.colors.textSecondary,
+        fontSize: 12,
+        lineHeight: 1.4,
+      }}
+    >
+      {subtitle}
+    </div>
+  )}
+</div>
+            {/* Détails */}
 
       {details && details.length > 0 && (
         <div
           style={{
-            marginTop: "22px",
+            marginTop: 20,
+
+            paddingTop: 18,
+
             borderTop: `1px solid ${theme.colors.border}`,
-            paddingTop: "20px",
+
             display: "flex",
+
             flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "14px",
+
+            gap: 12,
           }}
         >
           {details.map((detail) => (
             <div
               key={detail.label}
               style={{
-                display: "grid",
-                gridTemplateColumns: "190px 100px",
-                justifyContent: "center",
+                display: "flex",
+                justifyContent: "space-between",
                 alignItems: "center",
-                gap: "16px",
+                gap: 12,
               }}
             >
               <div
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  gap: "10px",
-                  color: theme.colors.textSecondary,
-                  fontSize: "16px",
+                  gap: 8,
+                  color:
+                    theme.colors.textSecondary,
+                  fontSize: 14,
                   fontWeight: 600,
                 }}
               >
                 <span
                   style={{
-                    width: 24,
+                    width: 20,
                     textAlign: "center",
-                    fontSize: "18px",
                   }}
                 >
                   {detail.icon}
@@ -148,10 +169,9 @@ export default function RecordCard({
 
               <span
                 style={{
-                  color: "#FFFFFF",
+                  color: theme.colors.text,
                   fontWeight: 700,
-                  fontSize: "17px",
-                  textAlign: "right",
+                  fontSize: 15,
                 }}
               >
                 {detail.value}

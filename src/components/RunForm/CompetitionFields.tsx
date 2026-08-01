@@ -1,5 +1,8 @@
 import Input from "../UI/Input";
 
+import { UI } from "../../styles/ui";
+import { theme } from "../../styles/theme";
+
 type Props = {
   competitionName: string;
   setCompetitionName: (value: string) => void;
@@ -29,24 +32,29 @@ export default function CompetitionFields({
       style={{
         display: "flex",
         flexDirection: "column",
-        gap: "20px",
-        marginTop: "28px",
+        gap: 18,
+        marginTop: 10,
       }}
     >
       <h2
         style={{
-          textAlign: "center",
           margin: 0,
-          fontSize: "clamp(20px, 5vw, 24px)",
-          color: "#FFF",
+
+          textAlign: "center",
+
+          color: theme.colors.primary,
+
+          fontSize: UI.FONT_H3,
+
+          fontWeight: 800,
         }}
       >
-        🏁 Informations compétition
+        🏁 Compétition
       </h2>
 
       <Input
-        label="Nom de la compétition"
-        placeholder="Ex : Semi-marathon de Paris"
+        label="Nom"
+        placeholder=""
         value={competitionName}
         onChange={(e) =>
           setCompetitionName(e.target.value)
@@ -55,34 +63,45 @@ export default function CompetitionFields({
 
       <Input
         label="Lieu"
-        placeholder="Ex : Paris"
+        placeholder=""
         value={location}
         onChange={(e) =>
           setLocation(e.target.value)
         }
       />
 
-      <Input
-        label="Classement"
-        type="number"
-        inputMode="numeric"
-        placeholder="25"
-        value={position}
-        onChange={(e) =>
-          setPosition(e.target.value)
-        }
-      />
+      <div
+        style={{
+          display: "grid",
 
-      <Input
-        label="Nombre de participants"
-        type="number"
-        inputMode="numeric"
-        placeholder="1200"
-        value={participants}
-        onChange={(e) =>
-          setParticipants(e.target.value)
-        }
-      />
+          gridTemplateColumns:
+            "repeat(2,1fr)",
+
+          gap: 14,
+        }}
+      >
+        <Input
+          label="Classement"
+          type="number"
+          inputMode="numeric"
+          placeholder=""
+          value={position}
+          onChange={(e) =>
+            setPosition(e.target.value)
+          }
+        />
+
+        <Input
+          label="Participants"
+          type="number"
+          inputMode="numeric"
+          placeholder=""
+          value={participants}
+          onChange={(e) =>
+            setParticipants(e.target.value)
+          }
+        />
+      </div>
     </div>
   );
 }

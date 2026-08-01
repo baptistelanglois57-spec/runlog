@@ -1,9 +1,11 @@
+import type { ReactNode } from "react";
+
 import { theme } from "../../styles/theme";
 
 type RecordSectionProps = {
   title: string;
-  icon: string;
-  children: React.ReactNode;
+  icon: ReactNode;
+  children: ReactNode;
 };
 
 export default function RecordSection({
@@ -14,43 +16,59 @@ export default function RecordSection({
   return (
     <section
       style={{
-        maxWidth: "950px",
-        margin: "0 auto 35px",
+        maxWidth: "100%",
+        margin: "0 auto 30px",
       }}
     >
+      {/* Titre */}
+
       <div
         style={{
           display: "flex",
           alignItems: "center",
-          gap: "12px",
-          marginBottom: "20px",
+          gap: 10,
+          marginBottom: 16,
         }}
       >
-        <span
+        <div
           style={{
-            fontSize: "28px",
+            color: theme.colors.primary,
+            display: "flex",
+            alignItems: "center",
           }}
         >
           {icon}
-        </span>
+        </div>
 
         <h2
           style={{
             margin: 0,
             color: theme.colors.primary,
-            fontSize: "28px",
+            fontSize: 24,
+            fontWeight: 800,
           }}
         >
           {title}
         </h2>
+
+        <div
+          style={{
+            flex: 1,
+            height: 1,
+            background: theme.colors.border,
+            marginLeft: 6,
+          }}
+        />
       </div>
+
+      {/* Cartes */}
 
       <div
         style={{
           display: "grid",
           gridTemplateColumns:
-            "repeat(auto-fit, minmax(240px, 1fr))",
-          gap: "20px",
+            "repeat(auto-fit,minmax(250px,1fr))",
+          gap: 16,
         }}
       >
         {children}

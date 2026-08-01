@@ -1,4 +1,10 @@
+import type { CSSProperties } from "react";
+
+import { Trash2 } from "lucide-react";
+
 import { theme } from "../../styles/theme";
+import { UI } from "../../styles/ui";
+
 import type { GymSet } from "../../types/Gym/GymSet";
 
 type Props = {
@@ -9,6 +15,7 @@ type Props = {
     field: "reps" | "weight",
     value: number
   ) => void;
+
   onDelete: (index: number) => void;
 };
 
@@ -18,16 +25,28 @@ export default function SetRow({
   onChange,
   onDelete,
 }: Props) {
-  const inputStyle: React.CSSProperties = {
+  const inputStyle: CSSProperties = {
     width: "100%",
-    padding: "10px",
-    borderRadius: "10px",
+
+    height: 46,
+
+    borderRadius: 12,
+
     border: `1px solid ${theme.colors.border}`,
+
     background: theme.colors.background,
+
     color: theme.colors.text,
+
     textAlign: "center",
-    fontSize: "15px",
+
+    fontSize: UI.FONT_BODY,
+
+    fontWeight: 600,
+
     boxSizing: "border-box",
+
+    outline: "none",
   };
 
   return (
@@ -35,75 +54,99 @@ export default function SetRow({
       <td
         style={{
           textAlign: "center",
-          padding: "10px",
-          color: theme.colors.text,
           fontWeight: 700,
+          color: theme.colors.primary,
+          padding: "10px 6px",
+          width: 45,
         }}
       >
         {index + 1}
       </td>
 
-      <td style={{ padding: "8px" }}>
+      <td
+        style={{
+          padding: "6px",
+        }}
+      >
         <input
-  type="number"
-  min={0}
-  value={set.reps ?? ""}
-  onChange={(e) =>
-    onChange(
-      index,
-      "reps",
-      e.target.value === ""
-        ? undefined!
-        : Number(e.target.value)
-    )
-  }
-  style={inputStyle}
-/>
+          type="number"
+          min={0}
+          value={set.reps ?? ""}
+          placeholder="-"
+          onChange={(e) =>
+            onChange(
+              index,
+              "reps",
+              e.target.value === ""
+                ? undefined!
+                : Number(
+                    e.target.value
+                  )
+            )
+          }
+          style={inputStyle}
+        />
       </td>
-
-      <td style={{ padding: "8px" }}>
-  <input
-  type="number"
-  min={0}
-  step="0.1"
-  value={set.weight ?? ""}
-  onChange={(e) =>
-    onChange(
-      index,
-      "weight",
-      e.target.value === ""
-        ? undefined!
-        : Number(e.target.value.replace(",", "."))
-    )
-  }
-  style={inputStyle}
-/>
-</td>
 
       <td
         style={{
-          width: "60px",
+          padding: "6px",
+        }}
+      >
+        <input
+          type="number"
+          min={0}
+          step="0.5"
+          value={set.weight ?? ""}
+          placeholder="-"
+          onChange={(e) =>
+            onChange(
+              index,
+              "weight",
+              e.target.value === ""
+                ? undefined!
+                : Number(
+                    e.target.value.replace(
+                      ",",
+                      "."
+                    )
+                  )
+            )
+          }
+          style={inputStyle}
+        />
+      </td>
+
+      <td
+        style={{
+          width: 46,
           textAlign: "center",
         }}
       >
         <button
           type="button"
-          onClick={() => onDelete(index)}
+          onClick={() =>
+            onDelete(index)
+          }
           style={{
-            width: "34px",
-            height: "34px",
+            background: "transparent",
+
             border: "none",
-            borderRadius: "10px",
-            background: theme.colors.danger,
-            color: "#fff",
+
             cursor: "pointer",
+
             display: "flex",
+
             alignItems: "center",
+
             justifyContent: "center",
+
             margin: "auto",
+
+            color: theme.colors.danger,
           }}
         >
-          🗑
+          <Trash2 size={18} />
         </button>
       </td>
     </tr>

@@ -1,6 +1,14 @@
 import { useMemo } from "react";
+import {
+  ChevronDown,
+  ChevronUp,
+  Dumbbell,
+} from "lucide-react";
+
 import type { GymSession } from "../../types/GymSession";
+
 import GymSessionCard from "./GymSessionCard";
+
 import { theme } from "../../styles/theme";
 
 type Props = {
@@ -20,13 +28,16 @@ export default function MonthGymAccordion({
   onView,
   onDelete,
 }: Props) {
-  const total = useMemo(() => sessions.length, [sessions]);
+  const total = useMemo(
+    () => sessions.length,
+    [sessions]
+  );
 
   return (
     <div
       style={{
-        maxWidth: "900px",
-        margin: "0 auto 22px",
+        maxWidth: "100%",
+        margin: "0 auto 18px",
       }}
     >
       <div
@@ -34,11 +45,11 @@ export default function MonthGymAccordion({
         style={{
           background: theme.colors.card,
           border: `1px solid ${theme.colors.border}`,
-          borderRadius: "20px",
-          padding: "22px",
+          borderRadius: 18,
+          padding: 18,
           boxShadow: theme.shadow.card,
           cursor: "pointer",
-          transition: "0.2s ease",
+          transition: ".2s",
         }}
       >
         <div
@@ -48,39 +59,62 @@ export default function MonthGymAccordion({
             alignItems: "center",
           }}
         >
-          <div
-            style={{
-              flex: 1,
-            }}
-          >
+          <div>
             <h2
               style={{
                 margin: 0,
                 textTransform: "capitalize",
+                fontSize: 22,
+                fontWeight: 800,
+                color: theme.colors.text,
               }}
             >
               {monthLabel}
             </h2>
 
-            <p
+            <div
               style={{
-                marginTop: 10,
-                color: theme.colors.textSecondary,
+                display: "flex",
+                alignItems: "center",
+                gap: 6,
+                marginTop: 8,
+                color:
+                  theme.colors.textSecondary,
+                fontSize: 14,
+                fontWeight: 600,
               }}
             >
-              💪 {total} séance{total > 1 ? "s" : ""}
-            </p>
+              <Dumbbell
+                size={15}
+                color={theme.colors.primary}
+              />
+
+              {total} séance
+              {total > 1 ? "s" : ""}
+            </div>
           </div>
+
+          {isOpen ? (
+            <ChevronUp
+              size={22}
+              color={theme.colors.primary}
+            />
+          ) : (
+            <ChevronDown
+              size={22}
+              color={theme.colors.primary}
+            />
+          )}
         </div>
       </div>
 
       {isOpen && (
         <div
           style={{
-            marginTop: 18,
+            marginTop: 14,
             display: "flex",
             flexDirection: "column",
-            gap: 18,
+            gap: 14,
           }}
         >
           {sessions.map((session) => (
