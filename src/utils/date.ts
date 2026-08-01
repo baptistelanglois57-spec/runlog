@@ -1,21 +1,50 @@
-export function getISOWeek(date: Date): number {
+export function formatDate(
+  date: string | Date
+): string {
+  return new Date(date).toLocaleDateString(
+    "fr-FR",
+    {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    }
+  );
+}
+
+export function getISOWeek(
+  date: Date
+): number {
   const d = new Date(date);
 
   d.setHours(0, 0, 0, 0);
 
-  d.setDate(d.getDate() + 4 - (d.getDay() || 7));
+  d.setDate(
+    d.getDate() + 4 - (d.getDay() || 7)
+  );
 
-  const yearStart = new Date(d.getFullYear(), 0, 1);
+  const yearStart = new Date(
+    d.getFullYear(),
+    0,
+    1
+  );
 
   return Math.ceil(
-    ((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7
+    ((d.getTime() -
+      yearStart.getTime()) /
+      86400000 +
+      1) /
+      7
   );
 }
 
-export function getISOWeekYear(date: Date): number {
+export function getISOWeekYear(
+  date: Date
+): number {
   const d = new Date(date);
 
-  d.setDate(d.getDate() + 4 - (d.getDay() || 7));
+  d.setDate(
+    d.getDate() + 4 - (d.getDay() || 7)
+  );
 
   return d.getFullYear();
 }
