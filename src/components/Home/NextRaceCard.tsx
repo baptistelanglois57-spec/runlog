@@ -3,7 +3,6 @@ import { UI } from "../../styles/ui";
 
 import {
   Trophy,
-  CalendarDays,
 } from "lucide-react";
 
 type Props = {
@@ -118,10 +117,7 @@ export default function NextRaceCard({
             textOverflow: "ellipsis",
           }}
         >
-          <CalendarDays
-            size={13}
-            color={theme.colors.primary}
-          />
+          
 
           {date}
         </div>

@@ -3,7 +3,6 @@ import type { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
-  Calendar,
   Clock3,
   Gauge,
   Mountain,
@@ -55,11 +54,6 @@ export default function RunCard({
             fontWeight: 600,
           }}
         >
-          <Calendar
-            size={15}
-            color={theme.colors.primary}
-          />
-
           {formatDate(run.date)}
         </div>
 

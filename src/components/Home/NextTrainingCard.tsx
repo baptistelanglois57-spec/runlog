@@ -6,7 +6,6 @@ import type { EventType } from "../../types/Event";
 import {
   Dumbbell,
   PersonStanding,
-  CalendarDays,
 } from "lucide-react";
 
 type Props = {
@@ -126,10 +125,6 @@ export default function NextTrainingCard({
             textOverflow: "ellipsis",
           }}
         >
-          <CalendarDays
-            size={13}
-            color={theme.colors.primary}
-          />
 
           {date}
         </div>

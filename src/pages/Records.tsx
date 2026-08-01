@@ -35,6 +35,7 @@ import {
 } from "../utils/records";
 
 import { getAveragePace } from "../utils/stats";
+import PaceRecordCard from "../components/Records/PaceRecordCard";
 
 export default function Records() {
   const [runs, setRuns] = useState<Run[]>([]);
@@ -335,89 +336,49 @@ export default function Records() {
     </RecordSection>
         {/* ALLURES */}
 
-<RecordSection
-  title="Allures"
->
-  <div
-    style={{
-      display: "grid",
-      gridTemplateColumns:
-        "repeat(5,minmax(0,1fr))",
-      gap: 14,
-      width: "100%",
-      gridColumn: "1 / -1",
-    }}
-  >
-    <RecordCard
-      icon={
-        <Gauge
-          size={18}
-          color={theme.colors.primary}
-        />
-      }
-      title="Meilleure"
-      value={
-        fastestRun
-          ? getAveragePace(
-              fastestRun.distance,
-              fastestRun.duration
-            )
-          : "--"
-      }
-    />
-
-    <RecordCard
-      icon="❤️"
-      title="≤130"
-      value={
-        hr130
-          ? getAveragePace(
-              hr130.distance,
-              hr130.duration
-            )
-          : "🔒"
-      }
-    />
-
-    <RecordCard
-      icon="💚"
-      title="131-140"
-      value={
-        hr140
-          ? getAveragePace(
-              hr140.distance,
-              hr140.duration
-            )
-          : "🔒"
-      }
-    />
-
-    <RecordCard
-      icon="💛"
-      title="141-150"
-      value={
-        hr150
-          ? getAveragePace(
-              hr150.distance,
-              hr150.duration
-            )
-          : "🔒"
-      }
-    />
-
-    <RecordCard
-      icon="🧡"
-      title="151-160"
-      value={
-        hr160
-          ? getAveragePace(
-              hr160.distance,
-              hr160.duration
-            )
-          : "🔒"
-      }
-    />
-  </div>
+<RecordSection title="Allures">
+  <PaceRecordCard
+    bestPace={
+      fastestRun
+        ? getAveragePace(
+            fastestRun.distance,
+            fastestRun.duration
+          )
+        : "--"
+    }
+    hr130={
+      hr130
+        ? getAveragePace(
+            hr130.distance,
+            hr130.duration
+          )
+        : "🔒"
+    }
+    hr140={
+      hr140
+        ? getAveragePace(
+            hr140.distance,
+            hr140.duration
+          )
+        : "🔒"
+    }
+    hr150={
+      hr150
+        ? getAveragePace(
+            hr150.distance,
+            hr150.duration
+          )
+        : "🔒"
+    }
+    hr160={
+      hr160
+        ? getAveragePace(
+            hr160.distance,
+            hr160.duration
+          )
+        : "🔒"
+    }
+  />
 </RecordSection>
 
     {/* VOLUMES */}

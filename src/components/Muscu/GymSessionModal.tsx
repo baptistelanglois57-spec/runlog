@@ -29,300 +29,251 @@ export default function GymSessionModal({
   if (!session) return null;
 
   return (
+  <div
+    onClick={onClose}
+    style={{
+      position: "fixed",
+      inset: 0,
+      background: "rgba(0,0,0,.75)",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      padding: 18,
+      zIndex: 9999,
+    }}
+  >
     <div
-      onClick={onClose}
+      onClick={(e) => e.stopPropagation()}
       style={{
-        position: "fixed",
-        inset: 0,
-        background: "rgba(0,0,0,.75)",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
+        width: "100%",
+        maxWidth: 520,
+        maxHeight: "90vh",
+        overflowY: "auto",
+
+        background: theme.colors.card,
+
+        border: `1px solid ${theme.colors.border}`,
+
+        borderRadius: 22,
+
         padding: 18,
-        zIndex: 9999,
       }}
     >
+      {/* Header */}
+
       <div
-        onClick={(e) =>
-          e.stopPropagation()
-        }
         style={{
-          width: "100%",
-          maxWidth: 520,
-          maxHeight: "90vh",
-          overflowY: "auto",
-
-          background: theme.colors.card,
-
-          border: `1px solid ${theme.colors.border}`,
-
-          borderRadius: 22,
-
-          padding: 20,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          gap: 16,
+          marginBottom: 16,
         }}
       >
-        {/* Header */}
-
         <div
           style={{
-            display: "flex",
-            justifyContent:
-              "space-between",
-            alignItems: "flex-start",
-            gap: 16,
-            marginBottom: 22,
+            minWidth: 0,
+            flex: 1,
           }}
         >
           <div
             style={{
-              minWidth: 0,
-              flex: 1,
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+              color: theme.colors.textSecondary,
+              fontSize: 13,
+              marginBottom: 6,
             }}
           >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 6,
-                color:
-                  theme.colors.textSecondary,
-                fontSize: 13,
-                marginBottom: 8,
-              }}
-            >
-              <Calendar
-                size={14}
-                color={
-                  theme.colors.primary
-                }
-              />
+            <Calendar
+              size={14}
+              color={theme.colors.primary}
+            />
 
-              {formatDate(session.date)}
-            </div>
-
-            <h2
-              style={{
-                margin: 0,
-                color:
-                  theme.colors.text,
-                fontSize: 24,
-                fontWeight: 800,
-              }}
-            >
-              {session.name}
-            </h2>
+            {formatDate(session.date)}
           </div>
 
-          <button
-            onClick={onClose}
+          <h2
             style={{
-              width: 38,
-              height: 38,
-              border: "none",
-              background:
-                "transparent",
-              color:
-                theme.colors.primary,
-              cursor: "pointer",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+              margin: 0,
+              color: theme.colors.text,
+              fontSize: 20,
+              fontWeight: 800,
             }}
           >
-            <X size={22} />
-          </button>
+            {session.name}
+          </h2>
         </div>
-                {/* Exercices */}
 
-        {session.exercises.map(
-          (exercise) => (
-            <div
-              key={exercise.id}
-              style={{
-                marginBottom: 18,
+        <button
+          onClick={onClose}
+          style={{
+            width: 38,
+            height: 38,
+            border: "none",
+            background: "transparent",
+            color: theme.colors.primary,
+            cursor: "pointer",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <X size={22} />
+        </button>
+      </div>
 
-                border: `1px solid ${theme.colors.border}`,
+      {/* Exercices */}
 
-                borderRadius: 18,
-
-                padding: 16,
-
-                background:
-                  theme.colors.background,
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 8,
-                  marginBottom: 14,
-                }}
-              >
-                <Dumbbell
-                  size={18}
-                  color={theme.colors.primary}
-                />
-
-                <h3
-                  style={{
-                    margin: 0,
-                    color:
-                      theme.colors.primary,
-                    fontSize: 18,
-                    fontWeight: 700,
-                  }}
-                >
-                  {exercise.name}
-                </h3>
-              </div>
-
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection:
-                    "column",
-                  gap: 8,
-                }}
-              >
-                {exercise.sets.map(
-                  (set, index) => (
-                    <div
-                      key={index}
-                      style={{
-                        display: "grid",
-                        gridTemplateColumns:
-                          "55px 1fr 1fr",
-
-                        alignItems:
-                          "center",
-
-                        gap: 12,
-
-                        padding:
-                          "12px 14px",
-
-                        borderRadius: 14,
-
-                        background:
-                          theme.colors.card,
-
-                        border: `1px solid ${theme.colors.border}`,
-                      }}
-                    >
-                      <div
-                        style={{
-                          fontWeight: 700,
-                          color:
-                            theme.colors.primary,
-                        }}
-                      >
-                        S{index + 1}
-                      </div>
-
-                      <div
-                        style={{
-                          textAlign:
-                            "center",
-                          color:
-                            theme.colors.text,
-                        }}
-                      >
-                        {set.reps} reps
-                      </div>
-
-                      <div
-                        style={{
-                          textAlign:
-                            "right",
-                          fontWeight: 700,
-                          color:
-                            theme.colors.text,
-                        }}
-                      >
-                        {set.weight} kg
-                      </div>
-                    </div>
-                  )
-                )}
-              </div>
-            </div>
-          )
-        )}
-
-        {/* Commentaire */}
-
-        {session.comment && (
+      {session.exercises.map((exercise) => (
+        <div
+          key={exercise.id}
+          style={{
+            marginBottom: 14,
+            border: `1px solid ${theme.colors.border}`,
+            borderRadius: 16,
+            padding: 14,
+            background: theme.colors.background,
+          }}
+        >
           <div
             style={{
-              marginTop: 8,
-
-              padding: 18,
-
-              borderRadius: 18,
-
-              background:
-                theme.colors.background,
-
-              border: `1px solid ${theme.colors.border}`,
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              marginBottom: 10,
             }}
           >
-            <div
+            <Dumbbell
+              size={17}
+              color={theme.colors.primary}
+            />
+
+            <h3
               style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 8,
-                marginBottom: 12,
+                margin: 0,
+                color: theme.colors.primary,
+                fontSize: 17,
+                fontWeight: 700,
               }}
             >
-              <MessageSquare
-                size={18}
-                color={theme.colors.primary}
-              />
+              {exercise.name}
+            </h3>
+          </div>
+
+          {exercise.sets.map((set, index) => (
+            <div
+              key={index}
+              style={{
+                display: "grid",
+                gridTemplateColumns: "48px 1fr auto",
+                alignItems: "center",
+
+                padding: "11px 0",
+
+                borderTop:
+                  index === 0
+                    ? "none"
+                    : `1px solid ${theme.colors.border}`,
+              }}
+            >
+              <span
+                style={{
+                  color: theme.colors.primary,
+                  fontWeight: 700,
+                  fontSize: 15,
+                }}
+              >
+                S{index + 1}
+              </span>
 
               <span
                 style={{
-                  color:
-                    theme.colors.primary,
-                  fontWeight: 700,
+                  textAlign: "center",
+                  color: theme.colors.textSecondary,
+                  fontSize: 15,
                 }}
               >
-                Commentaire
+                {set.reps} reps
+              </span>
+
+              <span
+                style={{
+                  color: theme.colors.text,
+                  fontWeight: 700,
+                  fontSize: 17,
+                }}
+              >
+                {set.weight} kg
               </span>
             </div>
+          ))}
+        </div>
+      ))}
 
-            <div
-              style={{
-                whiteSpace:
-                  "pre-wrap",
+      {/* Commentaire */}
 
-                color:
-                  theme.colors.text,
-
-                lineHeight: 1.6,
-
-                fontSize: 15,
-              }}
-            >
-              {session.comment}
-            </div>
-          </div>
-        )}
-
+      {session.comment && (
         <div
           style={{
-            marginTop: 22,
+            marginTop: 8,
+            padding: 16,
+            borderRadius: 16,
+            background: theme.colors.background,
+            border: `1px solid ${theme.colors.border}`,
           }}
         >
-          <Button
-            variant="primary"
-            fullWidth
-            onClick={onClose}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              marginBottom: 10,
+            }}
           >
-            Fermer
-          </Button>
+            <MessageSquare
+              size={17}
+              color={theme.colors.primary}
+            />
+
+            <span
+              style={{
+                color: theme.colors.primary,
+                fontWeight: 700,
+              }}
+            >
+              Commentaire
+            </span>
+          </div>
+
+          <div
+            style={{
+              whiteSpace: "pre-wrap",
+              color: theme.colors.text,
+              lineHeight: 1.6,
+              fontSize: 14,
+            }}
+          >
+            {session.comment}
+          </div>
         </div>
+      )}
+
+      <div
+        style={{
+          marginTop: 20,
+        }}
+      >
+        <Button
+          variant="primary"
+          fullWidth
+          onClick={onClose}
+        >
+          Fermer
+        </Button>
       </div>
     </div>
-  );
+  </div>
+);
 }
