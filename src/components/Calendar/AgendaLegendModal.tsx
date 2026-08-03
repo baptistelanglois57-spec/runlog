@@ -155,11 +155,7 @@ export default function AgendaLegendModal({
             lineHeight: 1.6,
           }}
         >
-          Les couleurs se mettent
-          automatiquement à jour selon
-          les séances enregistrées dans
-          votre historique et votre
-          suivi musculation.
+          Les couleurs évoluent automatiquement selon les séances réalisées et enregistrées dans RunLog.
         </div>
       </div>
     </div>

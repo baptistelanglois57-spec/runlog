@@ -13,6 +13,8 @@ import AddEvent from "./pages/AddEvent";
 import Tracking from "./pages/Tracking";
 import Muscu from "./pages/Muscu";
 import Tools from "./pages/Tools";
+import Discipline from "./pages/Discipline";
+
 export default function AppRoutes() {
   return (
     <Layout>
@@ -26,10 +28,17 @@ export default function AppRoutes() {
         <Route path="/agenda" element={<Agenda />} />
         <Route path="/add-event" element={<AddEvent />} />
         <Route path="/muscu" element={<Muscu />} />
+
         <Route
-  path="/tools"
-  element={<Tools />}
-/>
+          path="/tools"
+          element={<Tools />}
+        />
+
+        <Route
+          path="/discipline"
+          element={<Discipline />}
+        />
+
         <Route
           path="/tracking"
           element={<Tracking />}

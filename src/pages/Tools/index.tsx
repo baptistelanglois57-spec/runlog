@@ -10,6 +10,7 @@ import {
   Trophy,
   CalendarDays,
   Scale,
+  Target,
   ChevronRight,
 } from "lucide-react";
 
@@ -28,6 +29,13 @@ export default function Tools() {
       title: "Agenda",
       subtitle: "Entraînements et compétitions",
       path: "/agenda",
+    },
+    {
+      icon: Target,
+      title: "Discipline",
+      subtitle:
+        "Analyse du respect de votre planning",
+      path: "/discipline",
     },
     {
       icon: Scale,
@@ -57,7 +65,9 @@ export default function Tools() {
           return (
             <CompactCard key={card.title}>
               <button
-                onClick={() => navigate(card.path)}
+                onClick={() =>
+                  navigate(card.path)
+                }
                 style={{
                   width: "100%",
                   border: "none",
@@ -66,7 +76,8 @@ export default function Tools() {
 
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: "space-between",
+                  justifyContent:
+                    "space-between",
 
                   color: theme.colors.text,
 
@@ -92,7 +103,8 @@ export default function Tools() {
                         "rgba(212,175,55,.10)",
 
                       display: "flex",
-                      justifyContent: "center",
+                      justifyContent:
+                        "center",
                       alignItems: "center",
 
                       flexShrink: 0,
@@ -100,7 +112,9 @@ export default function Tools() {
                   >
                     <Icon
                       size={24}
-                      color={theme.colors.primary}
+                      color={
+                        theme.colors.primary
+                      }
                       strokeWidth={2.2}
                     />
                   </div>
@@ -117,7 +131,8 @@ export default function Tools() {
                         fontSize: 18,
                         fontWeight: 700,
                         marginBottom: 3,
-                        color: theme.colors.text,
+                        color:
+                          theme.colors.text,
                       }}
                     >
                       {card.title}
@@ -126,7 +141,8 @@ export default function Tools() {
                     <div
                       style={{
                         color:
-                          theme.colors.textSecondary,
+                          theme.colors
+                            .textSecondary,
                         fontSize: 13,
                         lineHeight: 1.35,
                       }}
@@ -138,7 +154,10 @@ export default function Tools() {
 
                 <ChevronRight
                   size={20}
-                  color={theme.colors.textSecondary}
+                  color={
+                    theme.colors
+                      .textSecondary
+                  }
                 />
               </button>
             </CompactCard>
