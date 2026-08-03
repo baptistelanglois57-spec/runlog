@@ -1,28 +1,56 @@
-import {
-  Footprints,
-  Flag,
-  Dumbbell,
-} from "lucide-react";
-
 import { theme } from "../../styles/theme";
+
+import type { AgendaDayStatus } from "../../utils/agenda";
 
 type CalendarDayProps = {
   day: number;
   isCurrentMonth: boolean;
   isToday?: boolean;
   isSelected?: boolean;
-  eventType?: "training" | "gym" | "race";
+
+  status?: AgendaDayStatus;
+
   onClick?: () => void;
 };
 
 export default function CalendarDay({
   day,
   isCurrentMonth,
-  isToday = false,
+  isToday: _isToday = false,
   isSelected = false,
-  eventType,
+  status = {
+    type: "none",
+    completed: false,
+  },
   onClick,
 }: CalendarDayProps) {
+  let borderColor = theme.colors.border;
+
+  if (status.completed) {
+    borderColor = "#4CAF50";
+  } else {
+    switch (status.type) {
+      case "training":
+        borderColor = "#3B82F6";
+        break;
+
+      case "gym":
+        borderColor = "#F59E0B";
+        break;
+
+      case "race":
+        borderColor = "#FFFFFF";
+        break;
+
+      case "missed":
+        borderColor = "#EF4444";
+        break;
+
+      default:
+        borderColor = theme.colors.border;
+    }
+  }
+
   return (
     <button
       onClick={onClick}
@@ -35,9 +63,7 @@ export default function CalendarDay({
         border: `2px solid ${
           isSelected
             ? theme.colors.primary
-            : isToday
-            ? theme.colors.primary
-            : theme.colors.border
+            : borderColor
         }`,
 
         borderRadius: 18,
@@ -76,45 +102,6 @@ export default function CalendarDay({
       }}
     >
       {day}
-
-      {eventType === "training" && (
-        <Footprints
-          size={15}
-          strokeWidth={2.3}
-          color={theme.colors.primary}
-          style={{
-            position: "absolute",
-            top: 6,
-            right: 6,
-          }}
-        />
-      )}
-
-      {eventType === "race" && (
-        <Flag
-          size={15}
-          strokeWidth={2.3}
-          color={theme.colors.primary}
-          style={{
-            position: "absolute",
-            top: 6,
-            right: 6,
-          }}
-        />
-      )}
-
-      {eventType === "gym" && (
-        <Dumbbell
-          size={15}
-          strokeWidth={2.3}
-          color={theme.colors.primary}
-          style={{
-            position: "absolute",
-            top: 6,
-            right: 6,
-          }}
-        />
-      )}
     </button>
   );
 }

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import CalendarDay from "./CalendarDay";
 import EventModal from "./EventModal";
-
+import type { AgendaDayStatus } from "../../utils/agenda";
 import { theme } from "../../styles/theme";
 
 import {
@@ -12,9 +12,23 @@ import {
   deleteEvent,
 } from "../../services/eventService";
 
+import {
+  getRuns,
+} from "../../services/runService";
+
+import {
+  getGymSessions,
+} from "../../services/gymService";
+
+import {
+  getAgendaDayStatus,
+} from "../../utils/agenda";
+
 import { formatDateKey } from "../../utils/dateKey";
 
 import type { Event } from "../../types/Event";
+import type { Run } from "../../types/Run";
+import type { GymSession } from "../../types/GymSession";
 
 type CalendarGridProps = {
   month: Date;
@@ -35,173 +49,186 @@ export default function CalendarGrid({
   const [isModalOpen, setIsModalOpen] =
     useState(false);
 
-  const [events, setEvents] = useState<Event[]>([]);
+  const [events, setEvents] =
+    useState<Event[]>([]);
 
-  const [loading, setLoading] = useState(true);
+  const [runs, setRuns] =
+    useState<Run[]>([]);
 
-  async function loadEvents() {
+  const [gymSessions, setGymSessions] =
+    useState<GymSession[]>([]);
+
+  const [loading, setLoading] =
+    useState(true);
+
+  async function loadData() {
     setLoading(true);
 
-    const data = await getEvents();
+    const [
+      eventData,
+      runData,
+      gymData,
+    ] = await Promise.all([
+      getEvents(),
+      getRuns(),
+      getGymSessions(),
+    ]);
 
-    setEvents(data);
+    setEvents(eventData);
+    setRuns(runData);
+    setGymSessions(gymData);
 
     setLoading(false);
   }
 
   useEffect(() => {
-    loadEvents();
+    loadData();
   }, []);
-
   const weekDays = [
-    "LU",
-    "MA",
-    "ME",
-    "JE",
-    "VE",
-    "SA",
-    "DI",
-  ];
+  "LU",
+  "MA",
+  "ME",
+  "JE",
+  "VE",
+  "SA",
+  "DI",
+];
 
-  const year = month.getFullYear();
-  const monthIndex = month.getMonth();
+const year = month.getFullYear();
+const monthIndex = month.getMonth();
 
-  const firstDay = new Date(
-    year,
-    monthIndex,
-    1
+const firstDay = new Date(
+  year,
+  monthIndex,
+  1
+);
+
+const lastDay = new Date(
+  year,
+  monthIndex + 1,
+  0
+);
+
+const daysInMonth = lastDay.getDate();
+
+let startDay = firstDay.getDay() - 1;
+
+if (startDay === -1) {
+  startDay = 6;
+}
+
+const previousMonthLastDay = new Date(
+  year,
+  monthIndex,
+  0
+).getDate();
+
+const days: Day[] = [];
+
+// Mois précédent
+
+for (let i = startDay; i > 0; i--) {
+  days.push({
+    day: previousMonthLastDay - i + 1,
+    currentMonth: false,
+  });
+}
+
+// Mois actuel
+
+for (let i = 1; i <= daysInMonth; i++) {
+  const today = new Date();
+
+  days.push({
+    day: i,
+    currentMonth: true,
+    isToday:
+      i === today.getDate() &&
+      monthIndex === today.getMonth() &&
+      year === today.getFullYear(),
+  });
+}
+
+// Compléter jusqu'à 42 cases
+
+let nextDay = 1;
+
+while (days.length < 42) {
+  days.push({
+    day: nextDay,
+    currentMonth: false,
+  });
+
+  nextDay++;
+}
+
+function handleDayClick(day: Day) {
+  if (!day.currentMonth) return;
+
+  setSelectedDate(
+    new Date(
+      year,
+      monthIndex,
+      day.day
+    )
   );
 
-  const lastDay = new Date(
-    year,
-    monthIndex + 1,
-    0
-  );
+  setIsModalOpen(true);
+}
 
-  const daysInMonth = lastDay.getDate();
+async function handleCreate(event: Event) {
+  await saveEvent(event);
 
-  let startDay = firstDay.getDay() - 1;
+  await loadData();
 
-  if (startDay === -1) {
-    startDay = 6;
-  }
+  setIsModalOpen(false);
 
-  const previousMonthLastDay = new Date(
-    year,
-    monthIndex,
-    0
-  ).getDate();
+  setSelectedDate(null);
+}
 
-  const days: Day[] = [];
+async function handleUpdate(event: Event) {
+  await updateEvent(event);
 
-  // Mois précédent
+  await loadData();
 
-  for (let i = startDay; i > 0; i--) {
-    days.push({
-      day: previousMonthLastDay - i + 1,
-      currentMonth: false,
-    });
-  }
+  setIsModalOpen(false);
 
-  // Mois actuel
+  setSelectedDate(null);
+}
 
-  for (let i = 1; i <= daysInMonth; i++) {
-    const today = new Date();
+async function handleDelete(id: string) {
+  await deleteEvent(id);
 
-    days.push({
-      day: i,
-      currentMonth: true,
-      isToday:
-        i === today.getDate() &&
-        monthIndex === today.getMonth() &&
-        year === today.getFullYear(),
-    });
-  }
+  await loadData();
 
-  // Compléter jusqu'à 42 cases
+  setIsModalOpen(false);
 
-  let nextDay = 1;
+  setSelectedDate(null);
+}
 
-  while (days.length < 42) {
-    days.push({
-      day: nextDay,
-      currentMonth: false,
-    });
-
-    nextDay++;
-  }
-
-  function handleDayClick(day: Day) {
-    if (!day.currentMonth) return;
-
-    setSelectedDate(
-      new Date(
-        year,
-        monthIndex,
-        day.day
-      )
-    );
-
-    setIsModalOpen(true);
-  }
-
-  async function handleCreate(event: Event) {
-    await saveEvent(event);
-
-    await loadEvents();
-
-    setIsModalOpen(false);
-
-    setSelectedDate(null);
-  }
-
-  async function handleUpdate(event: Event) {
-    await updateEvent(event);
-
-    await loadEvents();
-
-    setIsModalOpen(false);
-
-    setSelectedDate(null);
-  }
-    async function handleDelete(id: string) {
-    await deleteEvent(id);
-
-    await loadEvents();
-
-    setIsModalOpen(false);
-
-    setSelectedDate(null);
-  }
-
-  if (loading) {
-    return (
-      <div
-        style={{
-          textAlign: "center",
-          padding: "40px",
-          color: theme.colors.text,
-        }}
-      >
-        Chargement...
-      </div>
-    );
-  }
-
+if (loading) {
   return (
+    <div
+      style={{
+        textAlign: "center",
+        padding: "40px",
+        color: theme.colors.text,
+      }}
+    >
+      Chargement...
+    </div>
+  );
+}
+
+return (
   <>
     <div
       style={{
         background: "transparent",
-
-border: "none",
-
-padding: 0,
-
+        border: "none",
+        padding: 0,
         width: "100%",
-
         boxSizing: "border-box",
-
         boxShadow: theme.shadow.card,
       }}
     >
@@ -210,18 +237,11 @@ padding: 0,
       <div
         style={{
           display: "grid",
-
-          gridTemplateColumns:
-            "repeat(7,1fr)",
-
+          gridTemplateColumns: "repeat(7,1fr)",
           marginBottom: 12,
-
           textAlign: "center",
-
           color: theme.colors.primary,
-
           fontWeight: 700,
-
           fontSize: 13,
         }}
       >
@@ -242,15 +262,16 @@ padding: 0,
       <div
         style={{
           display: "grid",
-
           gridTemplateColumns:
             "repeat(7,1fr)",
-
           gap: 6,
         }}
       >
         {days.map((day, index) => {
-          let event: Event | undefined;
+          let status: AgendaDayStatus = {
+  type: "none",
+  completed: false,
+};
 
           if (day.currentMonth) {
             const dateKey = formatDateKey(
@@ -261,8 +282,11 @@ padding: 0,
               )
             );
 
-            event = events.find(
-              (e) => e.date === dateKey
+            status = getAgendaDayStatus(
+              dateKey,
+              events,
+              runs,
+              gymSessions
             );
           }
 
@@ -283,7 +307,7 @@ padding: 0,
                 selectedDate.getFullYear() ===
                   year
               }
-              eventType={event?.type}
+              status={status}
               onClick={() =>
                 handleDayClick(day)
               }

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {
   ChevronLeft,
   CalendarDays,
+  CircleHelp,
 } from "lucide-react";
 
 import { theme } from "../styles/theme";
@@ -13,12 +14,16 @@ import Section from "../components/Layout/Section";
 
 import MonthNavigation from "../components/Calendar/MonthNavigation";
 import Calendar from "../components/Calendar/Calendar";
+import AgendaLegendModal from "../components/Calendar/AgendaLegendModal";
 
 export default function Agenda() {
   const navigate = useNavigate();
 
   const [currentMonth, setCurrentMonth] =
     useState(new Date());
+
+  const [legendOpen, setLegendOpen] =
+    useState(false);
 
   function previousMonth() {
     setCurrentMonth(
@@ -102,11 +107,31 @@ export default function Agenda() {
             </h1>
           </div>
 
-          <div
+          <button
+            onClick={() =>
+              setLegendOpen(true)
+            }
             style={{
               width: 44,
+              height: 44,
+
+              border: `1px solid ${theme.colors.border}`,
+              borderRadius: 14,
+
+              background: theme.colors.card,
+
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+
+              cursor: "pointer",
             }}
-          />
+          >
+            <CircleHelp
+              size={22}
+              color={theme.colors.primary}
+            />
+          </button>
         </div>
 
         {/* MOIS */}
@@ -121,6 +146,15 @@ export default function Agenda() {
 
         <Calendar
           month={currentMonth}
+        />
+
+        {/* LÉGENDE */}
+
+        <AgendaLegendModal
+          isOpen={legendOpen}
+          onClose={() =>
+            setLegendOpen(false)
+          }
         />
       </Section>
     </AppContainer>
