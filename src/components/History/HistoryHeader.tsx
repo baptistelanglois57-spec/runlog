@@ -34,14 +34,14 @@ export default function HistoryHeader({
 
           textAlign: "center",
 
-          color: theme.colors.primary,
+          color: theme.colors.text,
 
-          fontSize: UI.FONT_H2,
+          fontSize: "38px",
 
           fontWeight: 800,
         }}
       >
-        📖 Historique
+        Historique
       </h1>
 
       <div

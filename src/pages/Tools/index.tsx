@@ -9,8 +9,9 @@ import { theme } from "../../styles/theme";
 import {
   Trophy,
   CalendarDays,
-  Scale,
+  User,
   Target,
+  NotebookPen,
   ChevronRight,
 } from "lucide-react";
 
@@ -31,6 +32,13 @@ export default function Tools() {
       path: "/agenda",
     },
     {
+      icon: User,
+      title: "Fiche sportif",
+      subtitle:
+        "Informations personnelles et performances",
+      path: "/athlete-profile",
+    },
+    {
       icon: Target,
       title: "Discipline",
       subtitle:
@@ -38,10 +46,11 @@ export default function Tools() {
       path: "/discipline",
     },
     {
-      icon: Scale,
-      title: "Suivi",
-      subtitle: "Poids et évolution",
-      path: "/tracking",
+      icon: NotebookPen,
+      title: "Pense-bête",
+      subtitle:
+        "Notes, idées et rappels importants",
+      path: "/notes",
     },
   ];
 

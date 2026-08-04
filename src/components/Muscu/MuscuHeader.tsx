@@ -19,7 +19,7 @@ export default function MuscuHeader({
           style={{
             margin: 0,
             fontSize: "38px",
-            color: theme.colors.primary,
+            color: theme.colors.text,
           }}
         >
           Musculation

@@ -10,11 +10,11 @@ import EditRun from "./pages/EditRun";
 import Records from "./pages/Records";
 import Agenda from "./pages/Agenda";
 import AddEvent from "./pages/AddEvent";
-import Tracking from "./pages/Tracking";
 import Muscu from "./pages/Muscu";
 import Tools from "./pages/Tools";
 import Discipline from "./pages/Discipline";
-
+import AthleteProfile from "./pages/AthleteProfile";
+import Notes from "./pages/Notes";
 export default function AppRoutes() {
   return (
     <Layout>
@@ -28,21 +28,25 @@ export default function AppRoutes() {
         <Route path="/agenda" element={<Agenda />} />
         <Route path="/add-event" element={<AddEvent />} />
         <Route path="/muscu" element={<Muscu />} />
-
+<Route
+  path="/athlete-profile"
+  element={<AthleteProfile />}
+/>
         <Route
           path="/tools"
           element={<Tools />}
         />
+        <Route
+  path="/notes"
+  element={<Notes />}
+/>
 
         <Route
           path="/discipline"
           element={<Discipline />}
         />
 
-        <Route
-          path="/tracking"
-          element={<Tracking />}
-        />
+        
       </Routes>
     </Layout>
   );
