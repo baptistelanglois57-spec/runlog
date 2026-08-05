@@ -7,6 +7,7 @@ import {
   syncBiggestYearNotification,
   syncRaceRecordNotification,
   syncHeartRateRecordNotification,
+  syncNotesNotifications,
 } from "./recordNotificationService";
 
 import {
@@ -50,3 +51,8 @@ export async function syncRunRecords() {
   await syncHeartRateRecordNotification(141, 150);
   await syncHeartRateRecordNotification(151, 160);
 }
+//
+// Pense-bêtes
+//
+
+await syncNotesNotifications();

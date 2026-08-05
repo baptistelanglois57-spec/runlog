@@ -180,46 +180,74 @@ export default function RunCard({
 {showActions && onDelete && (
   <div
     style={{
-      display: "flex",
-      justifyContent: "flex-end",
+      display: "grid",
+      gridTemplateColumns: "1fr auto 1fr",
       alignItems: "center",
-      gap: 10,
       marginTop: 14,
     }}
   >
-    <button
-      onClick={() =>
-        navigate(`/edit/${run.id}`)
-      }
-      style={{
-        background: "transparent",
-        border: "none",
-        padding: 4,
-        cursor: "pointer",
-        display: "flex",
-        alignItems: "center",
-        color: theme.colors.primary,
-      }}
-    >
-      <Pencil size={18} />
-    </button>
+    {/* Vide à gauche */}
+    <div />
 
-    <button
-      onClick={() =>
-        onDelete(run.id)
-      }
+    {/* Terrain centré */}
+    <div
       style={{
-        background: "transparent",
-        border: "none",
-        padding: 4,
-        cursor: "pointer",
-        display: "flex",
-        alignItems: "center",
-        color: "#ef4444",
+        textAlign: "center",
+        color: theme.colors.primary,
+        fontWeight: 700,
+        fontSize: 14,
       }}
     >
-      <Trash2 size={18} />
-    </button>
+      {(run.surface
+  ? run.surface === "trail"
+  : run.elevation >= 100)
+  ? "🥾 Trail"
+  : "🛣️ Route"}
+    </div>
+
+    {/* Actions */}
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "flex-end",
+        alignItems: "center",
+        gap: 10,
+      }}
+    >
+      <button
+        onClick={() =>
+          navigate(`/edit/${run.id}`)
+        }
+        style={{
+          background: "transparent",
+          border: "none",
+          padding: 4,
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          color: theme.colors.primary,
+        }}
+      >
+        <Pencil size={18} />
+      </button>
+
+      <button
+        onClick={() =>
+          onDelete(run.id)
+        }
+        style={{
+          background: "transparent",
+          border: "none",
+          padding: 4,
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          color: "#ef4444",
+        }}
+      >
+        <Trash2 size={18} />
+      </button>
+    </div>
   </div>
 )}
 

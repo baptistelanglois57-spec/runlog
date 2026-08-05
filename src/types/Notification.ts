@@ -5,8 +5,8 @@ export type NotificationType =
   | "race"
   | "goal"
   | "gym"
-  | "stats";
-
+  | "stats"
+  | "note";
 export type Notification = {
   id: string;
 

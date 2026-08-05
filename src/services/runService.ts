@@ -19,12 +19,16 @@ export async function getRuns(): Promise<Run[]> {
   }
 
   return (
-    data?.map((run) => ({
-      ...run,
-      averageHeartRate:
-        run.average_heart_rate,
-    })) ?? []
-  ) as Run[];
+  data?.map((run) => ({
+    ...run,
+
+    averageHeartRate:
+      run.average_heart_rate,
+
+    surface:
+      run.surface ?? "road",
+  })) ?? []
+) as Run[];
 }
 
 export async function saveRun(
@@ -44,6 +48,7 @@ export async function saveRun(
         run.averageHeartRate,
 
       type: run.type,
+      surface: run.surface,
 
       competitionName:
         run.competitionName,
@@ -80,7 +85,7 @@ export async function updateRun(
         run.averageHeartRate,
 
       type: run.type,
-
+surface: run.surface,
       competitionName:
         run.competitionName,
 
@@ -137,8 +142,12 @@ export async function getRunById(
   }
 
   return {
-    ...data,
-    averageHeartRate:
-      data.average_heart_rate,
-  } as Run;
+  ...data,
+
+  averageHeartRate:
+    data.average_heart_rate,
+
+  surface:
+    data.surface ?? "road",
+} as Run;
 }

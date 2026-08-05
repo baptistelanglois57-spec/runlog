@@ -37,6 +37,11 @@ export default function RunForm() {
     "training" | "race" | "gym"
   >("training");
 
+  const [surface, setSurface] =
+  useState<"road" | "trail">(
+    "road"
+  );
+
   const [date, setDate] = useState("");
 
   const [distance, setDistance] =
@@ -140,6 +145,8 @@ export default function RunForm() {
       name,
 
       type,
+
+      surface,
 
       date,
 
@@ -273,14 +280,22 @@ export default function RunForm() {
 <RunFields
   type={type}
   setType={setType}
+
+  surface={surface}
+  setSurface={setSurface}
+
   date={date}
   setDate={setDate}
+
   distance={distance}
   setDistance={setDistance}
+
   duration={duration}
   setDuration={setDuration}
+
   elevation={elevation}
   setElevation={setElevation}
+
   averageHeartRate={averageHeartRate}
   setAverageHeartRate={
     setAverageHeartRate

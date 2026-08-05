@@ -15,6 +15,8 @@ import Tools from "./pages/Tools";
 import Discipline from "./pages/Discipline";
 import AthleteProfile from "./pages/AthleteProfile";
 import Notes from "./pages/Notes";
+import Forecast from "./pages/Forecast";
+
 export default function AppRoutes() {
   return (
     <Layout>
@@ -40,7 +42,10 @@ export default function AppRoutes() {
   path="/notes"
   element={<Notes />}
 />
-
+<Route
+  path="/forecast"
+  element={<Forecast />}
+/>
         <Route
           path="/discipline"
           element={<Discipline />}

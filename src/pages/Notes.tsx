@@ -272,17 +272,34 @@ export default function Notes() {
               information importante.
             </p>
           </div>
-        ) : (
-          notes.map((note) => (
-            <NoteCard
-              key={note.id}
-              note={note}
-              onClick={() =>
-                setSelectedNote(note)
-              }
-            />
-          ))
-        )}
+       ) : (
+  [...notes]
+    .sort((a, b) => {
+      if (
+        a.importantDate &&
+        b.importantDate
+      ) {
+        return (
+          new Date(a.importantDate).getTime() -
+          new Date(b.importantDate).getTime()
+        );
+      }
+
+      if (a.importantDate) return -1;
+      if (b.importantDate) return 1;
+
+      return 0;
+    })
+    .map((note) => (
+      <NoteCard
+        key={note.id}
+        note={note}
+        onClick={() =>
+          setSelectedNote(note)
+        }
+      />
+    ))
+)}
 
         <NoteModal
           isOpen={showModal}

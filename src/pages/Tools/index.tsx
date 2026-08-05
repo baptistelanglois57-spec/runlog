@@ -12,47 +12,55 @@ import {
   User,
   Target,
   NotebookPen,
+  ChartLine,
   ChevronRight,
 } from "lucide-react";
 
 export default function Tools() {
   const navigate = useNavigate();
 
-  const cards = [
-    {
-      icon: Trophy,
-      title: "Records",
-      subtitle: "Consulter vos records personnels",
-      path: "/records",
-    },
-    {
-      icon: CalendarDays,
-      title: "Agenda",
-      subtitle: "Entraînements et compétitions",
-      path: "/agenda",
-    },
-    {
-      icon: User,
-      title: "Fiche sportif",
-      subtitle:
-        "Informations personnelles et performances",
-      path: "/athlete-profile",
-    },
-    {
-      icon: Target,
-      title: "Discipline",
-      subtitle:
-        "Analyse du respect de votre planning",
-      path: "/discipline",
-    },
-    {
-      icon: NotebookPen,
-      title: "Pense-bête",
-      subtitle:
-        "Notes, idées et rappels importants",
-      path: "/notes",
-    },
-  ];
+ const cards = [
+  {
+    icon: Trophy,
+    title: "Records",
+    subtitle: "Consulter vos records personnels",
+    path: "/records",
+  },
+  {
+    icon: CalendarDays,
+    title: "Agenda",
+    subtitle: "Entraînements et compétitions",
+    path: "/agenda",
+  },
+  {
+    icon: User,
+    title: "Fiche sportif",
+    subtitle:
+      "Informations personnelles et performances",
+    path: "/athlete-profile",
+  },
+  {
+    icon: Target,
+    title: "Discipline",
+    subtitle:
+      "Analyse du respect de votre planning",
+    path: "/discipline",
+  },
+  {
+    icon: NotebookPen,
+    title: "Pense-bête",
+    subtitle:
+      "Notes, idées et rappels importants",
+    path: "/notes",
+  },
+  {
+    icon: ChartLine,
+    title: "Prévisions",
+    subtitle:
+      "Estimer vos performances",
+    path: "/forecast",
+  },
+];
 
   return (
     <AppContainer>

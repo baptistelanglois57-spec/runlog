@@ -1,4 +1,5 @@
 import { getRuns } from "./runService";
+import { getNotes } from "./noteService";
 import {
   getISOWeek,
   getISOWeekYear,
@@ -306,4 +307,58 @@ export async function syncHeartRateRecordNotification(
     record.id,
     record.date
   );
+}
+export async function syncNotesNotifications() {
+  const notes = await getNotes();
+
+  const today = new Date()
+    .toISOString()
+    .split("T")[0];
+
+  for (const note of notes) {
+    if (!note.importantDate) {
+      continue;
+    }
+
+    //
+    // La date n'est pas aujourd'hui
+    //
+
+    if (note.importantDate !== today) {
+      await deleteNotificationsByEntity(
+        "note",
+        note.id
+      );
+
+      continue;
+    }
+
+    //
+    // Création / mise à jour
+    //
+
+    await upsertNotification({
+      id: crypto.randomUUID(),
+
+      type: "note",
+
+      action: "note",
+
+      entity: "note",
+
+      entityId: note.id,
+
+      runId: "",
+
+      icon: "📌",
+
+      title: "Pense-bête",
+
+      message: `${note.title} est prévu aujourd'hui.`,
+
+      createdAt: new Date().toISOString(),
+
+      read: false,
+    });
+  }
 }

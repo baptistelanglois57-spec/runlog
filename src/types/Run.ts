@@ -15,6 +15,9 @@ export type Run = {
 
   type: "training" | "race" | "gym";
 
+  // Nouveau
+  surface: "road" | "trail";
+
   competitionName?: string;
 
   location?: string;
