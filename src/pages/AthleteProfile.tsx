@@ -239,9 +239,9 @@ export default function AthleteProfile() {
   <div
     style={{
       display: "grid",
-      gridTemplateColumns: "repeat(3, 180px)",
-      justifyContent: "center",
-      gap: 16,
+gridTemplateColumns: "repeat(2, minmax(0,1fr))",
+gap: 16,
+width: "100%",
     }}
   >
     <AthleteField
@@ -288,10 +288,10 @@ export default function AthleteProfile() {
 
   <div
     style={{
-      display: "grid",
-      gridTemplateColumns: "repeat(2, 220px)",
-      justifyContent: "center",
-      gap: 16,
+     display: "grid",
+gridTemplateColumns: "repeat(2, minmax(0,1fr))",
+gap: 16,
+width: "100%",
     }}
   >
     <AthleteField
@@ -334,9 +334,9 @@ export default function AthleteProfile() {
   <div
     style={{
       display: "grid",
-      gridTemplateColumns: "repeat(2, 220px)",
-      justifyContent: "center",
-      gap: 16,
+gridTemplateColumns: "repeat(2, minmax(0,1fr))",
+gap: 16,
+width: "100%",
     }}
   >
     <AthleteField

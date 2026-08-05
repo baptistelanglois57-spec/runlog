@@ -14,12 +14,12 @@ import {
   NotebookPen,
   ChartLine,
   ChevronRight,
+  Dumbbell,
 } from "lucide-react";
-
 export default function Tools() {
   const navigate = useNavigate();
 
- const cards = [
+const cards = [
   {
     icon: Trophy,
     title: "Records",
@@ -60,6 +60,20 @@ export default function Tools() {
       "Estimer vos performances",
     path: "/forecast",
   },
+  {
+    icon: ChartLine,
+    title: "Comparaison",
+    subtitle:
+      "Comparer deux séances de musculation",
+    path: "/gym-comparison",
+  },
+  {
+  icon: Dumbbell,
+  title: "Exercices",
+  subtitle:
+    "Bibliothèque des exercices",
+  path: "/exercise-library",
+},
 ];
 
   return (

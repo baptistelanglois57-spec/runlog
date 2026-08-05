@@ -68,10 +68,10 @@ export default function RunCard({
             textOverflow: "ellipsis",
           }}
         >
-          {run.type === "training"
-            ? "🏃"
-            : "🏁"}{" "}
-          {run.name}
+          {run.name.replace(
+  /^[^\p{L}\p{N}]+\s*/u,
+  ""
+)}
         </div>
 
         <div

@@ -16,7 +16,9 @@ import Discipline from "./pages/Discipline";
 import AthleteProfile from "./pages/AthleteProfile";
 import Notes from "./pages/Notes";
 import Forecast from "./pages/Forecast";
-
+import GymComparison from "./pages/GymComparison";
+import ExerciseLibrary from "./pages/ExerciseLibrary";
+import EditGym from "./pages/EditGym";
 export default function AppRoutes() {
   return (
     <Layout>
@@ -45,6 +47,18 @@ export default function AppRoutes() {
 <Route
   path="/forecast"
   element={<Forecast />}
+/>
+<Route
+  path="/exercise-library"
+  element={<ExerciseLibrary />}
+/>
+<Route
+  path="/muscu/edit/:id"
+  element={<EditGym />}
+/>
+<Route
+  path="/gym-comparison"
+  element={<GymComparison />}
 />
         <Route
           path="/discipline"

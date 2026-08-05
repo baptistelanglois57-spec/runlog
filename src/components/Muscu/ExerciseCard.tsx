@@ -1,16 +1,24 @@
-import { theme } from "../../styles/theme";
 import { useState } from "react";
 
+import { theme } from "../../styles/theme";
+
 import ExerciseHistoryModal from "./ExerciseHistoryModal";
+import ExerciseLibraryModal from "./ExerciseLibraryModal";
+import SetRow from "./SetRow";
 
 import type { GymSession } from "../../types/GymSession";
 import type { GymExercise } from "../../types/Gym/GymExercise";
 
-import SetRow from "./SetRow";
+import { addExercise } from "../../services/exerciseLibraryService";
 
 type Props = {
   exercise: GymExercise;
+
   historySessions: GymSession[];
+
+  exerciseNames: string[];
+
+  refreshExercises: () => Promise<void>;
 
   index: number;
 
@@ -26,7 +34,9 @@ type Props = {
     value: number
   ) => void;
 
-  onAddSet: (exerciseIndex: number) => void;
+  onAddSet: (
+    exerciseIndex: number
+  ) => void;
 
   onDeleteSet: (
     exerciseIndex: number,
@@ -40,8 +50,10 @@ type Props = {
 
 export default function ExerciseCard({
   exercise,
-  index,
   historySessions,
+  exerciseNames,
+  refreshExercises,
+  index,
   onExerciseNameChange,
   onSetChange,
   onAddSet,
@@ -51,14 +63,32 @@ export default function ExerciseCard({
   const [showHistory, setShowHistory] =
     useState(false);
 
+  const [showLibraryModal, setShowLibraryModal] =
+    useState(false);
+
+  async function handleCreateExercise(
+    value: string
+  ) {
+    await addExercise(value);
+
+    await refreshExercises();
+
+    onExerciseNameChange(
+      index,
+      value
+    );
+
+    setShowLibraryModal(false);
+  }
+
   return (
     <>
       <div
         style={{
           background: theme.colors.card,
           border: `1px solid ${theme.colors.border}`,
-          borderRadius: "16px",
-          padding: "14px",
+          borderRadius: 16,
+          padding: 14,
         }}
       >
         <div
@@ -67,7 +97,7 @@ export default function ExerciseCard({
             justifyContent:
               "space-between",
             alignItems: "center",
-            marginBottom: "14px",
+            marginBottom: 14,
           }}
         >
           <h3
@@ -75,7 +105,7 @@ export default function ExerciseCard({
               margin: 0,
               color:
                 theme.colors.text,
-              fontSize: "20px",
+              fontSize: 20,
             }}
           >
             🏋️ Exercice {index + 1}
@@ -87,10 +117,10 @@ export default function ExerciseCard({
               onDeleteExercise(index)
             }
             style={{
-              width: "34px",
-              height: "34px",
+              width: 34,
+              height: 34,
               border: "none",
-              borderRadius: "9px",
+              borderRadius: 9,
               background: "#C0392B",
               color: "#fff",
               display: "flex",
@@ -98,7 +128,7 @@ export default function ExerciseCard({
                 "center",
               alignItems: "center",
               cursor: "pointer",
-              fontSize: "15px",
+              fontSize: 15,
             }}
           >
             🗑️
@@ -109,34 +139,70 @@ export default function ExerciseCard({
           style={{
             display: "flex",
             gap: 10,
-            alignItems: "center",
+            alignItems: "flex-start",
             marginBottom: 14,
           }}
         >
-          <input
-            type="text"
-            placeholder="Nom de l'exercice"
-            value={exercise.name}
-            onChange={(e) =>
-              onExerciseNameChange(
-                index,
-                e.target.value
-              )
-            }
+          <div
             style={{
               flex: 1,
-              padding: "10px 12px",
-              borderRadius: "10px",
-              border: `1px solid ${theme.colors.border}`,
-              background:
-                theme.colors.background,
-              color:
-                theme.colors.text,
-              fontSize: "15px",
-              boxSizing:
-                "border-box",
             }}
-          />
+          >
+            <select
+              value={exercise.name}
+              onChange={(e) =>
+                onExerciseNameChange(
+                  index,
+                  e.target.value
+                )
+              }
+              style={{
+                width: "100%",
+                padding: "10px 12px",
+                borderRadius: 10,
+                border: `1px solid ${theme.colors.border}`,
+                background:
+                  theme.colors.background,
+                color:
+                  theme.colors.text,
+                fontSize: 15,
+                boxSizing: "border-box",
+              }}
+            >
+              <option value="">
+                Choisir un exercice
+              </option>
+
+              {exerciseNames.map((name) => (
+                <option
+                  key={name}
+                  value={name}
+                >
+                  {name}
+                </option>
+              ))}
+            </select>
+
+            <button
+              type="button"
+              onClick={() =>
+                setShowLibraryModal(true)
+              }
+              style={{
+                marginTop: 8,
+                border: "none",
+                background: "transparent",
+                color:
+                  theme.colors.primary,
+                cursor: "pointer",
+                fontWeight: 700,
+                fontSize: 13,
+                padding: 0,
+              }}
+            >
+              ➕ Nouvel exercice
+            </button>
+          </div>
 
           <button
             type="button"
@@ -171,9 +237,8 @@ export default function ExerciseCard({
             <tr>
               <th
                 style={{
-                  paddingBottom:
-                    "6px",
-                  fontSize: "13px",
+                  paddingBottom: 6,
+                  fontSize: 13,
                 }}
               >
                 Série
@@ -181,9 +246,8 @@ export default function ExerciseCard({
 
               <th
                 style={{
-                  paddingBottom:
-                    "6px",
-                  fontSize: "13px",
+                  paddingBottom: 6,
+                  fontSize: 13,
                 }}
               >
                 Répétitions
@@ -191,9 +255,8 @@ export default function ExerciseCard({
 
               <th
                 style={{
-                  paddingBottom:
-                    "6px",
-                  fontSize: "13px",
+                  paddingBottom: 6,
+                  fontSize: 13,
                 }}
               >
                 Poids
@@ -204,33 +267,33 @@ export default function ExerciseCard({
           </thead>
 
           <tbody>
-                      {exercise.sets.map(
-            (set, setIndex) => (
-              <SetRow
-                key={setIndex}
-                index={setIndex}
-                set={set}
-                onChange={(
-                  row,
-                  field,
-                  value
-                ) =>
-                  onSetChange(
-                    index,
+                        {exercise.sets.map(
+              (set, setIndex) => (
+                <SetRow
+                  key={setIndex}
+                  index={setIndex}
+                  set={set}
+                  onChange={(
                     row,
                     field,
                     value
-                  )
-                }
-                onDelete={(row) =>
-                  onDeleteSet(
-                    index,
-                    row
-                  )
-                }
-              />
-            )
-          )}
+                  ) =>
+                    onSetChange(
+                      index,
+                      row,
+                      field,
+                      value
+                    )
+                  }
+                  onDelete={(row) =>
+                    onDeleteSet(
+                      index,
+                      row
+                    )
+                  }
+                />
+              )
+            )}
           </tbody>
         </table>
 
@@ -239,7 +302,7 @@ export default function ExerciseCard({
             display: "flex",
             justifyContent:
               "center",
-            marginTop: "14px",
+            marginTop: 14,
           }}
         >
           <button
@@ -248,18 +311,16 @@ export default function ExerciseCard({
               onAddSet(index)
             }
             style={{
-              width: "220px",
+              width: 220,
               padding: "11px 14px",
               border: "none",
-              borderRadius: "10px",
+              borderRadius: 10,
               background:
                 theme.colors.primary,
               color: "#000",
               fontWeight: 700,
-              fontSize: "14px",
+              fontSize: 14,
               cursor: "pointer",
-              transition:
-                "0.2s ease",
             }}
           >
             ➕ Ajouter une série
@@ -274,6 +335,15 @@ export default function ExerciseCard({
         }
         exerciseName={exercise.name}
         sessions={historySessions}
+      />
+
+      <ExerciseLibraryModal
+        isOpen={showLibraryModal}
+        title="Nouvel exercice"
+        onClose={() =>
+          setShowLibraryModal(false)
+        }
+        onSave={handleCreateExercise}
       />
     </>
   );

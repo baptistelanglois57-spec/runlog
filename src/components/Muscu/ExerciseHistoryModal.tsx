@@ -1,5 +1,5 @@
 import { theme } from "../../styles/theme";
-
+import { getGymProgressAdvice } from "../../utils/gymProgress";
 import type { GymSession } from "../../types/GymSession";
 
 type Props = {
@@ -71,7 +71,12 @@ export default function ExerciseHistoryModal({
         }))
     )
     .slice(0, 2);
-
+const advice =
+  history.length > 0
+    ? getGymProgressAdvice(
+        history[0].sets
+      )
+    : null;
   return (
     <div
       onClick={onClose}
@@ -289,7 +294,61 @@ export default function ExerciseHistoryModal({
             )
           )
         )}
+{advice && (
+  <div
+    style={{
+      marginTop: 26,
 
+      padding: 18,
+
+      borderRadius: 16,
+
+      background:
+        advice.type === "success"
+          ? "rgba(34,197,94,.12)"
+          : advice.type === "warning"
+          ? "rgba(245,158,11,.12)"
+          : "rgba(239,68,68,.12)",
+
+      border:
+        advice.type === "success"
+          ? "1px solid rgba(34,197,94,.35)"
+          : advice.type === "warning"
+          ? "1px solid rgba(245,158,11,.35)"
+          : "1px solid rgba(239,68,68,.35)",
+    }}
+  >
+    <div
+      style={{
+        fontWeight: 700,
+        color: theme.colors.text,
+        marginBottom: 8,
+        fontSize: 17,
+      }}
+    >
+      {advice.icon} Conseil RunLog
+    </div>
+
+    <div
+      style={{
+        color: theme.colors.primary,
+        fontWeight: 700,
+        marginBottom: 6,
+      }}
+    >
+      {advice.title}
+    </div>
+
+    <div
+      style={{
+        color: theme.colors.textSecondary,
+        lineHeight: 1.5,
+      }}
+    >
+      {advice.message}
+    </div>
+  </div>
+)}
         <button
           onClick={onClose}
           style={{
