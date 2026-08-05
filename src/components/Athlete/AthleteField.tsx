@@ -1,4 +1,7 @@
-import { Pencil } from "lucide-react";
+import {
+  Pencil,
+  History,
+} from "lucide-react";
 
 import { theme } from "../../styles/theme";
 
@@ -6,7 +9,9 @@ type AthleteFieldProps = {
   label: string;
   value: string;
   icon: string;
+
   onEdit: () => void;
+
   onHistory?: () => void;
 };
 
@@ -19,121 +24,146 @@ export default function AthleteField({
 }: AthleteFieldProps) {
   return (
     <div
+      onClick={onEdit}
       style={{
+        position: "relative",
+
         background: theme.colors.card,
 
         border: `1px solid ${theme.colors.border}`,
 
         borderRadius: 18,
 
-        padding: 18,
+        padding: 16,
 
-        marginBottom: 14,
+        cursor: "pointer",
+
+        minHeight: 135,
+
+        display: "flex",
+
+        flexDirection: "column",
+
+        justifyContent: "space-between",
+
+        transition: ".2s",
       }}
     >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            gap: 14,
-            alignItems: "center",
-          }}
-        >
-          <div
-            style={{
-              fontSize: 28,
-            }}
-          >
-            {icon}
-          </div>
-
-          <div>
-            <div
-              style={{
-                color:
-                  theme.colors.textSecondary,
-
-                fontSize: 13,
-
-                marginBottom: 4,
-              }}
-            >
-              {label}
-            </div>
-
-            <div
-              style={{
-                color: theme.colors.text,
-
-                fontSize: 20,
-
-                fontWeight: 700,
-              }}
-            >
-              {value}
-            </div>
-
-            {onHistory && (
-              <button
-                onClick={onHistory}
-                style={{
-                  marginTop: 8,
-
-                  border: "none",
-
-                  background:
-                    "transparent",
-
-                  padding: 0,
-
-                  cursor: "pointer",
-
-                  color:
-                    theme.colors.primary,
-
-                  fontWeight: 600,
-
-                  fontSize: 13,
-                }}
-              >
-                Voir l'historique →
-              </button>
-            )}
-          </div>
-        </div>
-
+      {onHistory && (
         <button
-          onClick={onEdit}
+          onClick={(e) => {
+            e.stopPropagation();
+
+            onHistory();
+          }}
           style={{
-            width: 42,
-            height: 42,
+            position: "absolute",
 
-            borderRadius: 12,
+            top: 10,
 
-            border: `1px solid ${theme.colors.border}`,
+            right: 10,
+
+            width: 30,
+
+            height: 30,
+
+            borderRadius: 8,
+
+            border: "none",
 
             background:
-              "rgba(212,175,55,.08)",
+              "rgba(212,175,55,.10)",
 
             display: "flex",
+
             justifyContent: "center",
+
             alignItems: "center",
 
             cursor: "pointer",
           }}
         >
-          <Pencil
-            size={18}
+          <History
+            size={15}
             color={theme.colors.primary}
           />
         </button>
+      )}
+
+      <div
+        style={{
+          fontSize: 28,
+        }}
+      >
+        {icon}
       </div>
+
+      <div>
+        <div
+          style={{
+            color:
+              theme.colors.textSecondary,
+
+            fontSize: 13,
+
+            marginBottom: 6,
+          }}
+        >
+          {label}
+        </div>
+
+        <div
+          style={{
+            color: theme.colors.text,
+
+            fontSize: 20,
+
+            fontWeight: 700,
+
+            lineHeight: 1.2,
+          }}
+        >
+          {value}
+        </div>
+      </div>
+            <button
+        onClick={(e) => {
+          e.stopPropagation();
+
+          onEdit();
+        }}
+        style={{
+          position: "absolute",
+
+          bottom: 10,
+
+          right: 10,
+
+          width: 34,
+
+          height: 34,
+
+          borderRadius: 10,
+
+          border: `1px solid ${theme.colors.border}`,
+
+          background:
+            "rgba(212,175,55,.08)",
+
+          display: "flex",
+
+          justifyContent: "center",
+
+          alignItems: "center",
+
+          cursor: "pointer",
+        }}
+      >
+        <Pencil
+          size={16}
+          color={theme.colors.primary}
+        />
+      </button>
     </div>
   );
 }

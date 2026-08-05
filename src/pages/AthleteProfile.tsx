@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ChevronLeft,
-  User,
 } from "lucide-react";
 
 import AppContainer from "../components/Layout/AppContainer";
@@ -177,206 +176,184 @@ export default function AthleteProfile() {
         {/* HEADER */}
 
         <div
-          style={{
-            display: "flex",
-            justifyContent:
-              "space-between",
-            alignItems: "center",
-            marginBottom: 30,
-          }}
-        >
-          <button
-            onClick={() =>
-              navigate("/tools")
-            }
-            style={{
-              width: 44,
-              height: 44,
-              borderRadius: 14,
-              border: `1px solid ${theme.colors.border}`,
-              background:
-                theme.colors.card,
-              display: "flex",
-              justifyContent:
-                "center",
-              alignItems: "center",
-              cursor: "pointer",
-            }}
-          >
-            <ChevronLeft
-              size={22}
-              color={
-                theme.colors.primary
-              }
-            />
-          </button>
+  style={{
+    position: "relative",
+    marginBottom: 30,
+  }}
+>
+  <button
+    onClick={() => navigate("/tools")}
+    style={{
+      position: "absolute",
+      left: 0,
+      top: "50%",
+      transform: "translateY(-50%)",
 
-          <div
-            style={{
-              display: "flex",
-              gap: 10,
-              alignItems: "center",
-            }}
-          >
-            <User
-              size={24}
-              color={
-                theme.colors.primary
-              }
-            />
+      width: 44,
+      height: 44,
+      borderRadius: 14,
+      border: `1px solid ${theme.colors.border}`,
+      background: theme.colors.card,
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      cursor: "pointer",
+    }}
+  >
+    <ChevronLeft
+      size={22}
+      color={theme.colors.primary}
+    />
+  </button>
 
-            <h1
-              style={{
-                margin: 0,
-                color:
-                  theme.colors.primary,
-                fontSize:
-                  UI.FONT_H1,
-              }}
-            >
-              Fiche sportif
-            </h1>
-          </div>
+  <h1
+    style={{
+      margin: 0,
+      textAlign: "center",
+      color: theme.colors.primary,
+      fontSize: UI.FONT_H1,
+    }}
+  >
+    👤 Fiche sportif
+  </h1>
+</div>
+    {/* ===================== */}
+{/* INFORMATIONS PERSONNELLES */}
+{/* ===================== */}
 
-          <div style={{ width: 44 }} />
-        </div>
-                {/* ===================== */}
-        {/* INFORMATIONS PERSONNELLES */}
-        {/* ===================== */}
+<div
+  style={{
+    marginBottom: 30,
+  }}
+>
+  <h2
+    style={{
+      color: theme.colors.text,
+      textAlign: "center",
+      marginBottom: 16,
+    }}
+  >
+    👤 Informations personnelles
+  </h2>
 
-        <div
-          style={{
-            marginBottom: 30,
-          }}
-        >
-          <h2
-            style={{
-              color: theme.colors.primary,
-              marginBottom: 16,
-            }}
-          >
-            👤 Informations personnelles
-          </h2>
+  <div
+    style={{
+      display: "grid",
+      gridTemplateColumns: "repeat(3, 180px)",
+      justifyContent: "center",
+      gap: 16,
+    }}
+  >
+    <AthleteField
+      icon="📏"
+      label="Taille"
+      value={`${profile.height} cm`}
+      onEdit={() => setEditingField("height")}
+    />
 
-          <AthleteField
-            icon="📏"
-            label="Taille"
-            value={`${profile.height} cm`}
-            onEdit={() =>
-              setEditingField("height")
-            }
-          />
+    <AthleteField
+      icon="🚻"
+      label="Sexe"
+      value={profile.gender === "male" ? "Homme" : "Femme"}
+      onEdit={() => setEditingField("gender")}
+    />
 
-          <AthleteField
-            icon="🚻"
-            label="Sexe"
-            value={
-              profile.gender === "male"
-                ? "Homme"
-                : "Femme"
-            }
-            onEdit={() =>
-              setEditingField("gender")
-            }
-          />
+    <AthleteField
+      icon="🎂"
+      label="Naissance"
+      value={profile.birthDate || "-"}
+      onEdit={() => setEditingField("birthDate")}
+    />
+  </div>
+</div>
 
-          <AthleteField
-            icon="🎂"
-            label="Date de naissance"
-            value={
-              profile.birthDate || "-"
-            }
-            onEdit={() =>
-              setEditingField(
-                "birthDate"
-              )
-            }
-          />
-        </div>
+{/* ===================== */}
+{/* PERFORMANCES */}
+{/* ===================== */}
 
-        {/* ===================== */}
-        {/* PERFORMANCES */}
-        {/* ===================== */}
+<div
+  style={{
+    marginBottom: 30,
+  }}
+>
+  <h2
+    style={{
+      color: theme.colors.text,
+      textAlign: "center",
+      marginBottom: 16,
+    }}
+  >
+    📈 Performances
+  </h2>
 
-        <div
-          style={{
-            marginBottom: 30,
-          }}
-        >
-          <h2
-            style={{
-              color: theme.colors.primary,
-              marginBottom: 16,
-            }}
-          >
-            📈 Performances
-          </h2>
+  <div
+    style={{
+      display: "grid",
+      gridTemplateColumns: "repeat(2, 220px)",
+      justifyContent: "center",
+      gap: 16,
+    }}
+  >
+    <AthleteField
+      icon="⚖️"
+      label="Poids"
+      value={`${weight} kg`}
+      onEdit={() => setEditingField("weight")}
+      onHistory={() => setShowWeightHistory(true)}
+    />
 
-          <AthleteField
-            icon="⚖️"
-            label="Poids"
-            value={`${weight} kg`}
-            onEdit={() =>
-              setEditingField("weight")
-            }
-            onHistory={() =>
-              setShowWeightHistory(true)
-            }
-          />
+    <AthleteField
+      icon="🫀"
+      label="VO₂max"
+      value={`${vo2max}`}
+      onEdit={() => setEditingField("vo2max")}
+      onHistory={() => setShowVo2History(true)}
+    />
+  </div>
+</div>
 
-          <AthleteField
-            icon="🫀"
-            label="VO₂max"
-            value={`${vo2max}`}
-            onEdit={() =>
-              setEditingField("vo2max")
-            }
-            onHistory={() =>
-              setShowVo2History(true)
-            }
-          />
-        </div>
+{/* ===================== */}
+{/* CARDIO */}
+{/* ===================== */}
 
-        {/* ===================== */}
-        {/* CARDIO */}
-        {/* ===================== */}
+<div
+  style={{
+    marginBottom: 20,
+  }}
+>
+  <h2
+    style={{
+      color: theme.colors.text,
+      textAlign: "center",
+      marginBottom: 16,
+    }}
+  >
+    ❤️ Cardio
+  </h2>
 
-        <div
-          style={{
-            marginBottom: 20,
-          }}
-        >
-          <h2
-            style={{
-              color: theme.colors.primary,
-              marginBottom: 16,
-            }}
-          >
-            ❤️ Cardio
-          </h2>
+  <div
+    style={{
+      display: "grid",
+      gridTemplateColumns: "repeat(2, 220px)",
+      justifyContent: "center",
+      gap: 16,
+    }}
+  >
+    <AthleteField
+      icon="❤️"
+      label="FC max"
+      value={`${profile.maxHeartRate} bpm`}
+      onEdit={() => setEditingField("maxHeartRate")}
+    />
 
-          <AthleteField
-            icon="❤️"
-            label="FC maximale"
-            value={`${profile.maxHeartRate} bpm`}
-            onEdit={() =>
-              setEditingField(
-                "maxHeartRate"
-              )
-            }
-          />
-
-          <AthleteField
-            icon="💙"
-            label="FC repos"
-            value={`${profile.restingHeartRate} bpm`}
-            onEdit={() =>
-              setEditingField(
-                "restingHeartRate"
-              )
-            }
-          />
-        </div>
+    <AthleteField
+      icon="💙"
+      label="FC repos"
+      value={`${profile.restingHeartRate} bpm`}
+      onEdit={() => setEditingField("restingHeartRate")}
+    />
+  </div>
+</div>
 
         <EditAthleteModal
           isOpen={

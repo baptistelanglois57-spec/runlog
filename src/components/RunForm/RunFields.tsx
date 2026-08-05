@@ -262,20 +262,20 @@ export default function RunFields({
               ...inputStyle,
               textAlign:
                 "center",
-              fontSize: 17,
+              fontSize: 28,
               fontWeight: 700,
             }}
           >
             <option value="training">
-              🏃 Entraînement
+              🏃 
             </option>
 
             <option value="race">
-              🏁 Compétition
+              🏁 
             </option>
 
             <option value="gym">
-              💪 Musculation
+              💪 
             </option>
           </select>
         </div>
@@ -308,16 +308,16 @@ export default function RunFields({
               ...inputStyle,
               textAlign:
                 "center",
-              fontSize: 17,
+              fontSize: 28,
               fontWeight: 700,
             }}
           >
             <option value="road">
-              🛣️ Route
+              🛣️ 
             </option>
 
             <option value="trail">
-              🥾 Trail
+              🥾 
             </option>
           </select>
         </div>

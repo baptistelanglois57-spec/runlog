@@ -205,9 +205,15 @@ export default function RunForm() {
     navigate("/history");
   }
 
-  if (type === "gym") {
-    return <GymForm />;
-  }
+if (type === "gym") {
+  return (
+    <AppContainer>
+      <Section>
+        <GymForm />
+      </Section>
+    </AppContainer>
+  );
+}
     return (
     <AppContainer>
       <Section>
