@@ -5,7 +5,7 @@ import { theme } from "../../styles/theme";
 import ExerciseHistoryModal from "./ExerciseHistoryModal";
 import ExerciseLibraryModal from "./ExerciseLibraryModal";
 import SetRow from "./SetRow";
-
+import type { MuscleGroup } from "../../types/Gym/ExerciseLibrary";
 import type { GymSession } from "../../types/GymSession";
 import type { GymExercise } from "../../types/Gym/GymExercise";
 
@@ -66,20 +66,24 @@ export default function ExerciseCard({
   const [showLibraryModal, setShowLibraryModal] =
     useState(false);
 
-  async function handleCreateExercise(
-    value: string
-  ) {
-    await addExercise(value);
+async function handleCreateExercise(
+  value: string,
+  muscleGroup: MuscleGroup
+) {
+  await addExercise(
+    value,
+    muscleGroup
+  );
 
-    await refreshExercises();
+  await refreshExercises();
 
-    onExerciseNameChange(
-      index,
-      value
-    );
+  onExerciseNameChange(
+    index,
+    value
+  );
 
-    setShowLibraryModal(false);
-  }
+  setShowLibraryModal(false);
+}
 
   return (
     <>
