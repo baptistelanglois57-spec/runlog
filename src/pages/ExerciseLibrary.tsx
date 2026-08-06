@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -18,7 +18,10 @@ import ExerciseLibraryModal from "../components/Muscu/ExerciseLibraryModal";
 import { theme } from "../styles/theme";
 import { UI } from "../styles/ui";
 
-import type { ExerciseLibrary } from "../types/Gym/ExerciseLibrary";
+import type {
+  ExerciseLibrary,
+  MuscleGroup,
+} from "../types/Gym/ExerciseLibrary";
 
 import {
   getExercises,
@@ -27,39 +30,97 @@ import {
   deleteExercise,
 } from "../services/exerciseLibraryService";
 
+const muscleGroups: (
+  | "Tous"
+  | MuscleGroup
+)[] = [
+  "Tous",
+  "Pectoraux",
+  "Dos",
+  "Épaules",
+  "Biceps",
+  "Triceps",
+  "Avant-bras",
+  "Jambes",
+  "Abdos",
+];
+
+const badgeColors: Record<
+  MuscleGroup,
+  string
+> = {
+  Pectoraux: "#EF4444",
+  Dos: "#3B82F6",
+  Épaules: "#FACC15",
+  Biceps: "#22C55E",
+  Triceps: "#10B981",
+  "Avant-bras": "#8B5CF6",
+  Jambes: "#A16207",
+  Abdos: "#F97316",
+};
+
 export default function ExerciseLibrary() {
   const navigate = useNavigate();
 
   const [exercises, setExercises] =
     useState<ExerciseLibrary[]>([]);
 
+  const [selectedGroup, setSelectedGroup] =
+    useState<
+      "Tous" | MuscleGroup
+    >("Tous");
+
   const [showModal, setShowModal] =
     useState(false);
 
   const [editingExercise, setEditingExercise] =
-    useState<ExerciseLibrary | null>(null);
+    useState<ExerciseLibrary | null>(
+      null
+    );
 
   useEffect(() => {
     loadExercises();
   }, []);
-
-  async function loadExercises() {
+    async function loadExercises() {
     const data =
       await getExercises();
 
     setExercises(data);
   }
 
+  const filteredExercises =
+    useMemo(() => {
+      if (
+        selectedGroup === "Tous"
+      ) {
+        return exercises;
+      }
+
+      return exercises.filter(
+        (exercise) =>
+          exercise.muscleGroup ===
+          selectedGroup
+      );
+    }, [
+      exercises,
+      selectedGroup,
+    ]);
+
   async function handleSave(
-    value: string
+    value: string,
+    muscleGroup: MuscleGroup
   ) {
     if (editingExercise) {
       await updateExercise(
         editingExercise.id,
-        value
+        value,
+        muscleGroup
       );
     } else {
-      await addExercise(value);
+      await addExercise(
+        value,
+        muscleGroup
+      );
     }
 
     await loadExercises();
@@ -85,8 +146,14 @@ export default function ExerciseLibrary() {
     await loadExercises();
   }
 
+  function getBadgeColor(
+    group: MuscleGroup
+  ) {
+    return badgeColors[group];
+  }
+
   return (
-    <AppContainer>
+        <AppContainer>
       <Section>
         <PageCard>
           <div
@@ -95,7 +162,7 @@ export default function ExerciseLibrary() {
               justifyContent:
                 "space-between",
               alignItems: "center",
-              marginBottom: 28,
+              marginBottom: 30,
             }}
           >
             <button
@@ -103,8 +170,8 @@ export default function ExerciseLibrary() {
                 navigate("/tools")
               }
               style={{
-                width: 44,
-                height: 44,
+                width: 46,
+                height: 46,
                 borderRadius: 14,
                 border: `1px solid ${theme.colors.border}`,
                 background:
@@ -143,149 +210,260 @@ export default function ExerciseLibrary() {
 
             <div
               style={{
-                width: 44,
+                width: 46,
               }}
             />
           </div>
-                    <button
+
+          <button
             onClick={() => {
               setEditingExercise(null);
+
               setShowModal(true);
             }}
             style={{
               width: "100%",
               padding: "16px",
               border: "none",
-              borderRadius: 14,
-              background: theme.colors.primary,
+              borderRadius: 16,
+              background:
+                theme.colors.primary,
               color: "#000",
               fontWeight: 700,
               fontSize: 16,
               cursor: "pointer",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: 8,
               marginBottom: 24,
             }}
           >
-            <Plus size={18} />
-            Ajouter un exercice
+            <div
+              style={{
+                display: "flex",
+                justifyContent:
+                  "center",
+                alignItems: "center",
+                gap: 8,
+              }}
+            >
+              <Plus size={18} />
+
+              Ajouter un exercice
+            </div>
           </button>
 
           <div
             style={{
               display: "flex",
-              flexDirection: "column",
-              gap: 14,
+              flexWrap: "wrap",
+              justifyContent: "center",
+              gap: 10,
+              marginBottom: 28,
             }}
           >
-            {exercises.length === 0 ? (
+            {muscleGroups.map(
+              (group) => (
+                <button
+                  key={group}
+                  onClick={() =>
+                    setSelectedGroup(
+                      group
+                    )
+                  }
+                  style={{
+                    padding:
+                      "10px 16px",
+                    borderRadius: 999,
+                    border:
+                      selectedGroup ===
+                      group
+                        ? "none"
+                        : `1px solid ${theme.colors.border}`,
+                    background:
+                      selectedGroup ===
+                      group
+                        ? "#FFFFFF"
+                        : "transparent",
+                    color:
+                      selectedGroup ===
+                      group
+                        ? "#000"
+                        : "#FFF",
+                    fontWeight: 700,
+                    fontSize: 14,
+                    cursor: "pointer",
+                    transition:
+                      ".2s",
+                  }}
+                >
+                  {group}
+                </button>
+              )
+            )}
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 12,
+            }}
+          ></div>
+                      {filteredExercises.length ===
+            0 ? (
               <div
                 style={{
                   textAlign: "center",
                   color:
                     theme.colors.textSecondary,
-                  padding: "30px 0",
+                  padding:
+                    "40px 0",
+                  fontSize: 15,
                 }}
               >
-                Aucun exercice enregistré.
+                Aucun exercice
+                trouvé.
               </div>
             ) : (
-              exercises.map((exercise) => (
-                <div
-                  key={exercise.id}
-                  style={{
-                    display: "flex",
-                    justifyContent:
-                      "space-between",
-                    alignItems: "center",
-                    padding: 18,
-                    borderRadius: 16,
-                    background:
-                      theme.colors.background,
-                    border: `1px solid ${theme.colors.border}`,
-                  }}
-                >
+              filteredExercises.map(
+                (exercise) => (
                   <div
-                    style={{
-                      color:
-                        theme.colors.text,
-                      fontWeight: 700,
-                      fontSize: 17,
-                    }}
-                  >
-                    {exercise.name}
-                  </div>
-
-                  <div
+                    key={exercise.id}
                     style={{
                       display: "flex",
-                      gap: 10,
+                      justifyContent:
+                        "space-between",
+                      alignItems: "center",
+                      padding: 14,
+                      borderRadius: 16,
+                      background:
+                        theme.colors.background,
+                      border: `1px solid ${theme.colors.border}`,
                     }}
                   >
-                    <button
-                      onClick={() => {
-                        setEditingExercise(
-                          exercise
-                        );
-
-                        setShowModal(
-                          true
-                        );
-                      }}
+                    <div
                       style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 12,
-                        border: `1px solid ${theme.colors.border}`,
-                        background:
-                          theme.colors.card,
-                        cursor: "pointer",
                         display: "flex",
-                        justifyContent:
-                          "center",
-                        alignItems: "center",
+                        flexDirection:
+                          "column",
+                        gap: 10,
+                        minWidth: 0,
+                        flex: 1,
                       }}
                     >
-                      <Pencil
-                        size={18}
-                        color={
-                          theme.colors.primary
+                      <div
+                        style={{
+                          color:
+                            theme.colors.text,
+                          fontWeight: 700,
+                          fontSize: 17,
+                          lineHeight: 1.3,
+                        }}
+                      >
+                        {exercise.name}
+                      </div>
+
+                      <div
+                        style={{
+                          display:
+                            "inline-flex",
+                          alignItems:
+                            "center",
+                          gap: 8,
+                          width:
+                            "fit-content",
+                          padding:
+                            "4px 10px",
+                          borderRadius: 999,
+                          background:
+                            getBadgeColor(
+                              exercise.muscleGroup
+                            ),
+                          color:
+                            "#FFF",
+                          fontSize: 12,
+                          fontWeight: 700,
+                        }}
+                      >
+                        {
+                          exercise.muscleGroup
                         }
-                      />
-                    </button>
+                      </div>
+                    </div>
 
-                    <button
-                      onClick={() =>
-                        handleDelete(
-                          exercise.id
-                        )
-                      }
+                    <div
                       style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 12,
-                        border: "none",
-                        background:
-                          "#C0392B",
-                        cursor: "pointer",
                         display: "flex",
-                        justifyContent:
-                          "center",
-                        alignItems: "center",
+                        gap: 10,
+                        marginLeft: 20,
                       }}
                     >
-                      <Trash2
-                        size={18}
-                        color="#fff"
-                      />
-                    </button>
+                      <button
+                        onClick={() => {
+                          setEditingExercise(
+                            exercise
+                          );
+
+                          setShowModal(
+                            true
+                          );
+                        }}
+                        style={{
+                          width: 38,
+                          height: 38,
+                          borderRadius: 12,
+                          border: `1px solid ${theme.colors.border}`,
+                          background:
+                            theme.colors.card,
+                          cursor:
+                            "pointer",
+                          display:
+                            "flex",
+                          justifyContent:
+                            "center",
+                          alignItems:
+                            "center",
+                        }}
+                      >
+                        <Pencil
+                          size={18}
+                          color={
+                            theme.colors.primary
+                          }
+                        />
+                      </button>
+
+                      <button
+                        onClick={() =>
+                          handleDelete(
+                            exercise.id
+                          )
+                        }
+                        style={{
+                          width: 38,
+                          height: 38,
+                          borderRadius: 12,
+                          border: "none",
+                          background:
+                            "#C0392B",
+                          cursor:
+                            "pointer",
+                          display:
+                            "flex",
+                          justifyContent:
+                            "center",
+                          alignItems:
+                            "center",
+                        }}
+                      >
+                        <Trash2
+                          size={18}
+                          color="#FFF"
+                        />
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))
+                )
+              )
             )}
-          </div>
 
           <ExerciseLibraryModal
             isOpen={showModal}
@@ -297,8 +475,13 @@ export default function ExerciseLibrary() {
             initialValue={
               editingExercise?.name ?? ""
             }
+            initialMuscleGroup={
+              editingExercise?.muscleGroup ??
+              "Pectoraux"
+            }
             onClose={() => {
               setShowModal(false);
+
               setEditingExercise(null);
             }}
             onSave={handleSave}

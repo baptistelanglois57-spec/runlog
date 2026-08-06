@@ -2,6 +2,10 @@ import type { Event } from "../types/Event";
 import type { Run } from "../types/Run";
 import type { GymSession } from "../types/GymSession";
 
+import {
+  getMonthlyDiscipline,
+} from "./disciplineMonthly";
+
 export interface DisciplineStats {
   planned: number;
   completed: number;
@@ -12,152 +16,120 @@ export interface DisciplineStats {
 
 export interface DisciplineData {
   overall: DisciplineStats;
+
   training: DisciplineStats;
+
   gym: DisciplineStats;
+
   race: DisciplineStats;
 }
 
-function calculateStats(
-  planned: number,
-  completed: number,
-  pending: number
+function mergeMonthlyStats(
+  months: ReturnType<
+    typeof getMonthlyDiscipline
+  >
 ): DisciplineStats {
-  const missed = Math.max(
-    planned - completed - pending,
-    0
-  );
+  const planned =
+    months.reduce(
+      (sum, month) =>
+        sum + month.stats.planned,
+      0
+    );
+
+  const completed =
+    months.reduce(
+      (sum, month) =>
+        sum +
+        month.stats.completed,
+      0
+    );
+
+  const pending =
+    months.reduce(
+      (sum, month) =>
+        sum + month.stats.pending,
+      0
+    );
+
+  const missed =
+    months.reduce(
+      (sum, month) =>
+        sum + month.stats.missed,
+      0
+    );
 
   const played =
     completed + missed;
 
-  const percentage =
-    played === 0
-      ? 0
-      : Math.round(
-          (completed / played) * 100
-        );
-
   return {
     planned,
+
     completed,
+
     pending,
+
     missed,
-    percentage,
+
+    percentage:
+      played === 0
+        ? 0
+        : Math.round(
+            (completed /
+              played) *
+              100
+          ),
   };
 }
-
 export function getDisciplineData(
   events: Event[],
   runs: Run[],
   gymSessions: GymSession[]
 ): DisciplineData {
-  const today = new Date();
-
-  today.setHours(0, 0, 0, 0);
-
-  function isFuture(date: string) {
-    return new Date(date) > today;
-  }
-
-  const trainingEvents =
-    events.filter(
-      (event) =>
-        event.type === "training"
+  const monthlyTraining =
+    getMonthlyDiscipline(
+      "training",
+      events,
+      runs,
+      gymSessions
     );
 
-  const gymEvents =
-    events.filter(
-      (event) =>
-        event.type === "gym"
+  const monthlyGym =
+    getMonthlyDiscipline(
+      "gym",
+      events,
+      runs,
+      gymSessions
     );
 
-  const raceEvents =
-    events.filter(
-      (event) =>
-        event.type === "race"
+  const monthlyRace =
+    getMonthlyDiscipline(
+      "race",
+      events,
+      runs,
+      gymSessions
     );
-
-  const completedTraining =
-    trainingEvents.filter(
-      (event) =>
-        runs.some(
-          (run) =>
-            run.date === event.date
-        )
-    ).length;
-
-  const completedGym =
-    gymEvents.filter(
-      (event) =>
-        gymSessions.some(
-          (session) =>
-            session.date === event.date
-        )
-    ).length;
-
-  const completedRace =
-    raceEvents.filter(
-      (event) =>
-        runs.some(
-          (run) =>
-            run.date === event.date &&
-            run.type === "race"
-        )
-    ).length;
-
-  const pendingTraining =
-    trainingEvents.filter(
-      (event) =>
-        isFuture(event.date)
-    ).length;
-
-  const pendingGym =
-    gymEvents.filter(
-      (event) =>
-        isFuture(event.date)
-    ).length;
-
-  const pendingRace =
-    raceEvents.filter(
-      (event) =>
-        isFuture(event.date)
-    ).length;
 
   const training =
-    calculateStats(
-      trainingEvents.length,
-      completedTraining,
-      pendingTraining
+    mergeMonthlyStats(
+      monthlyTraining
     );
 
   const gym =
-    calculateStats(
-      gymEvents.length,
-      completedGym,
-      pendingGym
+    mergeMonthlyStats(
+      monthlyGym
     );
 
   const race =
-    calculateStats(
-      raceEvents.length,
-      completedRace,
-      pendingRace
+    mergeMonthlyStats(
+      monthlyRace
     );
 
   const overall =
-    calculateStats(
-      training.planned +
-        gym.planned +
-        race.planned,
-
-      training.completed +
-        gym.completed +
-        race.completed,
-
-      training.pending +
-        gym.pending +
-        race.pending
-    );
+    mergeMonthlyStats([
+      ...monthlyTraining,
+      ...monthlyGym,
+      ...monthlyRace,
+    ]);
 
   return {
     overall,

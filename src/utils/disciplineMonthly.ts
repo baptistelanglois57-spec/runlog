@@ -98,14 +98,32 @@ export function getMonthlyDiscipline(
       let pending = 0;
 
       monthEvents.forEach((event) => {
-        const date = new Date(
-          event.date
-        );
+      const todayString =
+  new Date()
+    .toISOString()
+    .split("T")[0];
 
-        if (date > today) {
-          pending++;
-          return;
-        }
+const isCompleted =
+  type === "gym"
+    ? gymSessions.some(
+        (session) =>
+          session.date === event.date
+      )
+    : runs.some(
+        (run) =>
+          run.date === event.date &&
+          (type !== "race" ||
+            run.type === "race")
+      );
+
+if (isCompleted) {
+  completed++;
+  return;
+}
+
+if (event.date > todayString) {
+  pending++;
+}
 
         if (type === "gym") {
           if (

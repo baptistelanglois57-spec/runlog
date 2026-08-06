@@ -34,14 +34,14 @@ const cards = [
   },
   {
     icon: User,
-    title: "Fiche sportif",
+    title: "Fiche",
     subtitle:
       "Informations personnelles et performances",
     path: "/athlete-profile",
   },
   {
     icon: Target,
-    title: "Discipline",
+    title: "Stats",
     subtitle:
       "Analyse du respect de votre planning",
     path: "/discipline",

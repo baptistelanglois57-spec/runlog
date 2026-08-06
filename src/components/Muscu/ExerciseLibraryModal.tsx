@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 
 import { theme } from "../../styles/theme";
 
+import type { MuscleGroup } from "../../types/Gym/ExerciseLibrary";
+
 type Props = {
   isOpen: boolean;
 
@@ -9,24 +11,55 @@ type Props = {
 
   initialValue?: string;
 
+  initialMuscleGroup?: MuscleGroup;
+
   onClose: () => void;
 
-  onSave: (value: string) => void;
+  onSave: (
+    value: string,
+    muscleGroup: MuscleGroup
+  ) => void;
 };
+
+const muscleGroups: MuscleGroup[] = [
+  "Pectoraux",
+  "Dos",
+  "Épaules",
+  "Biceps",
+  "Triceps",
+  "Avant-bras",
+  "Jambes",
+  "Abdos",
+];
 
 export default function ExerciseLibraryModal({
   isOpen,
   title,
   initialValue = "",
+  initialMuscleGroup = "Pectoraux",
   onClose,
   onSave,
 }: Props) {
   const [value, setValue] =
     useState(initialValue);
 
+  const [
+    muscleGroup,
+    setMuscleGroup,
+  ] = useState<MuscleGroup>(
+    initialMuscleGroup
+  );
+
   useEffect(() => {
     setValue(initialValue);
-  }, [initialValue]);
+
+    setMuscleGroup(
+      initialMuscleGroup
+    );
+  }, [
+    initialValue,
+    initialMuscleGroup,
+  ]);
 
   if (!isOpen) {
     return null;
@@ -43,6 +76,7 @@ export default function ExerciseLibraryModal({
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        padding: 20,
         zIndex: 9999,
       }}
     >
@@ -51,48 +85,116 @@ export default function ExerciseLibraryModal({
           e.stopPropagation()
         }
         style={{
-          width: "min(92vw,420px)",
+          width: "100%",
+          maxWidth: 430,
           background:
             theme.colors.card,
-          borderRadius: 20,
+          borderRadius: 22,
           border: `1px solid ${theme.colors.border}`,
-          padding: 22,
+          padding: 24,
         }}
       >
         <h2
           style={{
             marginTop: 0,
-            marginBottom: 20,
+            marginBottom: 24,
             color:
               theme.colors.primary,
             textAlign: "center",
+            fontSize: 22,
           }}
         >
           {title}
         </h2>
 
-        <input
-          value={value}
-          onChange={(e) =>
-            setValue(e.target.value)
-          }
-          placeholder="Nom de l'exercice"
+        <div
           style={{
-            width: "100%",
-            padding: 16,
-            borderRadius: 14,
-            border: `1px solid ${theme.colors.border}`,
-            background:
-              theme.colors.background,
-            color:
-              theme.colors.text,
-            fontSize: 16,
-            boxSizing: "border-box",
-            marginBottom: 22,
+            marginBottom: 18,
           }}
-        />
+        >
+          <div
+            style={{
+              color:
+                theme.colors.text,
+              fontWeight: 700,
+              marginBottom: 8,
+            }}
+          >
+            Nom de l'exercice
+          </div>
+
+          <input
+            value={value}
+            onChange={(e) =>
+              setValue(
+                e.target.value
+              )
+            }
+            placeholder="Ex : Développé couché"
+            style={{
+              width: "100%",
+              padding: 16,
+              borderRadius: 14,
+              border: `1px solid ${theme.colors.border}`,
+              background:
+                theme.colors.background,
+              color:
+                theme.colors.text,
+              fontSize: 16,
+              boxSizing: "border-box",
+            }}
+          />
+        </div>
 
         <div
+          style={{
+            marginBottom: 28,
+          }}
+        >
+          <div
+            style={{
+              color:
+                theme.colors.text,
+              fontWeight: 700,
+              marginBottom: 8,
+            }}
+          >
+            Groupe musculaire
+          </div>
+
+          <select
+            value={muscleGroup}
+            onChange={(e) =>
+              setMuscleGroup(
+                e.target
+                  .value as MuscleGroup
+              )
+            }
+            style={{
+              width: "100%",
+              padding: 16,
+              borderRadius: 14,
+              border: `1px solid ${theme.colors.border}`,
+              background:
+                theme.colors.background,
+              color:
+                theme.colors.text,
+              fontSize: 16,
+            }}
+          >
+            {muscleGroups.map(
+              (group) => (
+                <option
+                  key={group}
+                  value={group}
+                >
+                  {group}
+                </option>
+              )
+            )}
+          </select>
+        </div>
+                <div
           style={{
             display: "flex",
             gap: 12,
@@ -102,15 +204,16 @@ export default function ExerciseLibraryModal({
             onClick={onClose}
             style={{
               flex: 1,
-              padding: 14,
+              padding: 15,
               borderRadius: 14,
               border: `1px solid ${theme.colors.border}`,
               background:
                 theme.colors.card,
               color:
                 theme.colors.text,
-              cursor: "pointer",
               fontWeight: 700,
+              cursor: "pointer",
+              fontSize: 15,
             }}
           >
             Annuler
@@ -122,20 +225,24 @@ export default function ExerciseLibraryModal({
                 return;
               }
 
-              onSave(value.trim());
+              onSave(
+                value.trim(),
+                muscleGroup
+              );
 
               onClose();
             }}
             style={{
               flex: 1,
-              padding: 14,
+              padding: 15,
               borderRadius: 14,
               border: "none",
               background:
                 theme.colors.primary,
               color: "#000",
-              cursor: "pointer",
               fontWeight: 700,
+              cursor: "pointer",
+              fontSize: 15,
             }}
           >
             Enregistrer

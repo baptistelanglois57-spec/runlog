@@ -90,15 +90,10 @@ export default function AthleteProfile() {
     } else {
       setProfile({
         id: "profile",
-
         height: 0,
-
         gender: "male",
-
         birthDate: "",
-
         maxHeartRate: 0,
-
         restingHeartRate: 0,
       });
     }
@@ -111,8 +106,7 @@ export default function AthleteProfile() {
 
     setVo2History(vo2Data);
   }
-
-  async function saveField(
+    async function saveField(
     value: string
   ) {
     if (!editingField) {
@@ -176,186 +170,176 @@ export default function AthleteProfile() {
         {/* HEADER */}
 
         <div
-  style={{
-    position: "relative",
-    marginBottom: 30,
-  }}
->
-  <button
-    onClick={() => navigate("/tools")}
-    style={{
-      position: "absolute",
-      left: 0,
-      top: "50%",
-      transform: "translateY(-50%)",
+          style={{
+            position: "relative",
+            marginBottom: 32,
+          }}
+        >
+          <button
+            onClick={() =>
+              navigate("/tools")
+            }
+            style={{
+              position: "absolute",
+              left: 0,
+              top: "50%",
+              transform:
+                "translateY(-50%)",
 
-      width: 44,
-      height: 44,
-      borderRadius: 14,
-      border: `1px solid ${theme.colors.border}`,
-      background: theme.colors.card,
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      cursor: "pointer",
-    }}
-  >
-    <ChevronLeft
-      size={22}
-      color={theme.colors.primary}
-    />
-  </button>
+              width: 44,
+              height: 44,
+              borderRadius: 14,
+              border: `1px solid ${theme.colors.border}`,
+              background:
+                theme.colors.card,
+              display: "flex",
+              justifyContent:
+                "center",
+              alignItems: "center",
+              cursor: "pointer",
+            }}
+          >
+            <ChevronLeft
+              size={22}
+              color={
+                theme.colors.primary
+              }
+            />
+          </button>
 
-  <h1
-    style={{
-      margin: 0,
-      textAlign: "center",
-      color: theme.colors.primary,
-      fontSize: UI.FONT_H1,
-    }}
-  >
-    👤 Fiche sportif
-  </h1>
-</div>
-    {/* ===================== */}
-{/* INFORMATIONS PERSONNELLES */}
-{/* ===================== */}
+          <h1
+            style={{
+              margin: 0,
+              textAlign: "center",
+              color:
+                theme.colors.primary,
+              fontSize:
+                UI.FONT_H1,
+            }}
+          >
+            👤 Fiche sportive
+          </h1>
+        </div>
 
-<div
-  style={{
-    marginBottom: 30,
-  }}
->
-  <h2
-    style={{
-      color: theme.colors.text,
-      textAlign: "center",
-      marginBottom: 16,
-    }}
-  >
-    👤 Informations personnelles
-  </h2>
+        <h2
+          style={{
+            color:
+              theme.colors.text,
+            textAlign: "center",
+            marginBottom: 20,
+            fontSize: 22,
+            fontWeight: 700,
+          }}
+        >
+          Informations
+        </h2>
 
-  <div
-    style={{
-      display: "grid",
-gridTemplateColumns: "repeat(2, minmax(0,1fr))",
-gap: 16,
-width: "100%",
-    }}
-  >
-    <AthleteField
-      icon="📏"
-      label="Taille"
-      value={`${profile.height} cm`}
-      onEdit={() => setEditingField("height")}
-    />
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns:
+              "repeat(2,minmax(0,1fr))",
+            gap: 16,
+            width: "100%",
+            marginBottom: 20,
+          }}
+        >
+          <AthleteField
+            icon="📏"
+            label="Taille"
+            value={`${profile.height} cm`}
+            onEdit={() =>
+              setEditingField(
+                "height"
+              )
+            }
+          />
 
-    <AthleteField
-      icon="🚻"
-      label="Sexe"
-      value={profile.gender === "male" ? "Homme" : "Femme"}
-      onEdit={() => setEditingField("gender")}
-    />
+          <AthleteField
+            icon="🚻"
+            label="Sexe"
+            value={
+              profile.gender ===
+              "male"
+                ? "Homme"
+                : "Femme"
+            }
+            onEdit={() =>
+              setEditingField(
+                "gender"
+              )
+            }
+          />
 
-    <AthleteField
-      icon="🎂"
-      label="Naissance"
-      value={profile.birthDate || "-"}
-      onEdit={() => setEditingField("birthDate")}
-    />
-  </div>
-</div>
+          <AthleteField
+            icon="🎂"
+            label="Naissance"
+            value={
+              profile.birthDate ||
+              "-"
+            }
+            onEdit={() =>
+              setEditingField(
+                "birthDate"
+              )
+            }
+          />
 
-{/* ===================== */}
-{/* PERFORMANCES */}
-{/* ===================== */}
+          <AthleteField
+            icon="⚖️"
+            label="Poids"
+            value={`${weight} kg`}
+            onEdit={() =>
+              setEditingField(
+                "weight"
+              )
+            }
+            onHistory={() =>
+              setShowWeightHistory(
+                true
+              )
+            }
+          />
 
-<div
-  style={{
-    marginBottom: 30,
-  }}
->
-  <h2
-    style={{
-      color: theme.colors.text,
-      textAlign: "center",
-      marginBottom: 16,
-    }}
-  >
-    📈 Performances
-  </h2>
+          <AthleteField
+            icon="🫀"
+            label="VO₂max"
+            value={`${vo2max}`}
+            onEdit={() =>
+              setEditingField(
+                "vo2max"
+              )
+            }
+            onHistory={() =>
+              setShowVo2History(
+                true
+              )
+            }
+          />
 
-  <div
-    style={{
-     display: "grid",
-gridTemplateColumns: "repeat(2, minmax(0,1fr))",
-gap: 16,
-width: "100%",
-    }}
-  >
-    <AthleteField
-      icon="⚖️"
-      label="Poids"
-      value={`${weight} kg`}
-      onEdit={() => setEditingField("weight")}
-      onHistory={() => setShowWeightHistory(true)}
-    />
+          <AthleteField
+            icon="❤️"
+            label="FC max"
+            value={`${profile.maxHeartRate} bpm`}
+            onEdit={() =>
+              setEditingField(
+                "maxHeartRate"
+              )
+            }
+          />
 
-    <AthleteField
-      icon="🫀"
-      label="VO₂max"
-      value={`${vo2max}`}
-      onEdit={() => setEditingField("vo2max")}
-      onHistory={() => setShowVo2History(true)}
-    />
-  </div>
-</div>
-
-{/* ===================== */}
-{/* CARDIO */}
-{/* ===================== */}
-
-<div
-  style={{
-    marginBottom: 20,
-  }}
->
-  <h2
-    style={{
-      color: theme.colors.text,
-      textAlign: "center",
-      marginBottom: 16,
-    }}
-  >
-    ❤️ Cardio
-  </h2>
-
-  <div
-    style={{
-      display: "grid",
-gridTemplateColumns: "repeat(2, minmax(0,1fr))",
-gap: 16,
-width: "100%",
-    }}
-  >
-    <AthleteField
-      icon="❤️"
-      label="FC max"
-      value={`${profile.maxHeartRate} bpm`}
-      onEdit={() => setEditingField("maxHeartRate")}
-    />
-
-    <AthleteField
-      icon="💙"
-      label="FC repos"
-      value={`${profile.restingHeartRate} bpm`}
-      onEdit={() => setEditingField("restingHeartRate")}
-    />
-  </div>
-</div>
-
-        <EditAthleteModal
+          <AthleteField
+            icon="💙"
+            label="FC repos"
+            value={`${profile.restingHeartRate} bpm`}
+            onEdit={() =>
+              setEditingField(
+                "restingHeartRate"
+              )
+            }
+          />
+        </div>
+                <EditAthleteModal
           isOpen={
             editingField !== null
           }
