@@ -100,13 +100,19 @@ export function compareExercises(
             )
         );
 
+      //
+      // Nouvel exercice
+      //
+
       if (!previousExercise) {
         return {
           name: currentExercise.name,
 
           status: "new",
 
-          result:
+          previousResult: "—",
+
+          currentResult:
             getResultText(
               currentExercise
             ),
@@ -114,7 +120,7 @@ export function compareExercises(
           comparison:
             "🆕 Nouvel exercice",
 
-          verdict: "🔵 Nouveau",
+          verdict: "Nouveau",
 
           verdictColor:
             "#3B82F6",
@@ -123,6 +129,9 @@ export function compareExercises(
             currentExercise.sets,
         };
       }
+            //
+      // Calculs
+      //
 
       const previousReps =
         getTotalReps(
@@ -166,74 +175,128 @@ export function compareExercises(
         currentWeight -
         previousWeight;
 
-      let comparison = "➖ Stable";
-let verdict = "🟢 Consolidation";
-let verdictColor = "#22C55E";
+      let comparison =
+        "➖ Stable";
 
-// Double progression
-if (weightDiff > 0 && repsDiff > 0) {
-  comparison = `⬆️ +${weightDiff.toFixed(
-    0
-  )} kg et +${repsDiff} répétitions`;
+      let verdict =
+        "Consolidation";
 
-  verdict = "⭐ Progression exceptionnelle";
-  verdictColor = "#22C55E";
-}
+      let verdictColor =
+        "#22C55E";
 
-// Charge augmentée
-else if (weightDiff > 0) {
-  comparison = `⬆️ +${weightDiff.toFixed(
-    0
-  )} kg (${previousWeight.toFixed(
-    0
-  )} → ${currentWeight.toFixed(0)} kg)`;
+      //
+      // Progression exceptionnelle
+      //
 
-  verdict = "🟢 Charge augmentée";
-  verdictColor = "#22C55E";
-}
+      if (
+        weightDiff > 0 &&
+        repsDiff > 0
+      ) {
+        comparison =
+          `⬆️ +${weightDiff.toFixed(
+            0
+          )} kg et +${repsDiff} répétitions`;
 
-// Charge diminuée
-else if (weightDiff < 0) {
-  comparison = `⬇️ ${Math.abs(
-    weightDiff
-  ).toFixed(0)} kg`;
+        verdict =
+          "Progression exceptionnelle";
 
-  verdict = "🟠 Charge réduite";
-  verdictColor = "#F97316";
-}
+        verdictColor =
+          "#22C55E";
+      }
 
-// Même charge
-else {
-  if (repsDiff > 0) {
-    comparison = `⬆️ +${repsDiff} répétitions`;
+      //
+      // Charge augmentée
+      //
 
-    verdict = "🟢 Excellente progression";
-    verdictColor = "#22C55E";
-  }
+      else if (weightDiff > 0) {
+        comparison =
+          `⬆️ +${weightDiff.toFixed(
+            0
+          )} kg`;
 
-  else if (repsDiff < 0) {
-    comparison = `⬇️ ${Math.abs(
-      repsDiff
-    )} répétitions`;
+        verdict =
+          "Charge augmentée";
 
-    verdict = "🟡 Léger recul";
-    verdictColor = "#FACC15";
-  }
+        verdictColor =
+          "#22C55E";
+      }
 
-  else {
-    comparison = "➖ Stable";
+      //
+      // Charge diminuée
+      //
 
-    verdict = "🟢 Consolidation";
-    verdictColor = "#22C55E";
-  }
-}
+      else if (weightDiff < 0) {
+        comparison =
+          `⬇️ ${Math.abs(
+            weightDiff
+          ).toFixed(0)} kg`;
+
+        verdict =
+          "Charge réduite";
+
+        verdictColor =
+          "#F97316";
+      }
+
+      //
+      // Même charge
+      //
+
+      else {
+        if (repsDiff > 0) {
+          comparison =
+            `⬆️ +${repsDiff} répétitions`;
+
+          verdict =
+            "Excellente progression";
+
+          verdictColor =
+            "#22C55E";
+        }
+
+        else if (repsDiff < 0) {
+          comparison =
+            `⬇️ ${Math.abs(
+              repsDiff
+            )} répétitions`;
+
+          verdict =
+            "Léger recul";
+
+          verdictColor =
+            "#FACC15";
+        }
+
+        else {
+          comparison =
+            "➖ Stable";
+
+          verdict =
+            "Consolidation";
+
+          verdictColor =
+            "#22C55E";
+        }
+      }
+            //
+      // Résultat
+      //
 
       return {
         name: currentExercise.name,
 
         status: "matched",
 
-        result:
+        //
+        // Affichage
+        //
+
+        previousResult:
+          getResultText(
+            previousExercise
+          ),
+
+        currentResult:
           getResultText(
             currentExercise
           ),
@@ -243,6 +306,10 @@ else {
         verdict,
 
         verdictColor,
+
+        //
+        // Statistiques
+        //
 
         previousReps,
 
@@ -267,17 +334,23 @@ else {
 
         previousWeight:
           Number(
-            previousWeight.toFixed(1)
+            previousWeight.toFixed(
+              1
+            )
           ),
 
         currentWeight:
           Number(
-            currentWeight.toFixed(1)
+            currentWeight.toFixed(
+              1
+            )
           ),
 
         weightDiff:
           Number(
-            weightDiff.toFixed(1)
+            weightDiff.toFixed(
+              1
+            )
           ),
 
         currentSets:

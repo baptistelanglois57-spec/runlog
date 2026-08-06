@@ -15,10 +15,15 @@ import {
   getGymSessionById,
 } from "../services/gymService";
 
-import { getExerciseNames } from "../services/exerciseLibraryService";
+import {
+  getExercises,
+} from "../services/exerciseLibraryService";
 
 import type { GymSession } from "../types/GymSession";
 import type { GymExercise } from "../types/Gym/GymExercise";
+import type {
+  ExerciseLibrary,
+} from "../types/Gym/ExerciseLibrary";
 
 export default function GymForm() {
   const navigate = useNavigate();
@@ -38,9 +43,12 @@ const isEditing = !!editingId;
 
   const [historySessions, setHistorySessions] =
     useState<GymSession[]>([]);
-
-  const [exerciseNames, setExerciseNames] =
-    useState<string[]>([]);
+const [
+  exerciseLibrary,
+  setExerciseLibrary,
+] = useState<
+  ExerciseLibrary[]
+>([]);
 
   const [loading, setLoading] =
     useState(true);
@@ -97,16 +105,21 @@ const isEditing = !!editingId;
   }, []);
 
   async function loadData() {
-    const [sessions, names] =
-      await Promise.all([
-        getGymSessions(),
-        getExerciseNames(),
-      ]);
+ const [sessions, exercises] =
+  await Promise.all([
+    getGymSessions(),
+    getExercises(),
+  ]);
 
-    setHistorySessions(sessions);
+setHistorySessions(sessions);
 
-    setExerciseNames(names);
-
+setExerciseLibrary(
+  exercises.filter(
+    (exercise) =>
+      exercise.muscleGroup !==
+      "Course à pied"
+  )
+);
     if (editingId) {
       const session =
         await getGymSessionById(
@@ -390,9 +403,9 @@ const isEditing = !!editingId;
               historySessions={
                 historySessions
               }
-              exerciseNames={
-                exerciseNames
-              }
+             exerciseLibrary={
+  exerciseLibrary
+}
               refreshExercises={
                 loadData
               }

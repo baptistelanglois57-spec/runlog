@@ -4,9 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import AppContainer from "../components/Layout/AppContainer";
 import Section from "../components/Layout/Section";
 import PageCard from "../components/Layout/PageCard";
-import { theme } from "../styles/theme";
 import { syncLongestRunNotification } from "../services/recordNotificationService";
-
+import NameField from "../components/RunForm/NameField";
 import RunFormHeader from "../components/RunForm/RunFormHeader";
 import RunFields from "../components/RunForm/RunFields";
 import CompetitionFields from "../components/RunForm/CompetitionFields";
@@ -234,42 +233,16 @@ if (type === "gym") {
     marginBottom: 20,
   }}
 >
-  <div>
-    <RunFormHeader
-      isEditing={isEditing}
-    />
+<div>
+  <RunFormHeader
+    isEditing={isEditing}
+  />
 
-    <input
-      type="text"
-      placeholder="Ex : Sortie EF"
-      value={name}
-      onChange={(e) =>
-        setName(e.target.value)
-      }
-      style={{
-        width: "100%",
-
-        height: 56,
-
-        padding: "0 16px",
-
-        borderRadius: 16,
-
-        border: `1px solid ${theme.colors.border}`,
-
-        background:
-          theme.colors.background,
-
-        color: theme.colors.text,
-
-        fontSize: 16,
-
-        outline: "none",
-
-        boxSizing: "border-box",
-      }}
-    />
-  </div>
+  <NameField
+    name={name}
+    setName={setName}
+  />
+</div>
 
   <div
     style={{

@@ -35,6 +35,7 @@ const muscleGroups: (
   | MuscleGroup
 )[] = [
   "Tous",
+  "Course à pied",
   "Pectoraux",
   "Dos",
   "Épaules",
@@ -49,13 +50,22 @@ const badgeColors: Record<
   MuscleGroup,
   string
 > = {
+  "Course à pied": "#06B6D4",
+
   Pectoraux: "#EF4444",
+
   Dos: "#3B82F6",
+
   Épaules: "#FACC15",
+
   Biceps: "#22C55E",
+
   Triceps: "#10B981",
+
   "Avant-bras": "#8B5CF6",
+
   Jambes: "#A16207",
+
   Abdos: "#F97316",
 };
 
@@ -476,9 +486,9 @@ export default function ExerciseLibrary() {
               editingExercise?.name ?? ""
             }
             initialMuscleGroup={
-              editingExercise?.muscleGroup ??
-              "Pectoraux"
-            }
+  editingExercise?.muscleGroup ??
+  "Course à pied"
+}
             onClose={() => {
               setShowModal(false);
 

@@ -22,6 +22,7 @@ type Props = {
 };
 
 const muscleGroups: MuscleGroup[] = [
+  "Course à pied",
   "Pectoraux",
   "Dos",
   "Épaules",

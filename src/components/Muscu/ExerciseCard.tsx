@@ -1,11 +1,16 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { theme } from "../../styles/theme";
 
 import ExerciseHistoryModal from "./ExerciseHistoryModal";
 import ExerciseLibraryModal from "./ExerciseLibraryModal";
 import SetRow from "./SetRow";
-import type { MuscleGroup } from "../../types/Gym/ExerciseLibrary";
+
+import type {
+  MuscleGroup,
+  ExerciseLibrary,
+} from "../../types/Gym/ExerciseLibrary";
+
 import type { GymSession } from "../../types/GymSession";
 import type { GymExercise } from "../../types/Gym/GymExercise";
 
@@ -16,7 +21,7 @@ type Props = {
 
   historySessions: GymSession[];
 
-  exerciseNames: string[];
+  exerciseLibrary: ExerciseLibrary[];
 
   refreshExercises: () => Promise<void>;
 
@@ -48,10 +53,21 @@ type Props = {
   ) => void;
 };
 
+const muscleGroups: MuscleGroup[] = [
+  "Pectoraux",
+  "Dos",
+  "Épaules",
+  "Biceps",
+  "Triceps",
+  "Avant-bras",
+  "Jambes",
+  "Abdos",
+];
+
 export default function ExerciseCard({
   exercise,
   historySessions,
-  exerciseNames,
+  exerciseLibrary,
   refreshExercises,
   index,
   onExerciseNameChange,
@@ -66,24 +82,56 @@ export default function ExerciseCard({
   const [showLibraryModal, setShowLibraryModal] =
     useState(false);
 
-async function handleCreateExercise(
-  value: string,
-  muscleGroup: MuscleGroup
-) {
-  await addExercise(
-    value,
-    muscleGroup
-  );
+  const [selectedGroup, setSelectedGroup] =
+    useState<MuscleGroup>("Pectoraux");
 
-  await refreshExercises();
+  const filteredExercises =
+    useMemo(
+      () =>
+        exerciseLibrary.filter(
+          (exercise) =>
+            exercise.muscleGroup ===
+            selectedGroup
+        ),
+      [
+        exerciseLibrary,
+        selectedGroup,
+      ]
+    );
 
-  onExerciseNameChange(
-    index,
-    value
-  );
+  useEffect(() => {
+    if (
+      exercise.name &&
+      !filteredExercises.some(
+        (e) =>
+          e.name === exercise.name
+      )
+    ) {
+      onExerciseNameChange(
+        index,
+        ""
+      );
+    }
+  }, [selectedGroup]);
 
-  setShowLibraryModal(false);
-}
+  async function handleCreateExercise(
+    value: string,
+    muscleGroup: MuscleGroup
+  ) {
+    await addExercise(
+      value,
+      muscleGroup
+    );
+
+    await refreshExercises();
+
+    onExerciseNameChange(
+      index,
+      value
+    );
+
+    setShowLibraryModal(false);
+  }
 
   return (
     <>
@@ -138,8 +186,7 @@ async function handleCreateExercise(
             🗑️
           </button>
         </div>
-
-        <div
+                <div
           style={{
             display: "flex",
             gap: 10,
@@ -150,58 +197,132 @@ async function handleCreateExercise(
           <div
             style={{
               flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              gap: 12,
             }}
           >
-            <select
-              value={exercise.name}
-              onChange={(e) =>
-                onExerciseNameChange(
-                  index,
-                  e.target.value
-                )
-              }
-              style={{
-                width: "100%",
-                padding: "10px 12px",
-                borderRadius: 10,
-                border: `1px solid ${theme.colors.border}`,
-                background:
-                  theme.colors.background,
-                color:
-                  theme.colors.text,
-                fontSize: 15,
-                boxSizing: "border-box",
-              }}
-            >
-              <option value="">
-                Choisir un exercice
-              </option>
+            <div>
+              <div
+                style={{
+                  color: theme.colors.text,
+                  fontWeight: 700,
+                  marginBottom: 6,
+                  fontSize: 13,
+                }}
+              >
+                Groupe
+              </div>
 
-              {exerciseNames.map((name) => (
-                <option
-                  key={name}
-                  value={name}
-                >
-                  {name}
+              <select
+                value={selectedGroup}
+                onChange={(e) =>
+                  setSelectedGroup(
+                    e.target
+                      .value as MuscleGroup
+                  )
+                }
+                style={{
+                  width: "100%",
+                  padding: "10px 12px",
+                  borderRadius: 10,
+                  border: `1px solid ${theme.colors.border}`,
+                  background:
+                    theme.colors.background,
+                  color:
+                    theme.colors.text,
+                  fontSize: 15,
+                  boxSizing:
+                    "border-box",
+                }}
+              >
+                {muscleGroups.map(
+                  (group) => (
+                    <option
+                      key={group}
+                      value={group}
+                    >
+                      {group}
+                    </option>
+                  )
+                )}
+              </select>
+            </div>
+
+            <div>
+              <div
+                style={{
+                  color: theme.colors.text,
+                  fontWeight: 700,
+                  marginBottom: 6,
+                  fontSize: 13,
+                }}
+              >
+                Exercice
+              </div>
+
+              <select
+                value={exercise.name}
+                onChange={(e) =>
+                  onExerciseNameChange(
+                    index,
+                    e.target.value
+                  )
+                }
+                style={{
+                  width: "100%",
+                  padding: "10px 12px",
+                  borderRadius: 10,
+                  border: `1px solid ${theme.colors.border}`,
+                  background:
+                    theme.colors.background,
+                  color:
+                    theme.colors.text,
+                  fontSize: 15,
+                  boxSizing:
+                    "border-box",
+                }}
+              >
+                <option value="">
+                  Choisir un exercice
                 </option>
-              ))}
-            </select>
+
+                {filteredExercises.map(
+                  (exercise) => (
+                    <option
+                      key={
+                        exercise.id
+                      }
+                      value={
+                        exercise.name
+                      }
+                    >
+                      {exercise.name}
+                    </option>
+                  )
+                )}
+              </select>
+            </div>
 
             <button
               type="button"
               onClick={() =>
-                setShowLibraryModal(true)
+                setShowLibraryModal(
+                  true
+                )
               }
               style={{
-                marginTop: 8,
                 border: "none",
-                background: "transparent",
+                background:
+                  "transparent",
                 color:
                   theme.colors.primary,
                 cursor: "pointer",
                 fontWeight: 700,
                 fontSize: 13,
                 padding: 0,
+                alignSelf:
+                  "flex-start",
               }}
             >
               ➕ Nouvel exercice
@@ -271,7 +392,7 @@ async function handleCreateExercise(
           </thead>
 
           <tbody>
-                        {exercise.sets.map(
+            {exercise.sets.map(
               (set, setIndex) => (
                 <SetRow
                   key={setIndex}
@@ -300,8 +421,7 @@ async function handleCreateExercise(
             )}
           </tbody>
         </table>
-
-        <div
+                <div
           style={{
             display: "flex",
             justifyContent:
@@ -344,10 +464,15 @@ async function handleCreateExercise(
       <ExerciseLibraryModal
         isOpen={showLibraryModal}
         title="Nouvel exercice"
+        initialMuscleGroup={
+          selectedGroup
+        }
         onClose={() =>
           setShowLibraryModal(false)
         }
-        onSave={handleCreateExercise}
+        onSave={
+          handleCreateExercise
+        }
       />
     </>
   );

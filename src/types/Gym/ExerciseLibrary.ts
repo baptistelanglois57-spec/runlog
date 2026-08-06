@@ -1,4 +1,5 @@
 export type MuscleGroup =
+  | "Course à pied"
   | "Pectoraux"
   | "Dos"
   | "Épaules"
