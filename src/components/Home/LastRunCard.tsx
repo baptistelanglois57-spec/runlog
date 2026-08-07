@@ -13,7 +13,9 @@ export default function LastRunCard({
   if (!run) {
     return (
       <PageCard>
+        <div className="home-last-run__empty">
         Aucune sortie enregistrée.
+        </div>
       </PageCard>
     );
   }

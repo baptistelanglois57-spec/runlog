@@ -1,20 +1,17 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, CircleHelp } from "lucide-react";
 
 import AppContainer from "../components/Layout/AppContainer";
 import Section from "../components/Layout/Section";
-import PageCard from "../components/Layout/PageCard";
 
 import GymComparisonResult from "../components/Muscu/GymComparisonResult";
-
-import { theme } from "../styles/theme";
-import { UI } from "../styles/ui";
 
 import type { GymSession } from "../types/GymSession";
 
 import { getGymSessions } from "../services/gymService";
 import { compareExercises } from "../utils/gymComparison";
+import "./GymComparison.css";
 
 export default function GymComparison() {
   const navigate = useNavigate();
@@ -73,327 +70,87 @@ export default function GymComparison() {
 
   return (
     <AppContainer>
-      <Section>
-        <PageCard>
-          <div
-            style={{
-              display: "flex",
-              justifyContent:
-                "space-between",
-              alignItems: "center",
-              marginBottom: 28,
-            }}
+      <div className="gym-comparison-page"><Section marginTop={8}>
+        <header className="gym-comparison-page__header">
+          <button
+            className="gym-comparison-page__back"
+            onClick={() => navigate("/tools")}
+            aria-label="Retour aux outils"
           >
-            <button
-              onClick={() =>
-                navigate("/tools")
-              }
-              style={{
-                width: 44,
-                height: 44,
-                borderRadius: 14,
-                border: `1px solid ${theme.colors.border}`,
-                background:
-                  theme.colors.card,
-                display: "flex",
-                justifyContent:
-                  "center",
-                alignItems: "center",
-                cursor: "pointer",
-              }}
-            >
-              <ChevronLeft
-                size={22}
-                color={
-                  theme.colors.primary
-                }
-              />
-            </button>
+            <ChevronLeft size={22} />
+          </button>
+          <h1>Comparaison</h1>
+          <span aria-hidden="true" />
+        </header>
 
-            <h1
-              style={{
-                margin: 0,
-                color:
-                  theme.colors.primary,
-                fontSize:
-                  UI.FONT_H1,
-              }}
-            >
-              📊 Comparaison
-            </h1>
+        <div className="gym-comparison-page__form">
+          <SessionSelect
+            label="Séance A"
+            value={sessionAId}
+            sessions={sessions}
+            showInfo={showInfoA}
+            onToggleInfo={() => setShowInfoA(!showInfoA)}
+            onChange={setSessionAId}
+            info="Séance de référence (ancienne séance)."
+          />
+          <SessionSelect
+            label="Séance B"
+            value={sessionBId}
+            sessions={sessions}
+            showInfo={showInfoB}
+            onToggleInfo={() => setShowInfoB(!showInfoB)}
+            onChange={setSessionBId}
+            info="Séance analysée (la plus récente)."
+          />
+          <button className="gym-comparison-page__submit" onClick={handleCompare}>
+            Comparer les séances
+          </button>
+        </div>
 
-            <div style={{ width: 44 }} />
-          </div>
-
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 20,
-            }}
-          >
-            <div>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 8,
-                  marginBottom: 8,
-                }}
-              >
-                <div
-                  style={{
-                    color:
-                      theme.colors.text,
-                    fontWeight: 700,
-                  }}
-                >
-                  Séance A
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() =>
-                    setShowInfoA(
-                      !showInfoA
-                    )
-                  }
-                  style={{
-  width: 22,
-  height: 22,
-  borderRadius: "50%",
-  border: `1px solid ${theme.colors.border}`,
-  background: theme.colors.card,
-  color: theme.colors.text,
-  fontWeight: 700,
-  fontSize: 13,
-  cursor: "pointer",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-}}
-                >
-                  ?
-                </button>
-              </div>
-
-              {showInfoA && (
-                <div
-                  style={{
-                    marginBottom: 12,
-                    padding: 12,
-                    borderRadius: 12,
-                    background:
-                      theme.colors.card,
-                    border: `1px solid ${theme.colors.border}`,
-                    color:
-                      theme.colors.textSecondary,
-                    fontSize: 14,
-                    lineHeight: 1.5,
-                  }}
-                >
-                  <strong
-                    style={{
-                      color:
-                        theme.colors.text,
-                    }}
-                  >
-                    Séance A
-                  </strong>
-
-                  <br />
-
-                  Séance de référence
-                  (ancienne séance).
-                </div>
-              )}
-
-              <select
-                value={sessionAId}
-                onChange={(e) =>
-                  setSessionAId(
-                    e.target.value
-                  )
-                }
-                style={{
-                  width: "100%",
-                  padding: 16,
-                  borderRadius: 14,
-                  border: `1px solid ${theme.colors.border}`,
-                  background:
-                    theme.colors.background,
-                  color:
-                    theme.colors.text,
-                  fontSize: 16,
-                }}
-              >
-                <option value="">
-                  Sélectionner une séance
-                </option>
-
-                {sessions.map(
-                  (session) => (
-                    <option
-                      key={session.id}
-                      value={
-                        session.id
-                      }
-                    >
-                      {session.name} •{" "}
-                      {new Date(
-                        session.date
-                      ).toLocaleDateString(
-                        "fr-FR"
-                      )}
-                    </option>
-                  )
-                )}
-              </select>
-            </div>
-                        <div>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 8,
-                  marginBottom: 8,
-                }}
-              >
-                <div
-                  style={{
-                    color: theme.colors.text,
-                    fontWeight: 700,
-                  }}
-                >
-                  Séance B
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() =>
-                    setShowInfoB(
-                      !showInfoB
-                    )
-                  }
-                  style={{
-  width: 22,
-  height: 22,
-  borderRadius: "50%",
-  border: `1px solid ${theme.colors.border}`,
-  background: theme.colors.card,
-  color: theme.colors.text,
-  fontWeight: 700,
-  fontSize: 13,
-  cursor: "pointer",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-}}
-                >
-                  ?
-                </button>
-              </div>
-
-              {showInfoB && (
-                <div
-                  style={{
-                    marginBottom: 12,
-                    padding: 12,
-                    borderRadius: 12,
-                    background:
-                      theme.colors.card,
-                    border: `1px solid ${theme.colors.border}`,
-                    color:
-                      theme.colors.textSecondary,
-                    fontSize: 14,
-                    lineHeight: 1.5,
-                  }}
-                >
-                  <strong
-                    style={{
-                      color:
-                        theme.colors.text,
-                    }}
-                  >
-                    Séance B
-                  </strong>
-
-                  <br />
-
-                  Séance analysée
-                  (la plus récente).
-                </div>
-              )}
-
-              <select
-                value={sessionBId}
-                onChange={(e) =>
-                  setSessionBId(
-                    e.target.value
-                  )
-                }
-                style={{
-                  width: "100%",
-                  padding: 16,
-                  borderRadius: 14,
-                  border: `1px solid ${theme.colors.border}`,
-                  background:
-                    theme.colors.background,
-                  color:
-                    theme.colors.text,
-                  fontSize: 16,
-                }}
-              >
-                <option value="">
-                  Sélectionner une séance
-                </option>
-
-                {sessions.map(
-                  (session) => (
-                    <option
-                      key={session.id}
-                      value={
-                        session.id
-                      }
-                    >
-                      {session.name} •{" "}
-                      {new Date(
-                        session.date
-                      ).toLocaleDateString(
-                        "fr-FR"
-                      )}
-                    </option>
-                  )
-                )}
-              </select>
-            </div>
-
-            <button
-              onClick={handleCompare}
-              style={{
-                width: "100%",
-                padding: 16,
-                border: "none",
-                borderRadius: 14,
-                background:
-                  theme.colors.primary,
-                color: "#000",
-                fontWeight: 700,
-                fontSize: 16,
-                cursor: "pointer",
-              }}
-            >
-              Comparer les séances
-            </button>
-
-            {comparison.length > 0 && (
-              <GymComparisonResult
-                comparison={comparison}
-              />
-            )}
-          </div>
-        </PageCard>
-      </Section>
+        {comparison.length > 0 && (
+          <GymComparisonResult comparison={comparison} />
+        )}
+      </Section></div>
     </AppContainer>
+  );
+}
+
+type SessionSelectProps = {
+  label: string;
+  value: string;
+  sessions: GymSession[];
+  showInfo: boolean;
+  onToggleInfo: () => void;
+  onChange: (value: string) => void;
+  info: string;
+};
+
+function SessionSelect({
+  label,
+  value,
+  sessions,
+  showInfo,
+  onToggleInfo,
+  onChange,
+  info,
+}: SessionSelectProps) {
+  return (
+    <div className="gym-comparison-page__session">
+      <div className="gym-comparison-page__session-label">
+        <span>{label}</span>
+        <button type="button" onClick={onToggleInfo} aria-label={`Informations ${label}`}>
+          <CircleHelp size={15} />
+        </button>
+      </div>
+      {showInfo && <p>{info}</p>}
+      <select value={value} onChange={(event) => onChange(event.target.value)}>
+        <option value="">Sélectionner une séance</option>
+        {sessions.map((session) => (
+          <option key={session.id} value={session.id}>
+            {session.name} • {new Date(session.date).toLocaleDateString("fr-FR")}
+          </option>
+        ))}
+      </select>
+    </div>
   );
 }

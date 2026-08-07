@@ -1,6 +1,3 @@
-import { theme } from "../styles/theme";
-import { UI } from "../styles/ui";
-
 import type { LucideIcon } from "lucide-react";
 
 type StatsCardProps = {
@@ -22,78 +19,25 @@ export default function StatsCard({
 
   return (
     <div
-      style={{
-        width: "100%",
-
-        minHeight: 112,
-
-        background: theme.colors.card,
-
-        border: `1px solid ${theme.colors.border}`,
-
-        borderRadius: UI.RADIUS,
-
-        padding: 14,
-
-        boxSizing: "border-box",
-
-        display: "flex",
-
-        flexDirection: "column",
-
-        justifyContent: "space-between",
-
-        transition: UI.TRANSITION,
-      }}
+      className={`home-stat-card${unit ? "" : " home-stat-card--unitless"}`}
     >
       {/* Header */}
 
       <div
-        style={{
-          display: "flex",
-
-          alignItems: "center",
-
-          gap: 8,
-        }}
+        className="home-stat-card__header"
       >
         <div
-          style={{
-            width: 34,
-
-            height: 34,
-
-            borderRadius: 10,
-
-            background:
-              "rgba(212,175,55,.10)",
-
-            display: "flex",
-
-            justifyContent: "center",
-
-            alignItems: "center",
-
-            flexShrink: 0,
-          }}
+          className="home-stat-card__icon"
         >
           <Icon
             size={18}
-            color={theme.colors.primary}
+            color="#D4AF37"
             strokeWidth={2.3}
           />
         </div>
 
         <span
-          style={{
-            color: theme.colors.text,
-
-            fontWeight: 700,
-
-            fontSize: 14,
-
-            lineHeight: 1.15,
-          }}
+          className="home-stat-card__title"
         >
           {title}
         </span>
@@ -102,49 +46,23 @@ export default function StatsCard({
       {/* Valeur */}
 
       <div
-        style={{
-          display: "flex",
-
-          flexDirection: "column",
-
-          justifyContent: "center",
-
-          alignItems: "center",
-
-          flex: 1,
-
-          marginTop: 4,
-        }}
+        className="home-stat-card__value"
       >
         <div
-          style={{
-            fontSize: 30,
-
-            fontWeight: 800,
-
-            color: theme.colors.text,
-
-            lineHeight: 1,
-          }}
+          className="home-stat-card__number"
         >
           {number}
         </div>
 
         {unit && (
           <div
-            style={{
-              marginTop: 2,
-
-              color: theme.colors.primary,
-
-              fontWeight: 700,
-
-              fontSize: 13,
-            }}
+            className="home-stat-card__unit"
           >
             {unit}
           </div>
         )}
+
+        {!unit && <div className="home-stat-card__unit-spacer" aria-hidden="true" />}
       </div>
     </div>
   );

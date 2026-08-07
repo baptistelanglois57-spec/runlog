@@ -1,5 +1,3 @@
-import { theme } from "../../styles/theme";
-
 type Props = {
   bestPace: string;
   hr130: string;
@@ -16,43 +14,16 @@ export default function PaceRecordCard({
   hr160,
 }: Props) {
   return (
-    <div
-      style={{
-        background: theme.colors.card,
-        border: `1px solid ${theme.colors.border}`,
-        borderRadius: 18,
-        overflow: "hidden",
-        boxShadow: theme.shadow.card,
-      }}
-    >
+    <div className="pace-record-card">
       {/* RECORD */}
 
-      <div
-        style={{
-          padding: "34px 20px 28px",
-          textAlign: "center",
-        }}
-      >
-        <div
-          style={{
-            color: theme.colors.primary,
-            fontSize: 42,
-            fontWeight: 800,
-            lineHeight: 1,
-          }}
-        >
-          {bestPace}
+      <div className="pace-record-card__highlight">
+        <div className="pace-record-card__title">
+          Meilleure allure
         </div>
 
-        <div
-          style={{
-            marginTop: 10,
-            color: theme.colors.textSecondary,
-            fontSize: 15,
-            fontWeight: 600,
-          }}
-        >
-          ⭐ Meilleure allure
+        <div className="pace-record-card__value">
+          {bestPace}
         </div>
       </div>
 
@@ -98,54 +69,18 @@ function Row({
   last,
 }: RowProps) {
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "18px 22px",
-        borderTop: `1px solid ${theme.colors.border}`,
-        borderBottom: last
-          ? "none"
-          : `1px solid transparent`,
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 14,
-        }}
-      >
-        <span
-          style={{
-            fontSize: 22,
-          }}
-        >
+    <div className={`pace-record-card__row${last ? " pace-record-card__row--last" : ""}`}>
+      <div>
+        <span>
           {icon}
         </span>
 
-        <span
-          style={{
-            color: theme.colors.text,
-            fontWeight: 600,
-            fontSize: 16,
-          }}
-        >
+        <span>
           {label}
         </span>
       </div>
 
-      <span
-        style={{
-          color:
-            value === "🔒"
-              ? theme.colors.textSecondary
-              : theme.colors.primary,
-          fontWeight: 700,
-          fontSize: 20,
-        }}
-      >
+      <span className={value === "🔒" ? "pace-record-card__locked" : ""}>
         {value}
       </span>
     </div>

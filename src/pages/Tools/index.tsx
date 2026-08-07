@@ -1,200 +1,44 @@
 import { useNavigate } from "react-router-dom";
+import type { LucideIcon } from "lucide-react";
+import { CalendarDays, ChartLine, ChevronRight, Dumbbell, NotebookPen, Scale, Target, Trophy, UserRound } from "lucide-react";
+import "./Tools.css";
 
-import Header from "../../components/Header";
-import AppContainer from "../../components/Layout/AppContainer";
-import CompactCard from "../../components/Layout/CompactCard";
+type Tool = { icon: LucideIcon; title: string; subtitle: string; path: string; category: "performance" | "organisation" | "athlete" | "gym"; featured?: boolean };
 
-import { theme } from "../../styles/theme";
-
-import {
-  Trophy,
-  CalendarDays,
-  User,
-  Target,
-  NotebookPen,
-  ChartLine,
-  ChevronRight,
-  Dumbbell,
-} from "lucide-react";
-export default function Tools() {
-  const navigate = useNavigate();
-
-const cards = [
-  {
-    icon: Trophy,
-    title: "Records",
-    subtitle: "Consulter vos records personnels",
-    path: "/records",
-  },
-  {
-    icon: CalendarDays,
-    title: "Agenda",
-    subtitle: "Entraînements et compétitions",
-    path: "/agenda",
-  },
-  {
-    icon: User,
-    title: "Fiche",
-    subtitle:
-      "Informations personnelles et performances",
-    path: "/athlete-profile",
-  },
-  {
-    icon: Target,
-    title: "Stats",
-    subtitle:
-      "Analyse du respect de votre planning",
-    path: "/discipline",
-  },
-  {
-    icon: NotebookPen,
-    title: "Pense-bête",
-    subtitle:
-      "Notes, idées et rappels importants",
-    path: "/notes",
-  },
-  {
-    icon: ChartLine,
-    title: "Prévisions",
-    subtitle:
-      "Estimer vos performances",
-    path: "/forecast",
-  },
-  {
-    icon: ChartLine,
-    title: "Comparaison",
-    subtitle:
-      "Comparer deux séances de musculation",
-    path: "/gym-comparison",
-  },
-  {
-  icon: Dumbbell,
-  title: "Exercices",
-  subtitle:
-    "Bibliothèque des exercices",
-  path: "/exercise-library",
-},
+const tools: Tool[] = [
+  { icon: Trophy, title: "Records", subtitle: "Vos meilleures performances", path: "/records", category: "performance", featured: true },
+  { icon: Target, title: "Discipline", subtitle: "Le respect de votre planning", path: "/discipline", category: "performance", featured: true },
+  { icon: ChartLine, title: "Prévisions", subtitle: "Estimer vos performances", path: "/forecast", category: "performance" },
+  { icon: CalendarDays, title: "Agenda", subtitle: "Entraînements et compétitions", path: "/agenda", category: "organisation", featured: true },
+  { icon: NotebookPen, title: "Pense-bête", subtitle: "Notes, idées et rappels", path: "/notes", category: "organisation" },
+  { icon: UserRound, title: "Fiche sportive", subtitle: "Profil et performances", path: "/athlete-profile", category: "athlete", featured: true },
+  { icon: Scale, title: "Comparaison", subtitle: "Comparer deux séances", path: "/gym-comparison", category: "gym" },
+  { icon: Dumbbell, title: "Exercices", subtitle: "Bibliothèque d’exercices", path: "/exercise-library", category: "gym" },
 ];
 
-  return (
-    <AppContainer>
-      <Header
-        title="Outils"
-        subtitle=""
-      />
+type ToolCardProps = { tool: Tool; onOpen: () => void; compact?: boolean };
+function ToolCard({ tool, onOpen, compact = false }: ToolCardProps) {
+  const Icon = tool.icon;
+  return <button className={`tools-card${tool.featured ? " tools-card--featured" : ""}${compact ? " tools-card--compact" : ""}`} onClick={onOpen}><span className="tools-card__icon"><Icon size={compact ? 19 : 22} strokeWidth={2.1} /></span><span className="tools-card__copy"><strong>{tool.title}</strong><small>{tool.subtitle}</small></span><ChevronRight className="tools-card__chevron" size={18} /></button>;
+}
 
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 12,
-        }}
-      >
-        {cards.map((card) => {
-          const Icon = card.icon;
+export default function Tools() {
+  const navigate = useNavigate();
+  const performance = tools.filter((tool) => tool.category === "performance");
+  const organisation = tools.filter((tool) => tool.category === "organisation");
+  const athlete = tools.filter((tool) => tool.category === "athlete");
+  const gym = tools.filter((tool) => tool.category === "gym");
+  const openTool = (tool: Tool) => navigate(tool.path);
 
-          return (
-            <CompactCard key={card.title}>
-              <button
-                onClick={() =>
-                  navigate(card.path)
-                }
-                style={{
-                  width: "100%",
-                  border: "none",
-                  background: "transparent",
-                  cursor: "pointer",
+  return <main className="tools-page"><div className="tools-page__content">
+    <header className="tools-page__header"><h1>Outils</h1></header>
 
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent:
-                    "space-between",
+    <section className="tools-section"><div className="tools-section__heading"><h2>Performance</h2></div><div className="tools-performance-grid">{performance.map((tool) => <ToolCard key={tool.path} tool={tool} onOpen={() => openTool(tool)} />)}</div></section>
 
-                  color: theme.colors.text,
+    <section className="tools-section"><div className="tools-section__heading"><h2>Organisation</h2></div><div className="tools-organisation-grid">{organisation.map((tool) => <ToolCard key={tool.path} tool={tool} onOpen={() => openTool(tool)} />)}</div></section>
 
-                  padding: "2px",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 14,
-                    flex: 1,
-                    minWidth: 0,
-                  }}
-                >
-                  <div
-                    style={{
-                      width: 48,
-                      height: 48,
-                      borderRadius: 14,
+    <section className="tools-section"><div className="tools-section__heading"><h2>Profil</h2></div>{athlete.map((tool) => <ToolCard key={tool.path} tool={tool} onOpen={() => openTool(tool)} />)}</section>
 
-                      background:
-                        "rgba(212,175,55,.10)",
-
-                      display: "flex",
-                      justifyContent:
-                        "center",
-                      alignItems: "center",
-
-                      flexShrink: 0,
-                    }}
-                  >
-                    <Icon
-                      size={24}
-                      color={
-                        theme.colors.primary
-                      }
-                      strokeWidth={2.2}
-                    />
-                  </div>
-
-                  <div
-                    style={{
-                      flex: 1,
-                      textAlign: "left",
-                      minWidth: 0,
-                    }}
-                  >
-                    <div
-                      style={{
-                        fontSize: 18,
-                        fontWeight: 700,
-                        marginBottom: 3,
-                        color:
-                          theme.colors.text,
-                      }}
-                    >
-                      {card.title}
-                    </div>
-
-                    <div
-                      style={{
-                        color:
-                          theme.colors
-                            .textSecondary,
-                        fontSize: 13,
-                        lineHeight: 1.35,
-                      }}
-                    >
-                      {card.subtitle}
-                    </div>
-                  </div>
-                </div>
-
-                <ChevronRight
-                  size={20}
-                  color={
-                    theme.colors
-                      .textSecondary
-                  }
-                />
-              </button>
-            </CompactCard>
-          );
-        })}
-      </div>
-    </AppContainer>
-  );
+    <section className="tools-section tools-section--gym"><div className="tools-section__heading"><h2>Musculation</h2></div><div className="tools-gym-grid">{gym.map((tool) => <ToolCard key={tool.path} tool={tool} onOpen={() => openTool(tool)} compact />)}</div></section>
+  </div></main>;
 }

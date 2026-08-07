@@ -17,8 +17,6 @@ import { getAveragePace } from "../../utils/stats";
 
 import type { Run } from "../../types/Run";
 
-import PageCard from "../Layout/PageCard";
-
 import { theme } from "../../styles/theme";
 
 type RunCardProps = {
@@ -35,66 +33,24 @@ export default function RunCard({
   const navigate = useNavigate();
 
   return (
-    <PageCard maxWidth="100%">
+    <div className="home-last-run">
       {/* HEADER */}
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-start",
-          gap: 16,
-          marginBottom: 18,
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 6,
-            minWidth: 0,
-            flex: 1,
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-              color: theme.colors.text,
-              fontSize: 20,
-              fontWeight: 800,
-              minWidth: 0,
-            }}
-          >
+      <div className="home-last-run__header">
+        <div className="home-last-run__identity">
+          <div className="home-last-run__name">
             <span>
               {run.type === "training"
                 ? "🏃"
                 : "🏁"}
             </span>
 
-            <span
-              style={{
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-              }}
-            >
+            <span className="home-last-run__name-text">
               {run.name}
             </span>
           </div>
 
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 6,
-              color:
-                theme.colors.textSecondary,
-              fontSize: 13,
-              fontWeight: 600,
-            }}
-          >
+          <div className="home-last-run__date">
             <Calendar
               size={15}
               color={theme.colors.primary}
@@ -104,30 +60,14 @@ export default function RunCard({
           </div>
         </div>
 
-        <div
-          style={{
-            color: theme.colors.primary,
-            fontWeight: 800,
-            fontSize: 24,
-            whiteSpace: "nowrap",
-            flexShrink: 0,
-          }}
-        >
+        <div className="home-last-run__distance">
           {run.distance.toFixed(1)} km
         </div>
       </div>
 
       {/* STATS */}
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(4,minmax(0,1fr))",
-          gap: 10,
-          marginTop: 6,
-        }}
-      >
+      <div className="home-last-run__metrics">
         <MiniStat
           icon={
             <Clock3
@@ -176,15 +116,7 @@ export default function RunCard({
         />
       </div>
            {run.type === "race" && (
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns:
-              "repeat(auto-fit,minmax(180px,1fr))",
-            gap: 10,
-            marginTop: 14,
-          }}
-        >
+        <div className="home-last-run__race-metrics">
           {run.location && (
             <MiniStat
               icon="📍"
@@ -210,28 +142,12 @@ export default function RunCard({
       )}
 
       {showActions && onDelete && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "center",
-            gap: 10,
-            marginTop: 14,
-          }}
-        >
+        <div className="home-last-run__actions">
           <button
             onClick={() =>
               navigate(`/edit/${run.id}`)
             }
-            style={{
-              background: "transparent",
-              border: "none",
-              padding: 4,
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              color: theme.colors.primary,
-            }}
+            className="home-last-run__action home-last-run__action--edit"
           >
             <Pencil size={18} />
           </button>
@@ -240,21 +156,13 @@ export default function RunCard({
             onClick={() =>
               onDelete(run.id)
             }
-            style={{
-              background: "transparent",
-              border: "none",
-              padding: 4,
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              color: "#ef4444",
-            }}
+            className="home-last-run__action home-last-run__action--delete"
           >
             <Trash2 size={18} />
           </button>
         </div>
       )}
-    </PageCard>
+    </div>
   );
 }
 
@@ -268,54 +176,16 @@ function MiniStat({
   value,
 }: MiniStatProps) {
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-
-        gap: 8,
-
-        minHeight: 82,
-
-        padding: "12px 8px",
-
-        background:
-          theme.colors.background,
-
-        border: `1px solid ${theme.colors.border}`,
-
-        borderRadius: 14,
-      }}
-    >
+    <div className="home-mini-stat">
       {typeof icon === "string" ? (
-        <span
-          style={{
-            fontSize: 18,
-          }}
-        >
+        <span className="home-mini-stat__emoji">
           {icon}
         </span>
       ) : (
         icon
       )}
 
-      <span
-        style={{
-          color: theme.colors.text,
-
-          fontSize: 15,
-
-          fontWeight: 700,
-
-          textAlign: "center",
-
-          lineHeight: 1.2,
-
-          whiteSpace: "nowrap",
-        }}
-      >
+      <span className="home-mini-stat__value">
         {value}
       </span>
     </div>

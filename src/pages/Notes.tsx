@@ -24,6 +24,7 @@ import {
   updateNote,
   deleteNote,
 } from "../services/noteService";
+import "./Tools/ToolSubpages.css";
 
 export default function Notes() {
   const navigate = useNavigate();
@@ -104,10 +105,10 @@ export default function Notes() {
 
   return (
     <AppContainer>
-      <Section marginTop={8}>
+      <div className="tools-subpage"><Section marginTop={8}>
         {/* HEADER */}
 
-        <div
+        <div className="tools-subpage__header"
           style={{
             display: "flex",
             justifyContent:
@@ -147,7 +148,7 @@ export default function Notes() {
             />
           </button>
 
-          <div
+          <div className="tools-subpage__empty"
             style={{
               display: "flex",
               gap: 10,
@@ -184,6 +185,7 @@ export default function Notes() {
         </div>
 
         <button
+          className="tools-subpage__primary"
           onClick={() => {
             setEditingNote(null);
 
@@ -357,7 +359,7 @@ export default function Notes() {
             );
           }}
         />
-      </Section>
+      </Section></div>
     </AppContainer>
   );
 }

@@ -1,9 +1,4 @@
-import type { CSSProperties } from "react";
-
 import { Trash2 } from "lucide-react";
-
-import { theme } from "../../styles/theme";
-import { UI } from "../../styles/ui";
 
 import type { GymSet } from "../../types/Gym/GymSet";
 
@@ -25,49 +20,12 @@ export default function SetRow({
   onChange,
   onDelete,
 }: Props) {
-  const inputStyle: CSSProperties = {
-    width: "100%",
-
-    height: 46,
-
-    borderRadius: 12,
-
-    border: `1px solid ${theme.colors.border}`,
-
-    background: theme.colors.background,
-
-    color: theme.colors.text,
-
-    textAlign: "center",
-
-    fontSize: UI.FONT_BODY,
-
-    fontWeight: 600,
-
-    boxSizing: "border-box",
-
-    outline: "none",
-  };
-
   return (
-    <tr>
-      <td
-        style={{
-          textAlign: "center",
-          fontWeight: 700,
-          color: theme.colors.primary,
-          padding: "10px 6px",
-          width: 45,
-        }}
-      >
+    <div className="gym-set-row">
+      <span className="gym-set-row__number">
         {index + 1}
-      </td>
-
-      <td
-        style={{
-          padding: "6px",
-        }}
-      >
+      </span>
+      <div>
         <input
           type="number"
           min={0}
@@ -84,15 +42,9 @@ export default function SetRow({
                   )
             )
           }
-          style={inputStyle}
         />
-      </td>
-
-      <td
-        style={{
-          padding: "6px",
-        }}
-      >
+      </div>
+      <div>
         <input
           type="number"
           min={0}
@@ -113,42 +65,19 @@ export default function SetRow({
                   )
             )
           }
-          style={inputStyle}
         />
-      </td>
-
-      <td
-        style={{
-          width: 46,
-          textAlign: "center",
-        }}
-      >
+      </div>
+      <div>
         <button
           type="button"
           onClick={() =>
             onDelete(index)
           }
-          style={{
-            background: "transparent",
-
-            border: "none",
-
-            cursor: "pointer",
-
-            display: "flex",
-
-            alignItems: "center",
-
-            justifyContent: "center",
-
-            margin: "auto",
-
-            color: theme.colors.danger,
-          }}
+          aria-label={`Supprimer la série ${index + 1}`}
         >
           <Trash2 size={18} />
         </button>
-      </td>
-    </tr>
+      </div>
+    </div>
   );
 }

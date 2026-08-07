@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
+import { CalendarDays, ChevronLeft, NotebookPen, Plus, Save } from "lucide-react";
 
 import ExerciseCard from "./Muscu/ExerciseCard";
-import SaveButton from "./RunForm/SaveButton";
-
-import { theme } from "../styles/theme";
-import { UI } from "../styles/ui";
 
 import {
   getGymSessions,
@@ -24,6 +21,7 @@ import type { GymExercise } from "../types/Gym/GymExercise";
 import type {
   ExerciseLibrary,
 } from "../types/Gym/ExerciseLibrary";
+import "./GymForm.css";
 
 export default function GymForm() {
   const navigate = useNavigate();
@@ -76,29 +74,6 @@ const [
         ],
       },
     ]);
-
-  const inputStyle = {
-    width: "100%",
-    height: 56,
-    padding: "0 16px",
-    borderRadius: UI.INPUT_RADIUS,
-    border: `1px solid ${theme.colors.border}`,
-    background: theme.colors.background,
-    color: theme.colors.text,
-    fontSize: UI.FONT_BODY,
-    outline: "none",
-    boxSizing: "border-box" as const,
-  };
-
-  const labelStyle = {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontWeight: 700,
-    fontSize: UI.FONT_SMALL,
-    color: theme.colors.text,
-    marginBottom: 8,
-  };
 
   useEffect(() => {
     loadData();
@@ -326,74 +301,44 @@ setExerciseLibrary(
   }
 
   return (
-    <>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "1fr auto",
-          gap: 16,
-          alignItems: "end",
-          marginBottom: 22,
-        }}
-      >
-        <div>
-          <div style={labelStyle}>
-            💪 Nom de la séance
-          </div>
-
-          <input
-            type="text"
-            value={name}
-            onChange={(e) =>
-              setName(
-                e.target.value
-              )
-            }
-            style={inputStyle}
-          />
-        </div>
-
-        <SaveButton
-          isEditing={isEditing}
+    <div className="gym-form-page">
+      <header className="gym-form-page__header">
+        <button type="button" onClick={() => navigate("/muscu")} aria-label="Retour aux séances">
+          <ChevronLeft size={22} />
+        </button>
+        <h1>{isEditing ? "Modifier la séance" : "Nouvelle séance"}</h1>
+        <button
+          type="button"
+          className="gym-form-page__save"
           onClick={() => {
-            const form =
-              document.getElementById(
-                "gym-form"
-              ) as HTMLFormElement;
-
+            const form = document.getElementById("gym-form") as HTMLFormElement;
             form?.requestSubmit();
           }}
-        />
-      </div>
-            <form
-        id="gym-form"
-        onSubmit={handleSubmit}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 22,
-          paddingBottom: 120,
-        }}
-      >
-        <div>
-          <div style={labelStyle}>
-            📅 Date
-          </div>
+        >
+          <Save size={17} />
+          {isEditing ? "Modifier" : "Enregistrer"}
+        </button>
+      </header>
 
-          <input
-            type="date"
-            value={date}
-            onChange={(e) =>
-              setDate(e.target.value)
-            }
-            style={{
-              ...inputStyle,
-              textAlign: "center",
-              fontWeight: 700,
-            }}
-          />
-        </div>
+      <form id="gym-form" onSubmit={handleSubmit} className="gym-form-page__form">
+        <section className="gym-form-page__details">
+          <label>
+            <span>Nom de la séance</span>
+            <input
+              type="text"
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+            />
+          </label>
+          <label>
+            <span><CalendarDays size={15} /> Date</span>
+            <input
+              type="date"
+              value={date}
+              onChange={(event) => setDate(event.target.value)}
+            />
+          </label>
+        </section>
 
         {exercises.map(
           (exercise, index) => (
@@ -425,65 +370,18 @@ setExerciseLibrary(
           )
         )}
 
-        <button
-          type="button"
-          onClick={addExercise}
-          style={{
-            alignSelf: "center",
-            width: "100%",
-            maxWidth: 260,
-            height: 52,
-            border: "none",
-            borderRadius: 16,
-            background:
-              theme.colors.primary,
-            color: "#000",
-            fontSize: 16,
-            fontWeight: 700,
-            cursor: "pointer",
-            transition:
-              "transform .15s ease",
-          }}
-        >
-          ➕ Ajouter un exercice
+        <button type="button" onClick={addExercise} className="gym-form-page__add-exercise">
+          <Plus size={18} /> Ajouter un exercice
         </button>
-                <div>
-          <div style={labelStyle}>
-            📝 Commentaire
-          </div>
-
+        <label className="gym-form-page__comment">
+          <span><NotebookPen size={15} /> Commentaire</span>
           <textarea
             value={comment}
-            onChange={(e) =>
-              setComment(
-                e.target.value
-              )
-            }
+            onChange={(event) => setComment(event.target.value)}
             placeholder="Notes sur la séance, ressenti, progression..."
-            style={{
-              width: "100%",
-              minHeight: 150,
-              padding: 16,
-              borderRadius:
-                UI.INPUT_RADIUS,
-              border: `1px solid ${theme.colors.border}`,
-              background:
-                theme.colors.background,
-              color:
-                theme.colors.text,
-              fontSize:
-                UI.FONT_BODY,
-              fontFamily:
-                "inherit",
-              lineHeight: 1.6,
-              resize: "vertical",
-              outline: "none",
-              boxSizing:
-                "border-box",
-            }}
           />
-        </div>
+        </label>
       </form>
-    </>
+    </div>
   );
 }

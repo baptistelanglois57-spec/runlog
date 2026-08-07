@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
   ChevronLeft,
-  Dumbbell,
+  ChevronDown,
   Pencil,
   Trash2,
   Plus,
@@ -29,6 +29,7 @@ import {
   updateExercise,
   deleteExercise,
 } from "../services/exerciseLibraryService";
+import "./Tools/ToolSubpages.css";
 
 const muscleGroups: (
   | "Tous"
@@ -80,6 +81,11 @@ export default function ExerciseLibrary() {
       "Tous" | MuscleGroup
     >("Tous");
 
+  const [groupMenuOpen, setGroupMenuOpen] =
+    useState(false);
+
+  const groupFilterRef = useRef<HTMLDivElement>(null);
+
   const [showModal, setShowModal] =
     useState(false);
 
@@ -90,6 +96,22 @@ export default function ExerciseLibrary() {
 
   useEffect(() => {
     loadExercises();
+  }, []);
+
+  useEffect(() => {
+    function closeGroupMenu(event: MouseEvent) {
+      if (
+        groupFilterRef.current &&
+        !groupFilterRef.current.contains(event.target as Node)
+      ) {
+        setGroupMenuOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", closeGroupMenu);
+
+    return () =>
+      document.removeEventListener("mousedown", closeGroupMenu);
   }, []);
     async function loadExercises() {
     const data =
@@ -164,9 +186,9 @@ export default function ExerciseLibrary() {
 
   return (
         <AppContainer>
-      <Section>
-        <PageCard>
-          <div
+      <div className="tools-subpage"><Section>
+        <div className="tools-subpage__panel"><PageCard>
+          <div className="tools-subpage__header"
             style={{
               display: "flex",
               justifyContent:
@@ -208,12 +230,12 @@ export default function ExerciseLibrary() {
                 alignItems: "center",
                 gap: 10,
                 color:
-                  theme.colors.primary,
+                  theme.colors.text,
                 fontSize:
                   UI.FONT_H1,
               }}
             >
-              <Dumbbell size={24} />
+          
 
               Exercices
             </h1>
@@ -226,6 +248,7 @@ export default function ExerciseLibrary() {
           </div>
 
           <button
+            className="tools-subpage__primary"
             onClick={() => {
               setEditingExercise(null);
 
@@ -237,8 +260,8 @@ export default function ExerciseLibrary() {
               border: "none",
               borderRadius: 16,
               background:
-                theme.colors.primary,
-              color: "#000",
+                "#2E2E2E",
+              color: "#ffffff",
               fontWeight: 700,
               fontSize: 16,
               cursor: "pointer",
@@ -261,56 +284,61 @@ export default function ExerciseLibrary() {
           </button>
 
           <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "center",
-              gap: 10,
-              marginBottom: 28,
-            }}
+            ref={groupFilterRef}
+            className={`exercise-library__filter${
+              groupMenuOpen
+                ? " exercise-library__filter--open"
+                : ""
+            }`}
           >
-            {muscleGroups.map(
-              (group) => (
-                <button
-                  key={group}
-                  onClick={() =>
-                    setSelectedGroup(
-                      group
-                    )
-                  }
-                  style={{
-                    padding:
-                      "10px 16px",
-                    borderRadius: 999,
-                    border:
-                      selectedGroup ===
-                      group
-                        ? "none"
-                        : `1px solid ${theme.colors.border}`,
-                    background:
-                      selectedGroup ===
-                      group
-                        ? "#FFFFFF"
-                        : "transparent",
-                    color:
-                      selectedGroup ===
-                      group
-                        ? "#000"
-                        : "#FFF",
-                    fontWeight: 700,
-                    fontSize: 14,
-                    cursor: "pointer",
-                    transition:
-                      ".2s",
-                  }}
-                >
-                  {group}
-                </button>
-              )
+            <button
+              type="button"
+              className="exercise-library__filter-trigger"
+              onClick={() =>
+                setGroupMenuOpen((open) => !open)
+              }
+              aria-haspopup="listbox"
+              aria-expanded={groupMenuOpen}
+            >
+              <span>{selectedGroup}</span>
+
+              <ChevronDown
+                className="exercise-library__filter-chevron"
+                size={19}
+                aria-hidden="true"
+              />
+            </button>
+
+            {groupMenuOpen && (
+              <div
+                className="exercise-library__filter-menu"
+                role="listbox"
+                aria-label="Groupes musculaires"
+              >
+                {muscleGroups.map((group) => (
+                  <button
+                    key={group}
+                    type="button"
+                    role="option"
+                    aria-selected={selectedGroup === group}
+                    className={
+                      selectedGroup === group
+                        ? "exercise-library__filter-option exercise-library__filter-option--active"
+                        : "exercise-library__filter-option"
+                    }
+                    onClick={() => {
+                      setSelectedGroup(group);
+                      setGroupMenuOpen(false);
+                    }}
+                  >
+                    {group}
+                  </button>
+                ))}
+              </div>
             )}
           </div>
 
-          <div
+          <div className="tools-subpage__list"
             style={{
               display: "flex",
               flexDirection: "column",
@@ -496,8 +524,8 @@ export default function ExerciseLibrary() {
             }}
             onSave={handleSave}
           />
-        </PageCard>
-      </Section>
+        </PageCard></div>
+      </Section></div>
     </AppContainer>
   );
 }

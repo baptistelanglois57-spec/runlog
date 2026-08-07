@@ -15,6 +15,7 @@ import Section from "../components/Layout/Section";
 import MonthNavigation from "../components/Calendar/MonthNavigation";
 import Calendar from "../components/Calendar/Calendar";
 import AgendaLegendModal from "../components/Calendar/AgendaLegendModal";
+import "./Tools/ToolSubpages.css";
 
 export default function Agenda() {
   const navigate = useNavigate();
@@ -47,10 +48,10 @@ export default function Agenda() {
 
   return (
     <AppContainer>
-      <Section marginTop={8}>
+      <div className="tools-subpage"><Section marginTop={8}>
         {/* HEADER */}
 
-        <div
+        <div className="tools-subpage__header"
           style={{
             display: "flex",
             alignItems: "center",
@@ -156,7 +157,7 @@ export default function Agenda() {
             setLegendOpen(false)
           }
         />
-      </Section>
+      </Section></div>
     </AppContainer>
   );
 }

@@ -46,8 +46,7 @@ import {
 } from "../services/notificationService";
 
 import { theme } from "../styles/theme";
-import { UI } from "../styles/ui";
-import { value } from "../styles/responsive";
+import "./Home.css";
 
 export default function Home() {
   const [runs, setRuns] = useState<Run[]>([]);
@@ -99,81 +98,26 @@ const hasUnreadNotifications =
   );
   return (
     <AppContainer>
+      <div className="home-page">
       {/* Header */}
 
       <div
-        style={{
-          position: "relative",
-
-          maxWidth: value(
-            UI.PAGE_MAX_WIDTH,
-            "760px"
-          ),
-
-          margin: `0 auto ${UI.HEADER_MARGIN}px`,
-        }}
+        className="home-page__header"
       >
         <button
           onClick={() =>
             setNotificationOpen(true)
           }
-          style={{
-            position: "absolute",
-
-            right: 0,
-            top: 0,
-
-            width: 42,
-            height: 42,
-
-            borderRadius:
-              UI.BUTTON_RADIUS,
-
-            border: `1px solid ${theme.colors.border}`,
-
-            background:
-              theme.colors.card,
-
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-
-            cursor: "pointer",
-
-            transition:
-              UI.TRANSITION,
-          }}
+          className="home-page__notification"
         >
-          <div
-  style={{
-    position: "relative",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  }}
->
+          <div className="home-page__notification-icon">
   <Bell
     size={20}
     color={theme.colors.primary}
   />
 
   {hasUnreadNotifications && (
-    <div
-      style={{
-        position: "absolute",
-        top: -1,
-        right: -1,
-
-        width: 8,
-        height: 8,
-
-        borderRadius: "50%",
-
-        background: "#EF4444",
-
-        border: `2px solid ${theme.colors.card}`,
-      }}
-    />
+            <div className="home-page__notification-dot" />
   )}
 </div>
         </button>
@@ -185,26 +129,7 @@ const hasUnreadNotifications =
       </div>
 
       {/* Stats */}
-            <div
-        style={{
-          display: "grid",
-
-          gridTemplateColumns: "repeat(2,minmax(0,1fr))",
-
-          gap: UI.GRID_GAP,
-
-          width: "100%",
-
-          maxWidth: value(
-            UI.PAGE_MAX_WIDTH,
-            "760px"
-          ),
-
-          margin: "0 auto",
-
-          boxSizing: "border-box",
-        }}
-      >
+      <div className="home-page__stats">
         <StatsCard
           title="Cette semaine"
           value={`${weekDistance.toFixed(1)} km`}
@@ -258,6 +183,7 @@ const hasUnreadNotifications =
           setNotifications(updated);
         }}
       />
+      </div>
     </AppContainer>
   );
 }

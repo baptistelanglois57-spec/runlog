@@ -1,4 +1,5 @@
-import { theme } from "../../styles/theme";
+import { History, Lightbulb, X } from "lucide-react";
+import type { CSSProperties } from "react";
 import { getGymProgressAdvice } from "../../utils/gymProgress";
 import type { GymSession } from "../../types/GymSession";
 
@@ -78,109 +79,23 @@ const advice =
       )
     : null;
   return (
-    <div
-      onClick={onClose}
-      style={{
-        position: "fixed",
-        inset: 0,
-
-        background: "rgba(0,0,0,.78)",
-
-        backdropFilter: "blur(8px)",
-
-        display: "flex",
-
-        justifyContent: "center",
-
-        alignItems: "center",
-
-        zIndex: 9999,
-      }}
-    >
-      <div
-        onClick={(e) =>
-          e.stopPropagation()
-        }
-        style={{
-          width: "min(92vw,460px)",
-
-          background:
-            theme.colors.card,
-
-          borderRadius: 22,
-
-          border: `1px solid ${theme.colors.border}`,
-
-          padding: 22,
-
-          boxSizing: "border-box",
-        }}
-      >
-        <h2
-          style={{
-            marginTop: 0,
-
-            textAlign: "center",
-
-            color:
-              theme.colors.primary,
-          }}
-        >
-          📖 Historique
-        </h2>
-
-        <div
-          style={{
-            textAlign: "center",
-
-            color: theme.colors.text,
-
-            fontWeight: 700,
-
-            marginBottom: 24,
-
-            fontSize: 18,
-          }}
-        >
-          {exerciseName}
-        </div>
+    <div onClick={onClose} className="exercise-history-modal">
+      <div onClick={(event) => event.stopPropagation()} className="exercise-history-modal__panel">
+        <header>
+          <div><History size={19} /><h2>Historique</h2></div>
+          <button type="button" onClick={onClose} aria-label="Fermer"><X size={19} /></button>
+        </header>
+        <div className="exercise-history-modal__name">{exerciseName}</div>
 
         {history.length === 0 ? (
-          <div
-            style={{
-              textAlign: "center",
-
-              color:
-                theme.colors.textSecondary,
-
-              padding: "30px 0",
-            }}
-          >
+          <div className="exercise-history-modal__empty">
             Aucun historique.
           </div>
         ) : (
           history.map(
             (session, index) => (
-              <div
-                key={index}
-                style={{
-                  marginBottom:
-                    index ===
-                    history.length - 1
-                      ? 0
-                      : 26,
-                }}
-              >
-                <div
-                  style={{
-                    color:
-                      theme.colors.primary,
-
-                    fontWeight: 700,
-
-                    marginBottom: 14,
-                  }}
-                >
+              <div key={index} className="exercise-history-modal__session">
+                <div className="exercise-history-modal__date">
                   {new Date(
                     session.date
                   ).toLocaleDateString(
@@ -188,87 +103,30 @@ const advice =
                   )}
                 </div>
 
-                <div
-                  style={{
-                    display: "grid",
-
-                    gridTemplateColumns:
-                      "70px 1fr 1fr",
-
-                    marginBottom: 10,
-
-                    color:
-                      theme.colors
-                        .textSecondary,
-
-                    fontWeight: 700,
-
-                    fontSize: 13,
-                  }}
-                >
+                <div className="exercise-history-modal__sets-header">
                   <div></div>
 
-                  <div
-                    style={{
-                      textAlign:
-                        "center",
-                    }}
-                  >
+                  <div>
                     Répétitions
                   </div>
 
-                  <div
-                    style={{
-                      textAlign:
-                        "center",
-                    }}
-                  >
+                  <div>
                     Poids
                   </div>
                 </div>
 
                 {session.sets.map(
                   (set, i) => (
-                    <div
-                      key={i}
-                      style={{
-                        display: "grid",
-
-                        gridTemplateColumns:
-                          "70px 1fr 1fr",
-
-                        padding:
-                          "6px 0",
-
-                        alignItems:
-                          "center",
-                      }}
-                    >
-                      <div
-                        style={{
-                          fontWeight: 700,
-                        }}
-                      >
+                    <div key={i} className="exercise-history-modal__set">
+                      <div>
                         S{i + 1}
                       </div>
 
-                      <div
-                        style={{
-                          textAlign:
-                            "center",
-                        }}
-                      >
+                      <div>
                         {set.reps ?? "-"}
                       </div>
 
-                      <div
-                        style={{
-                          textAlign:
-                            "center",
-
-                          fontWeight: 700,
-                        }}
-                      >
+                      <div>
                         {set.weight ??
                           "-"}{" "}
                         kg
@@ -277,101 +135,21 @@ const advice =
                   )
                 )}
 
-                {index !==
-                  history.length -
-                    1 && (
-                  <hr
-                    style={{
-                      marginTop: 18,
-
-                      border: "none",
-
-                      borderTop: `1px solid ${theme.colors.border}`,
-                    }}
-                  />
-                )}
               </div>
             )
           )
         )}
-{advice && (
-  <div
-    style={{
-      marginTop: 26,
-
-      padding: 18,
-
-      borderRadius: 16,
-
-      background:
-        advice.type === "success"
-          ? "rgba(34,197,94,.12)"
-          : advice.type === "warning"
-          ? "rgba(245,158,11,.12)"
-          : "rgba(239,68,68,.12)",
-
-      border:
-        advice.type === "success"
-          ? "1px solid rgba(34,197,94,.35)"
-          : advice.type === "warning"
-          ? "1px solid rgba(245,158,11,.35)"
-          : "1px solid rgba(239,68,68,.35)",
-    }}
-  >
-    <div
-      style={{
-        fontWeight: 700,
-        color: theme.colors.text,
-        marginBottom: 8,
-        fontSize: 17,
-      }}
-    >
-      {advice.icon} Conseil RunLog
-    </div>
-
-    <div
-      style={{
-        color: theme.colors.primary,
-        fontWeight: 700,
-        marginBottom: 6,
-      }}
-    >
-      {advice.title}
-    </div>
-
-    <div
-      style={{
-        color: theme.colors.textSecondary,
-        lineHeight: 1.5,
-      }}
-    >
-      {advice.message}
-    </div>
-  </div>
-)}
-        <button
-          onClick={onClose}
-          style={{
-            marginTop: 26,
-
-            width: "100%",
-
-            padding: "16px",
-
-            border: "none",
-
-            borderRadius: 14,
-
-            background:
-              theme.colors.primary,
-
-            color: "#000",
-
-            fontWeight: 700,
-
-            cursor: "pointer",
-          }}
-        >
+        {advice && (
+          <div
+            className="exercise-history-modal__advice"
+            style={{ "--advice-color": advice.type === "success" ? "#22c55e" : advice.type === "warning" ? "#f59e0b" : "#ef4444" } as CSSProperties}
+          >
+            <div><Lightbulb size={17} /> Conseil RunLog</div>
+            <strong>{advice.title}</strong>
+            <p>{advice.message}</p>
+          </div>
+        )}
+        <button className="exercise-history-modal__close" onClick={onClose}>
           Fermer
         </button>
       </div>

@@ -13,6 +13,7 @@ import ForecastResult from "../components/Forecast/ForecastResult";
 
 import { theme } from "../styles/theme";
 import { UI } from "../styles/ui";
+import "./Tools/ToolSubpages.css";
 
 import {
   getForecast,
@@ -57,10 +58,10 @@ export default function Forecast() {
 
   return (
     <AppContainer>
-      <Section marginTop={8}>
+      <div className="tools-subpage"><Section marginTop={8}>
         {/* HEADER */}
 
-        <div
+        <div className="tools-subpage__header"
           style={{
             display: "flex",
 
@@ -137,7 +138,7 @@ export default function Forecast() {
             </h1>
           </div>
 
-          <div
+          <div className="tools-subpage__notice"
             style={{
               width: 44,
             }}
@@ -186,7 +187,7 @@ export default function Forecast() {
 
         {!loading &&
           !result && (
-            <div
+            <div className="tools-subpage__notice"
               style={{
                 marginTop: 28,
 
@@ -239,7 +240,7 @@ export default function Forecast() {
               </p>
             </div>
           )}
-      </Section>
+      </Section></div>
     </AppContainer>
   );
 }

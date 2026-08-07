@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 
-import { theme } from "../../styles/theme";
+import { Clock3, Plus, Trash2 } from "lucide-react";
 
 import ExerciseHistoryModal from "./ExerciseHistoryModal";
 import ExerciseLibraryModal from "./ExerciseLibraryModal";
@@ -135,107 +135,25 @@ export default function ExerciseCard({
 
   return (
     <>
-      <div
-        style={{
-          background: theme.colors.card,
-          border: `1px solid ${theme.colors.border}`,
-          borderRadius: 16,
-          padding: 14,
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            justifyContent:
-              "space-between",
-            alignItems: "center",
-            marginBottom: 14,
-          }}
-        >
-          <h3
-            style={{
-              margin: 0,
-              color:
-                theme.colors.text,
-              fontSize: 20,
-            }}
-          >
-            🏋️ Exercice {index + 1}
-          </h3>
-
-          <button
-            type="button"
-            onClick={() =>
-              onDeleteExercise(index)
-            }
-            style={{
-              width: 34,
-              height: 34,
-              border: "none",
-              borderRadius: 9,
-              background: "#C0392B",
-              color: "#fff",
-              display: "flex",
-              justifyContent:
-                "center",
-              alignItems: "center",
-              cursor: "pointer",
-              fontSize: 15,
-            }}
-          >
-            🗑️
-          </button>
+      <section className="gym-exercise-card">
+        <div className="gym-exercise-card__header">
+          <h2>Exercice {index + 1}</h2>
+          <div>
+            <button type="button" onClick={() => setShowHistory(true)} aria-label="Historique de l'exercice">
+              <Clock3 size={18} />
+            </button>
+            <button type="button" className="gym-exercise-card__delete" onClick={() => onDeleteExercise(index)} aria-label="Supprimer l'exercice">
+              <Trash2 size={17} />
+            </button>
+          </div>
         </div>
-                <div
-          style={{
-            display: "flex",
-            gap: 10,
-            alignItems: "flex-start",
-            marginBottom: 14,
-          }}
-        >
-          <div
-            style={{
-              flex: 1,
-              display: "flex",
-              flexDirection: "column",
-              gap: 12,
-            }}
-          >
-            <div>
-              <div
-                style={{
-                  color: theme.colors.text,
-                  fontWeight: 700,
-                  marginBottom: 6,
-                  fontSize: 13,
-                }}
-              >
-                Groupe
-              </div>
-
-              <select
-                value={selectedGroup}
-                onChange={(e) =>
-                  setSelectedGroup(
-                    e.target
-                      .value as MuscleGroup
-                  )
-                }
-                style={{
-                  width: "100%",
-                  padding: "10px 12px",
-                  borderRadius: 10,
-                  border: `1px solid ${theme.colors.border}`,
-                  background:
-                    theme.colors.background,
-                  color:
-                    theme.colors.text,
-                  fontSize: 15,
-                  boxSizing:
-                    "border-box",
-                }}
-              >
+        <div className="gym-exercise-card__fields">
+          <label>
+            <span>Groupe musculaire</span>
+            <select
+              value={selectedGroup}
+              onChange={(event) => setSelectedGroup(event.target.value as MuscleGroup)}
+            >
                 {muscleGroups.map(
                   (group) => (
                     <option
@@ -246,43 +164,14 @@ export default function ExerciseCard({
                     </option>
                   )
                 )}
-              </select>
-            </div>
-
-            <div>
-              <div
-                style={{
-                  color: theme.colors.text,
-                  fontWeight: 700,
-                  marginBottom: 6,
-                  fontSize: 13,
-                }}
-              >
-                Exercice
-              </div>
-
-              <select
-                value={exercise.name}
-                onChange={(e) =>
-                  onExerciseNameChange(
-                    index,
-                    e.target.value
-                  )
-                }
-                style={{
-                  width: "100%",
-                  padding: "10px 12px",
-                  borderRadius: 10,
-                  border: `1px solid ${theme.colors.border}`,
-                  background:
-                    theme.colors.background,
-                  color:
-                    theme.colors.text,
-                  fontSize: 15,
-                  boxSizing:
-                    "border-box",
-                }}
-              >
+            </select>
+          </label>
+          <label>
+            <span>Exercice</span>
+            <select
+              value={exercise.name}
+              onChange={(event) => onExerciseNameChange(index, event.target.value)}
+            >
                 <option value="">
                   Choisir un exercice
                 </option>
@@ -301,98 +190,15 @@ export default function ExerciseCard({
                     </option>
                   )
                 )}
-              </select>
-            </div>
-
-            <button
-              type="button"
-              onClick={() =>
-                setShowLibraryModal(
-                  true
-                )
-              }
-              style={{
-                border: "none",
-                background:
-                  "transparent",
-                color:
-                  theme.colors.primary,
-                cursor: "pointer",
-                fontWeight: 700,
-                fontSize: 13,
-                padding: 0,
-                alignSelf:
-                  "flex-start",
-              }}
-            >
-              ➕ Nouvel exercice
-            </button>
-          </div>
-
-          <button
-            type="button"
-            onClick={() =>
-              setShowHistory(true)
-            }
-            style={{
-              width: 42,
-              height: 42,
-              borderRadius: 10,
-              border: "none",
-              background:
-                theme.colors.primary,
-              color: "#000",
-              fontSize: 18,
-              fontWeight: 700,
-              cursor: "pointer",
-            }}
-          >
-            🕒
-          </button>
+            </select>
+          </label>
         </div>
-
-        <table
-          style={{
-            width: "100%",
-            borderCollapse:
-              "collapse",
-          }}
-        >
-          <thead>
-            <tr>
-              <th
-                style={{
-                  paddingBottom: 6,
-                  fontSize: 13,
-                }}
-              >
-                Série
-              </th>
-
-              <th
-                style={{
-                  paddingBottom: 6,
-                  fontSize: 13,
-                }}
-              >
-                Répétitions
-              </th>
-
-              <th
-                style={{
-                  paddingBottom: 6,
-                  fontSize: 13,
-                }}
-              >
-                Poids
-              </th>
-
-              <th></th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {exercise.sets.map(
+        <button type="button" className="gym-exercise-card__new" onClick={() => setShowLibraryModal(true)}>
+          <Plus size={15} /> Nouvel exercice
+        </button>
+        <div className="gym-exercise-card__sets">
+          <div className="gym-exercise-card__sets-header"><span>Série</span><span>Répétitions</span><span>Poids</span><span /></div>
+          {exercise.sets.map(
               (set, setIndex) => (
                 <SetRow
                   key={setIndex}
@@ -418,39 +224,12 @@ export default function ExerciseCard({
                   }
                 />
               )
-            )}
-          </tbody>
-        </table>
-                <div
-          style={{
-            display: "flex",
-            justifyContent:
-              "center",
-            marginTop: 14,
-          }}
-        >
-          <button
-            type="button"
-            onClick={() =>
-              onAddSet(index)
-            }
-            style={{
-              width: 220,
-              padding: "11px 14px",
-              border: "none",
-              borderRadius: 10,
-              background:
-                theme.colors.primary,
-              color: "#000",
-              fontWeight: 700,
-              fontSize: 14,
-              cursor: "pointer",
-            }}
-          >
-            ➕ Ajouter une série
-          </button>
+          )}
         </div>
-      </div>
+        <button type="button" className="gym-exercise-card__add-set" onClick={() => onAddSet(index)}>
+          <Plus size={16} /> Ajouter une série
+        </button>
+      </section>
 
       <ExerciseHistoryModal
         isOpen={showHistory}

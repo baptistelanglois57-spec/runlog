@@ -36,6 +36,7 @@ import {
 
 import { getAveragePace } from "../utils/stats";
 import PaceRecordCard from "../components/Records/PaceRecordCard";
+import "./Records.css";
 
 export default function Records() {
   const [runs, setRuns] = useState<Run[]>([]);
@@ -56,7 +57,7 @@ export default function Records() {
 
   if (loading) {
     return (
-      <main
+      <main className="records-page records-page--loading"
         style={{
           minHeight: "100vh",
           background:
@@ -148,20 +149,52 @@ export default function Records() {
   const top10 = getTop10(runs);
 
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        background:
-          theme.colors.background,
-        padding: "24px 18px 120px",
-      }}
-    >
+    <main className="records-page">
       <RecordsHeader />
 
-      {/* À LA UNE */}
+      <section className="records-hero">
+        <div className="records-hero__primary">
+          <Route size={22} aria-hidden="true" />
+          <span>Plus longue sortie</span>
+          <strong>
+            {longestRun
+              ? `${longestRun.distance.toFixed(2)} km`
+              : "--"}
+          </strong>
+          <small>
+            {longestRun
+              ? `${longestRun.name} • ${longestRun.date}`
+              : "Aucune sortie"}
+          </small>
+        </div>
+
+        <div className="records-hero__secondary">
+          <div>
+            <Gauge size={17} aria-hidden="true" />
+            <span>Meilleure allure</span>
+            <strong>
+              {fastestRun
+                ? getAveragePace(
+                    fastestRun.distance,
+                    fastestRun.duration
+                  )
+                : "--"}
+            </strong>
+          </div>
+          <div>
+            <Mountain size={17} aria-hidden="true" />
+            <span>Plus gros D+</span>
+            <strong>
+              {highestElevation
+                ? `${highestElevation.elevation} m`
+                : "--"}
+            </strong>
+          </div>
+        </div>
+      </section>
 
       <RecordSection
-  title="À la une"
+  title="Records clés"
 >
               <RecordCard
         icon={
@@ -336,7 +369,7 @@ export default function Records() {
     </RecordSection>
         {/* ALLURES */}
 
-<RecordSection title="Allures">
+<RecordSection title="Allures" fullWidth>
   <PaceRecordCard
     bestPace={
       fastestRun

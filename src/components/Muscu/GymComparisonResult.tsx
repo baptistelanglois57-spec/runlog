@@ -1,4 +1,5 @@
-import { theme } from "../../styles/theme";
+import { ArrowRight, Dumbbell, TrendingUp } from "lucide-react";
+import type { CSSProperties } from "react";
 
 type Props = {
   comparison: any[];
@@ -8,84 +9,24 @@ export default function GymComparisonResult({
   comparison,
 }: Props) {
   return (
-    <div
-      style={{
-        marginTop: 28,
-        display: "flex",
-        flexDirection: "column",
-        gap: 22,
-      }}
-    >
+    <div className="gym-comparison-results">
       {comparison.map((exercise, index) => (
-        <div
-          key={index}
-          style={{
-            background: theme.colors.card,
-            border: `1px solid ${theme.colors.border}`,
-            borderRadius: 22,
-            padding: 20,
-            display: "flex",
-            flexDirection: "column",
-            gap: 22,
-          }}
-        >
+        <article key={index} className="gym-comparison-exercise">
           {/* TITRE */}
 
-          <div
-            style={{
-              color: theme.colors.primary,
-              fontWeight: 800,
-              fontSize: 22,
-            }}
-          >
-            💪 {exercise.name}
+          <div className="gym-comparison-exercise__title">
+            <span><Dumbbell size={19} /></span>
+            <h2>{exercise.name}</h2>
           </div>
 
-          {/* TABLEAU COMPARATIF */}
-
-          <div
-            style={{
-              background: theme.colors.background,
-              border: `1px solid ${theme.colors.border}`,
-              borderRadius: 16,
-              overflow: "hidden",
-            }}
-          >
-            {/* Header */}
-
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns:
-                  "80px 1fr 1fr",
-                padding: "14px 16px",
-                borderBottom: `1px solid ${theme.colors.border}`,
-                background:
-                  "rgba(255,255,255,.02)",
-                fontWeight: 700,
-                color: theme.colors.primary,
-                fontSize: 14,
-              }}
-            >
-              <div></div>
-
-              <div
-                style={{
-                  textAlign: "center",
-                }}
-              >
-                Séance A
-              </div>
-
-              <div
-                style={{
-                  textAlign: "center",
-                }}
-              >
-                Séance B
-              </div>
+          <div className="gym-comparison-exercise__sets">
+            <div className="gym-comparison-exercise__sets-header">
+              <span>Série</span>
+              <span>Séance A</span>
+              <span aria-hidden="true" />
+              <span>Séance B</span>
             </div>
-                        {Array.from({
+            {Array.from({
               length: Math.max(
                 exercise.previousSets.length,
                 exercise.currentSets.length
@@ -117,194 +58,59 @@ export default function GymComparisonResult({
                   currentReps >
                     previousReps);
 
-              const regressed =
-                currentWeight <
-                  previousWeight ||
-                (currentWeight ===
-                  previousWeight &&
-                  currentReps <
-                    previousReps);
-
-              let currentColor =
-                theme.colors.text;
-
-              if (improved) {
-                currentColor =
-                  "#22C55E";
-              } else if (
-                regressed
-              ) {
-                currentColor =
-                  "#FACC15";
-              }
-
               return (
-                <div
-                  key={i}
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns:
-                      "80px 1fr 1fr",
-                    padding:
-                      "14px 16px",
-                    borderBottom:
-                      i !==
-                      Math.max(
-                        exercise
-                          .previousSets
-                          .length,
-                        exercise
-                          .currentSets
-                          .length
-                      ) -
-                        1
-                        ? `1px solid ${theme.colors.border}`
-                        : "none",
-                    alignItems:
-                      "center",
-                  }}
-                >
-                  <div
-                    style={{
-                      fontWeight: 600,
-                      color:
-                        theme.colors.textSecondary,
-                    }}
-                  >
-                    S{i + 1}
-                  </div>
-
-                  <div
-                    style={{
-                      textAlign:
-                        "center",
-                      color:
-                        theme.colors.text,
-                      fontWeight: 700,
-                      whiteSpace:
-                        "nowrap",
-                    }}
-                  >
+                <div key={i} className="gym-comparison-exercise__set-row">
+                  <span className="gym-comparison-exercise__set-number">S{i + 1}</span>
+                  <span className="gym-comparison-exercise__set-value">
                     {previous
                       ? `${previous.reps ?? "-"} × ${
                           previous.weight ??
                           "-"
                         }`
                       : "—"}
-                  </div>
-
-                  <div
-                    style={{
-                      textAlign:
-                        "center",
-                      color:
-                        currentColor,
-                      fontWeight: 700,
-                      whiteSpace:
-                        "nowrap",
-                    }}
-                  >
+                  </span>
+                  <ArrowRight size={15} aria-hidden="true" />
+                  <span className={`gym-comparison-exercise__set-value${improved ? " gym-comparison-exercise__set-value--improved" : ""}`}>
                     {current
                       ? `${current.reps ?? "-"} × ${
                           current.weight ??
                           "-"
                         }`
                       : "—"}
-                  </div>
+                  </span>
                 </div>
               );
             })}
           </div>
-                    {/* ÉVOLUTION */}
 
-          <div
-            style={{
-              background: theme.colors.background,
-              border: `1px solid ${theme.colors.border}`,
-              borderRadius: 16,
-              padding: 18,
-              display: "flex",
-              flexDirection: "column",
-              gap: 12,
-            }}
-          >
-            <div
-              style={{
-                color: theme.colors.primary,
-                fontWeight: 800,
-                fontSize: 16,
-              }}
-            >
-              📈 Évolution
-            </div>
+          <div className="gym-comparison-exercise__evolution">
+            <div><TrendingUp size={17} /> Évolution</div>
 
             {exercise.evolution.map(
               (
                 item: string,
                 i: number
               ) => (
-                <div
-                  key={i}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 10,
-                    color:
-                      theme.colors.text,
-                    fontSize: 15,
-                    lineHeight: 1.5,
-                  }}
-                >
-                  <span
-                    style={{
-                      color:
-                        theme.colors.primary,
-                    }}
-                  >
-                    •
-                  </span>
-
+                <div key={i}>
+                  <span aria-hidden="true" />
                   <span>{item}</span>
                 </div>
               )
             )}
           </div>
 
-          {/* CONSEIL */}
-
           <div
-            style={{
-              background:
-                `${exercise.verdictColor}18`,
-              border: `1px solid ${exercise.verdictColor}`,
-              borderRadius: 16,
-              padding: 18,
-            }}
+            className="gym-comparison-exercise__verdict"
+            style={{ "--verdict-color": exercise.verdictColor } as CSSProperties}
           >
-            <div
-              style={{
-                color:
-                  exercise.verdictColor,
-                fontWeight: 800,
-                fontSize: 18,
-                marginBottom: 12,
-              }}
-            >
+            <div>
               {exercise.verdict}
             </div>
-
-            <div
-              style={{
-                color:
-                  theme.colors.text,
-                lineHeight: 1.7,
-                fontSize: 15,
-              }}
-            >
+            <p>
               {exercise.advice}
-            </div>
+            </p>
           </div>
-        </div>
+        </article>
       ))}
     </div>
   );
