@@ -1,13 +1,41 @@
 import type { GymExercise } from "../types/Gym/GymExercise";
 
+export type ExerciseComparison = {
+  name: string;
+
+  previousSets: {
+    reps?: number;
+    weight?: number;
+  }[];
+
+  currentSets: {
+    reps?: number;
+    weight?: number;
+  }[];
+
+  evolution: string[];
+
+  verdict: string;
+
+  verdictColor: string;
+
+  advice: string;
+};
+
 export function normalizeExerciseName(
   name: string
 ) {
   return name
     .toLowerCase()
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9\s]/g, " ")
+    .replace(
+      /[\u0300-\u036f]/g,
+      ""
+    )
+    .replace(
+      /[^a-z0-9\s]/g,
+      " "
+    )
     .replace(
       /\b(de|du|des|la|le|les|a|au|aux|avec|sur|en|et)\b/g,
       " "
@@ -29,7 +57,7 @@ export function normalizeExerciseName(
     .join(" ");
 }
 
-function getTotalReps(
+function totalReps(
   exercise: GymExercise
 ) {
   return exercise.sets.reduce(
@@ -39,23 +67,11 @@ function getTotalReps(
   );
 }
 
-function getTotalVolume(
-  exercise: GymExercise
-) {
-  return exercise.sets.reduce(
-    (total, set) =>
-      total +
-      (set.reps ?? 0) *
-        (set.weight ?? 0),
-    0
-  );
-}
-
-function getAverageWeight(
+function averageWeight(
   exercise: GymExercise
 ) {
   const weights = exercise.sets
-    .map((set) => set.weight ?? 0)
+    .map((s) => s.weight ?? 0)
     .filter((w) => w > 0);
 
   if (weights.length === 0) {
@@ -69,24 +85,10 @@ function getAverageWeight(
     ) / weights.length
   );
 }
-
-function getResultText(
-  exercise: GymExercise
-) {
-  const reps = exercise.sets
-    .map((set) => set.reps ?? "-")
-    .join(" / ");
-
-  const weight =
-    exercise.sets[0]?.weight ?? 0;
-
-  return `${reps} × ${weight} kg`;
-}
-
 export function compareExercises(
   previousExercises: GymExercise[],
   currentExercises: GymExercise[]
-) {
+): ExerciseComparison[] {
   return currentExercises.map(
     (currentExercise) => {
       const previousExercise =
@@ -108,58 +110,39 @@ export function compareExercises(
         return {
           name: currentExercise.name,
 
-          status: "new",
+          previousSets: [],
 
-          previousResult: "—",
+          currentSets:
+            currentExercise.sets,
 
-          currentResult:
-            getResultText(
-              currentExercise
-            ),
-
-          comparison:
+          evolution: [
             "🆕 Nouvel exercice",
+          ],
 
-          verdict: "Nouveau",
+          verdict:
+            "🆕 Nouvel exercice",
 
           verdictColor:
             "#3B82F6",
 
-          currentSets:
-            currentExercise.sets,
+          advice:
+            "Conservez cette charge pendant plusieurs séances afin d'établir une base de progression.",
         };
       }
-            //
-      // Calculs
-      //
 
       const previousReps =
-        getTotalReps(
-          previousExercise
-        );
+        totalReps(previousExercise);
 
       const currentReps =
-        getTotalReps(
-          currentExercise
-        );
-
-      const previousVolume =
-        getTotalVolume(
-          previousExercise
-        );
-
-      const currentVolume =
-        getTotalVolume(
-          currentExercise
-        );
+        totalReps(currentExercise);
 
       const previousWeight =
-        getAverageWeight(
+        averageWeight(
           previousExercise
         );
 
       const currentWeight =
-        getAverageWeight(
+        averageWeight(
           currentExercise
         );
 
@@ -167,22 +150,63 @@ export function compareExercises(
         currentReps -
         previousReps;
 
-      const volumeDiff =
-        currentVolume -
-        previousVolume;
-
       const weightDiff =
         currentWeight -
         previousWeight;
 
-      let comparison =
-        "➖ Stable";
+      const evolution: string[] =
+        [];
+
+      if (repsDiff > 0) {
+        evolution.push(
+          `+${repsDiff} répétition${
+            repsDiff > 1 ? "s" : ""
+          }`
+        );
+      }
+
+      if (repsDiff < 0) {
+        evolution.push(
+          `${repsDiff} répétition${
+            Math.abs(repsDiff) > 1
+              ? "s"
+              : ""
+          }`
+        );
+      }
+
+      if (weightDiff > 0) {
+        evolution.push(
+          `+${weightDiff.toFixed(
+            1
+          )} kg`
+        );
+      }
+
+      if (weightDiff < 0) {
+        evolution.push(
+          `${weightDiff.toFixed(
+            1
+          )} kg`
+        );
+      }
+
+      if (
+        evolution.length === 0
+      ) {
+        evolution.push(
+          "Aucun changement"
+        );
+      }
 
       let verdict =
-        "Consolidation";
+        "🔵 Consolidation";
 
       let verdictColor =
-        "#22C55E";
+        "#3B82F6";
+
+      let advice =
+        "Continue cette charge jusqu'à stabiliser toutes les séries.";
 
       //
       // Progression exceptionnelle
@@ -192,169 +216,123 @@ export function compareExercises(
         weightDiff > 0 &&
         repsDiff > 0
       ) {
-        comparison =
-          `⬆️ +${weightDiff.toFixed(
-            0
-          )} kg et +${repsDiff} répétitions`;
-
         verdict =
-          "Progression exceptionnelle";
+          "⭐ Progression exceptionnelle";
 
         verdictColor =
           "#22C55E";
+
+        advice =
+          "Excellent ! Tu progresses simultanément en charge et en répétitions.";
       }
 
       //
       // Charge augmentée
       //
 
-      else if (weightDiff > 0) {
-        comparison =
-          `⬆️ +${weightDiff.toFixed(
-            0
-          )} kg`;
-
+      else if (
+        weightDiff > 0
+      ) {
         verdict =
-          "Charge augmentée";
+          "🟢 Charge augmentée";
 
         verdictColor =
           "#22C55E";
+
+        advice =
+          "Bonne augmentation de charge. Stabilise-la avant de chercher davantage de répétitions.";
       }
 
       //
-      // Charge diminuée
+      // Charge réduite
       //
 
-      else if (weightDiff < 0) {
-        comparison =
-          `⬇️ ${Math.abs(
-            weightDiff
-          ).toFixed(0)} kg`;
-
+      else if (
+        weightDiff < 0
+      ) {
         verdict =
-          "Charge réduite";
+          "🟠 Charge réduite";
 
         verdictColor =
           "#F97316";
+
+        advice =
+          "La charge est plus faible. Vérifie si c'est volontaire (fatigue, reprise ou technique).";
       }
 
       //
       // Même charge
       //
 
-      else {
-        if (repsDiff > 0) {
-          comparison =
-            `⬆️ +${repsDiff} répétitions`;
+      else if (
+        repsDiff >= 5
+      ) {
+        verdict =
+          "🟢 Excellente progression";
 
-          verdict =
-            "Excellente progression";
+        verdictColor =
+          "#22C55E";
 
-          verdictColor =
-            "#22C55E";
-        }
-
-        else if (repsDiff < 0) {
-          comparison =
-            `⬇️ ${Math.abs(
-              repsDiff
-            )} répétitions`;
-
-          verdict =
-            "Léger recul";
-
-          verdictColor =
-            "#FACC15";
-        }
-
-        else {
-          comparison =
-            "➖ Stable";
-
-          verdict =
-            "Consolidation";
-
-          verdictColor =
-            "#22C55E";
-        }
+        advice =
+          "Tu peux envisager une légère augmentation de charge.";
       }
-            //
-      // Résultat
-      //
+
+      else if (
+        repsDiff >= 2
+      ) {
+        verdict =
+          "🟢 Bonne progression";
+
+        verdictColor =
+          "#22C55E";
+
+        advice =
+          "Très bonne progression. Continue encore une ou deux séances avant d'augmenter la charge.";
+      }
+
+      else if (
+        repsDiff === 1
+      ) {
+        verdict =
+          "🟢 Légère progression";
+
+        verdictColor =
+          "#22C55E";
+
+        advice =
+          "Petit progrès, reste régulier.";
+      }
+
+      else if (
+        repsDiff < 0
+      ) {
+        verdict =
+          "🟡 Léger recul";
+
+        verdictColor =
+          "#FACC15";
+
+        advice =
+          "Ce n'est pas inquiétant. Analyse le sommeil, la récupération et la fatigue.";
+      }
 
       return {
-        name: currentExercise.name,
+        name:
+          currentExercise.name,
 
-        status: "matched",
+        previousSets:
+          previousExercise.sets,
 
-        //
-        // Affichage
-        //
+        currentSets:
+          currentExercise.sets,
 
-        previousResult:
-          getResultText(
-            previousExercise
-          ),
-
-        currentResult:
-          getResultText(
-            currentExercise
-          ),
-
-        comparison,
+        evolution,
 
         verdict,
 
         verdictColor,
 
-        //
-        // Statistiques
-        //
-
-        previousReps,
-
-        currentReps,
-
-        repsDiff,
-
-        previousVolume:
-          Math.round(
-            previousVolume
-          ),
-
-        currentVolume:
-          Math.round(
-            currentVolume
-          ),
-
-        volumeDiff:
-          Math.round(
-            volumeDiff
-          ),
-
-        previousWeight:
-          Number(
-            previousWeight.toFixed(
-              1
-            )
-          ),
-
-        currentWeight:
-          Number(
-            currentWeight.toFixed(
-              1
-            )
-          ),
-
-        weightDiff:
-          Number(
-            weightDiff.toFixed(
-              1
-            )
-          ),
-
-        currentSets:
-          currentExercise.sets,
+        advice,
       };
     }
   );
