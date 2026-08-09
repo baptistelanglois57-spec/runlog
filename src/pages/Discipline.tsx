@@ -46,7 +46,7 @@ export default function Discipline() {
   }
 
   return <main className="discipline-page"><div className="discipline-page__content">
-    <header className="discipline-page__header"><button className="discipline-icon-button" onClick={() => navigate("/tools")} aria-label="Retour aux outils"><ChevronLeft size={21} /></button><div><p className="discipline-page__eyebrow">RunLog · progression</p><h1>Discipline.</h1><p>Votre engagement, séance après séance.</p></div><span className="discipline-header-mark" aria-hidden="true"><Trophy size={19} /></span></header>
+    <header className="discipline-page__header"><button className="discipline-icon-button" onClick={() => navigate("/tools")} aria-label="Retour aux outils"><ChevronLeft size={21} /></button><div><h1>Discipline.</h1><p>Votre engagement, séance après séance.</p></div><span className="discipline-header-mark" aria-hidden="true"><Trophy size={19} /></span></header>
 
     <ActivityScoreCard stats={data.overall} />
 

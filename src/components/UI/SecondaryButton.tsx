@@ -1,4 +1,5 @@
 import { theme } from "../../styles/theme";
+import { Typography } from "../../styles/ui";
 
 type Props =
   React.ButtonHTMLAttributes<HTMLButtonElement>;
@@ -22,7 +23,7 @@ export default function SecondaryButton(
 
         fontWeight: 600,
 
-        fontSize: 15,
+        fontSize: Typography.button,
 
         cursor: "pointer",
 

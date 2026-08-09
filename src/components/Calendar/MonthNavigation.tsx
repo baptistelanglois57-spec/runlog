@@ -1,10 +1,4 @@
-import {
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
-
-import { theme } from "../../styles/theme";
-import { UI } from "../../styles/ui";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 type MonthNavigationProps = {
   month: Date;
@@ -17,98 +11,32 @@ export default function MonthNavigation({
   onPrevious,
   onNext,
 }: MonthNavigationProps) {
-  const monthName =
-    month.toLocaleDateString("fr-FR", {
-      month: "long",
-      year: "numeric",
-    });
+  const monthName = month.toLocaleDateString("fr-FR", {
+    month: "long",
+    year: "numeric",
+  });
 
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "48px 1fr 48px",
-
-        alignItems: "center",
-
-        gap: 12,
-
-        width: "100%",
-
-        marginBottom: 18,
-      }}
-    >
+    <nav className="agenda-month-navigation" aria-label="Navigation mensuelle">
       <button
+        className="agenda-month-navigation__button"
+        type="button"
+        aria-label="Mois précédent"
         onClick={onPrevious}
-        style={{
-          width: 48,
-          height: 48,
-
-          border: `1px solid ${theme.colors.border}`,
-
-          borderRadius: 14,
-
-          background: theme.colors.card,
-
-          color: theme.colors.primary,
-
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-
-          cursor: "pointer",
-
-          transition: UI.TRANSITION,
-        }}
       >
-        <ChevronLeft size={22} />
+        <ChevronLeft size={20} />
       </button>
 
-      <h2
-        style={{
-          margin: 0,
-
-          textAlign: "center",
-
-          color: theme.colors.text,
-
-          fontSize: 24,
-
-          fontWeight: 800,
-
-          textTransform: "capitalize",
-
-          whiteSpace: "nowrap",
-        }}
-      >
-        {monthName}
-      </h2>
+      <h2>{monthName}</h2>
 
       <button
+        className="agenda-month-navigation__button"
+        type="button"
+        aria-label="Mois suivant"
         onClick={onNext}
-        style={{
-          width: 48,
-          height: 48,
-
-          border: `1px solid ${theme.colors.border}`,
-
-          borderRadius: 14,
-
-          background: theme.colors.card,
-
-          color: theme.colors.primary,
-
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-
-          cursor: "pointer",
-
-          transition: UI.TRANSITION,
-        }}
       >
-        <ChevronRight size={22} />
+        <ChevronRight size={20} />
       </button>
-    </div>
+    </nav>
   );
 }

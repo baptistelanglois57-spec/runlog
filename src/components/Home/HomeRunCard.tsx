@@ -10,6 +10,8 @@ import {
   Heart,
   Pencil,
   Trash2,
+  Flag,
+  PersonStanding,
 } from "lucide-react";
 
 import { formatDate } from "../../utils/date";
@@ -39,10 +41,12 @@ export default function RunCard({
       <div className="home-last-run__header">
         <div className="home-last-run__identity">
           <div className="home-last-run__name">
-            <span>
-              {run.type === "training"
-                ? "🏃"
-                : "🏁"}
+            <span className="home-last-run__type-icon" aria-hidden="true">
+              {run.type === "training" ? (
+                <PersonStanding size={16} strokeWidth={2.25} />
+              ) : (
+                <Flag size={16} strokeWidth={2.25} />
+              )}
             </span>
 
             <span className="home-last-run__name-text">
@@ -61,7 +65,8 @@ export default function RunCard({
         </div>
 
         <div className="home-last-run__distance">
-          {run.distance.toFixed(1)} km
+          <span>{run.distance.toFixed(1)}</span>
+          <span className="home-last-run__distance-unit">km</span>
         </div>
       </div>
 
@@ -177,13 +182,15 @@ function MiniStat({
 }: MiniStatProps) {
   return (
     <div className="home-mini-stat">
-      {typeof icon === "string" ? (
-        <span className="home-mini-stat__emoji">
-          {icon}
-        </span>
-      ) : (
-        icon
-      )}
+      <span className="home-mini-stat__icon" aria-hidden="true">
+        {typeof icon === "string" ? (
+          <span className="home-mini-stat__emoji">
+            {icon}
+          </span>
+        ) : (
+          icon
+        )}
+      </span>
 
       <span className="home-mini-stat__value">
         {value}

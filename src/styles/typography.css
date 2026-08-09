@@ -1,0 +1,168 @@
+/*
+ * RunLog 3.0 shared type layer.
+ * It is imported after the application tree so it aligns legacy inline views
+ * and page-specific CSS with the Notes scale without affecting layout.
+ */
+.app-shell,
+.app-shell button,
+.app-shell input,
+.app-shell select,
+.app-shell textarea {
+  font-family: var(--rl-font-family);
+}
+
+.app-shell h1 {
+  color: var(--rl-text-primary) !important;
+  font-family: var(--rl-font-family) !important;
+  font-size: var(--rl-type-page-title) !important;
+  font-weight: var(--rl-weight-display) !important;
+  letter-spacing: -0.055em !important;
+  line-height: 1 !important;
+}
+
+.app-shell h2 {
+  color: var(--rl-text-primary) !important;
+  font-family: var(--rl-font-family) !important;
+  font-size: var(--rl-type-section-title) !important;
+  font-weight: var(--rl-weight-bold) !important;
+  letter-spacing: -0.025em !important;
+}
+
+.app-shell h3 {
+  color: var(--rl-text-primary) !important;
+  font-family: var(--rl-font-family) !important;
+  font-size: var(--rl-type-card-title) !important;
+  font-weight: var(--rl-weight-bold) !important;
+  letter-spacing: -0.018em !important;
+}
+
+.app-shell p {
+  color: var(--rl-text-secondary);
+  font-size: var(--rl-type-body-secondary);
+  line-height: 1.55;
+}
+
+.app-shell small,
+.app-shell time {
+  color: var(--rl-text-muted);
+  font-size: var(--rl-type-caption);
+}
+
+.app-shell button,
+.app-shell input,
+.app-shell select,
+.app-shell textarea {
+  font-size: var(--rl-type-button);
+}
+
+.app-shell input,
+.app-shell select,
+.app-shell textarea {
+  color: var(--rl-text-primary);
+}
+
+/* Reusable card hierarchy across the RunLog 3.0 page families. */
+.app-shell .home-upcoming-card__name,
+.app-shell .home-last-run__name,
+.app-shell .tools-card__copy strong,
+.app-shell .record-card__header h3,
+.app-shell .discipline-area-card h3,
+.app-shell .discipline-accordion > button strong,
+.app-shell .athlete-profile-row__copy strong,
+.app-shell .gym-comparison-exercise__title h2,
+.app-shell .gym-exercise-card__header h2 {
+  color: var(--rl-text-primary) !important;
+  font-size: var(--rl-type-card-title) !important;
+  font-weight: var(--rl-weight-bold) !important;
+}
+
+.app-shell .home-stat-card__title,
+.app-shell .home-upcoming-card__date,
+.app-shell .home-last-run__date,
+.app-shell .record-card__subtitle,
+.app-shell .record-card__detail,
+.app-shell .pace-record-card__title,
+.app-shell .tools-card__copy small,
+.app-shell .discipline-area-card p,
+.app-shell .discipline-accordion > button small,
+.app-shell .athlete-metric-card small,
+.app-shell .athlete-profile-row__copy small,
+.app-shell .gym-comparison-page__session > p,
+.app-shell .gym-comparison-exercise__sets-header {
+  color: var(--rl-text-secondary) !important;
+  font-size: var(--rl-type-caption) !important;
+}
+
+.app-shell .home-stat-card__number,
+.app-shell .home-last-run__distance,
+.app-shell .records-hero__primary > strong,
+.app-shell .record-card__value,
+.app-shell .pace-record-card__value,
+.app-shell .athlete-metric-card strong,
+.app-shell .discipline-score-ring strong,
+.app-shell .discipline-summary-card strong {
+  color: var(--rl-text-primary) !important;
+  font-family: var(--rl-font-family) !important;
+  font-size: var(--rl-type-metric) !important;
+  font-weight: var(--rl-weight-display) !important;
+  letter-spacing: -0.075em !important;
+}
+
+.app-shell .home-stat-card__unit,
+.app-shell .record-card__icon,
+.app-shell .pace-record-card__row > span,
+.app-shell .discipline-area-card__score,
+.app-shell .gym-comparison-exercise__evolution > div:first-child {
+  color: var(--rl-accent);
+}
+
+/* Notes remains the visual source of truth while consuming the same tokens. */
+.notes-page,
+.notes-modal {
+  font-family: var(--rl-font-family);
+}
+
+.notes-page__header h1 {
+  font-size: var(--rl-type-page-title);
+  font-weight: var(--rl-weight-display);
+}
+
+.notes-empty-state h2,
+.notes-modal__header h2 {
+  font-size: var(--rl-type-section-title);
+  font-weight: var(--rl-weight-bold);
+}
+
+.note-card__title {
+  font-size: var(--rl-type-card-title);
+  font-weight: var(--rl-weight-bold);
+}
+
+.note-card__excerpt,
+.notes-empty-state p,
+.note-details__content {
+  color: var(--rl-text-secondary);
+  font-size: var(--rl-type-body-secondary);
+}
+
+.note-card__date,
+.note-details__date {
+  color: var(--rl-accent);
+  font-size: var(--rl-type-caption);
+}
+
+.notes-page__create-button,
+.notes-empty-state__button,
+.notes-modal__primary-button,
+.notes-modal__secondary-button {
+  font-size: var(--rl-type-button);
+}
+
+/* Home keeps its deliberately larger RunLog wordmark treatment. */
+.app-shell .home-page__header h1 {
+  color: var(--rl-text-primary) !important;
+  font-size: clamp(35px, 10vw, 45px) !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.08em !important;
+  line-height: 0.95 !important;
+}

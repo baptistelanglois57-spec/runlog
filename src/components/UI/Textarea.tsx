@@ -3,6 +3,7 @@ import type {
 } from "react";
 
 import { theme } from "../../styles/theme";
+import { Typography } from "../../styles/ui";
 
 type Props =
   TextareaHTMLAttributes<HTMLTextAreaElement> & {
@@ -27,6 +28,7 @@ export default function Textarea({
           style={{
             color: theme.colors.text,
             fontWeight: 600,
+            fontSize: Typography.bodySecondary,
           }}
         >
           {label}
@@ -41,7 +43,7 @@ export default function Textarea({
           border: `1px solid ${theme.colors.border}`,
           background: "#13213a",
           color: theme.colors.text,
-          fontSize: "16px",
+          fontSize: Typography.input,
           resize: "vertical",
           minHeight: "120px",
           outline: "none",

@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 
 import "./index.css";
 import App from "./App";
+import "./styles/typography.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

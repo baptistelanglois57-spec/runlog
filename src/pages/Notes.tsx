@@ -1,45 +1,27 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  ChevronLeft,
-  NotebookPen,
-  Plus,
-} from "lucide-react";
+import { ChevronLeft, NotebookPen, Plus } from "lucide-react";
 
 import AppContainer from "../components/Layout/AppContainer";
 import Section from "../components/Layout/Section";
-
 import NoteCard from "../components/Notes/NoteCard";
-import NoteModal from "../components/Notes/NoteModal";
 import NoteDetailsModal from "../components/Notes/NoteDetailsModal";
-
-import { theme } from "../styles/theme";
-import { UI } from "../styles/ui";
-
+import NoteModal from "../components/Notes/NoteModal";
 import type { Note } from "../types/Note";
-
 import {
-  getNotes,
   addNote,
-  updateNote,
   deleteNote,
+  getNotes,
+  updateNote,
 } from "../services/noteService";
-import "./Tools/ToolSubpages.css";
+import "./Notes.css";
 
 export default function Notes() {
   const navigate = useNavigate();
-
-  const [notes, setNotes] =
-    useState<Note[]>([]);
-
-  const [selectedNote, setSelectedNote] =
-    useState<Note | null>(null);
-
-  const [showModal, setShowModal] =
-    useState(false);
-
-  const [editingNote, setEditingNote] =
-    useState<Note | null>(null);
+  const [notes, setNotes] = useState<Note[]>([]);
+  const [selectedNote, setSelectedNote] = useState<Note | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [editingNote, setEditingNote] = useState<Note | null>(null);
 
   useEffect(() => {
     loadNotes();
@@ -47,7 +29,6 @@ export default function Notes() {
 
   async function loadNotes() {
     const data = await getNotes();
-
     setNotes(data);
   }
 
@@ -59,307 +40,149 @@ export default function Notes() {
     if (editingNote) {
       await updateNote({
         ...editingNote,
-
         title,
-
         content,
-
-        importantDate:
-          importantDate || null,
+        importantDate: importantDate || null,
       });
     } else {
       await addNote({
         title,
-
         content,
-
-        importantDate:
-          importantDate || null,
+        importantDate: importantDate || null,
       });
     }
 
     setShowModal(false);
-
     setEditingNote(null);
-
     loadNotes();
   }
 
-  async function handleDelete(
-    id: string
-  ) {
-    if (
-      !window.confirm(
-        "Supprimer ce pense-bête ?"
-      )
-    ) {
+  async function handleDelete(id: string) {
+    if (!window.confirm("Supprimer ce pense-bête ?")) {
       return;
     }
 
     await deleteNote(id);
-
     setSelectedNote(null);
-
     loadNotes();
+  }
+
+  function openCreateModal() {
+    setEditingNote(null);
+    setShowModal(true);
   }
 
   return (
     <AppContainer>
-      <div className="tools-subpage"><Section marginTop={8}>
-        {/* HEADER */}
+      <div className="notes-page">
+        <Section marginTop={8}>
+          <header className="notes-page__header">
+            <button
+              className="notes-page__back-button"
+              type="button"
+              aria-label="Retour aux outils"
+              onClick={() => navigate("/tools")}
+            >
+              <ChevronLeft size={22} />
+            </button>
 
-        <div className="tools-subpage__header"
-          style={{
-            display: "flex",
-            justifyContent:
-              "space-between",
-            alignItems: "center",
-            marginBottom: 30,
-          }}
-        >
+            <h1>Pense-bête</h1>
+
+            <span aria-hidden="true" />
+          </header>
+
           <button
-            onClick={() =>
-              navigate("/tools")
-            }
-            style={{
-              width: 44,
-              height: 44,
-
-              borderRadius: 14,
-
-              border: `1px solid ${theme.colors.border}`,
-
-              background:
-                theme.colors.card,
-
-              display: "flex",
-              justifyContent:
-                "center",
-              alignItems: "center",
-
-              cursor: "pointer",
-            }}
+            className="notes-page__create-button"
+            type="button"
+            onClick={openCreateModal}
           >
-            <ChevronLeft
-              size={22}
-              color={
-                theme.colors.primary
-              }
-            />
+            <Plus size={20} strokeWidth={2.5} />
+            Nouveau pense-bête
           </button>
 
-          <div className="tools-subpage__empty"
-            style={{
-              display: "flex",
-              gap: 10,
-              alignItems: "center",
+          {notes.length === 0 ? (
+            <div className="notes-empty-state">
+              <div className="notes-empty-state__icon" aria-hidden="true">
+                <NotebookPen size={26} />
+              </div>
+              <h2>Aucun pense-bête</h2>
+              <p>
+                Crée ton premier pense-bête pour noter une idée, une inscription
+                ou une information importante.
+              </p>
+              <button
+                className="notes-empty-state__button"
+                type="button"
+                onClick={openCreateModal}
+              >
+                <Plus size={18} strokeWidth={2.5} />
+                Nouveau pense-bête
+              </button>
+            </div>
+          ) : (
+            <div className="notes-page__list">
+              {[...notes]
+                .sort((a, b) => {
+                  if (a.importantDate && b.importantDate) {
+                    return (
+                      new Date(a.importantDate).getTime() -
+                      new Date(b.importantDate).getTime()
+                    );
+                  }
+
+                  if (a.importantDate) return -1;
+                  if (b.importantDate) return 1;
+
+                  return 0;
+                })
+                .map((note) => (
+                  <NoteCard
+                    key={note.id}
+                    note={note}
+                    onClick={() => setSelectedNote(note)}
+                  />
+                ))}
+            </div>
+          )}
+
+          <NoteModal
+            isOpen={showModal}
+            title={
+              editingNote ? "Modifier le pense-bête" : "Nouveau pense-bête"
+            }
+            defaultTitle={editingNote?.title}
+            defaultContent={editingNote?.content}
+            defaultImportantDate={editingNote?.importantDate || ""}
+            onClose={() => {
+              setShowModal(false);
+              setEditingNote(null);
             }}
-          >
-            <NotebookPen
-              size={24}
-              color={
-                theme.colors.primary
+            onSave={handleSave}
+          />
+
+          <NoteDetailsModal
+            isOpen={selectedNote !== null}
+            note={selectedNote}
+            onClose={() => setSelectedNote(null)}
+            onEdit={() => {
+              if (!selectedNote) {
+                return;
               }
-            />
 
-            <h1
-              style={{
-                margin: 0,
+              setEditingNote(selectedNote);
+              setSelectedNote(null);
+              setShowModal(true);
+            }}
+            onDelete={() => {
+              if (!selectedNote) {
+                return;
+              }
 
-                color:
-                  theme.colors.primary,
-
-                fontSize:
-                  UI.FONT_H1,
-              }}
-            >
-              Pense-bête
-            </h1>
-          </div>
-
-          <div
-            style={{
-              width: 44,
+              handleDelete(selectedNote.id);
             }}
           />
-        </div>
-
-        <button
-          className="tools-subpage__primary"
-          onClick={() => {
-            setEditingNote(null);
-
-            setShowModal(true);
-          }}
-          style={{
-            width: "100%",
-
-            background:
-              theme.colors.primary,
-
-            color: "#000",
-
-            border: "none",
-
-            borderRadius: 18,
-
-            padding: "16px",
-
-            fontWeight: 700,
-
-            fontSize: 17,
-
-            cursor: "pointer",
-
-            marginBottom: 26,
-
-            display: "flex",
-
-            justifyContent:
-              "center",
-
-            alignItems: "center",
-
-            gap: 10,
-          }}
-        >
-          <Plus size={20} />
-
-          Nouveau pense-bête
-        </button>
-                {notes.length === 0 ? (
-          <div
-            style={{
-              background: theme.colors.card,
-
-              border: `1px solid ${theme.colors.border}`,
-
-              borderRadius: 22,
-
-              padding: 40,
-
-              textAlign: "center",
-            }}
-          >
-            <NotebookPen
-              size={52}
-              color={theme.colors.primary}
-            />
-
-            <h2
-              style={{
-                color: theme.colors.primary,
-
-                marginTop: 18,
-
-                marginBottom: 12,
-              }}
-            >
-              Aucun pense-bête
-            </h2>
-
-            <p
-              style={{
-                color:
-                  theme.colors.textSecondary,
-
-                margin: 0,
-
-                lineHeight: 1.6,
-              }}
-            >
-              Crée ton premier pense-bête
-              pour noter une idée,
-              une inscription ou une
-              information importante.
-            </p>
-          </div>
-       ) : (
-  [...notes]
-    .sort((a, b) => {
-      if (
-        a.importantDate &&
-        b.importantDate
-      ) {
-        return (
-          new Date(a.importantDate).getTime() -
-          new Date(b.importantDate).getTime()
-        );
-      }
-
-      if (a.importantDate) return -1;
-      if (b.importantDate) return 1;
-
-      return 0;
-    })
-    .map((note) => (
-      <NoteCard
-        key={note.id}
-        note={note}
-        onClick={() =>
-          setSelectedNote(note)
-        }
-      />
-    ))
-)}
-
-        <NoteModal
-          isOpen={showModal}
-          title={
-            editingNote
-              ? "Modifier le pense-bête"
-              : "Nouveau pense-bête"
-          }
-          defaultTitle={
-            editingNote?.title
-          }
-          defaultContent={
-            editingNote?.content
-          }
-          defaultImportantDate={
-            editingNote
-              ?.importantDate || ""
-          }
-          onClose={() => {
-            setShowModal(false);
-
-            setEditingNote(null);
-          }}
-          onSave={handleSave}
-        />
-
-        <NoteDetailsModal
-          isOpen={
-            selectedNote !== null
-          }
-          note={selectedNote}
-          onClose={() =>
-            setSelectedNote(null)
-          }
-          onEdit={() => {
-            if (!selectedNote) {
-              return;
-            }
-
-            setEditingNote(
-              selectedNote
-            );
-
-            setSelectedNote(null);
-
-            setShowModal(true);
-          }}
-          onDelete={() => {
-            if (!selectedNote) {
-              return;
-            }
-
-            handleDelete(
-              selectedNote.id
-            );
-          }}
-        />
-      </Section></div>
+        </Section>
+      </div>
     </AppContainer>
   );
 }

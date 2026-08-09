@@ -3,23 +3,23 @@ import type { LucideIcon } from "lucide-react";
 import { CalendarDays, ChartLine, ChevronRight, Dumbbell, NotebookPen, Scale, Target, Trophy, UserRound } from "lucide-react";
 import "./Tools.css";
 
-type Tool = { icon: LucideIcon; title: string; subtitle: string; path: string; category: "performance" | "organisation" | "athlete" | "gym"; featured?: boolean };
+type Tool = { icon: LucideIcon; title: string; path: string; category: "performance" | "organisation" | "athlete" | "gym"; featured?: boolean };
 
 const tools: Tool[] = [
-  { icon: Trophy, title: "Records", subtitle: "Vos meilleures performances", path: "/records", category: "performance", featured: true },
-  { icon: Target, title: "Discipline", subtitle: "Le respect de votre planning", path: "/discipline", category: "performance", featured: true },
-  { icon: ChartLine, title: "Prévisions", subtitle: "Estimer vos performances", path: "/forecast", category: "performance" },
-  { icon: CalendarDays, title: "Agenda", subtitle: "Entraînements et compétitions", path: "/agenda", category: "organisation", featured: true },
-  { icon: NotebookPen, title: "Pense-bête", subtitle: "Notes, idées et rappels", path: "/notes", category: "organisation" },
-  { icon: UserRound, title: "Fiche sportive", subtitle: "Profil et performances", path: "/athlete-profile", category: "athlete", featured: true },
-  { icon: Scale, title: "Comparaison", subtitle: "Comparer deux séances", path: "/gym-comparison", category: "gym" },
-  { icon: Dumbbell, title: "Exercices", subtitle: "Bibliothèque d’exercices", path: "/exercise-library", category: "gym" },
+  { icon: Trophy, title: "Records", path: "/records", category: "performance", featured: true },
+  { icon: Target, title: "Discipline", path: "/discipline", category: "performance", featured: true },
+  { icon: ChartLine, title: "Prévisions", path: "/forecast", category: "performance" },
+  { icon: CalendarDays, title: "Agenda", path: "/agenda", category: "organisation", featured: true },
+  { icon: NotebookPen, title: "Note", path: "/notes", category: "organisation" },
+  { icon: UserRound, title: "Fiche sportive", path: "/athlete-profile", category: "athlete", featured: true },
+  { icon: Scale, title: "Comparaison", path: "/gym-comparison", category: "gym" },
+  { icon: Dumbbell, title: "Exercices", path: "/exercise-library", category: "gym" },
 ];
 
 type ToolCardProps = { tool: Tool; onOpen: () => void; compact?: boolean };
 function ToolCard({ tool, onOpen, compact = false }: ToolCardProps) {
   const Icon = tool.icon;
-  return <button className={`tools-card${tool.featured ? " tools-card--featured" : ""}${compact ? " tools-card--compact" : ""}`} onClick={onOpen}><span className="tools-card__icon"><Icon size={compact ? 19 : 22} strokeWidth={2.1} /></span><span className="tools-card__copy"><strong>{tool.title}</strong><small>{tool.subtitle}</small></span><ChevronRight className="tools-card__chevron" size={18} /></button>;
+  return <button className={`tools-card${tool.featured ? " tools-card--featured" : ""}${compact ? " tools-card--compact" : ""}`} onClick={onOpen}><span className="tools-card__icon"><Icon size={22} strokeWidth={2.1} /></span><span className="tools-card__copy"><strong>{tool.title}</strong></span><ChevronRight className="tools-card__chevron" size={18} /></button>;
 }
 
 export default function Tools() {

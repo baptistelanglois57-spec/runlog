@@ -1,5 +1,6 @@
 import PageCard from "../Layout/PageCard";
 import { theme } from "../../styles/theme";
+import { Typography, UI } from "../../styles/ui";
 
 type Props = {
   totalSessions: number;
@@ -18,7 +19,7 @@ export default function MuscuHeader({
         <h1
           style={{
             margin: 0,
-            fontSize: "38px",
+            fontSize: Typography.pageTitle,
             color: theme.colors.text,
           }}
         >
@@ -30,7 +31,7 @@ export default function MuscuHeader({
         <div
           style={{
             marginTop: "22px",
-            fontSize: "44px",
+            fontSize: UI.FONT_NUMBER,
             fontWeight: 700,
             color: theme.colors.text,
           }}
@@ -42,7 +43,7 @@ export default function MuscuHeader({
           style={{
             marginTop: "8px",
             color: theme.colors.textSecondary,
-            fontSize: "17px",
+            fontSize: UI.FONT_SMALL,
           }}
         >
           Séances enregistrées

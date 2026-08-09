@@ -1,5 +1,5 @@
 import { theme } from "../../styles/theme";
-import { UI } from "../../styles/ui";
+import { Typography, UI } from "../../styles/ui";
 
 type HistoryHeaderProps = {
   totalRuns: number;
@@ -36,7 +36,7 @@ export default function HistoryHeader({
 
           color: theme.colors.text,
 
-          fontSize: "38px",
+          fontSize: Typography.pageTitle,
 
           fontWeight: 800,
         }}
@@ -72,7 +72,7 @@ export default function HistoryHeader({
             style={{
               color: theme.colors.textSecondary,
 
-              fontSize: 12,
+              fontSize: UI.FONT_TINY,
 
               fontWeight: 600,
 
@@ -86,7 +86,7 @@ export default function HistoryHeader({
             style={{
               color: theme.colors.text,
 
-              fontSize: 26,
+              fontSize: UI.FONT_NUMBER,
 
               fontWeight: 800,
 
@@ -100,7 +100,7 @@ export default function HistoryHeader({
             style={{
               color: theme.colors.primary,
 
-              fontSize: 13,
+              fontSize: UI.FONT_TINY,
 
               fontWeight: 700,
 
@@ -128,7 +128,7 @@ export default function HistoryHeader({
             style={{
               color: theme.colors.textSecondary,
 
-              fontSize: 12,
+              fontSize: UI.FONT_TINY,
 
               fontWeight: 600,
 
@@ -142,7 +142,7 @@ export default function HistoryHeader({
             style={{
               color: theme.colors.text,
 
-              fontSize: 26,
+              fontSize: UI.FONT_NUMBER,
 
               fontWeight: 800,
 
@@ -156,7 +156,7 @@ export default function HistoryHeader({
             style={{
               color: theme.colors.primary,
 
-              fontSize: 13,
+              fontSize: UI.FONT_TINY,
 
               fontWeight: 700,
 

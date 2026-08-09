@@ -1,4 +1,5 @@
 import { theme } from "../../styles/theme";
+import { Typography } from "../../styles/ui";
 
 type Props = {
   children: React.ReactNode;
@@ -18,7 +19,7 @@ export default function FormLabel({
 
         fontWeight: 700,
 
-        fontSize: 13,
+        fontSize: Typography.caption,
 
         textTransform: "uppercase",
 

@@ -3,6 +3,7 @@ import type {
 } from "react";
 
 import { theme } from "../../styles/theme";
+import { Typography } from "../../styles/ui";
 
 type Props =
   SelectHTMLAttributes<HTMLSelectElement> & {
@@ -29,6 +30,7 @@ export default function Select({
           style={{
             color: theme.colors.text,
             fontWeight: 600,
+            fontSize: Typography.bodySecondary,
           }}
         >
           {label}
@@ -43,7 +45,7 @@ export default function Select({
           border: `1px solid ${theme.colors.border}`,
           background: "#13213a",
           color: theme.colors.text,
-          fontSize: "16px",
+          fontSize: Typography.input,
           outline: "none",
           width: "100%",
           boxSizing: "border-box",

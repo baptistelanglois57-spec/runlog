@@ -1,5 +1,5 @@
 import { theme } from "../../styles/theme";
-import { UI } from "../../styles/ui";
+import { Typography, UI } from "../../styles/ui";
 
 type Props = {
   icon?: string;
@@ -43,7 +43,7 @@ export default function Stat({
       <div
         style={{
           color: theme.colors.primary,
-          fontSize: 20,
+          fontSize: Typography.cardTitle,
         }}
       >
         {icon}
@@ -62,7 +62,7 @@ export default function Stat({
       <strong
         style={{
           color: theme.colors.text,
-          fontSize: UI.FONT_BODY,
+          fontSize: Typography.cardTitle,
           lineHeight: 1.2,
         }}
       >

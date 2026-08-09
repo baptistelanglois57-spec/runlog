@@ -16,7 +16,7 @@ import PageCard from "../components/Layout/PageCard";
 import ExerciseLibraryModal from "../components/Muscu/ExerciseLibraryModal";
 
 import { theme } from "../styles/theme";
-import { UI } from "../styles/ui";
+import { Typography } from "../styles/ui";
 
 import type {
   ExerciseLibrary,
@@ -231,8 +231,7 @@ export default function ExerciseLibrary() {
                 gap: 10,
                 color:
                   theme.colors.text,
-                fontSize:
-                  UI.FONT_H1,
+                fontSize: Typography.pageTitle,
               }}
             >
           

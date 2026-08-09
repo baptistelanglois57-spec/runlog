@@ -4,15 +4,15 @@ export const theme = {
 
     card: "#171717",
 
-    primary: "#D4AF37",
+    primary: "#D7AD19",
 
-    primaryLight: "#E7C55B",
+    primaryLight: "#E6C044",
 
     border: "#2E2E2E",
 
     text: "#FFFFFF",
 
-    textSecondary: "#B3B3B3",
+    textSecondary: "#969696",
 
     success: "#22C55E",
 

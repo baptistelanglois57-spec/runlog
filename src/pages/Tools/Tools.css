@@ -10,3 +10,23 @@
 .tools-section { margin-top: 29px; }.tools-section:first-of-type { margin-top: 0; }
 .tools-section__heading { display: block; margin: 0 2px 11px; text-align: left; }.tools-section__heading h2 { color: #f5f5f6; font-size: 16px; font-weight: 750; letter-spacing: -.04em; }
 .tools-card { min-height: 84px; padding: 14px; border-radius: 20px; }.tools-card--featured { border-color: #3d3527; background: linear-gradient(145deg, #1b1a17, #171719); }.tools-card__copy { gap: 3px; }.tools-card__copy strong { font-size: 14px; }.tools-card__copy small { color: #7f7f86; }
+
+.tools-organisation-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.tools-card__icon, .tools-card--compact .tools-card__icon { width: 41px; height: 41px; border-radius: 13px; background: rgba(215,173,25,.14); color: #d7ad19; }
+.tools-card--compact { grid-template-columns: 41px minmax(0, 1fr); }
+.tools-card__chevron { color: #76767d; }
+
+/* The tools page owns its wrapper, so it mirrors AppContainer's safe-area reserve. */
+.tools-page {
+  min-height: 100svh;
+  min-height: 100dvh;
+  padding-top: var(--rl-page-top-space);
+  padding-bottom: var(--rl-page-bottom-space);
+}
+
+@media (max-width: 599px) {
+  .tools-page__header {
+    min-height: 48px;
+    margin-top: 2px;
+  }
+}

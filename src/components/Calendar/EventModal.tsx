@@ -1,33 +1,27 @@
 import { useEffect, useState } from "react";
+import { Activity, Dumbbell, Flag, X } from "lucide-react";
 
-import { theme } from "../../styles/theme";
-
-import EventForm from "./EventForm";
 import EventDetails from "./EventDetails";
-
+import EventForm from "./EventForm";
 import type { Event, EventType } from "../../types/Event";
 
 type EventModalProps = {
   isOpen: boolean;
-
   selectedDate: Date | null;
-
   event?: Event;
-
   onClose: () => void;
-
   onCreate: (event: Event) => void;
-
   onUpdate: (event: Event) => void;
-
   onDelete: (id: string) => void;
 };
 
-type View =
-  | "select"
-  | "create"
-  | "details"
-  | "edit";
+type View = "select" | "create" | "details" | "edit";
+
+const eventChoices: { type: EventType; label: string; Icon: typeof Activity }[] = [
+  { type: "training", label: "Entraînement", Icon: Activity },
+  { type: "gym", label: "Salle", Icon: Dumbbell },
+  { type: "race", label: "Course", Icon: Flag },
+];
 
 export default function EventModal({
   isOpen,
@@ -38,11 +32,8 @@ export default function EventModal({
   onUpdate,
   onDelete,
 }: EventModalProps) {
-  const [view, setView] =
-    useState<View>("select");
-
-  const [selectedType, setSelectedType] =
-    useState<EventType>("training");
+  const [view, setView] = useState<View>("select");
+  const [selectedType, setSelectedType] = useState<EventType>("training");
 
   useEffect(() => {
     if (!isOpen) return;
@@ -58,48 +49,15 @@ export default function EventModal({
 
   if (!isOpen || !selectedDate) return null;
 
-  const displayDate =
-    selectedDate.toLocaleDateString(
-      "fr-FR",
-      {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      }
-    );
+  const displayDate = selectedDate.toLocaleDateString("fr-FR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        inset: 0,
-        background: "rgba(0,0,0,.78)",
-backdropFilter: "blur(8px)",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        zIndex: 999,
-      }}
-    >
-      <div
-        style={{
-    width: "min(92vw,460px)",
-
-    background: theme.colors.card,
-
-    borderRadius: 22,
-
-    border: `1px solid ${theme.colors.border}`,
-
-    padding: 20,
-
-    boxShadow: theme.shadow.card,
-
-    boxSizing: "border-box",
-}}
-      >
-        {/* DETAILS */}
-
+    <div className="agenda-modal" role="presentation">
+      <div className="agenda-modal__panel" role="dialog" aria-modal="true">
         {view === "details" && event && (
           <EventDetails
             event={event}
@@ -109,149 +67,42 @@ backdropFilter: "blur(8px)",
           />
         )}
 
-        {/* CHOIX */}
-
-               {/* CHOIX */}
-
         {view === "select" && (
-          <>
-            <h2
-              style={{
-                textAlign: "center",
-                color: theme.colors.primary,
-                marginTop: 0,
-              }}
-            >
-              {displayDate}
-            </h2>
+          <div className="agenda-event-select">
+            <div className="agenda-modal__heading">
+              <p>{displayDate}</p>
+              <h2>Nouvel événement</h2>
+            </div>
+
+            <div className="agenda-event-select__choices">
+              {eventChoices.map(({ type, label, Icon }) => (
+                <button
+                  key={type}
+                  className={`agenda-event-choice agenda-event-choice--${type}`}
+                  type="button"
+                  onClick={() => {
+                    setSelectedType(type);
+                    setView("create");
+                  }}
+                >
+                  <span className="agenda-event-choice__icon">
+                    <Icon size={19} />
+                  </span>
+                  {label}
+                </button>
+              ))}
+            </div>
 
             <button
-              onClick={() => {
-                setSelectedType("training");
-                setView("create");
-              }}
-              style={{
-  width: "100%",
-  padding: "18px",
-
-  borderRadius: "14px",
-
-  background: theme.colors.card,
-
-  border: "none",
-  outline: "none",
-  boxShadow: "none",
-
-  color: theme.colors.text,
-
-  fontWeight: 700,
-  fontSize: "18px",
-
-  cursor: "pointer",
-
-  marginBottom: "15px",
-
-  WebkitTapHighlightColor: "transparent",
-}}
-            >
-              🏃 Entraînement
-            </button>
-
-            <button
-              onClick={() => {
-                setSelectedType("gym");
-                setView("create");
-              }}
-              style={{
-  width: "100%",
-  padding: "18px",
-
-  borderRadius: "14px",
-
-  background: theme.colors.card,
-
-  border: "none",
-  outline: "none",
-  boxShadow: "none",
-
-  color: theme.colors.text,
-
-  fontWeight: 700,
-  fontSize: "18px",
-
-  cursor: "pointer",
-
-  marginBottom: "15px",
-
-  WebkitTapHighlightColor: "transparent",
-}}
-            >
-              💪 Salle
-            </button>
-
-            <button
-              onClick={() => {
-                setSelectedType("race");
-                setView("create");
-              }}
-              style={{
-  width: "100%",
-  padding: "18px",
-
-  borderRadius: "14px",
-
-  background: theme.colors.card,
-
-  border: "none",
-  outline: "none",
-  boxShadow: "none",
-
-  color: theme.colors.text,
-
-  fontWeight: 700,
-  fontSize: "18px",
-
-  cursor: "pointer",
-
-  marginBottom: "15px",
-
-  WebkitTapHighlightColor: "transparent",
-}}
-            >
-              🏁 Course
-            </button>
-
-            <button
+              className="agenda-modal__dismiss"
+              type="button"
               onClick={onClose}
-              style={{
-  width: "100%",
-  padding: "18px",
-
-  borderRadius: "14px",
-
-  background: theme.colors.card,
-
-  border: "none",
-  outline: "none",
-  boxShadow: "none",
-
-  color: theme.colors.text,
-
-  fontWeight: 700,
-  fontSize: "18px",
-
-  cursor: "pointer",
-
-  marginBottom: "15px",
-
-  WebkitTapHighlightColor: "transparent",
-}}
             >
-              ✖ Annuler
+              <X size={18} />
+              Annuler
             </button>
-          </>
+          </div>
         )}
-        {/* CREATION */}
 
         {view === "create" && (
           <EventForm
@@ -261,8 +112,6 @@ backdropFilter: "blur(8px)",
             onSave={onCreate}
           />
         )}
-
-        {/* MODIFICATION */}
 
         {view === "edit" && event && (
           <EventForm

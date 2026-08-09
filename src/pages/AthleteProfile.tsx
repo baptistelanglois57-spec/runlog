@@ -50,7 +50,7 @@ export default function AthleteProfile() {
 
   const gender = profile.gender === "male" ? "Homme" : "Femme";
   return <main className="athlete-page"><div className="athlete-page__content">
-    <header className="athlete-page__header"><button className="athlete-icon-button" onClick={() => navigate("/tools")} aria-label="Retour aux outils"><ChevronLeft size={21} /></button><div><p className="athlete-page__eyebrow">RunLog · fiche sportive</p><h1>Mon athlète.</h1><p>Vos repères pour progresser avec précision.</p></div><span className="athlete-header-mark" aria-hidden="true"><UserRound size={19} /></span></header>
+    <header className="athlete-page__header"><button className="athlete-icon-button" onClick={() => navigate("/tools")} aria-label="Retour aux outils"><ChevronLeft size={21} /></button><div><h1>Mon athlète.</h1><p>Vos repères pour progresser avec précision.</p></div><span className="athlete-header-mark" aria-hidden="true"><UserRound size={19} /></span></header>
 
     <section className="athlete-hero"><div className="athlete-hero__avatar" aria-hidden="true"><UserRound size={38} /></div><div className="athlete-hero__copy"><p>Profil RunLog</p><h2>Athlète en progression</h2><span>Données physiologiques personnelles</span></div><div className="athlete-hero__status"><span /><small>Profil actif</small></div></section>
 

@@ -1,5 +1,6 @@
 import type { ButtonHTMLAttributes } from "react";
 import { theme } from "../../styles/theme";
+import { Typography } from "../../styles/ui";
 
 type Props = ButtonHTMLAttributes<HTMLButtonElement>;
 
@@ -16,7 +17,7 @@ export default function PrimaryButton(
         background: theme.colors.primary,
         color: "#000",
         fontWeight: 700,
-        fontSize: 16,
+        fontSize: Typography.button,
         cursor: "pointer",
         ...props.style,
       }}

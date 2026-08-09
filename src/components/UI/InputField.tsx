@@ -1,5 +1,6 @@
 import type { InputHTMLAttributes } from "react";
 import { theme } from "../../styles/theme";
+import { Typography } from "../../styles/ui";
 
 type Props = InputHTMLAttributes<HTMLInputElement>;
 
@@ -17,7 +18,7 @@ export default function InputField(
         border: `1px solid ${theme.colors.border}`,
         background: theme.colors.background,
         color: theme.colors.text,
-        fontSize: 16,
+        fontSize: Typography.input,
         outline: "none",
         boxSizing: "border-box",
         ...props.style,

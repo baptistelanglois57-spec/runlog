@@ -3,6 +3,7 @@ import type {
 } from "react";
 
 import { theme } from "../../styles/theme";
+import { Typography } from "../../styles/ui";
 
 type Props =
   InputHTMLAttributes<HTMLInputElement> & {
@@ -28,7 +29,7 @@ export default function Input({
           style={{
             color: theme.colors.text,
             fontWeight: 600,
-            fontSize: "15px",
+            fontSize: Typography.bodySecondary,
           }}
         >
           {label}
@@ -51,7 +52,7 @@ export default function Input({
 
           color: theme.colors.text,
 
-          fontSize: "16px",
+          fontSize: Typography.input,
 
           outline: "none",
 

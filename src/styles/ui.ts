@@ -3,6 +3,18 @@
 // Mobile First
 // ===============================
 
+export const Typography = {
+  pageTitle: "var(--rl-type-page-title)",
+  sectionTitle: "var(--rl-type-section-title)",
+  cardTitle: "var(--rl-type-card-title)",
+  body: "var(--rl-type-body)",
+  bodySecondary: "var(--rl-type-body-secondary)",
+  caption: "var(--rl-type-caption)",
+  button: "var(--rl-type-button)",
+  input: "16px",
+  metric: "var(--rl-type-metric)",
+} as const;
+
 export const UI = {
   // Largeurs
   PAGE_MAX_WIDTH: "430px",
@@ -37,17 +49,17 @@ export const UI = {
   CARD_MIN_HEIGHT: 125,
   CARD_MIN_HEIGHT_LARGE: 145,
 
-  // Typographie
-  FONT_HERO: "clamp(34px,7vw,40px)",
-  FONT_H1: "clamp(28px,6vw,34px)",
-  FONT_H2: "clamp(20px,5vw,24px)",
-  FONT_H3: "18px",
+  // Typographie — échelle RunLog 3.0 (tokens CSS définis dans index.css)
+  FONT_HERO: Typography.pageTitle,
+  FONT_H1: Typography.pageTitle,
+  FONT_H2: Typography.sectionTitle,
+  FONT_H3: Typography.cardTitle,
 
-  FONT_BODY: "16px",
-  FONT_SMALL: "14px",
-  FONT_TINY: "12px",
+  FONT_BODY: Typography.body,
+  FONT_SMALL: Typography.bodySecondary,
+  FONT_TINY: Typography.caption,
 
-  FONT_NUMBER: "clamp(32px,8vw,38px)",
+  FONT_NUMBER: Typography.metric,
 
   // Marges
   HEADER_MARGIN: 30,

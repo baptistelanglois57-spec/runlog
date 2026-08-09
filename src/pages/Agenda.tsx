@@ -1,30 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  ChevronLeft,
-  CalendarDays,
-  CircleHelp,
-} from "lucide-react";
-
-import { theme } from "../styles/theme";
-import { UI } from "../styles/ui";
+import { ChevronLeft, CircleHelp } from "lucide-react";
 
 import AppContainer from "../components/Layout/AppContainer";
 import Section from "../components/Layout/Section";
-
-import MonthNavigation from "../components/Calendar/MonthNavigation";
-import Calendar from "../components/Calendar/Calendar";
 import AgendaLegendModal from "../components/Calendar/AgendaLegendModal";
-import "./Tools/ToolSubpages.css";
+import Calendar from "../components/Calendar/Calendar";
+import MonthNavigation from "../components/Calendar/MonthNavigation";
+import "./Agenda.css";
 
 export default function Agenda() {
   const navigate = useNavigate();
-
-  const [currentMonth, setCurrentMonth] =
-    useState(new Date());
-
-  const [legendOpen, setLegendOpen] =
-    useState(false);
+  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [legendOpen, setLegendOpen] = useState(false);
 
   function previousMonth() {
     setCurrentMonth(
@@ -48,116 +36,44 @@ export default function Agenda() {
 
   return (
     <AppContainer>
-      <div className="tools-subpage"><Section marginTop={8}>
-        {/* HEADER */}
-
-        <div className="tools-subpage__header"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginBottom: 26,
-          }}
-        >
-          <button
-            onClick={() =>
-              navigate("/tools")
-            }
-            style={{
-              width: 44,
-              height: 44,
-
-              border: `1px solid ${theme.colors.border}`,
-              borderRadius: 14,
-
-              background: theme.colors.card,
-
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-
-              cursor: "pointer",
-            }}
-          >
-            <ChevronLeft
-              size={22}
-              color={theme.colors.primary}
-            />
-          </button>
-
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-            }}
-          >
-            <CalendarDays
-              size={24}
-              color={theme.colors.primary}
-            />
-
-            <h1
-              style={{
-                margin: 0,
-                color: theme.colors.primary,
-                fontSize: UI.FONT_H1,
-              }}
+      <div className="agenda-page">
+        <Section marginTop={8}>
+          <header className="agenda-page__header">
+            <button
+              className="agenda-page__icon-button"
+              type="button"
+              aria-label="Retour aux outils"
+              onClick={() => navigate("/tools")}
             >
-              Agenda
-            </h1>
-          </div>
+              <ChevronLeft size={22} />
+            </button>
 
-          <button
-            onClick={() =>
-              setLegendOpen(true)
-            }
-            style={{
-              width: 44,
-              height: 44,
+            <h1>Agenda</h1>
 
-              border: `1px solid ${theme.colors.border}`,
-              borderRadius: 14,
+            <button
+              className="agenda-page__icon-button"
+              type="button"
+              aria-label="Afficher la légende"
+              onClick={() => setLegendOpen(true)}
+            >
+              <CircleHelp size={21} />
+            </button>
+          </header>
 
-              background: theme.colors.card,
+          <MonthNavigation
+            month={currentMonth}
+            onPrevious={previousMonth}
+            onNext={nextMonth}
+          />
 
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+          <Calendar month={currentMonth} />
 
-              cursor: "pointer",
-            }}
-          >
-            <CircleHelp
-              size={22}
-              color={theme.colors.primary}
-            />
-          </button>
-        </div>
-
-        {/* MOIS */}
-
-        <MonthNavigation
-          month={currentMonth}
-          onPrevious={previousMonth}
-          onNext={nextMonth}
-        />
-
-        {/* CALENDRIER */}
-
-        <Calendar
-          month={currentMonth}
-        />
-
-        {/* LÉGENDE */}
-
-        <AgendaLegendModal
-          isOpen={legendOpen}
-          onClose={() =>
-            setLegendOpen(false)
-          }
-        />
-      </Section></div>
+          <AgendaLegendModal
+            isOpen={legendOpen}
+            onClose={() => setLegendOpen(false)}
+          />
+        </Section>
+      </div>
     </AppContainer>
   );
 }

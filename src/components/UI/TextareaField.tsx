@@ -1,4 +1,5 @@
 import { theme } from "../../styles/theme";
+import { Typography } from "../../styles/ui";
 
 type Props =
   React.TextareaHTMLAttributes<HTMLTextAreaElement>;
@@ -26,7 +27,7 @@ export default function TextareaField(
 
         resize: "vertical",
 
-        fontSize: 15,
+        fontSize: Typography.input,
 
         outline: "none",
 

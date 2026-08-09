@@ -12,7 +12,7 @@ import ForecastForm from "../components/Forecast/ForecastForm";
 import ForecastResult from "../components/Forecast/ForecastResult";
 
 import { theme } from "../styles/theme";
-import { UI } from "../styles/ui";
+import { Typography } from "../styles/ui";
 import "./Tools/ToolSubpages.css";
 
 import {
@@ -130,8 +130,7 @@ export default function Forecast() {
                 color:
                   theme.colors.primary,
 
-                fontSize:
-                  UI.FONT_H1,
+                fontSize: Typography.pageTitle,
               }}
             >
               Prévisions

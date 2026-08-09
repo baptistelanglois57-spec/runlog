@@ -1,0 +1,433 @@
+.notes-page {
+  width: 100%;
+  animation: notes-page-enter 220ms ease-out both;
+}
+
+.notes-page__header {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) 44px;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.notes-page__header h1 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(1.8rem, 7vw, 2.2rem);
+  font-weight: 780;
+  letter-spacing: -0.055em;
+  line-height: 1;
+  text-align: center;
+}
+
+.notes-page__back-button,
+.notes-modal__close-button,
+.note-details__action-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #171717;
+  color: #d7ad19;
+  cursor: pointer;
+  transition: background-color 160ms ease, border-color 160ms ease,
+    transform 160ms ease;
+}
+
+.notes-page__back-button {
+  width: 44px;
+  height: 44px;
+  border-radius: 15px;
+}
+
+.notes-page__back-button:active,
+.notes-modal__close-button:active,
+.note-details__action-button:active,
+.notes-page__create-button:active,
+.notes-empty-state__button:active,
+.note-card:active,
+.notes-modal__secondary-button:active,
+.notes-modal__primary-button:active {
+  transform: scale(0.98);
+}
+
+.notes-page__create-button,
+.notes-empty-state__button,
+.notes-modal__primary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border: 1px solid rgba(215, 173, 25, 0.68);
+  background: #d7ad19;
+  color: #090909;
+  font: inherit;
+  font-weight: 750;
+  cursor: pointer;
+  transition: filter 160ms ease, transform 160ms ease;
+}
+
+.notes-page__create-button {
+  width: 100%;
+  min-height: 54px;
+  margin-bottom: 20px;
+  padding: 14px 18px;
+  border-radius: 18px;
+  font-size: 0.98rem;
+}
+
+.notes-page__create-button:hover,
+.notes-empty-state__button:hover,
+.notes-modal__primary-button:hover {
+  filter: brightness(1.06);
+}
+
+.notes-page__list {
+  display: grid;
+  gap: 11px;
+  width: 100%;
+}
+
+.note-card {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 108px;
+  padding: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 22px;
+  background: #171717;
+  color: #fff;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 160ms ease, border-color 160ms ease,
+    background-color 160ms ease;
+}
+
+.note-card:hover {
+  border-color: rgba(215, 173, 25, 0.38);
+  background: #1b1b1b;
+}
+
+.note-card__content {
+  display: grid;
+  min-width: 0;
+  flex: 1;
+  gap: 6px;
+}
+
+.note-card__title {
+  overflow: hidden;
+  color: #fff;
+  font-size: 1.04rem;
+  font-weight: 730;
+  letter-spacing: -0.018em;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.note-card__date {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  color: #d7ad19;
+  font-size: 0.78rem;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.note-card__excerpt {
+  overflow: hidden;
+  display: -webkit-box;
+  color: #969696;
+  font-size: 0.84rem;
+  line-height: 1.4;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.note-card__chevron {
+  display: inline-flex;
+  flex: 0 0 auto;
+  margin-left: 13px;
+  color: #d7ad19;
+}
+
+.notes-empty-state {
+  display: grid;
+  justify-items: center;
+  width: 100%;
+  padding: 34px 24px 26px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  background: #171717;
+  text-align: center;
+}
+
+.notes-empty-state__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  margin-bottom: 15px;
+  border-radius: 17px;
+  background: rgba(215, 173, 25, 0.12);
+  color: #d7ad19;
+}
+
+.notes-empty-state h2 {
+  margin: 0;
+  color: #fff;
+  font-size: 1.1rem;
+  letter-spacing: -0.025em;
+}
+
+.notes-empty-state p {
+  max-width: 280px;
+  margin: 9px 0 20px;
+  color: #969696;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.notes-empty-state__button {
+  min-height: 45px;
+  padding: 10px 15px;
+  border-radius: 15px;
+  font-size: 0.84rem;
+}
+
+.notes-modal {
+  position: fixed;
+  z-index: 999;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.76);
+  backdrop-filter: blur(10px);
+  animation: notes-modal-overlay-enter 160ms ease-out both;
+}
+
+.notes-modal__panel {
+  width: min(100%, 550px);
+  max-height: min(85vh, 720px);
+  overflow-y: auto;
+  padding: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  background: #171717;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5);
+  animation: notes-modal-panel-enter 180ms ease-out both;
+}
+
+.notes-modal__panel--details {
+  width: min(100%, 650px);
+}
+
+.notes-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.notes-modal__header h2 {
+  overflow: hidden;
+  margin: 0;
+  color: #fff;
+  font-size: 1.3rem;
+  font-weight: 760;
+  letter-spacing: -0.035em;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+}
+
+.notes-modal__close-button {
+  flex: 0 0 auto;
+  width: 38px;
+  height: 38px;
+  border-radius: 13px;
+}
+
+.notes-modal__fields {
+  display: grid;
+  gap: 12px;
+}
+
+.notes-modal__input,
+.notes-modal__textarea {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: 16px;
+  outline: none;
+  background: #0c0c0c;
+  color: #fff;
+  font: inherit;
+  font-size: 16px;
+  box-sizing: border-box;
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+.notes-modal__input {
+  min-height: 50px;
+  padding: 13px 14px;
+}
+
+.notes-modal__textarea {
+  min-height: 170px;
+  padding: 14px;
+  resize: none;
+  line-height: 1.55;
+}
+
+.notes-modal__input::placeholder,
+.notes-modal__textarea::placeholder {
+  color: #717171;
+}
+
+.notes-modal__input:focus,
+.notes-modal__textarea:focus {
+  border-color: rgba(215, 173, 25, 0.72);
+  background: #101010;
+}
+
+.notes-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.notes-modal__secondary-button,
+.notes-modal__primary-button {
+  min-height: 46px;
+  padding: 11px 16px;
+  border-radius: 15px;
+  font: inherit;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+
+.notes-modal__secondary-button {
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  background: transparent;
+  color: #e5e5e5;
+}
+
+.note-details__date {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: -4px 0 18px;
+  color: #d7ad19;
+  font-size: 0.86rem;
+  font-weight: 680;
+}
+
+.note-details__content {
+  min-height: 76px;
+  margin-bottom: 24px;
+  color: #e7e7e7;
+  font-size: 0.98rem;
+  line-height: 1.75;
+  white-space: pre-wrap;
+}
+
+.note-details__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding-top: 17px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.note-details__created-at {
+  color: #838383;
+  font-size: 0.76rem;
+}
+
+.note-details__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.note-details__action-button {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+}
+
+.note-details__action-button--delete {
+  color: #ff7a7a;
+}
+
+@keyframes notes-page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes notes-modal-overlay-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes notes-modal-panel-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (min-width: 640px) {
+  .notes-page__header {
+    margin-bottom: 28px;
+  }
+
+  .notes-page__create-button {
+    min-height: 56px;
+  }
+
+  .notes-modal__panel {
+    padding: 26px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notes-page,
+  .notes-modal,
+  .notes-modal__panel,
+  .notes-page__back-button,
+  .notes-modal__close-button,
+  .note-details__action-button,
+  .notes-page__create-button,
+  .notes-empty-state__button,
+  .note-card,
+  .notes-modal__secondary-button,
+  .notes-modal__primary-button {
+    animation: none;
+    transition: none;
+  }
+}

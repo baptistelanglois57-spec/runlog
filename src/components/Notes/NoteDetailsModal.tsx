@@ -1,18 +1,12 @@
-import { X, Pencil, Trash2 } from "lucide-react";
-
-import { theme } from "../../styles/theme";
+import { CalendarDays, Pencil, Trash2, X } from "lucide-react";
 
 import type { Note } from "../../types/Note";
 
 type Props = {
   isOpen: boolean;
-
   note: Note | null;
-
   onClose: () => void;
-
   onEdit: () => void;
-
   onDelete: () => void;
 };
 
@@ -28,209 +22,57 @@ export default function NoteDetailsModal({
   }
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        inset: 0,
-
-        background: "rgba(0,0,0,.70)",
-
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-
-        padding: 20,
-
-        zIndex: 999,
-      }}
-    >
+    <div className="notes-modal" role="presentation">
       <div
-        style={{
-          width: "100%",
-          maxWidth: 650,
-
-          maxHeight: "85vh",
-
-          overflowY: "auto",
-
-          background: theme.colors.card,
-
-          border: `1px solid ${theme.colors.border}`,
-
-          borderRadius: 22,
-
-          padding: 26,
-        }}
+        className="notes-modal__panel notes-modal__panel--details"
+        role="dialog"
+        aria-modal="true"
       >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-
-            marginBottom: 24,
-          }}
-        >
-          <h2
-            style={{
-              margin: 0,
-
-              color: theme.colors.text,
-
-              fontSize: 28,
-            }}
-          >
-            {note.title}
-          </h2>
-
+        <div className="notes-modal__header">
+          <h2>{note.title}</h2>
           <button
+            className="notes-modal__close-button"
+            type="button"
+            aria-label="Fermer"
             onClick={onClose}
-            style={{
-              background: "none",
-
-              border: "none",
-
-              cursor: "pointer",
-            }}
           >
-            <X
-              size={24}
-              color={theme.colors.text}
-            />
+            <X size={21} />
           </button>
         </div>
 
         {note.importantDate && (
-          <div
-            style={{
-              marginBottom: 18,
-
-              color: theme.colors.text,
-
-              fontWeight: 700,
-
-              fontSize: 15,
-            }}
-          >
-            📅 Date importante :{" "}
-            {note.importantDate}
+          <div className="note-details__date">
+            <CalendarDays size={16} strokeWidth={2.2} />
+            <span>Date importante : {note.importantDate}</span>
           </div>
         )}
 
-        <div
-          style={{
-            color: theme.colors.text,
+        <div className="note-details__content">{note.content}</div>
 
-            whiteSpace: "pre-wrap",
+        <footer className="note-details__footer">
+          <span className="note-details__created-at">
+            Créé le {new Date(note.createdAt).toLocaleDateString("fr-FR")}
+          </span>
 
-            lineHeight: 1.8,
-
-            fontSize: 16,
-
-            marginBottom: 30,
-          }}
-        >
-          {note.content}
-        </div>
-
-        <div
-          style={{
-            paddingTop: 20,
-
-            borderTop: `1px solid ${theme.colors.border}`,
-
-            display: "flex",
-
-            justifyContent: "space-between",
-
-            alignItems: "center",
-          }}
-        >
-          <div
-            style={{
-              color: theme.colors.text,
-
-              fontSize: 13,
-            }}
-          >
-            Créé le{" "}
-            {new Date(
-              note.createdAt
-            ).toLocaleDateString(
-              "fr-FR"
-            )}
-          </div>
-
-          <div
-            style={{
-              display: "flex",
-
-              gap: 12,
-            }}
-          >
+          <span className="note-details__actions">
             <button
+              className="note-details__action-button"
+              type="button"
+              aria-label="Modifier"
               onClick={onEdit}
-              style={{
-                display: "flex",
-
-                alignItems: "center",
-
-                gap: 8,
-
-                border: "none",
-
-                cursor: "pointer",
-
-                borderRadius: 12,
-
-                padding:
-                  "12px 18px",
-
-                background:
-                  "#0000003f",
-
-                color: "#fff",
-
-                fontWeight: 700,
-              }}
             >
               <Pencil size={18} />
-
-              
             </button>
-
             <button
+              className="note-details__action-button note-details__action-button--delete"
+              type="button"
+              aria-label="Supprimer"
               onClick={onDelete}
-              style={{
-                display: "flex",
-
-                alignItems: "center",
-
-                gap: 8,
-
-                border: "none",
-
-                cursor: "pointer",
-
-                borderRadius: 12,
-
-                padding:
-                  "12px 18px",
-
-                background:
-                  "#0000003f",
-
-                color: "#fff",
-
-                fontWeight: 700,
-              }}
             >
               <Trash2 size={18} />
-
-              
             </button>
-          </div>
-        </div>
+          </span>
+        </footer>
       </div>
     </div>
   );

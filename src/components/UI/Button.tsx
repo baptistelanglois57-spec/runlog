@@ -4,6 +4,7 @@ import type {
 } from "react";
 
 import { theme } from "../../styles/theme";
+import { Typography } from "../../styles/ui";
 
 type Variant =
   | "primary"
@@ -52,7 +53,7 @@ export default function Button({
 
         padding: "14px 22px",
 
-        fontSize: "16px",
+        fontSize: Typography.button,
 
         fontWeight: 700,
 
