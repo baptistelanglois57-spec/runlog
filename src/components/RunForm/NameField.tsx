@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 
-import { theme } from "../../styles/theme";
-
 import {
   getExercises,
 } from "../../services/exerciseLibraryService";
@@ -44,39 +42,20 @@ export default function NameField({
   }, []);
 
   return (
-    <select
-      value={name}
-      onChange={(e) =>
-        setName(e.target.value)
-      }
-      style={{
-        width: "100%",
-        height: 56,
-        padding: "0 16px",
-        borderRadius: 16,
-        border: `1px solid ${theme.colors.border}`,
-        background:
-          theme.colors.background,
-        color: theme.colors.text,
-        fontSize: 16,
-        outline: "none",
-        boxSizing: "border-box",
-      }}
-    >
-      <option value="">
-        Choisir une séance
-      </option>
+    <label className="run-form-field run-form-field--name">
+      <span>Nom</span>
+      <select
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      >
+        <option value="">Choisir une séance</option>
 
-      {exerciseNames.map(
-        (exerciseName) => (
-          <option
-            key={exerciseName}
-            value={exerciseName}
-          >
+        {exerciseNames.map((exerciseName) => (
+          <option key={exerciseName} value={exerciseName}>
             {exerciseName}
           </option>
-        )
-      )}
-    </select>
+        ))}
+      </select>
+    </label>
   );
 }

@@ -109,7 +109,11 @@ export function getTotalElevation(
   runs: Run[]
 ) {
   return runs.reduce(
-    (total, run) => total + run.elevation,
+    (total, run) => {
+      const elevation = Number(run.elevation);
+
+      return total + (Number.isFinite(elevation) ? elevation : 0);
+    },
     0
   );
 }

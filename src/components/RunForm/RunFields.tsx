@@ -1,573 +1,226 @@
-import { useEffect, useState } from "react";
-
 import {
-  Calendar,
-  Route,
-  HeartPulse,
-  Mountain,
-  Clock3,
   Activity,
+  CalendarDays,
+  Clock3,
+  HeartPulse,
+  Map,
+  Mountain,
+  Route,
 } from "lucide-react";
+import type { ReactNode } from "react";
 
-import { theme } from "../../styles/theme";
-import { UI } from "../../styles/ui";
-
-type Props = {
+type SessionProps = {
   type: "training" | "race" | "gym";
-
-  setType: (
-    value: "training" | "race" | "gym"
-  ) => void;
-
+  setType: (value: "training" | "race" | "gym") => void;
   surface: "road" | "trail";
-
-  setSurface: (
-    value: "road" | "trail"
-  ) => void;
-
+  setSurface: (value: "road" | "trail") => void;
   date: string;
-
-  setDate: (
-    value: string
-  ) => void;
-
-  distance: string;
-
-  setDistance: (
-    value: string
-  ) => void;
-
-  duration: string;
-
-  setDuration: (
-    value: string
-  ) => void;
-
-  elevation: string;
-
-  setElevation: (
-    value: string
-  ) => void;
-
-  averageHeartRate: string;
-
-  setAverageHeartRate: (
-    value: string
-  ) => void;
+  setDate: (value: string) => void;
 };
 
-export default function RunFields({
+type Props = {
+  distance: string;
+  setDistance: (value: string) => void;
+  duration: string;
+  setDuration: (value: string) => void;
+  elevation: string;
+  setElevation: (value: string) => void;
+  averageHeartRate: string;
+  setAverageHeartRate: (value: string) => void;
+};
+
+function getTimeParts(duration: string) {
+  const parts = duration.split(":");
+
+  return parts.length === 3 ? parts : ["", "", ""];
+}
+
+function limitDigits(value: string, max: number) {
+  const numericValue = value.replace(/\D/g, "");
+
+  if (numericValue === "") return "";
+
+  return Math.min(Number(numericValue), max).toString();
+}
+
+type FieldLabelProps = {
+  icon: ReactNode;
+  children: ReactNode;
+};
+
+function FieldLabel({ icon, children }: FieldLabelProps) {
+  return (
+    <span className="run-form-field__label">
+      {icon}
+      {children}
+    </span>
+  );
+}
+
+export function RunSessionFields({
   type,
   setType,
-
   surface,
   setSurface,
-
   date,
   setDate,
+}: SessionProps) {
+  return (
+    <div className="run-form-fields__session-grid">
+      <label className="run-form-field">
+        <FieldLabel icon={<Activity size={15} aria-hidden="true" />}>
+          Activité
+        </FieldLabel>
+        <select
+          value={type}
+          onChange={(event) =>
+            setType(event.target.value as "training" | "race" | "gym")
+          }
+        >
+          <option value="training">Course</option>
+          <option value="race">Compétition</option>
+          <option value="gym">Musculation</option>
+        </select>
+      </label>
 
+      <label className="run-form-field">
+        <FieldLabel icon={<Map size={15} aria-hidden="true" />}>
+          Terrain
+        </FieldLabel>
+        <select
+          value={surface}
+          onChange={(event) => setSurface(event.target.value as "road" | "trail")}
+        >
+          <option value="road">Route</option>
+          <option value="trail">Trail</option>
+        </select>
+      </label>
+
+      <label className="run-form-field run-form-fields__date">
+        <FieldLabel icon={<CalendarDays size={15} aria-hidden="true" />}>
+          Date
+        </FieldLabel>
+        <input
+          type="date"
+          value={date}
+          onChange={(event) => setDate(event.target.value)}
+        />
+      </label>
+    </div>
+  );
+}
+
+export default function RunFields({
   distance,
   setDistance,
-
   duration,
   setDuration,
-
   elevation,
   setElevation,
-
   averageHeartRate,
   setAverageHeartRate,
 }: Props) {
-  const [hours, setHours] =
-    useState("");
+  const [hours, minutes, seconds] = getTimeParts(duration);
 
-  const [minutes, setMinutes] =
-    useState("");
+  function setTimePart(index: number, value: string, max: number) {
+    const parts = getTimeParts(duration);
+    parts[index] = limitDigits(value, max);
 
-  const [seconds, setSeconds] =
-    useState("");
-
-  useEffect(() => {
-    if (!duration) return;
-
-    const parts =
-      duration.split(":");
-
-    if (parts.length === 3) {
-      setHours(parts[0]);
-      setMinutes(parts[1]);
-      setSeconds(parts[2]);
-    }
-  }, []);
-
-  useEffect(() => {
     setDuration(
-      `${(hours || "0").padStart(
-        2,
-        "0"
-      )}:${(minutes || "0").padStart(
-        2,
-        "0"
-      )}:${(seconds || "0").padStart(
-        2,
-        "0"
-      )}`
+      parts
+        .map((part) => (part || "0").padStart(2, "0"))
+        .join(":")
     );
-  }, [
-    hours,
-    minutes,
-    seconds,
-  ]);
-
-  function formatTime(
-    value: string,
-    max: number
-  ) {
-    const number =
-      value.replace(/\D/g, "");
-
-    if (number === "")
-      return "";
-
-    return Math.min(
-      Number(number),
-      max
-    ).toString();
   }
 
-  const labelStyle = {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-
-    gap: 6,
-
-    fontSize:
-      UI.FONT_SMALL,
-
-    fontWeight: 700,
-
-    color:
-      theme.colors.text,
-
-    marginBottom: 8,
-  };
-
-  const inputStyle = {
-    width: "100%",
-
-    height: 56,
-
-    padding: "0 14px",
-
-    borderRadius:
-      UI.INPUT_RADIUS,
-
-    border: `1px solid ${theme.colors.border}`,
-
-    background:
-      theme.colors.background,
-
-    color:
-      theme.colors.text,
-
-    fontSize:
-      UI.FONT_BODY,
-
-    outline: "none",
-
-    boxSizing:
-      "border-box" as const,
-
-    WebkitAppearance:
-      "none" as const,
-  };
-
-  const timeInputStyle = {
-    flex: 1,
-
-    height: 56,
-
-    borderRadius:
-      UI.INPUT_RADIUS,
-
-    border: `1px solid ${theme.colors.border}`,
-
-    background:
-      theme.colors.background,
-
-    color:
-      theme.colors.text,
-
-    fontSize: 22,
-
-    fontWeight: 700,
-
-    textAlign:
-      "center" as const,
-
-    outline: "none",
-
-    boxSizing:
-      "border-box" as const,
-
-    WebkitAppearance:
-      "none" as const,
-  };
-
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 20,
-      }}
-    >
-      {/* Activité / Terrain / Date */}
+    <section className="run-form-card run-form-card--performance">
+        <div className="run-form-fields__section-title">
+          <span aria-hidden="true"><Route size={16} /></span>
+          <h2>Performance</h2>
+        </div>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "1fr 1fr 1fr",
-          gap: 14,
-        }}
-      >
-        {/* Activité */}
-
-        <div>
-          <div style={labelStyle}>
-            <Activity
-              size={16}
-              color={
-                theme.colors
-                  .primary
-              }
+        <div className="run-form-fields__metrics-grid">
+          <label className="run-form-field">
+            <FieldLabel icon={<Route size={15} aria-hidden="true" />}>
+              Distance
+            </FieldLabel>
+            <input
+              type="number"
+              inputMode="decimal"
+              step="0.01"
+              value={distance}
+              onChange={(event) => setDistance(event.target.value)}
             />
-            Activité
-          </div>
+          </label>
 
-          <select
-            value={type}
-            onChange={(e) =>
-              setType(
-                e.target
-                  .value as
-                  | "training"
-                  | "race"
-                  | "gym"
-              )
-            }
-            style={{
-              ...inputStyle,
-              textAlign:
-                "center",
-              fontSize: 28,
-              fontWeight: 700,
-            }}
-          >
-            <option value="training">
-              🏃 
-            </option>
-
-            <option value="race">
-              🏁 
-            </option>
-
-            <option value="gym">
-              💪 
-            </option>
-          </select>
-        </div>
-
-        {/* Terrain */}
-
-        <div>
-          <div style={labelStyle}>
-            <Mountain
-              size={16}
-              color={
-                theme.colors
-                  .primary
-              }
+          <label className="run-form-field">
+            <FieldLabel icon={<HeartPulse size={15} aria-hidden="true" />}>
+              BPM
+            </FieldLabel>
+            <input
+              type="number"
+              inputMode="numeric"
+              value={averageHeartRate}
+              onChange={(event) => setAverageHeartRate(event.target.value)}
             />
-            Terrain
-          </div>
+          </label>
 
-          <select
-            value={surface}
-            onChange={(e) =>
-              setSurface(
-                e.target
-                  .value as
-                  | "road"
-                  | "trail"
-              )
-            }
-            style={{
-              ...inputStyle,
-              textAlign:
-                "center",
-              fontSize: 28,
-              fontWeight: 700,
-            }}
-          >
-            <option value="road">
-              🛣️ 
-            </option>
-
-            <option value="trail">
-              🥾 
-            </option>
-          </select>
-        </div>
-
-        {/* Date */}
-
-        <div>
-          <div style={labelStyle}>
-            <Calendar
-              size={16}
-              color={
-                theme.colors
-                  .primary
-              }
+          <label className="run-form-field">
+            <FieldLabel icon={<Mountain size={15} aria-hidden="true" />}>
+              D+
+            </FieldLabel>
+            <input
+              type="number"
+              inputMode="numeric"
+              value={elevation}
+              onChange={(event) => setElevation(event.target.value)}
             />
-            Date
-          </div>
-
-          <input
-            type="date"
-            value={date}
-            onChange={(e) =>
-              setDate(
-                e.target.value
-              )
-            }
-            style={{
-              ...inputStyle,
-              textAlign:
-                "center",
-              fontSize: 17,
-              fontWeight: 700,
-            }}
-          />
+          </label>
         </div>
-      </div>
-            {/* Distance / BPM / D+ */}
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(3,minmax(0,1fr))",
-          gap: 12,
-        }}
-      >
-        <div>
-          <div style={labelStyle}>
-            <Route
-              size={16}
-              color={
-                theme.colors.primary
-              }
+        <div className="run-form-fields__time-heading">
+          <Clock3 size={16} aria-hidden="true" />
+          <span>Temps</span>
+        </div>
+
+        <div className="run-form-fields__time-grid">
+          <label className="run-form-time-field">
+            <span>Heures</span>
+            <input
+              type="number"
+              inputMode="numeric"
+              min={0}
+              max={99}
+              value={hours}
+              onChange={(event) => setTimePart(0, event.target.value, 99)}
             />
-            Distance
-          </div>
+          </label>
 
-          <input
-            type="number"
-            inputMode="decimal"
-            step="0.01"
-            value={distance}
-            onChange={(e) =>
-              setDistance(
-                e.target.value
-              )
-            }
-            style={{
-              ...inputStyle,
-              MozAppearance:
-                "textfield",
-              textAlign: "center",
-              fontSize: 18,
-              fontWeight: 700,
-            }}
-          />
-        </div>
-
-        <div>
-          <div style={labelStyle}>
-            <HeartPulse
-              size={16}
-              color={
-                theme.colors.primary
-              }
+          <label className="run-form-time-field">
+            <span>Minutes</span>
+            <input
+              type="number"
+              inputMode="numeric"
+              min={0}
+              max={59}
+              value={minutes}
+              onChange={(event) => setTimePart(1, event.target.value, 59)}
             />
-            BPM
-          </div>
+          </label>
 
-          <input
-            type="number"
-            inputMode="numeric"
-            value={
-              averageHeartRate
-            }
-            onChange={(e) =>
-              setAverageHeartRate(
-                e.target.value
-              )
-            }
-            style={{
-              ...inputStyle,
-              MozAppearance:
-                "textfield",
-              textAlign: "center",
-              fontSize: 18,
-              fontWeight: 700,
-            }}
-          />
-        </div>
-
-        <div>
-          <div style={labelStyle}>
-            <Mountain
-              size={16}
-              color={
-                theme.colors.primary
-              }
+          <label className="run-form-time-field">
+            <span>Secondes</span>
+            <input
+              type="number"
+              inputMode="numeric"
+              min={0}
+              max={59}
+              value={seconds}
+              onChange={(event) => setTimePart(2, event.target.value, 59)}
             />
-            D+
-          </div>
-
-          <input
-            type="number"
-            inputMode="numeric"
-            value={elevation}
-            onChange={(e) =>
-              setElevation(
-                e.target.value
-              )
-            }
-            style={{
-              ...inputStyle,
-              MozAppearance:
-                "textfield",
-              textAlign: "center",
-              fontSize: 18,
-              fontWeight: 700,
-            }}
-          />
+          </label>
         </div>
-      </div>
-
-      {/* Temps */}
-
-      <div>
-        <div style={labelStyle}>
-          <Clock3
-            size={16}
-            color={
-              theme.colors.primary
-            }
-          />
-          Temps
-        </div>
-
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns:
-              "repeat(3,minmax(0,1fr))",
-            gap: 12,
-          }}
-        >
-          <input
-            type="number"
-            inputMode="numeric"
-            min={0}
-            max={99}
-            value={hours}
-            onChange={(e) =>
-              setHours(
-                formatTime(
-                  e.target.value,
-                  99
-                )
-              )
-            }
-            style={{
-              ...timeInputStyle,
-              MozAppearance:
-                "textfield",
-            }}
-          />
-
-          <input
-            type="number"
-            inputMode="numeric"
-            min={0}
-            max={59}
-            value={minutes}
-            onChange={(e) =>
-              setMinutes(
-                formatTime(
-                  e.target.value,
-                  59
-                )
-              )
-            }
-            style={{
-              ...timeInputStyle,
-              MozAppearance:
-                "textfield",
-            }}
-          />
-
-          <input
-            type="number"
-            inputMode="numeric"
-            min={0}
-            max={59}
-            value={seconds}
-            onChange={(e) =>
-              setSeconds(
-                formatTime(
-                  e.target.value,
-                  59
-                )
-              )
-            }
-            style={{
-              ...timeInputStyle,
-              MozAppearance:
-                "textfield",
-            }}
-          />
-        </div>
-
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns:
-              "repeat(3,minmax(0,1fr))",
-            gap: 12,
-            marginTop: 6,
-            color:
-              theme.colors
-                .textSecondary,
-            fontSize:
-              UI.FONT_TINY,
-            textAlign: "center",
-          }}
-        >
-          <span>Heures</span>
-
-          <span>Minutes</span>
-
-          <span>Secondes</span>
-        </div>
-      </div>
-    </div>
+    </section>
   );
 }

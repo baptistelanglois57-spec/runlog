@@ -15,6 +15,7 @@ import {
   Gauge,
   Mountain,
   Flame,
+  LockKeyhole,
   Trophy,
 } from "lucide-react";
 
@@ -34,7 +35,7 @@ import {
   getBestPaceHeartRateZone,
 } from "../utils/records";
 
-import { getAveragePace } from "../utils/stats";
+import { getAveragePace, getTotalElevation } from "../utils/stats";
 import PaceRecordCard from "../components/Records/PaceRecordCard";
 import "./Records.css";
 
@@ -43,10 +44,6 @@ export default function Records() {
   const [loading, setLoading] =
     useState(true);
 
-  useEffect(() => {
-    loadRuns();
-  }, []);
-
   async function loadRuns() {
     const data = await getRuns();
 
@@ -54,6 +51,12 @@ export default function Records() {
 
     setLoading(false);
   }
+
+  useEffect(() => {
+    // La synchronisation initiale doit mettre à jour l'état après le chargement Supabase.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadRuns();
+  }, []);
 
   if (loading) {
     return (
@@ -82,6 +85,9 @@ export default function Records() {
 
   const highestElevation =
     getHighestElevation(runs);
+
+  const totalElevation =
+    getTotalElevation(runs);
 
   const hr130 =
     getBestPaceHeartRateZone(
@@ -193,178 +199,95 @@ export default function Records() {
         </div>
       </section>
 
-      <RecordSection
-  title="Records clés"
->
-              <RecordCard
-        icon={
-          <Route
-            size={20}
-            color={theme.colors.primary}
-          />
-        }
-        title="Plus longue sortie"
-        value={
-          longestRun
-            ? `${longestRun.distance.toFixed(
-                2
-              )} km`
-            : "--"
-        }
-        subtitle={
-          longestRun
-            ? `${longestRun.name} • ${longestRun.date}`
-            : "Aucune sortie"
-        }
-      />
-
+    <RecordSection title="Distances" variant="list">
       <RecordCard
         icon={
-          <Gauge
-            size={20}
-            color={theme.colors.primary}
-          />
-        }
-        title="Meilleure allure"
-        value={
-          fastestRun
-            ? getAveragePace(
-                fastestRun.distance,
-                fastestRun.duration
-              )
-            : "--"
-        }
-        subtitle={
-          fastestRun
-            ? fastestRun.name
-            : "Aucune sortie"
-        }
-      />
-
-      <RecordCard
-        icon={
-          <Mountain
-            size={20}
-            color={theme.colors.primary}
-          />
-        }
-        title="Plus gros D+"
-        value={
-          highestElevation
-            ? `${highestElevation.elevation} m`
-            : "--"
-        }
-        subtitle={
-          highestElevation
-            ? highestElevation.name
-            : "Aucune sortie"
-        }
-      />
-    </RecordSection>
-
-    {/* DISTANCES */}
-
-    <RecordSection
-  title="Distances"
->
-      <RecordCard
-        icon={
-          <Trophy
+          record5 ? <Trophy
             size={18}
             color={theme.colors.primary}
-          />
+          /> : <LockKeyhole size={18} color={theme.colors.primary} />
         }
         title="5 km"
-        value={
-          record5
-            ? record5.duration
-            : "🔒"
-        }
+        value={record5 ? record5.duration : ""}
         subtitle={
           record5
             ? `${record5.name} • ${record5.date}`
             : "Effectue une sortie de 5 km"
         }
+        locked={!record5}
+        layout="horizontal"
       />
 
       <RecordCard
         icon={
-          <Trophy
+          record10 ? <Trophy
             size={18}
             color={theme.colors.primary}
-          />
+          /> : <LockKeyhole size={18} color={theme.colors.primary} />
         }
         title="10 km"
-        value={
-          record10
-            ? record10.duration
-            : "🔒"
-        }
+        value={record10 ? record10.duration : ""}
         subtitle={
           record10
             ? `${record10.name} • ${record10.date}`
             : "Effectue une sortie de 10 km"
         }
+        locked={!record10}
+        layout="horizontal"
       />
 
       <RecordCard
         icon={
-          <Trophy
+          record15 ? <Trophy
             size={18}
             color={theme.colors.primary}
-          />
+          /> : <LockKeyhole size={18} color={theme.colors.primary} />
         }
         title="15 km"
-        value={
-          record15
-            ? record15.duration
-            : "🔒"
-        }
+        value={record15 ? record15.duration : ""}
         subtitle={
           record15
             ? `${record15.name} • ${record15.date}`
             : "Effectue une sortie de 15 km"
         }
+        locked={!record15}
+        layout="horizontal"
       />
 
       <RecordCard
         icon={
-          <Trophy
+          recordSemi ? <Trophy
             size={18}
             color={theme.colors.primary}
-          />
+          /> : <LockKeyhole size={18} color={theme.colors.primary} />
         }
         title="Semi-marathon"
-        value={
-          recordSemi
-            ? recordSemi.duration
-            : "🔒"
-        }
+        value={recordSemi ? recordSemi.duration : ""}
         subtitle={
           recordSemi
             ? `${recordSemi.name} • ${recordSemi.date}`
             : "Effectue une sortie de 21,1 km"
         }
+        locked={!recordSemi}
+        layout="horizontal"
       />
 
       <RecordCard
         icon={
-          <Trophy
+          recordMarathon ? <Trophy
             size={18}
             color={theme.colors.primary}
-          />
+          /> : <LockKeyhole size={18} color={theme.colors.primary} />
         }
         title="Marathon"
-        value={
-          recordMarathon
-            ? recordMarathon.duration
-            : "🔒"
-        }
+        value={recordMarathon ? recordMarathon.duration : ""}
         subtitle={
           recordMarathon
             ? `${recordMarathon.name} • ${recordMarathon.date}`
             : "Effectue une sortie de 42,2 km"
         }
+        locked={!recordMarathon}
+        layout="horizontal"
       />
     </RecordSection>
         {/* ALLURES */}
@@ -416,9 +339,7 @@ export default function Records() {
 
     {/* VOLUMES */}
 
-    <RecordSection
-  title="Volumes"
->
+    <RecordSection title="Volumes" variant="list">
       <RecordCard
   icon={
     <Mountain
@@ -427,8 +348,9 @@ export default function Records() {
     />
   }
   title="Dénivelé total"
-  value="--"
+  value={`${totalElevation.toLocaleString("fr-FR")} m`}
   subtitle="Depuis le début"
+  layout="horizontal"
 />
       <RecordCard
         icon={
@@ -450,6 +372,7 @@ export default function Records() {
             ? biggestWeek.date
             : "Aucune donnée"
         }
+        layout="horizontal"
       />
 
       <RecordCard
@@ -472,6 +395,7 @@ export default function Records() {
             ? biggestMonth.date
             : "Aucune donnée"
         }
+        layout="horizontal"
       />
 
       <RecordCard
@@ -494,6 +418,7 @@ export default function Records() {
             ? biggestYear.date
             : "Aucune donnée"
         }
+        layout="horizontal"
       />
 
       <RecordCard
@@ -510,32 +435,40 @@ export default function Records() {
             ? "sorties"
             : "sortie"
         }
+        layout="horizontal"
       />
     </RecordSection>
 
     {/* COMPÉTITIONS */}
 
-    <RecordSection
-  title="Compétitions"
->
+    <RecordSection title="Compétitions" variant="list">
       <RecordCard
         icon={
-          <Trophy
-            size={18}
-            color={theme.colors.primary}
-          />
+          bestPosition ? (
+            <Trophy
+              size={18}
+              color={theme.colors.primary}
+            />
+          ) : (
+            <LockKeyhole
+              size={18}
+              color={theme.colors.primary}
+            />
+          )
         }
         title="Meilleure place"
         value={
           bestPosition
             ? `${bestPosition.position}ᵉ`
-            : "🔒"
+            : ""
         }
         subtitle={
           bestPosition
             ? bestPosition.name
             : "Aucune compétition"
         }
+        locked={!bestPosition}
+        layout="horizontal"
       />
 
       <RecordCard
@@ -548,6 +481,7 @@ export default function Records() {
         title="Victoires"
         value={`${wins}`}
         subtitle="1ʳᵉ place"
+        layout="horizontal"
       />
 
       <RecordCard
@@ -560,6 +494,7 @@ export default function Records() {
         title="Podiums"
         value={`${podiums}`}
         subtitle="Top 3"
+        layout="horizontal"
       />
 
       <RecordCard
@@ -572,6 +507,7 @@ export default function Records() {
         title="Top 10"
         value={`${top10}`}
         subtitle="Top 10"
+        layout="horizontal"
       />
     </RecordSection>
   </main>

@@ -43,6 +43,7 @@ import {
   getNotifications,
   markAllAsRead,
   cleanupNotifications,
+  cleanupLegacyRecordNotificationDuplicates,
 } from "../services/notificationService";
 
 import { theme } from "../styles/theme";
@@ -61,6 +62,7 @@ export default function Home() {
       const runData = await getRuns();
       const eventData = await getEvents();
       await cleanupNotifications();
+      await cleanupLegacyRecordNotificationDuplicates();
 
 const notificationData =
   await getNotifications();    

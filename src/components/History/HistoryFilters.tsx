@@ -1,4 +1,5 @@
-import { theme } from "../../styles/theme";
+import { Flag, ListFilter, PersonStanding } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 type Filter = "all" | "training" | "race";
 
@@ -7,71 +8,33 @@ type HistoryFiltersProps = {
   onChange: (filter: Filter) => void;
 };
 
+const filters: { value: Filter; label: string; icon: LucideIcon }[] = [
+  { value: "all", label: "Tous", icon: ListFilter },
+  { value: "training", label: "Entraînements", icon: PersonStanding },
+  { value: "race", label: "Compétitions", icon: Flag },
+];
+
 export default function HistoryFilters({
   selected,
   onChange,
 }: HistoryFiltersProps) {
-  const buttons = [
-    {
-      value: "all" as const,
-      label: "Tous",
-      activeColor: theme.colors.primary,
-      activeText: "#000",
-    },
-    {
-      value: "training" as const,
-      label: "🏃 Entraînements",
-      activeColor: "#002473",
-      activeText: "#fff",
-    },
-    {
-      value: "race" as const,
-      label: "🏁 Compétitions",
-      activeColor: "#4a0101",
-      activeText: "#fff",
-    },
-  ];
-
   return (
-    <div
-      style={{
-        maxWidth: "900px",
-        margin: "0 auto 30px",
-        display: "flex",
-        gap: "14px",
-        justifyContent: "center",
-        flexWrap: "wrap",
-      }}
-    >
-      {buttons.map((button) => {
-        const active = selected === button.value;
+    <nav className="history-filters" aria-label="Filtrer les sorties">
+      {filters.map(({ value, label, icon: Icon }) => {
+        const active = selected === value;
 
         return (
           <button
-            key={button.value}
-            onClick={() => onChange(button.value)}
-            style={{
-              minWidth: "180px",
-              padding: "15px 22px",
-              borderRadius: "16px",
-              border: "none",
-              cursor: "pointer",
-              fontWeight: 700,
-              fontSize: "16px",
-              transition: "0.2s",
-              background: active
-                ? button.activeColor
-                : theme.colors.card,
-              color: active
-                ? button.activeText
-                : theme.colors.text,
-              boxShadow: theme.shadow.card,
-            }}
+            key={value}
+            onClick={() => onChange(value)}
+            className={`history-filters__button${active ? " history-filters__button--active" : ""}`}
+            aria-pressed={active}
           >
-            {button.label}
+            <Icon size={14} strokeWidth={2.2} aria-hidden="true" />
+            <span>{label}</span>
           </button>
         );
       })}
-    </div>
+    </nav>
   );
 }

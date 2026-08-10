@@ -1,38 +1,29 @@
-import { Tag } from "lucide-react";
-
-import { theme } from "../../styles/theme";
-import { UI } from "../../styles/ui";
+import type { ReactNode } from "react";
+import { ChevronLeft } from "lucide-react";
 
 type RunFormHeaderProps = {
   isEditing: boolean;
+  onBack: () => void;
+  children: ReactNode;
 };
 
 export default function RunFormHeader(
-  {}: RunFormHeaderProps
+  { isEditing, onBack, children }: RunFormHeaderProps
 ) {
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: 10,
-        marginBottom: 10,
-      }}
-    >
-      <Tag
-        size={20}
-        color={theme.colors.primary}
-      />
-
-      <span
-        style={{
-          color: theme.colors.text,
-          fontSize: UI.FONT_H2,
-          fontWeight: 700,
-        }}
+    <header className="run-form-header">
+      <button
+        className="run-form-header__back"
+        type="button"
+        onClick={onBack}
+        aria-label="Retour"
       >
-        Nom
-      </span>
-    </div>
+        <ChevronLeft size={21} aria-hidden="true" />
+      </button>
+
+      <h1>{isEditing ? "Modifier la sortie" : "Nouvelle sortie"}</h1>
+
+      <div className="run-form-header__save">{children}</div>
+    </header>
   );
 }

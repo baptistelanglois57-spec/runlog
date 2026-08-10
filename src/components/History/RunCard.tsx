@@ -1,23 +1,24 @@
 import type { ReactNode } from "react";
-
 import { useNavigate } from "react-router-dom";
-
 import {
+  CalendarDays,
   Clock3,
+  Dumbbell,
+  Flag,
   Gauge,
-  Mountain,
   Heart,
+  MapPin,
+  Mountain,
   Pencil,
+  PersonStanding,
+  Route,
   Trash2,
+  Trophy,
 } from "lucide-react";
 
 import { formatDate } from "../../utils/date";
 import { getAveragePace } from "../../utils/stats";
-
 import type { Run } from "../../types/Run";
-
-import PageCard from "../Layout/PageCard";
-
 import { theme } from "../../styles/theme";
 
 type RunCardProps = {
@@ -32,289 +33,98 @@ export default function RunCard({
   showActions = true,
 }: RunCardProps) {
   const navigate = useNavigate();
+  const TypeIcon = run.type === "race" ? Flag : run.type === "gym" ? Dumbbell : PersonStanding;
+  const isTrail = run.surface ? run.surface === "trail" : run.elevation >= 100;
 
   return (
-    <PageCard maxWidth="100%">
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr auto 1fr",
-          alignItems: "center",
-          gap: 12,
-          marginBottom: 18,
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 6,
-            color: theme.colors.textSecondary,
-            fontSize: 13,
-            fontWeight: 600,
-          }}
-        >
-          {formatDate(run.date)}
+    <article className={`history-run-card history-run-card--${run.type}`}>
+      <header className="history-run-card__header">
+        <div className="history-run-card__identity">
+          <span className="history-run-card__type-icon" aria-hidden="true">
+            <TypeIcon size={16} strokeWidth={2.25} />
+          </span>
+          <div className="history-run-card__copy">
+            <h3>{run.name.replace(/^[^\p{L}\p{N}]+\s*/u, "")}</h3>
+            <time className="history-run-card__date">
+              <CalendarDays size={13} strokeWidth={2.15} />
+              {formatDate(run.date)}
+            </time>
+          </div>
         </div>
 
-        <div
-          style={{
-            textAlign: "center",
-            fontSize: 18,
-            fontWeight: 800,
-            color: theme.colors.text,
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-          }}
-        >
-          {run.name.replace(
-  /^[^\p{L}\p{N}]+\s*/u,
-  ""
-)}
+        <div className="history-run-card__distance">
+          <strong>{run.distance.toFixed(1)}</strong>
+          <span>km</span>
         </div>
+      </header>
 
-        <div
-          style={{
-            textAlign: "right",
-            color: theme.colors.primary,
-            fontWeight: 800,
-            fontSize: 22,
-            whiteSpace: "nowrap",
-          }}
-        >
-          {run.distance.toFixed(1)} km
-        </div>
-      </div>
-      <div
-  style={{
-    display: "grid",
-    gridTemplateColumns:
-      "repeat(4,minmax(0,1fr))",
-    gap: 10,
-    marginTop: 6,
-  }}
->
-  <MiniStat
-    icon={
-      <Clock3
-        size={16}
-        color={theme.colors.primary}
-      />
-    }
-    value={run.duration}
-  />
-
-  <MiniStat
-    icon={
-      <Gauge
-        size={16}
-        color={theme.colors.primary}
-      />
-    }
-    value={getAveragePace(
-      run.distance,
-      run.duration
-    )}
-  />
-
-  <MiniStat
-    icon={
-      <Mountain
-        size={16}
-        color={theme.colors.primary}
-      />
-    }
-    value={`${run.elevation} m`}
-  />
-
-  <MiniStat
-    icon={
-      <Heart
-        size={16}
-        color="#ef4444"
-      />
-    }
-    value={
-      run.averageHeartRate
-        ? `${run.averageHeartRate}`
-        : "--"
-    }
-  />
-</div>
-
-{run.type === "race" && (
-  <div
-    style={{
-      display: "grid",
-      gridTemplateColumns:
-        "repeat(auto-fit,minmax(180px,1fr))",
-      gap: 10,
-      marginTop: 14,
-    }}
-  >
-    {run.location && (
-      <MiniStat
-        icon="📍"
-        value={run.location}
-      />
-    )}
-
-    {run.position !== undefined &&
-      run.participants !==
-        undefined && (
+      <div className="history-run-card__metrics">
+        <MiniStat icon={<Clock3 size={15} color={theme.colors.primary} />} value={run.duration} />
         <MiniStat
-          icon="🏆"
-          value={`${run.position} / ${run.participants}`}
+          icon={<Gauge size={15} color={theme.colors.primary} />}
+          value={getAveragePace(run.distance, run.duration)}
         />
+        <MiniStat icon={<Mountain size={15} color={theme.colors.primary} />} value={`${run.elevation} m`} />
+        <MiniStat
+          icon={<Heart size={15} color="#ef4444" />}
+          value={run.averageHeartRate ? `${run.averageHeartRate}` : "--"}
+        />
+      </div>
+
+      {run.type === "race" && (
+        <div className="history-run-card__race-metrics">
+          {run.location && <MiniStat icon={<MapPin size={15} color={theme.colors.primary} />} value={run.location} />}
+          {run.position !== undefined && run.participants !== undefined && (
+            <MiniStat icon={<Trophy size={15} color={theme.colors.primary} />} value={`${run.position} / ${run.participants}`} />
+          )}
+          {run.competitionName && <MiniStat icon={<Flag size={15} color={theme.colors.primary} />} value={run.competitionName} />}
+        </div>
       )}
 
-    {run.competitionName && (
-      <MiniStat
-        icon="🏁"
-        value={run.competitionName}
-      />
-    )}
-  </div>
-)}
-{showActions && onDelete && (
-  <div
-    style={{
-      display: "grid",
-      gridTemplateColumns: "1fr auto 1fr",
-      alignItems: "center",
-      marginTop: 14,
-    }}
-  >
-    {/* Vide à gauche */}
-    <div />
+      {showActions && onDelete && (
+        <footer className="history-run-card__footer">
+          <span className="history-run-card__surface">
+            <Route size={15} strokeWidth={2.2} />
+            {isTrail ? "Trail" : "Route"}
+          </span>
 
-    {/* Terrain centré */}
-    <div
-      style={{
-        textAlign: "center",
-        color: theme.colors.primary,
-        fontWeight: 700,
-        fontSize: 14,
-      }}
-    >
-      {(run.surface
-  ? run.surface === "trail"
-  : run.elevation >= 100)
-  ? "🥾 Trail"
-  : "🛣️ Route"}
-    </div>
+          <div className="history-run-card__actions">
+            <button
+              onClick={() => navigate(`/edit/${run.id}`)}
+              className="history-run-card__action history-run-card__action--edit"
+              aria-label="Modifier cette sortie"
+              title="Modifier"
+            >
+              <Pencil size={17} />
+            </button>
 
-    {/* Actions */}
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "flex-end",
-        alignItems: "center",
-        gap: 10,
-      }}
-    >
-      <button
-        onClick={() =>
-          navigate(`/edit/${run.id}`)
-        }
-        style={{
-          background: "transparent",
-          border: "none",
-          padding: 4,
-          cursor: "pointer",
-          display: "flex",
-          alignItems: "center",
-          color: theme.colors.primary,
-        }}
-      >
-        <Pencil size={18} />
-      </button>
-
-      <button
-        onClick={() =>
-          onDelete(run.id)
-        }
-        style={{
-          background: "transparent",
-          border: "none",
-          padding: 4,
-          cursor: "pointer",
-          display: "flex",
-          alignItems: "center",
-          color: "#ef4444",
-        }}
-      >
-        <Trash2 size={18} />
-      </button>
-    </div>
-  </div>
-)}
-
-    </PageCard>
+            <button
+              onClick={() => onDelete(run.id)}
+              className="history-run-card__action history-run-card__action--delete"
+              aria-label="Supprimer cette sortie"
+              title="Supprimer"
+            >
+              <Trash2 size={17} />
+            </button>
+          </div>
+        </footer>
+      )}
+    </article>
   );
 }
 
 type MiniStatProps = {
-  icon: ReactNode | string;
+  icon: ReactNode;
   value: string;
 };
 
-function MiniStat({
-  icon,
-  value,
-}: MiniStatProps) {
+function MiniStat({ icon, value }: MiniStatProps) {
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-
-        gap: 8,
-
-        minHeight: 82,
-
-        padding: "12px 8px",
-
-        background:
-          theme.colors.background,
-
-        border: `1px solid ${theme.colors.border}`,
-
-        borderRadius: 14,
-      }}
-    >
-      {typeof icon === "string" ? (
-        <span
-          style={{
-            fontSize: 18,
-          }}
-        >
-          {icon}
-        </span>
-      ) : (
-        icon
-      )}
-
-      <span
-        style={{
-          color: theme.colors.text,
-
-          fontSize: 15,
-
-          fontWeight: 700,
-
-          textAlign: "center",
-
-          lineHeight: 1.2,
-
-          whiteSpace: "nowrap",
-        }}
-      >
-        {value}
+    <div className="history-mini-stat">
+      <span className="history-mini-stat__icon" aria-hidden="true">
+        {icon}
       </span>
+      <span className="history-mini-stat__value">{value}</span>
     </div>
   );
 }

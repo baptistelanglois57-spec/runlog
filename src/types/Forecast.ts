@@ -8,16 +8,42 @@ export interface ForecastInput {
   objective: "training" | "race";
 }
 
+export type ForecastStatus = "ok" | "insufficient" | "invalid";
+
+export type ForecastModelLevel = "rich" | "medium" | "limited" | "none";
+
+export interface ForecastBacktest {
+  sampleSize: number;
+  meanAbsoluteErrorMinutes: number | null;
+  meanAbsolutePercentageError: number | null;
+}
+
 export interface ForecastResult {
-  estimatedTime: number;
+  status: ForecastStatus;
 
-  estimatedPace: number;
+  estimatedTime: number | null;
 
-  estimatedHeartRate: number;
+  estimatedPace: number | null;
+
+  estimatedHeartRate: number | null;
+
+  plausibleTimeMin: number | null;
+
+  plausibleTimeMax: number | null;
 
   confidence: number;
 
-  analysedRuns: number;
+  usedRuns: number;
 
-  analysedRaces: number;
+  usedRaces: number;
+
+  reliableRuns: number;
+
+  excludedRuns: number;
+
+  modelLevel: ForecastModelLevel;
+
+  reasons: string[];
+
+  backtest: ForecastBacktest;
 }

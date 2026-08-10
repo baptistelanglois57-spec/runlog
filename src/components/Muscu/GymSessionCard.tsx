@@ -1,18 +1,7 @@
 import { useNavigate } from "react-router-dom";
-
-import {
-  Calendar,
-  Dumbbell,
-  Eye,
-  Pencil,
-  Trash2,
-} from "lucide-react";
+import { CalendarDays, Dumbbell, Eye, Pencil, Trash2 } from "lucide-react";
 
 import type { GymSession } from "../../types/GymSession";
-
-import PageCard from "../Layout/PageCard";
-
-import { theme } from "../../styles/theme";
 
 type Props = {
   session: GymSession;
@@ -26,256 +15,88 @@ export default function GymSessionCard({
   onDelete,
 }: Props) {
   const navigate = useNavigate();
-
-  function formatDate(date: string) {
-    return new Date(date).toLocaleDateString(
-      "fr-FR"
-    );
-  }
-
-  const totalSets =
-    session.exercises.reduce(
-      (total, exercise) =>
-        total + exercise.sets.length,
-      0
-    );
+  const totalSets = session.exercises.reduce(
+    (total, exercise) => total + exercise.sets.length,
+    0
+  );
 
   return (
-    <PageCard maxWidth="100%">
-      {/* Header */}
-
-      <div
-        style={{
-          display: "flex",
-          justifyContent:
-            "space-between",
-          alignItems: "center",
-          marginBottom: 14,
-          gap: 12,
-        }}
-      >
-        <div
-          style={{
-            minWidth: 0,
-            flex: 1,
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 6,
-              color:
-                theme.colors.textSecondary,
-              fontSize: 13,
-              marginBottom: 6,
-            }}
-          >
-            <Calendar
-              size={14}
-              color={
-                theme.colors.primary
-              }
-            />
-
-            {formatDate(session.date)}
-          </div>
-
-          <h2
-            style={{
-              margin: 0,
-              fontSize: 19,
-              fontWeight: 800,
-              color:
-                theme.colors.text,
-            }}
-          >
-            {session.name}
-          </h2>
-        </div>
-
-        <div
-          style={{
-            textAlign: "right",
-          }}
-        >
-          <div
-            style={{
-              color:
-                theme.colors.primary,
-              fontWeight: 800,
-              fontSize: 20,
-            }}
-          >
-            {session.exercises.length}
-          </div>
-
-          <div
-            style={{
-              color:
-                theme.colors.textSecondary,
-              fontSize: 12,
-            }}
-          >
-            exercices
+    <article className="muscu-session-card">
+      <header className="muscu-session-card__header">
+        <div className="muscu-session-card__identity">
+          <span className="muscu-session-card__type-icon" aria-hidden="true">
+            <Dumbbell size={16} strokeWidth={2.25} />
+          </span>
+          <div className="muscu-session-card__copy">
+            <h3>{session.name}</h3>
+            <time className="muscu-session-card__date">
+              <CalendarDays size={13} strokeWidth={2.15} />
+              {new Date(session.date).toLocaleDateString("fr-FR")}
+            </time>
           </div>
         </div>
+
+        <div className="muscu-session-card__exercise-count">
+          <strong>{session.exercises.length}</strong>
+          <span>exercices</span>
+        </div>
+      </header>
+
+      <div className="muscu-session-card__metrics">
+        <Metric icon={<Dumbbell size={15} strokeWidth={2.2} />} label="Exercices" value={session.exercises.length} />
+        <Metric icon={<Dumbbell size={15} strokeWidth={2.2} />} label="Séries" value={totalSets} />
       </div>
 
-      {/* Stats */}
+      <footer className="muscu-session-card__footer">
+        <div className="muscu-session-card__actions">
+          <button
+            onClick={() => onView(session)}
+            className="muscu-session-card__action muscu-session-card__action--view"
+            aria-label="Consulter cette séance"
+            title="Consulter"
+          >
+            <Eye size={17} />
+          </button>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(2,1fr)",
-          gap: 12,
-          marginBottom: 14,
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            padding: 12,
-            borderRadius: 14,
-            background:
-              "rgba(255,255,255,.02)",
-            border: `1px solid ${theme.colors.border}`,
-          }}
-        >
-          <Dumbbell
-            size={18}
-            color={
-              theme.colors.primary
-            }
-          />
+          <button
+            onClick={() => navigate(`/muscu/edit/${session.id}`)}
+            className="muscu-session-card__action muscu-session-card__action--edit"
+            aria-label="Modifier cette séance"
+            title="Modifier"
+          >
+            <Pencil size={17} />
+          </button>
 
-          <div>
-            <div
-              style={{
-                fontSize: 12,
-                color:
-                  theme.colors.textSecondary,
-              }}
-            >
-              Exercices
-            </div>
-
-            <div
-              style={{
-                fontWeight: 700,
-              }}
-            >
-              {session.exercises.length}
-            </div>
-          </div>
+          <button
+            onClick={() => onDelete(session.id)}
+            className="muscu-session-card__action muscu-session-card__action--delete"
+            aria-label="Supprimer cette séance"
+            title="Supprimer"
+          >
+            <Trash2 size={17} />
+          </button>
         </div>
+      </footer>
+    </article>
+  );
+}
 
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            padding: 12,
-            borderRadius: 14,
-            background:
-              "rgba(255,255,255,.02)",
-            border: `1px solid ${theme.colors.border}`,
-          }}
-        >
-          <Dumbbell
-            size={18}
-            color={
-              theme.colors.primary
-            }
-          />
+type MetricProps = {
+  icon: React.ReactNode;
+  label: string;
+  value: number;
+};
 
-          <div>
-            <div
-              style={{
-                fontSize: 12,
-                color:
-                  theme.colors.textSecondary,
-              }}
-            >
-              Séries
-            </div>
-
-            <div
-              style={{
-                fontWeight: 700,
-              }}
-            >
-              {totalSets}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Actions */}
-
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          gap: 16,
-        }}
-      >
-        <button
-          onClick={() =>
-            onView(session)
-          }
-          style={{
-            background: "transparent",
-            border: "none",
-            cursor: "pointer",
-            color:
-              theme.colors.primary,
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <Eye size={18} />
-        </button>
-
-        <button
-          onClick={() =>
-            navigate(
-              `/muscu/edit/${session.id}`
-            )
-          }
-          style={{
-            background: "transparent",
-            border: "none",
-            cursor: "pointer",
-            color:
-              theme.colors.primary,
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <Pencil size={18} />
-        </button>
-
-        <button
-          onClick={() =>
-            onDelete(session.id)
-          }
-          style={{
-            background: "transparent",
-            border: "none",
-            cursor: "pointer",
-            color:
-              theme.colors.danger,
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <Trash2 size={18} />
-        </button>
-      </div>
-    </PageCard>
+function Metric({ icon, label, value }: MetricProps) {
+  return (
+    <div className="muscu-session-metric">
+      <span className="muscu-session-metric__icon" aria-hidden="true">
+        {icon}
+      </span>
+      <span className="muscu-session-metric__copy">
+        <small>{label}</small>
+        <strong>{value}</strong>
+      </span>
+    </div>
   );
 }

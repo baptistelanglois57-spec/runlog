@@ -1,48 +1,27 @@
 import { useEffect, useMemo, useState } from "react";
+import { CalendarX2, Download } from "lucide-react";
 
 import HistoryHeader from "../components/History/HistoryHeader";
 import HistoryFilters from "../components/History/HistoryFilters";
 import MonthAccordion from "../components/History/MonthAccordion";
-
-import {
-  getRuns,
-  deleteRun,
-} from "../services/runService";
-
-import type { Run } from "../types/Run";
-
-import { getTotalDistance } from "../utils/stats";
-import { exportRunsToCSV } from "../utils/exportCsv";
-
-import { theme } from "../styles/theme";
-
 import AppContainer from "../components/Layout/AppContainer";
-import Section from "../components/Layout/Section";
-import PageCard from "../components/Layout/PageCard";
-import { syncRunRecords } from "../services/recordEngine";
 
-type Filter =
-  | "all"
-  | "training"
-  | "race";
+import { deleteRun, getRuns } from "../services/runService";
+import { deleteRecordNotificationsForRun } from "../services/notificationService";
+import { syncRunRecords } from "../services/recordEngine";
+import type { Run } from "../types/Run";
+import { exportRunsToCSV } from "../utils/exportCsv";
+import { getTotalDistance } from "../utils/stats";
+
+import "./History.css";
+
+type Filter = "all" | "training" | "race";
 
 export default function History() {
-  const [runs, setRuns] =
-    useState<Run[]>([]);
-
-  const [loading, setLoading] =
-    useState(true);
-
-  const [filter, setFilter] =
-    useState<Filter>("all");
-
-  // Tous les mois fermés au démarrage
-  const [openedMonth, setOpenedMonth] =
-    useState<string>("");
-
-  useEffect(() => {
-    loadRuns();
-  }, []);
+  const [runs, setRuns] = useState<Run[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState<Filter>("all");
+  const [openedMonth, setOpenedMonth] = useState<string>("");
 
   async function loadRuns() {
     setLoading(true);
@@ -50,30 +29,28 @@ export default function History() {
     const data = await getRuns();
 
     data.sort(
-      (a, b) =>
-        new Date(b.date).getTime() -
-        new Date(a.date).getTime()
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
     );
 
     setRuns(data);
-
     setLoading(false);
   }
 
+  useEffect(() => {
+    // La synchronisation initiale doit mettre à jour l'état après le chargement Supabase.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadRuns();
+  }, []);
+
   async function handleDelete(id: string) {
-    if (
-      !window.confirm(
-        "Supprimer cette sortie ?"
-      )
-    ) {
+    if (!window.confirm("Supprimer cette sortie ?")) {
       return;
     }
 
     await deleteRun(id);
-
-await syncRunRecords();
-
-await loadRuns();
+    await deleteRecordNotificationsForRun(id);
+    await syncRunRecords();
+    await loadRuns();
   }
 
   const filteredRuns = useMemo(() => {
@@ -81,22 +58,15 @@ await loadRuns();
       return runs;
     }
 
-    return runs.filter(
-      (run) => run.type === filter
-    );
+    return runs.filter((run) => run.type === filter);
   }, [runs, filter]);
 
   const groupedRuns = useMemo(() => {
-    const groups: Record<
-      string,
-      Run[]
-    > = {};
+    const groups: Record<string, Run[]> = {};
 
     filteredRuns.forEach((run) => {
       const date = new Date(run.date);
-
-      const key =
-        `${date.getFullYear()}-${date.getMonth()}`;
+      const key = `${date.getFullYear()}-${date.getMonth()}`;
 
       if (!groups[key]) {
         groups[key] = [];
@@ -111,125 +81,61 @@ await loadRuns();
   if (loading) {
     return (
       <AppContainer>
-        <Section>
-          <PageCard>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                minHeight: 180,
-fontSize: 18,
-fontWeight: 600,
-                color: theme.colors.text,
-              }}
-            >
-              Chargement...
-            </div>
-          </PageCard>
-        </Section>
+        <main className="history-page history-page--loading">
+          <div className="history-loading">Chargement...</div>
+        </main>
       </AppContainer>
     );
   }
 
   return (
     <AppContainer>
-      <Section>
+      <main className="history-page">
         <HistoryHeader
           totalRuns={runs.length}
           totalDistance={getTotalDistance(runs)}
         />
-      </Section>
 
-      <Section>
-        <HistoryFilters
-          selected={filter}
-          onChange={setFilter}
-        />
-      </Section>
+        <HistoryFilters selected={filter} onChange={setFilter} />
 
-      <Section>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            marginBottom: "14px",
-          }}
-        >
-          <button
-            onClick={() =>
-              exportRunsToCSV(
-                filteredRuns,
-                "RunLog_Historique.csv"
-              )
-            }
-            style={{
-  background: theme.colors.card,
-
-  color: theme.colors.primary,
-
-  border: `1px solid ${theme.colors.border}`,
-
-  borderRadius: 14,
-
-  padding: "10px 16px",
-
-  fontWeight: 700,
-
-  fontSize: 14,
-
-  cursor: "pointer",
-
-  transition: ".2s",
-}}
-          >
-             Export CSV
-          </button>
-        </div>
-
-        {Object.entries(groupedRuns).length === 0 ? (
-          <PageCard>
-            <h2
-              style={{
-                marginTop: 0,
-                color: theme.colors.primary,
-              }}
+        <section className="history-content">
+          <div className="history-content__toolbar">
+            <button
+              className="history-export-button"
+              onClick={() =>
+                exportRunsToCSV(filteredRuns, "RunLog_Historique.csv")
+              }
             >
-              Aucune sortie
-            </h2>
+              <Download size={16} strokeWidth={2.2} />
+              Export CSV
+            </button>
+          </div>
 
-            <p
-              style={{
-                color:
-                  theme.colors.textSecondary,
-                marginBottom: 0,
-              }}
-            >
-              Aucune sortie ne correspond au filtre sélectionné.
-            </p>
-          </PageCard>
-        ) : (
-          Object.entries(groupedRuns).map(
-            ([monthKey, monthRuns]) => (
-              <MonthAccordion
-                key={monthKey}
-                runs={monthRuns}
-                isOpen={
-                  openedMonth === monthKey
-                }
-                onToggle={() =>
-                  setOpenedMonth(
-                    openedMonth === monthKey
-                      ? ""
-                      : monthKey
-                  )
-                }
-                onDelete={handleDelete}
-              />
-            )
-          )
-        )}
-      </Section>
+          {Object.entries(groupedRuns).length === 0 ? (
+            <div className="history-empty-state">
+              <span className="history-empty-state__icon" aria-hidden="true">
+                <CalendarX2 size={22} strokeWidth={2} />
+              </span>
+              <h2>Aucune sortie</h2>
+              <p>Aucune sortie ne correspond au filtre sélectionné.</p>
+            </div>
+          ) : (
+            <div className="history-month-list">
+              {Object.entries(groupedRuns).map(([monthKey, monthRuns]) => (
+                <MonthAccordion
+                  key={monthKey}
+                  runs={monthRuns}
+                  isOpen={openedMonth === monthKey}
+                  onToggle={() =>
+                    setOpenedMonth(openedMonth === monthKey ? "" : monthKey)
+                  }
+                  onDelete={handleDelete}
+                />
+              ))}
+            </div>
+          )}
+        </section>
+      </main>
     </AppContainer>
   );
 }

@@ -1,58 +1,46 @@
+import { getRuns } from "./runService";
 import {
-  syncLongestRunNotification,
-  syncFastestPaceNotification,
-  syncHighestElevationNotification,
-  syncBiggestWeekNotification,
-  syncBiggestMonthNotification,
-  syncBiggestYearNotification,
-  syncRaceRecordNotification,
-  syncHeartRateRecordNotification,
+  cleanupObsoleteRunRecordNotifications,
   syncNotesNotifications,
+  syncRunRecordNotifications,
 } from "./recordNotificationService";
-
 import {
   shouldCheckWeekRecord,
   shouldCheckMonthRecord,
   shouldCheckYearRecord,
 } from "../utils/recordSchedule";
+import type { Run } from "../types/Run";
 
-export async function syncRunRecords() {
-  await syncLongestRunNotification();
+type RunRecordSyncContext = {
+  previousRuns: Run[];
+  changedRunId: string;
+};
 
-  await syncFastestPaceNotification();
+export async function syncRunRecords(
+  context?: RunRecordSyncContext
+): Promise<void> {
+  if (context) {
+    const currentRuns = await getRuns();
+    const wasExistingRun = context.previousRuns.some(
+      (run) => run.id === context.changedRunId
+    );
 
-  await syncHighestElevationNotification();
+    if (wasExistingRun) {
+      await cleanupObsoleteRunRecordNotifications(
+        context.changedRunId,
+        currentRuns
+      );
+    }
 
-  if (shouldCheckWeekRecord()) {
-    await syncBiggestWeekNotification();
+    await syncRunRecordNotifications({
+      previousRuns: context.previousRuns,
+      currentRuns,
+      changedRunId: context.changedRunId,
+      checkWeek: shouldCheckWeekRecord(),
+      checkMonth: shouldCheckMonthRecord(),
+      checkYear: shouldCheckYearRecord(),
+    });
   }
 
-  if (shouldCheckMonthRecord()) {
-    await syncBiggestMonthNotification();
-  }
-
-  if (shouldCheckYearRecord()) {
-    await syncBiggestYearNotification();
-  }
-
-  await syncRaceRecordNotification(5);
-
-  await syncRaceRecordNotification(10);
-
-  await syncRaceRecordNotification(15);
-
-  await syncRaceRecordNotification(21.097);
-
-  await syncRaceRecordNotification(42.195);
-
-  // À mon avis on supprimera ces notifications ensuite
-  await syncHeartRateRecordNotification(0, 130);
-  await syncHeartRateRecordNotification(131, 140);
-  await syncHeartRateRecordNotification(141, 150);
-  await syncHeartRateRecordNotification(151, 160);
+  await syncNotesNotifications();
 }
-//
-// Pense-bêtes
-//
-
-await syncNotesNotifications();

@@ -1,34 +1,31 @@
 import { useEffect, useMemo, useState } from "react";
+import { Dumbbell } from "lucide-react";
 
 import AppContainer from "../components/Layout/AppContainer";
-import Section from "../components/Layout/Section";
-import PageCard from "../components/Layout/PageCard";
-
 import MuscuHeader from "../components/Muscu/MuscuHeader";
 import MonthGymAccordion from "../components/Muscu/MonthGymAccordion";
 import GymSessionModal from "../components/Muscu/GymSessionModal";
 
 import type { GymSession } from "../types/GymSession";
+import { deleteGymSession, getGymSessions } from "../services/gymService";
 
-import {
-  getGymSessions,
-  deleteGymSession,
-} from "../services/gymService";
+import "./Muscu.css";
 
 export default function Muscu() {
   const [sessions, setSessions] = useState<GymSession[]>([]);
   const [openedMonth, setOpenedMonth] = useState("");
-  const [selectedSession, setSelectedSession] =
-    useState<GymSession | null>(null);
-
-  useEffect(() => {
-    loadSessions();
-  }, []);
+  const [selectedSession, setSelectedSession] = useState<GymSession | null>(null);
 
   async function loadSessions() {
     const data = await getGymSessions();
     setSessions(data);
   }
+
+  useEffect(() => {
+    // La synchronisation initiale doit mettre à jour l'état après le chargement Supabase.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadSessions();
+  }, []);
 
   async function handleDelete(id: string) {
     if (!window.confirm("Supprimer cette séance ?")) {
@@ -44,9 +41,7 @@ export default function Muscu() {
 
     sessions.forEach((session) => {
       const date = new Date(session.date);
-
-      const key =
-        `${date.getFullYear()}-${date.getMonth()}`;
+      const key = `${date.getFullYear()}-${date.getMonth()}`;
 
       if (!groups[key]) {
         groups[key] = [];
@@ -60,79 +55,49 @@ export default function Muscu() {
 
   return (
     <AppContainer>
-      <Section>
-        <MuscuHeader
-          totalSessions={sessions.length}
-        />
-      </Section>
+      <main className="muscu-page">
+        <MuscuHeader totalSessions={sessions.length} />
 
-      <Section>
-        {Object.entries(groupedSessions).length === 0 ? (
-          <PageCard>
-            <h2
-              style={{
-                marginTop: 0,
-                textAlign: "center",
-              }}
-            >
-              Aucune séance
-            </h2>
+        <section className="muscu-content">
+          {Object.entries(groupedSessions).length === 0 ? (
+            <div className="muscu-empty-state">
+              <span className="muscu-empty-state__icon" aria-hidden="true">
+                <Dumbbell size={22} strokeWidth={2} />
+              </span>
+              <h2>Aucune séance</h2>
+              <p>Commence par ajouter ta première séance 💪</p>
+            </div>
+          ) : (
+            <div className="muscu-month-list">
+              {Object.entries(groupedSessions).map(([key, monthSessions]) => {
+                const first = new Date(monthSessions[0].date);
+                const monthLabel = first.toLocaleDateString("fr-FR", {
+                  month: "long",
+                  year: "numeric",
+                });
 
-            <p
-              style={{
-                textAlign: "center",
-                opacity: 0.7,
-                marginBottom: 0,
-              }}
-            >
-              Commence par ajouter ta première séance 💪
-            </p>
-          </PageCard>
-        ) : (
-          
-          Object.entries(groupedSessions).map(
-            ([key, monthSessions]) => {
-              const first =
-                new Date(monthSessions[0].date);
-
-              const monthLabel =
-                first.toLocaleDateString(
-                  "fr-FR",
-                  {
-                    month: "long",
-                    year: "numeric",
-                  }
+                return (
+                  <MonthGymAccordion
+                    key={key}
+                    monthLabel={monthLabel}
+                    sessions={monthSessions}
+                    isOpen={openedMonth === key}
+                    onToggle={() =>
+                      setOpenedMonth(openedMonth === key ? "" : key)
+                    }
+                    onView={setSelectedSession}
+                    onDelete={handleDelete}
+                  />
                 );
-
-              return (
-                <MonthGymAccordion
-                  key={key}
-                  monthLabel={monthLabel}
-                  sessions={monthSessions}
-                  isOpen={
-                    openedMonth === key
-                  }
-                  onToggle={() =>
-                    setOpenedMonth(
-                      openedMonth === key
-                        ? ""
-                        : key
-                    )
-                  }
-                  onView={setSelectedSession}
-                  onDelete={handleDelete}
-                />
-              );
-            }
-          )
-        )}
-      </Section>
+              })}
+            </div>
+          )}
+        </section>
+      </main>
 
       <GymSessionModal
         session={selectedSession}
-        onClose={() =>
-          setSelectedSession(null)
-        }
+        onClose={() => setSelectedSession(null)}
       />
     </AppContainer>
   );

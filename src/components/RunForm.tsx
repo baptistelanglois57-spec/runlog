@@ -3,11 +3,11 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import AppContainer from "../components/Layout/AppContainer";
 import Section from "../components/Layout/Section";
-import PageCard from "../components/Layout/PageCard";
-import { syncLongestRunNotification } from "../services/recordNotificationService";
 import NameField from "../components/RunForm/NameField";
 import RunFormHeader from "../components/RunForm/RunFormHeader";
-import RunFields from "../components/RunForm/RunFields";
+import RunFields, {
+  RunSessionFields,
+} from "../components/RunForm/RunFields";
 import CompetitionFields from "../components/RunForm/CompetitionFields";
 import SaveButton from "../components/RunForm/SaveButton";
 
@@ -19,9 +19,11 @@ import {
   saveRun,
   updateRun,
   getRunById,
+  getRuns,
 } from "../services/runService";
 
 import { syncRunRecords } from "../services/recordEngine";
+import "./RunForm.css";
 
 export default function RunForm() {
   const navigate = useNavigate();
@@ -87,6 +89,8 @@ export default function RunForm() {
           | "race"
           | "gym"
       );
+
+      setSurface(run.surface);
 
       setDate(run.date);
 
@@ -183,20 +187,26 @@ export default function RunForm() {
           : undefined,
     };
 
+    // L'état précédent est nécessaire pour ne notifier que les records créés
+    // par cette sauvegarde, jamais les records historiques recalculés.
+    const previousRuns = await getRuns();
+
     if (isEditing) {
       await updateRun(run);
 
-      await syncRunRecords();
-
-      await syncLongestRunNotification();
+      await syncRunRecords({
+        previousRuns,
+        changedRunId: run.id,
+      });
 
       toast.success("Sortie mise à jour !");
     } else {
       await saveRun(run);
 
-      await syncRunRecords();
-
-      await syncLongestRunNotification();
+      await syncRunRecords({
+        previousRuns,
+        changedRunId: run.id,
+      });
 
       toast.success("Sortie enregistrée !");
     }
@@ -204,101 +214,73 @@ export default function RunForm() {
     navigate("/history");
   }
 
-if (type === "gym") {
+  if (type === "gym") {
+    return (
+      <AppContainer>
+        <Section>
+          <GymForm />
+        </Section>
+      </AppContainer>
+    );
+  }
+
   return (
     <AppContainer>
-      <Section>
-        <GymForm />
-      </Section>
-    </AppContainer>
-  );
-}
-    return (
-    <AppContainer>
-      <Section>
-        <PageCard>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 20,
-            }}
+      <Section marginTop={0}>
+        <div className="run-form-page">
+          <RunFormHeader
+            isEditing={isEditing}
+            onBack={() => navigate(-1)}
           >
-           <div
-  style={{
-    display: "grid",
-    gridTemplateColumns: "1fr auto",
-    gap: 16,
-    alignItems: "end",
-    marginBottom: 20,
-  }}
->
-<div>
-  <RunFormHeader
-    isEditing={isEditing}
-  />
+            <SaveButton
+              isEditing={isEditing}
+              onClick={handleSave}
+            />
+          </RunFormHeader>
 
-  <NameField
-    name={name}
-    setName={setName}
-  />
-</div>
+          <div className="run-form-page__sections">
+            <section className="run-form-card">
+              <div className="run-form-card__heading">
+                <h2>Séance</h2>
+              </div>
 
-  <div
-    style={{
-      width: 175,
-    }}
-  >
-    <SaveButton
-      isEditing={isEditing}
-      onClick={handleSave}
-    />
-  </div>
-</div>
+              <NameField name={name} setName={setName} />
 
-<RunFields
-  type={type}
-  setType={setType}
+              <RunSessionFields
+                type={type}
+                setType={setType}
+                surface={surface}
+                setSurface={setSurface}
+                date={date}
+                setDate={setDate}
+              />
+            </section>
 
-  surface={surface}
-  setSurface={setSurface}
-
-  date={date}
-  setDate={setDate}
-
-  distance={distance}
-  setDistance={setDistance}
-
-  duration={duration}
-  setDuration={setDuration}
-
-  elevation={elevation}
-  setElevation={setElevation}
-
-  averageHeartRate={averageHeartRate}
-  setAverageHeartRate={
-    setAverageHeartRate
-  }
-/>
+            <RunFields
+              distance={distance}
+              setDistance={setDistance}
+              duration={duration}
+              setDuration={setDuration}
+              elevation={elevation}
+              setElevation={setElevation}
+              averageHeartRate={averageHeartRate}
+              setAverageHeartRate={setAverageHeartRate}
+            />
 
             {type === "race" && (
               <CompetitionFields
                 competitionName={competitionName}
-                setCompetitionName={
-                  setCompetitionName
-                }
+                setCompetitionName={setCompetitionName}
                 location={location}
                 setLocation={setLocation}
                 position={position}
                 setPosition={setPosition}
                 participants={participants}
-                setParticipants={
-                  setParticipants
-                }
+                setParticipants={setParticipants}
               />
             )}
           </div>
-        </PageCard>
+        </div>
       </Section>
     </AppContainer>
   );

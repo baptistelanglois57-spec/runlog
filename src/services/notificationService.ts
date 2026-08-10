@@ -1,5 +1,8 @@
 import { supabase } from "../lib/supabase";
 import type { Notification } from "../types/Notification";
+import {
+  findLegacyRecordNotificationDuplicateIds,
+} from "../utils/recordNotificationPayload";
 
 const TABLE = "notifications";
 
@@ -58,6 +61,100 @@ export async function deleteNotificationsByEntity(
       error
     );
   }
+}
+
+export async function deleteRecordNotificationsForRun(
+  runId: string
+): Promise<void> {
+  const { error } = await supabase
+    .from(TABLE)
+    .delete()
+    .eq("type", "record")
+    .eq("runId", runId);
+
+  if (error) {
+    console.error(
+      "Erreur deleteRecordNotificationsForRun :",
+      error
+    );
+  }
+}
+
+export async function deleteObsoleteRecordNotificationsForRun(
+  runId: string,
+  validEntityIds: string[]
+): Promise<void> {
+  const { data, error } = await supabase
+    .from(TABLE)
+    .select("id, entityId")
+    .eq("type", "record")
+    .eq("runId", runId);
+
+  if (error) {
+    console.error(
+      "Erreur getRecordNotificationsForRun :",
+      error
+    );
+    return;
+  }
+
+  const obsoleteIds = (data ?? [])
+    .filter((notification) => !validEntityIds.includes(notification.entityId))
+    .map((notification) => notification.id);
+
+  if (obsoleteIds.length === 0) {
+    return;
+  }
+
+  const { error: deleteError } = await supabase
+    .from(TABLE)
+    .delete()
+    .in("id", obsoleteIds);
+
+  if (deleteError) {
+    console.error(
+      "Erreur deleteObsoleteRecordNotificationsForRun :",
+      deleteError
+    );
+  }
+}
+
+export async function cleanupLegacyRecordNotificationDuplicates(): Promise<number> {
+  const { data, error } = await supabase
+    .from(TABLE)
+    .select("id, runId, message")
+    .eq("type", "record");
+
+  if (error) {
+    console.error(
+      "Erreur cleanupLegacyRecordNotificationDuplicates :",
+      error
+    );
+    return 0;
+  }
+
+  const duplicateLegacyIds = findLegacyRecordNotificationDuplicateIds(
+    data ?? []
+  );
+
+  if (duplicateLegacyIds.length === 0) {
+    return 0;
+  }
+
+  const { error: deleteError } = await supabase
+    .from(TABLE)
+    .delete()
+    .in("id", duplicateLegacyIds);
+
+  if (deleteError) {
+    console.error(
+      "Erreur deleteLegacyRecordNotificationDuplicates :",
+      deleteError
+    );
+    return 0;
+  }
+
+  return duplicateLegacyIds.length;
 }
 
 export async function markNotificationAsRead(
@@ -125,6 +222,7 @@ export async function getNotificationByEntity(
     .select("*")
     .eq("entity", entity)
     .eq("entityId", entityId)
+    .limit(1)
     .maybeSingle();
 
   if (error) {
@@ -203,6 +301,7 @@ export async function cleanupNotifications(): Promise<void> {
     .from(TABLE)
     .delete()
     .eq("read", true)
+    .neq("type", "record")
     .lt("createdAt", limit);
 
   if (error) {

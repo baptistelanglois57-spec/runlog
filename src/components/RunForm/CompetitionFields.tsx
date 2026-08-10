@@ -1,18 +1,12 @@
-import Input from "../UI/Input";
-
-import { UI } from "../../styles/ui";
-import { theme } from "../../styles/theme";
+import { Flag, MapPin, Trophy, UsersRound } from "lucide-react";
 
 type Props = {
   competitionName: string;
   setCompetitionName: (value: string) => void;
-
   location: string;
   setLocation: (value: string) => void;
-
   position: string;
   setPosition: (value: string) => void;
-
   participants: string;
   setParticipants: (value: string) => void;
 };
@@ -28,80 +22,65 @@ export default function CompetitionFields({
   setParticipants,
 }: Props) {
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 18,
-        marginTop: 10,
-      }}
-    >
-      <h2
-        style={{
-          margin: 0,
-
-          textAlign: "center",
-
-          color: theme.colors.primary,
-
-          fontSize: UI.FONT_H3,
-
-          fontWeight: 800,
-        }}
-      >
-        🏁 Compétition
-      </h2>
-
-      <Input
-        label="Nom"
-        placeholder=""
-        value={competitionName}
-        onChange={(e) =>
-          setCompetitionName(e.target.value)
-        }
-      />
-
-      <Input
-        label="Lieu"
-        placeholder=""
-        value={location}
-        onChange={(e) =>
-          setLocation(e.target.value)
-        }
-      />
-
-      <div
-        style={{
-          display: "grid",
-
-          gridTemplateColumns:
-            "repeat(2,1fr)",
-
-          gap: 14,
-        }}
-      >
-        <Input
-          label="Classement"
-          type="number"
-          inputMode="numeric"
-          placeholder=""
-          value={position}
-          onChange={(e) =>
-            setPosition(e.target.value)
-          }
-        />
-
-        <Input
-          label="Participants"
-          type="number"
-          inputMode="numeric"
-          placeholder=""
-          value={participants}
-          onChange={(e) =>
-            setParticipants(e.target.value)
-          }
-        />
+    <section className="run-form-card run-form-card--competition">
+      <div className="run-form-fields__section-title">
+        <span aria-hidden="true"><Flag size={16} /></span>
+        <h2>Compétition</h2>
       </div>
-    </div>
+
+      <div className="run-form-competition__fields">
+        <label className="run-form-field">
+          <span className="run-form-field__label">
+            <Trophy size={15} aria-hidden="true" />
+            Nom
+          </span>
+          <input
+            type="text"
+            value={competitionName}
+            onChange={(event) => setCompetitionName(event.target.value)}
+          />
+        </label>
+
+        <label className="run-form-field">
+          <span className="run-form-field__label">
+            <MapPin size={15} aria-hidden="true" />
+            Lieu
+          </span>
+          <input
+            type="text"
+            value={location}
+            onChange={(event) => setLocation(event.target.value)}
+          />
+        </label>
+
+        <div className="run-form-competition__metrics">
+          <label className="run-form-field">
+            <span className="run-form-field__label">
+              <Trophy size={15} aria-hidden="true" />
+              Classement
+            </span>
+            <input
+              type="number"
+              inputMode="numeric"
+              value={position}
+              onChange={(event) => setPosition(event.target.value)}
+            />
+          </label>
+
+          <label className="run-form-field">
+            <span className="run-form-field__label">
+              <UsersRound size={15} aria-hidden="true" />
+              Participants
+            </span>
+            <input
+              type="number"
+              inputMode="numeric"
+              value={participants}
+              onChange={(event) => setParticipants(event.target.value)}
+            />
+          </label>
+        </div>
+      </div>
+    </section>
   );
 }

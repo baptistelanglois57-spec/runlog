@@ -1,5 +1,4 @@
-import { theme } from "../../styles/theme";
-import { Typography, UI } from "../../styles/ui";
+import { Route, Trophy } from "lucide-react";
 
 type HistoryHeaderProps = {
   totalRuns: number;
@@ -11,162 +10,34 @@ export default function HistoryHeader({
   totalDistance,
 }: HistoryHeaderProps) {
   return (
-    <div
-      style={{
-        width: "100%",
-        maxWidth: "660px",
-        margin: "0 auto",
+    <header className="history-header">
+      <h1>Historique</h1>
 
-        background: theme.colors.card,
-
-        border: `1px solid ${theme.colors.border}`,
-
-        borderRadius: UI.RADIUS,
-
-        padding: 18,
-
-        boxSizing: "border-box",
-      }}
-    >
-      <h1
-        style={{
-          margin: 0,
-
-          textAlign: "center",
-
-          color: theme.colors.text,
-
-          fontSize: Typography.pageTitle,
-
-          fontWeight: 800,
-        }}
-      >
-        Historique
-      </h1>
-
-      <div
-        style={{
-          display: "grid",
-
-          gridTemplateColumns: "repeat(2,1fr)",
-
-          gap: 14,
-
-          marginTop: 18,
-        }}
-      >
-        <div
-          style={{
-            background: "rgba(255,255,255,.02)",
-
-            border: `1px solid ${theme.colors.border}`,
-
-            borderRadius: 14,
-
-            padding: 14,
-
-            textAlign: "center",
-          }}
-        >
-          <div
-            style={{
-              color: theme.colors.textSecondary,
-
-              fontSize: UI.FONT_TINY,
-
-              fontWeight: 600,
-
-              marginBottom: 6,
-            }}
-          >
-            Distance
+      <div className="history-header__summary">
+        <article className="history-summary-card">
+          <span className="history-summary-card__icon" aria-hidden="true">
+            <Route size={18} strokeWidth={2.2} />
+          </span>
+          <div className="history-summary-card__copy">
+            <span>Distance</span>
+            <strong>
+              {totalDistance.toFixed(1)} <small>km</small>
+            </strong>
           </div>
+        </article>
 
-          <div
-            style={{
-              color: theme.colors.text,
-
-              fontSize: UI.FONT_NUMBER,
-
-              fontWeight: 800,
-
-              lineHeight: 1,
-            }}
-          >
-            {totalDistance.toFixed(1)}
+        <article className="history-summary-card">
+          <span className="history-summary-card__icon" aria-hidden="true">
+            <Trophy size={18} strokeWidth={2.2} />
+          </span>
+          <div className="history-summary-card__copy">
+            <span>Sorties</span>
+            <strong>
+              {totalRuns} <small>séance{totalRuns > 1 ? "s" : ""}</small>
+            </strong>
           </div>
-
-          <div
-            style={{
-              color: theme.colors.primary,
-
-              fontSize: UI.FONT_TINY,
-
-              fontWeight: 700,
-
-              marginTop: 4,
-            }}
-          >
-            km
-          </div>
-        </div>
-
-        <div
-          style={{
-            background: "rgba(255,255,255,.02)",
-
-            border: `1px solid ${theme.colors.border}`,
-
-            borderRadius: 14,
-
-            padding: 14,
-
-            textAlign: "center",
-          }}
-        >
-          <div
-            style={{
-              color: theme.colors.textSecondary,
-
-              fontSize: UI.FONT_TINY,
-
-              fontWeight: 600,
-
-              marginBottom: 6,
-            }}
-          >
-            Sorties
-          </div>
-
-          <div
-            style={{
-              color: theme.colors.text,
-
-              fontSize: UI.FONT_NUMBER,
-
-              fontWeight: 800,
-
-              lineHeight: 1,
-            }}
-          >
-            {totalRuns}
-          </div>
-
-          <div
-            style={{
-              color: theme.colors.primary,
-
-              fontSize: UI.FONT_TINY,
-
-              fontWeight: 700,
-
-              marginTop: 4,
-            }}
-          >
-            séance{totalRuns > 1 ? "s" : ""}
-          </div>
-        </div>
+        </article>
       </div>
-    </div>
+    </header>
   );
 }

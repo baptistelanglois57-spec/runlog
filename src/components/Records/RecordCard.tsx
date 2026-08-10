@@ -13,6 +13,8 @@ type RecordCardProps = {
   subtitle?: string;
   color?: string;
   details?: Detail[];
+  layout?: "default" | "horizontal";
+  locked?: boolean;
 };
 
 export default function RecordCard({
@@ -22,10 +24,14 @@ export default function RecordCard({
   subtitle,
   color,
   details,
+  layout = "default",
+  locked = false,
 }: RecordCardProps) {
+  const isLocked = locked || value === "🔒";
+
   return (
     <div
-      className={`record-card${color ? " record-card--accent" : ""}${value === "🔒" ? " record-card--locked" : ""}`}
+      className={`record-card${color ? " record-card--accent" : ""}${isLocked ? " record-card--locked" : ""}${layout === "horizontal" ? " record-card--horizontal" : ""}`}
       style={color ? { borderColor: color } : undefined}
     >
       {/* HEADER */}

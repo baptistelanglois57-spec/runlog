@@ -1,9 +1,5 @@
 import { Save } from "lucide-react";
 
-import Button from "../UI/Button";
-
-import { UI } from "../../styles/ui";
-
 type Props = {
   isEditing: boolean;
   onClick: () => void;
@@ -14,34 +10,18 @@ export default function SaveButton({
   onClick,
 }: Props) {
   return (
-    <Button
-      variant="success"
-      fullWidth
+    <button
+      className="run-form-save"
+      type="button"
       onClick={onClick}
-      style={{
-  height: 56,
-
-  borderRadius: UI.INPUT_RADIUS,
-
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  gap: 8,
-
-  color: "#000",
-
-  fontSize: UI.FONT_SMALL,
-
-  fontWeight: 700,
-
-  whiteSpace: "nowrap",
-}}
+      aria-label={
+        isEditing
+          ? "Enregistrer les modifications"
+          : "Enregistrer la sortie"
+      }
     >
-      <Save size={18} />
-
-      {isEditing
-        ? "Mettre à jour"
-        : "Enregistrer"}
-    </Button>
+      <Save size={16} aria-hidden="true" />
+      <span>Enregistrer</span>
+    </button>
   );
 }

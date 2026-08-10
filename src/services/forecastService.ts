@@ -4,8 +4,8 @@ import {
 
 import {
   getProfile,
-  getCurrentWeight,
-  getCurrentVo2,
+  getWeightHistory,
+  getVo2History,
 } from "./athleteService";
 
 import {
@@ -23,20 +23,20 @@ export async function getForecast(
   const [
     runs,
     profile,
-    weight,
-    vo2,
+    weightHistory,
+    vo2History,
   ] = await Promise.all([
     getRuns(),
     getProfile(),
-    getCurrentWeight(),
-    getCurrentVo2(),
+    getWeightHistory(),
+    getVo2History(),
   ]);
 
   return calculateForecast(
     input,
     runs,
     profile,
-    weight,
-    vo2
+    weightHistory,
+    vo2History
   );
 }
