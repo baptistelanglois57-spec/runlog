@@ -11,11 +11,23 @@
   --rl-type-page-title: clamp(1.8rem, 7vw, 2.2rem);
   --rl-type-section-title: 1.1rem;
   --rl-type-card-title: 1.04rem;
+  --rl-type-metric-large: clamp(1.9rem, 8.5vw, 2.35rem);
+  --rl-type-metric: clamp(1.2rem, 5.4vw, 1.6rem);
+  --rl-type-unit: 0.58em;
   --rl-type-body: 0.875rem;
   --rl-type-body-secondary: 0.84rem;
   --rl-type-caption: 0.78rem;
   --rl-type-button: 0.9rem;
-  --rl-type-metric: clamp(2.125rem, 9vw, 2.7rem);
+  --rl-type-control: 16px;
+  --rl-type-wordmark: clamp(35px, 10vw, 45px);
+
+  --rl-line-page-title: 1;
+  --rl-line-section-title: 1.2;
+  --rl-line-card-title: 1.25;
+  --rl-line-metric: 1;
+  --rl-line-body: 1.45;
+  --rl-line-caption: 1.35;
+  --rl-line-control: 1.2;
 
   --rl-weight-regular: 400;
   --rl-weight-medium: 600;

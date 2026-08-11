@@ -353,7 +353,7 @@ export default function ExerciseLibrary() {
                     theme.colors.textSecondary,
                   padding:
                     "40px 0",
-                  fontSize: 15,
+                  fontSize: Typography.body,
                 }}
               >
                 Aucun exercice
@@ -391,7 +391,7 @@ export default function ExerciseLibrary() {
                           color:
                             theme.colors.text,
                           fontWeight: 700,
-                          fontSize: 17,
+                          fontSize: Typography.cardTitle,
                           lineHeight: 1.3,
                         }}
                       >
@@ -416,7 +416,7 @@ export default function ExerciseLibrary() {
                             ),
                           color:
                             "#FFF",
-                          fontSize: 12,
+                          fontSize: Typography.caption,
                           fontWeight: 700,
                         }}
                       >

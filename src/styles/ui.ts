@@ -11,8 +11,11 @@ export const Typography = {
   bodySecondary: "var(--rl-type-body-secondary)",
   caption: "var(--rl-type-caption)",
   button: "var(--rl-type-button)",
-  input: "16px",
+  input: "var(--rl-type-control)",
+  wordmark: "var(--rl-type-wordmark)",
+  metricLarge: "var(--rl-type-metric-large)",
   metric: "var(--rl-type-metric)",
+  unit: "var(--rl-type-unit)",
 } as const;
 
 export const UI = {
@@ -50,7 +53,7 @@ export const UI = {
   CARD_MIN_HEIGHT_LARGE: 145,
 
   // Typographie — échelle RunLog 3.0 (tokens CSS définis dans index.css)
-  FONT_HERO: Typography.pageTitle,
+  FONT_HERO: Typography.wordmark,
   FONT_H1: Typography.pageTitle,
   FONT_H2: Typography.sectionTitle,
   FONT_H3: Typography.cardTitle,

@@ -1,6 +1,7 @@
 import { X } from "lucide-react";
 
 import { theme } from "../../styles/theme";
+import { Typography } from "../../styles/ui";
 
 import type { WeightEntry } from "../../types/WeightEntry";
 
@@ -131,7 +132,7 @@ export default function WeightHistoryModal({
 
                   fontWeight: 700,
 
-                  fontSize: 18,
+                  fontSize: Typography.cardTitle,
                 }}
               >
                 {entry.weight} kg

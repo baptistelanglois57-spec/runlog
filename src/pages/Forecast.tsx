@@ -128,7 +128,7 @@ export default function Forecast() {
                 margin: 0,
 
                 color:
-                  theme.colors.primary,
+                  theme.colors.text,
 
                 fontSize: Typography.pageTitle,
               }}
@@ -170,7 +170,7 @@ export default function Forecast() {
 
               fontWeight: 700,
 
-              fontSize: 18,
+              fontSize: Typography.cardTitle,
             }}
           >
             Calcul des prévisions...

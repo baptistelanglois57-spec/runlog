@@ -62,7 +62,7 @@
 
 .notifications-sheet__header h2 {
   margin: 0;
-  color: #fff;
+  color: var(--rl-text-primary);
   font-size: var(--rl-type-section-title);
   font-weight: var(--rl-weight-bold);
 }
@@ -151,7 +151,7 @@
 }
 
 .notification-card strong {
-  color: #fff;
+  color: var(--rl-text-primary);
   font-size: var(--rl-type-card-title);
   font-weight: var(--rl-weight-bold);
   line-height: 1.2;
@@ -189,13 +189,13 @@
 }
 
 .notification-card__record-main > strong {
-  overflow: hidden;
+  overflow: visible;
   color: var(--rl-text-primary);
-  font-size: clamp(1.35rem, 6vw, 1.75rem);
+  font-size: var(--rl-type-metric);
   font-weight: var(--rl-weight-display);
   letter-spacing: -0.045em;
-  line-height: 1;
-  text-overflow: ellipsis;
+  line-height: var(--rl-line-metric);
+  text-overflow: clip;
   white-space: nowrap;
 }
 
@@ -262,7 +262,7 @@
 
 .notifications-sheet__empty h3 {
   margin: 15px 0 0;
-  color: #fff;
+  color: var(--rl-text-primary);
   font-size: var(--rl-type-card-title);
   font-weight: var(--rl-weight-bold);
 }

@@ -1,6 +1,7 @@
 import { X } from "lucide-react";
 
 import { theme } from "../../styles/theme";
+import { Typography } from "../../styles/ui";
 
 import type { Vo2Entry } from "../../types/V02Entry";
 
@@ -122,7 +123,7 @@ export default function Vo2HistoryModal({
 
                   fontWeight: 700,
 
-                  fontSize: 18,
+                  fontSize: Typography.cardTitle,
                 }}
               >
                 {entry.vo2max}

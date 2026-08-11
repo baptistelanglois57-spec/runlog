@@ -10,6 +10,7 @@ import Button from "../UI/Button";
 import type { GymSession } from "../../types/GymSession";
 
 import { theme } from "../../styles/theme";
+import { Typography } from "../../styles/ui";
 
 type Props = {
   session: GymSession | null;
@@ -82,7 +83,7 @@ export default function GymSessionModal({
               alignItems: "center",
               gap: 6,
               color: theme.colors.textSecondary,
-              fontSize: 13,
+              fontSize: Typography.caption,
               marginBottom: 6,
             }}
           >
@@ -98,7 +99,7 @@ export default function GymSessionModal({
             style={{
               margin: 0,
               color: theme.colors.text,
-              fontSize: 20,
+              fontSize: Typography.sectionTitle,
               fontWeight: 800,
             }}
           >
@@ -154,7 +155,7 @@ export default function GymSessionModal({
               style={{
                 margin: 0,
                 color: theme.colors.primary,
-                fontSize: 17,
+                fontSize: Typography.cardTitle,
                 fontWeight: 700,
               }}
             >
@@ -182,7 +183,7 @@ export default function GymSessionModal({
                 style={{
                   color: theme.colors.primary,
                   fontWeight: 700,
-                  fontSize: 15,
+                  fontSize: Typography.body,
                 }}
               >
                 S{index + 1}
@@ -192,7 +193,7 @@ export default function GymSessionModal({
                 style={{
                   textAlign: "center",
                   color: theme.colors.textSecondary,
-                  fontSize: 15,
+                  fontSize: Typography.body,
                 }}
               >
                 {set.reps} reps
@@ -202,7 +203,7 @@ export default function GymSessionModal({
                 style={{
                   color: theme.colors.text,
                   fontWeight: 700,
-                  fontSize: 17,
+                  fontSize: Typography.cardTitle,
                 }}
               >
                 {set.weight} kg
@@ -252,7 +253,7 @@ export default function GymSessionModal({
               whiteSpace: "pre-wrap",
               color: theme.colors.text,
               lineHeight: 1.6,
-              fontSize: 14,
+              fontSize: Typography.body,
             }}
           >
             {session.comment}

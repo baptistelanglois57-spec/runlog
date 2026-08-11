@@ -12,53 +12,56 @@
 }
 
 .app-shell h1 {
-  color: var(--rl-text-primary) !important;
-  font-family: var(--rl-font-family) !important;
-  font-size: var(--rl-type-page-title) !important;
-  font-weight: var(--rl-weight-display) !important;
-  letter-spacing: -0.055em !important;
-  line-height: 1 !important;
+  color: var(--rl-text-primary);
+  font-family: var(--rl-font-family);
+  font-size: var(--rl-type-page-title);
+  font-weight: var(--rl-weight-display);
+  letter-spacing: -0.055em;
+  line-height: var(--rl-line-page-title);
 }
 
 .app-shell h2 {
-  color: var(--rl-text-primary) !important;
-  font-family: var(--rl-font-family) !important;
-  font-size: var(--rl-type-section-title) !important;
-  font-weight: var(--rl-weight-bold) !important;
-  letter-spacing: -0.025em !important;
+  color: var(--rl-text-primary);
+  font-family: var(--rl-font-family);
+  font-size: var(--rl-type-section-title);
+  font-weight: var(--rl-weight-bold);
+  letter-spacing: -0.025em;
+  line-height: var(--rl-line-section-title);
 }
 
 .app-shell h3 {
-  color: var(--rl-text-primary) !important;
-  font-family: var(--rl-font-family) !important;
-  font-size: var(--rl-type-card-title) !important;
-  font-weight: var(--rl-weight-bold) !important;
-  letter-spacing: -0.018em !important;
+  color: var(--rl-text-primary);
+  font-family: var(--rl-font-family);
+  font-size: var(--rl-type-card-title);
+  font-weight: var(--rl-weight-bold);
+  letter-spacing: -0.018em;
+  line-height: var(--rl-line-card-title);
 }
 
 .app-shell p {
   color: var(--rl-text-secondary);
   font-size: var(--rl-type-body-secondary);
-  line-height: 1.55;
+  line-height: var(--rl-line-body);
 }
 
 .app-shell small,
 .app-shell time {
   color: var(--rl-text-muted);
   font-size: var(--rl-type-caption);
+  line-height: var(--rl-line-caption);
 }
 
-.app-shell button,
-.app-shell input,
-.app-shell select,
-.app-shell textarea {
+.app-shell button {
   font-size: var(--rl-type-button);
+  line-height: var(--rl-line-control);
 }
 
 .app-shell input,
 .app-shell select,
 .app-shell textarea {
   color: var(--rl-text-primary);
+  font-size: var(--rl-type-control);
+  line-height: var(--rl-line-control);
 }
 
 /* Reusable card hierarchy across the RunLog 3.0 page families. */
@@ -71,9 +74,9 @@
 .app-shell .athlete-profile-row__copy strong,
 .app-shell .gym-comparison-exercise__title h2,
 .app-shell .gym-exercise-card__header h2 {
-  color: var(--rl-text-primary) !important;
-  font-size: var(--rl-type-card-title) !important;
-  font-weight: var(--rl-weight-bold) !important;
+  color: var(--rl-text-primary);
+  font-size: var(--rl-type-card-title);
+  font-weight: var(--rl-weight-bold);
 }
 
 .app-shell .home-stat-card__title,
@@ -89,23 +92,52 @@
 .app-shell .athlete-profile-row__copy small,
 .app-shell .gym-comparison-page__session > p,
 .app-shell .gym-comparison-exercise__sets-header {
-  color: var(--rl-text-secondary) !important;
-  font-size: var(--rl-type-caption) !important;
+  color: var(--rl-text-secondary);
+  font-size: var(--rl-type-caption);
 }
 
 .app-shell .home-stat-card__number,
 .app-shell .home-last-run__distance,
-.app-shell .records-hero__primary > strong,
 .app-shell .record-card__value,
-.app-shell .pace-record-card__value,
 .app-shell .athlete-metric-card strong,
-.app-shell .discipline-score-ring strong,
 .app-shell .discipline-summary-card strong {
-  color: var(--rl-text-primary) !important;
-  font-family: var(--rl-font-family) !important;
-  font-size: var(--rl-type-metric) !important;
-  font-weight: var(--rl-weight-display) !important;
-  letter-spacing: -0.075em !important;
+  color: var(--rl-text-primary);
+  font-family: var(--rl-font-family);
+  font-size: var(--rl-type-metric);
+  font-weight: var(--rl-weight-display);
+  letter-spacing: -0.06em;
+  line-height: var(--rl-line-metric);
+  text-overflow: clip;
+}
+
+.app-shell .records-hero__primary > strong,
+.app-shell .pace-record-card__value,
+.app-shell .discipline-score-ring strong,
+.app-shell .forecast-result__hero strong {
+  color: var(--rl-text-primary);
+  font-family: var(--rl-font-family);
+  font-size: var(--rl-type-metric-large);
+  font-weight: var(--rl-weight-display);
+  letter-spacing: -0.065em;
+  line-height: var(--rl-line-metric);
+  text-overflow: clip;
+}
+
+.app-shell .records-hero__secondary strong,
+.app-shell .history-summary-card__copy strong,
+.app-shell .history-run-card__distance strong,
+.app-shell .muscu-summary-card__copy strong,
+.app-shell .muscu-session-card__exercise-count strong,
+.app-shell .discipline-month-card__heading > strong,
+.app-shell .forecast-result__metric strong,
+.app-shell .notification-card__record-main > strong {
+  color: var(--rl-text-primary);
+  font-family: var(--rl-font-family);
+  font-size: var(--rl-type-metric);
+  font-weight: var(--rl-weight-display);
+  letter-spacing: -0.055em;
+  line-height: var(--rl-line-metric);
+  text-overflow: clip;
 }
 
 .app-shell .home-stat-card__unit,
@@ -114,6 +146,98 @@
 .app-shell .discipline-area-card__score,
 .app-shell .gym-comparison-exercise__evolution > div:first-child {
   color: var(--rl-accent);
+}
+
+.app-shell .home-stat-card__unit,
+.app-shell .home-last-run__distance-unit,
+.app-shell .history-summary-card__copy small,
+.app-shell .history-run-card__distance span,
+.app-shell .muscu-summary-card__copy small {
+  font-size: var(--rl-type-unit);
+  font-weight: var(--rl-weight-bold);
+}
+
+.app-shell .athlete-metric-card__unit {
+  font-size: var(--rl-type-unit);
+  font-weight: var(--rl-weight-bold);
+}
+
+.rl-page-title {
+  color: var(--rl-text-primary);
+  font: var(--rl-weight-display) var(--rl-type-page-title) / var(--rl-line-page-title) var(--rl-font-family);
+}
+
+.rl-section-title {
+  color: var(--rl-text-primary);
+  font: var(--rl-weight-bold) var(--rl-type-section-title) / var(--rl-line-section-title) var(--rl-font-family);
+}
+
+.rl-card-title {
+  color: var(--rl-text-primary);
+  font: var(--rl-weight-bold) var(--rl-type-card-title) / var(--rl-line-card-title) var(--rl-font-family);
+}
+
+.rl-metric-large,
+.rl-metric {
+  color: var(--rl-text-primary);
+  font-family: var(--rl-font-family);
+  font-weight: var(--rl-weight-display);
+  line-height: var(--rl-line-metric);
+}
+
+.rl-metric-large {
+  font-size: var(--rl-type-metric-large);
+}
+
+.rl-metric {
+  font-size: var(--rl-type-metric);
+}
+
+.rl-body,
+.rl-body-secondary,
+.rl-caption,
+.rl-button,
+.rl-input,
+.rl-unit {
+  font-family: var(--rl-font-family);
+}
+
+.rl-body {
+  color: var(--rl-text-primary);
+  font-size: var(--rl-type-body);
+  font-weight: var(--rl-weight-regular);
+  line-height: var(--rl-line-body);
+}
+
+.rl-body-secondary {
+  color: var(--rl-text-secondary);
+  font-size: var(--rl-type-body-secondary);
+  font-weight: var(--rl-weight-regular);
+  line-height: var(--rl-line-body);
+}
+
+.rl-caption {
+  color: var(--rl-text-muted);
+  font-size: var(--rl-type-caption);
+  font-weight: var(--rl-weight-regular);
+  line-height: var(--rl-line-caption);
+}
+
+.rl-button {
+  font-size: var(--rl-type-button);
+  font-weight: var(--rl-weight-bold);
+  line-height: var(--rl-line-control);
+}
+
+.rl-input {
+  font-size: var(--rl-type-control);
+  font-weight: var(--rl-weight-medium);
+  line-height: var(--rl-line-control);
+}
+
+.rl-unit {
+  font-size: var(--rl-type-unit);
+  font-weight: var(--rl-weight-bold);
 }
 
 /* Notes remains the visual source of truth while consuming the same tokens. */
@@ -160,9 +284,9 @@
 
 /* Home keeps its deliberately larger RunLog wordmark treatment. */
 .app-shell .home-page__header h1 {
-  color: var(--rl-text-primary) !important;
-  font-size: clamp(35px, 10vw, 45px) !important;
-  font-weight: 800 !important;
-  letter-spacing: -0.08em !important;
-  line-height: 0.95 !important;
+  color: var(--rl-text-primary);
+  font-size: var(--rl-type-wordmark);
+  font-weight: 800;
+  letter-spacing: -0.08em;
+  line-height: 0.95;
 }

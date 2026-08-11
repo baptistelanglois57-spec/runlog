@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { theme } from "../../styles/theme";
+import { Typography } from "../../styles/ui";
 
 import type { MuscleGroup } from "../../types/Gym/ExerciseLibrary";
 
@@ -102,7 +103,7 @@ export default function ExerciseLibraryModal({
             color:
               theme.colors.primary,
             textAlign: "center",
-            fontSize: 22,
+            fontSize: Typography.sectionTitle,
           }}
         >
           {title}
@@ -141,7 +142,7 @@ export default function ExerciseLibraryModal({
                 theme.colors.background,
               color:
                 theme.colors.text,
-              fontSize: 16,
+              fontSize: Typography.input,
               boxSizing: "border-box",
             }}
           />
@@ -180,7 +181,7 @@ export default function ExerciseLibraryModal({
                 theme.colors.background,
               color:
                 theme.colors.text,
-              fontSize: 16,
+              fontSize: Typography.input,
             }}
           >
             {muscleGroups.map(
@@ -214,7 +215,7 @@ export default function ExerciseLibraryModal({
                 theme.colors.text,
               fontWeight: 700,
               cursor: "pointer",
-              fontSize: 15,
+              fontSize: Typography.button,
             }}
           >
             Annuler
@@ -243,7 +244,7 @@ export default function ExerciseLibraryModal({
               color: "#000",
               fontWeight: 700,
               cursor: "pointer",
-              fontSize: 15,
+              fontSize: Typography.button,
             }}
           >
             Enregistrer

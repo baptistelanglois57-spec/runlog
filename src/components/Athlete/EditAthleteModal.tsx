@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { theme } from "../../styles/theme";
+import { Typography } from "../../styles/ui";
 
 type Props = {
   isOpen: boolean;
@@ -116,7 +117,7 @@ export default function EditAthleteModal({
             color:
               theme.colors.text,
 
-            fontSize: 18,
+            fontSize: Typography.input,
 
             marginBottom: 24,
           }}

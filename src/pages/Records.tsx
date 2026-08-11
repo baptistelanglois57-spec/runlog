@@ -5,6 +5,7 @@ import { getRuns } from "../services/runService";
 import type { Run } from "../types/Run";
 
 import { theme } from "../styles/theme";
+import { Typography } from "../styles/ui";
 
 import RecordsHeader from "../components/Records/RecordsHeader";
 import RecordSection from "../components/Records/RecordSection";
@@ -69,7 +70,7 @@ export default function Records() {
           justifyContent: "center",
           alignItems: "center",
           color: theme.colors.text,
-          fontSize: 22,
+          fontSize: Typography.cardTitle,
         }}
       >
         Chargement...

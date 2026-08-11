@@ -7,11 +7,11 @@ type Tool = { icon: LucideIcon; title: string; path: string; category: "performa
 
 const tools: Tool[] = [
   { icon: Trophy, title: "Records", path: "/records", category: "performance", featured: true },
-  { icon: Target, title: "Discipline", path: "/discipline", category: "performance", featured: true },
+  { icon: Target, title: "Régularité", path: "/discipline", category: "performance", featured: true },
   { icon: ChartLine, title: "Prévisions", path: "/forecast", category: "performance" },
   { icon: CalendarDays, title: "Agenda", path: "/agenda", category: "organisation", featured: true },
   { icon: NotebookPen, title: "Note", path: "/notes", category: "organisation" },
-  { icon: UserRound, title: "Fiche sportive", path: "/athlete-profile", category: "athlete", featured: true },
+  { icon: UserRound, title: "Profil", path: "/athlete-profile", category: "athlete", featured: true },
   { icon: Scale, title: "Comparaison", path: "/gym-comparison", category: "gym" },
   { icon: Dumbbell, title: "Exercices", path: "/exercise-library", category: "gym" },
 ];

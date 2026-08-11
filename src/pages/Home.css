@@ -21,7 +21,7 @@
 
 .home-page__header h1 {
   font-family: var(--rl-font-family) !important;
-  font-size: clamp(35px, 10vw, 45px) !important;
+  font-size: var(--rl-type-wordmark);
   font-weight: 800 !important;
   letter-spacing: -0.08em !important;
   line-height: 0.95 !important;
@@ -182,14 +182,14 @@
 }
 
 .app-shell .home-page__stats .home-stat-card__number {
-  font-size: clamp(28px, 7.4vw, 35.5px) !important;
+  font-size: var(--rl-type-metric);
 }
 
 .home-stat-card__unit {
   min-height: 0;
   margin: 0;
   color: var(--rl-accent);
-  font-size: 10px;
+  font-size: var(--rl-type-unit);
   font-weight: 800;
   line-height: 1;
 }
@@ -287,7 +287,7 @@
 
 .home-upcoming-card__type {
   color: var(--rl-text-primary);
-  font-size: 13px;
+  font-size: var(--rl-type-body-secondary);
   font-weight: var(--rl-weight-semibold);
 }
 
@@ -314,7 +314,7 @@
   width: 100%;
   overflow: hidden;
   color: var(--rl-text-primary);
-  font-size: 15px;
+  font-size: var(--rl-type-card-title);
   font-weight: var(--rl-weight-bold);
   letter-spacing: -0.025em;
   line-height: 1.17;
@@ -434,13 +434,13 @@
 
 .home-last-run__distance-unit {
   color: var(--rl-text-primary);
-  font-size: 0.58em;
+  font-size: var(--rl-type-unit);
   font-weight: var(--rl-weight-bold);
   letter-spacing: -0.025em;
 }
 
 .app-shell .home-last-run .home-last-run__distance {
-  font-size: clamp(29px, 7.8vw, 35px) !important;
+  font-size: var(--rl-type-metric);
 }
 
 .home-last-run__metrics {
@@ -488,7 +488,7 @@
   max-width: 100%;
   overflow: hidden;
   color: #ededee;
-  font-size: 10.5px;
+  font-size: var(--rl-type-caption);
   font-weight: var(--rl-weight-semibold);
   line-height: 1.15;
   text-align: center;
@@ -572,7 +572,7 @@
   }
 
   .home-upcoming-card__name {
-    font-size: 13.5px;
+    font-size: var(--rl-type-card-title);
   }
 
   .home-last-run {
@@ -588,7 +588,7 @@
   }
 
   .home-mini-stat__value {
-    font-size: 9.5px;
+    font-size: var(--rl-type-caption);
   }
 }
 

@@ -26,7 +26,9 @@ export default function BottomNavigation() {
             aria-current={active ? "page" : undefined}
             onClick={() => navigate(item.path)}
           >
-            <Icon size={28} strokeWidth={active ? 2.7 : 2.3} />
+            <span className="bottom-navigation__icon" aria-hidden="true">
+              <Icon size={24} strokeWidth={2.25} />
+            </span>
             <span className="bottom-navigation__label">{item.label}</span>
           </button>
         );

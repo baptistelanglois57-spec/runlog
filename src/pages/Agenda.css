@@ -125,7 +125,7 @@
 
 .agenda-calendar__weekdays span {
   color: var(--rl-text-muted);
-  font-size: 0.62rem;
+  font-size: var(--rl-type-caption);
   font-weight: var(--rl-weight-bold);
   letter-spacing: 0.04em;
   line-height: 1.2;
@@ -148,7 +148,7 @@
   background: transparent;
   color: var(--rl-text-primary);
   font: inherit;
-  font-size: 0.84rem;
+  font-size: var(--rl-type-body-secondary);
   font-weight: var(--rl-weight-semibold);
   cursor: pointer;
   transition: transform 150ms ease, border-color 150ms ease,
