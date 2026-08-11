@@ -17,6 +17,7 @@ type MonthAccordionProps = {
   isOpen: boolean;
   onToggle: () => void;
   onDelete: (id: string) => void;
+  onShare: (run: Run) => void;
 };
 
 export default function MonthAccordion({
@@ -24,6 +25,7 @@ export default function MonthAccordion({
   isOpen,
   onToggle,
   onDelete,
+  onShare,
 }: MonthAccordionProps) {
   const stats = useMemo(() => {
     const firstDate = new Date(runs[0].date);
@@ -90,7 +92,12 @@ export default function MonthAccordion({
       {isOpen && (
         <div className="history-month__runs">
           {runs.map((run) => (
-            <RunCard key={run.id} run={run} onDelete={onDelete} />
+            <RunCard
+              key={run.id}
+              run={run}
+              onDelete={onDelete}
+              onShare={onShare}
+            />
           ))}
         </div>
       )}

@@ -330,7 +330,7 @@ setExerciseLibrary(
               onChange={(event) => setName(event.target.value)}
             />
           </label>
-          <label>
+          <label className="gym-form-page__date-field">
             <span><CalendarDays size={15} /> Date</span>
             <input
               type="date"

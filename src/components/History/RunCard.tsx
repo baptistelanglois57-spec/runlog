@@ -12,6 +12,7 @@ import {
   Pencil,
   PersonStanding,
   Route,
+  Share2,
   Trash2,
   Trophy,
 } from "lucide-react";
@@ -24,12 +25,14 @@ import { theme } from "../../styles/theme";
 type RunCardProps = {
   run: Run;
   onDelete?: (id: string) => void;
+  onShare?: (run: Run) => void;
   showActions?: boolean;
 };
 
 export default function RunCard({
   run,
   onDelete,
+  onShare,
   showActions = true,
 }: RunCardProps) {
   const navigate = useNavigate();
@@ -89,7 +92,20 @@ export default function RunCard({
           </span>
 
           <div className="history-run-card__actions">
+            {onShare && (
+              <button
+                type="button"
+                onClick={() => onShare(run)}
+                className="history-run-card__action history-run-card__action--share"
+                aria-label="Partager cette sortie"
+                title="Partager"
+              >
+                <Share2 size={17} />
+              </button>
+            )}
+
             <button
+              type="button"
               onClick={() => navigate(`/edit/${run.id}`)}
               className="history-run-card__action history-run-card__action--edit"
               aria-label="Modifier cette sortie"
@@ -99,6 +115,7 @@ export default function RunCard({
             </button>
 
             <button
+              type="button"
               onClick={() => onDelete(run.id)}
               className="history-run-card__action history-run-card__action--delete"
               aria-label="Supprimer cette sortie"

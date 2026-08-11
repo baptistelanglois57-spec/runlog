@@ -4,6 +4,7 @@ import { CalendarX2, Download } from "lucide-react";
 import HistoryHeader from "../components/History/HistoryHeader";
 import HistoryFilters from "../components/History/HistoryFilters";
 import MonthAccordion from "../components/History/MonthAccordion";
+import RunShareModal from "../components/History/RunShareModal";
 import AppContainer from "../components/Layout/AppContainer";
 
 import { deleteRun, getRuns } from "../services/runService";
@@ -22,6 +23,7 @@ export default function History() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<Filter>("all");
   const [openedMonth, setOpenedMonth] = useState<string>("");
+  const [runToShare, setRunToShare] = useState<Run | null>(null);
 
   async function loadRuns() {
     setLoading(true);
@@ -130,11 +132,20 @@ export default function History() {
                     setOpenedMonth(openedMonth === monthKey ? "" : monthKey)
                   }
                   onDelete={handleDelete}
+                  onShare={setRunToShare}
                 />
               ))}
             </div>
           )}
         </section>
+
+        {runToShare && (
+          <RunShareModal
+            key={runToShare.id}
+            run={runToShare}
+            onClose={() => setRunToShare(null)}
+          />
+        )}
       </main>
     </AppContainer>
   );

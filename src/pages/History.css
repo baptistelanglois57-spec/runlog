@@ -520,6 +520,10 @@
   color: var(--rl-accent);
 }
 
+.history-run-card__action--share {
+  color: var(--rl-text-primary);
+}
+
 .history-run-card__action--delete {
   color: #ef4444;
 }
@@ -527,6 +531,11 @@
 .history-run-card__action--edit:active {
   border-color: rgba(215, 173, 25, 0.32);
   background: rgba(215, 173, 25, 0.1);
+}
+
+.history-run-card__action--share:active {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: #2b2b2e;
 }
 
 .history-run-card__action--delete:active {
