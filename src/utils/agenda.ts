@@ -1,6 +1,7 @@
 import type { Event } from "../types/Event";
 import type { Run } from "../types/Run";
 import type { GymSession } from "../types/GymSession";
+import { theme } from "../styles/theme";
 
 export type AgendaDayType =
   | "none"
@@ -96,12 +97,12 @@ export function getAgendaBorderColor(
       return "#F59E0B";
 
     case "race":
-      return "#FFFFFF";
+      return theme.colors.primaryLight;
 
     case "missed":
       return "#EF4444";
 
     default:
-      return "#2E2E2E";
+      return theme.colors.border;
   }
 }

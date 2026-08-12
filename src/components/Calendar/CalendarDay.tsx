@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 
 import type { AgendaDayStatus } from "../../utils/agenda";
+import { theme } from "../../styles/theme";
 
 type CalendarDayProps = {
   day: number;
@@ -20,7 +21,7 @@ function getStatusColor(status: AgendaDayStatus) {
     case "gym":
       return "#F59E0B";
     case "race":
-      return "#FFFFFF";
+      return theme.colors.primaryLight;
     case "missed":
       return "#EF4444";
     default:

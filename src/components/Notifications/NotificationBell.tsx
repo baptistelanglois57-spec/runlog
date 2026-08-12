@@ -1,3 +1,5 @@
+import { theme } from "../../styles/theme";
+
 type Props = {
   count: number;
   onClick: () => void;
@@ -28,7 +30,7 @@ export default function NotificationBell({
             height: 20,
             borderRadius: "50%",
             background: "#E53935",
-            color: "#fff",
+            color: theme.colors.text,
             fontSize: 11,
             display: "flex",
             justifyContent: "center",

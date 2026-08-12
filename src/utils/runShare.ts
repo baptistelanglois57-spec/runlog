@@ -1,4 +1,5 @@
 import type { Run } from "../types/Run";
+import { theme } from "../styles/theme";
 import { getAveragePace } from "./stats";
 
 export type RunSharePresentation = {
@@ -110,13 +111,13 @@ export async function createRunShareImage(run: Run) {
     throw new Error("La carte de partage ne peut pas être générée sur cet appareil.");
   }
 
-  context.fillStyle = "#000000";
+  context.fillStyle = theme.colors.background;
   context.fillRect(0, 0, canvas.width, canvas.height);
 
   roundedRect(context, 48, 48, 984, 1254, 64);
-  context.fillStyle = "#151515";
+  context.fillStyle = theme.colors.card;
   context.fill();
-  context.strokeStyle = "#2a2a2a";
+  context.strokeStyle = theme.colors.border;
   context.lineWidth = 2;
   context.stroke();
 
@@ -124,79 +125,79 @@ export async function createRunShareImage(run: Run) {
   context.drawImage(logo, 76, 76, 100, 100);
 
   context.textBaseline = "middle";
-  context.fillStyle = "#ffffff";
+  context.fillStyle = theme.colors.text;
   context.font = "750 42px -apple-system, BlinkMacSystemFont, sans-serif";
   context.fillText("RunLog", 185, 126);
 
   context.font = "700 25px -apple-system, BlinkMacSystemFont, sans-serif";
   const kindWidth = context.measureText(data.activityKind).width + 54;
   roundedRect(context, 956 - kindWidth, 92, kindWidth, 68, 34);
-  context.fillStyle = "rgba(215, 173, 25, 0.12)";
+  context.fillStyle = "rgba(125, 35, 53, 0.12)";
   context.fill();
-  context.fillStyle = "#d7ad19";
+  context.fillStyle = theme.colors.primary;
   context.textAlign = "center";
   context.fillText(data.activityKind, 956 - kindWidth / 2, 127);
   context.textAlign = "left";
 
-  context.fillStyle = "#969696";
+  context.fillStyle = theme.colors.textSecondary;
   context.font = "700 26px -apple-system, BlinkMacSystemFont, sans-serif";
   context.fillText("DISTANCE", 84, 270);
 
-  context.fillStyle = "#ffffff";
+  context.fillStyle = theme.colors.text;
   context.font = "780 132px -apple-system, BlinkMacSystemFont, sans-serif";
   context.fillText(data.distance, 80, 374);
   const distanceWidth = context.measureText(data.distance).width;
-  context.fillStyle = "#d7ad19";
+  context.fillStyle = theme.colors.primary;
   context.font = "750 38px -apple-system, BlinkMacSystemFont, sans-serif";
   context.fillText("KM", Math.min(904, 94 + distanceWidth), 399);
 
-  context.fillStyle = "#2c2c2c";
+  context.fillStyle = theme.colors.border;
   context.fillRect(84, 480, 912, 2);
 
   const metricColumns = [84, 554];
   const metricLabels = ["DURÉE", "ALLURE MOYENNE"];
   const metricValues = [data.duration, data.pace];
   for (let index = 0; index < metricColumns.length; index += 1) {
-    context.fillStyle = "#8d8d8d";
+    context.fillStyle = theme.colors.textSecondary;
     context.font = "700 24px -apple-system, BlinkMacSystemFont, sans-serif";
     context.fillText(metricLabels[index], metricColumns[index], 558);
-    context.fillStyle = "#ffffff";
+    context.fillStyle = theme.colors.text;
     context.font = "750 58px -apple-system, BlinkMacSystemFont, sans-serif";
     drawFittedText(context, metricValues[index], metricColumns[index], 628, 410);
   }
 
   const secondaryMetrics = [
     data.heartRate ? { label: "FC MOYENNE", value: data.heartRate, accent: "#ef6464" } : null,
-    data.elevation ? { label: "DÉNIVELÉ +", value: data.elevation, accent: "#d7ad19" } : null,
+    data.elevation ? { label: "DÉNIVELÉ +", value: data.elevation, accent: theme.colors.primary } : null,
   ].filter((metric): metric is { label: string; value: string; accent: string } => metric !== null);
 
   secondaryMetrics.forEach((metric, index) => {
     const cardWidth = secondaryMetrics.length === 1 ? 912 : 444;
     const x = 84 + index * 468;
     roundedRect(context, x, 715, cardWidth, 142, 28);
-    context.fillStyle = "#1d1d1f";
+    context.fillStyle = theme.colors.surfaceSecondary;
     context.fill();
-    context.strokeStyle = "#2d2d30";
+    context.strokeStyle = theme.colors.border;
     context.lineWidth = 2;
     context.stroke();
     context.fillStyle = metric.accent;
     context.font = "700 22px -apple-system, BlinkMacSystemFont, sans-serif";
     context.fillText(metric.label, x + 30, 760);
-    context.fillStyle = "#ffffff";
+    context.fillStyle = theme.colors.text;
     context.font = "750 38px -apple-system, BlinkMacSystemFont, sans-serif";
     context.fillText(metric.value, x + 30, 815);
   });
 
   if (data.competitionName || data.ranking) {
     roundedRect(context, 84, 895, 912, 122, 27);
-    context.fillStyle = "rgba(215, 173, 25, 0.08)";
+    context.fillStyle = "rgba(125, 35, 53, 0.08)";
     context.fill();
-    context.strokeStyle = "rgba(215, 173, 25, 0.25)";
+    context.strokeStyle = "rgba(125, 35, 53, 0.25)";
     context.stroke();
-    context.fillStyle = "#d7ad19";
+    context.fillStyle = theme.colors.primary;
     context.font = "700 22px -apple-system, BlinkMacSystemFont, sans-serif";
     context.fillText("COMPÉTITION", 114, 933);
-    context.fillStyle = "#ffffff";
+    context.fillStyle = theme.colors.text;
     context.font = "750 31px -apple-system, BlinkMacSystemFont, sans-serif";
     drawFittedText(context, data.competitionName ?? data.activity, 114, 978, 590);
     if (data.ranking) {
@@ -207,14 +208,14 @@ export async function createRunShareImage(run: Run) {
   }
 
   const footerY = data.competitionName || data.ranking ? 1110 : 1018;
-  context.fillStyle = "#ffffff";
+  context.fillStyle = theme.colors.text;
   context.font = "750 42px -apple-system, BlinkMacSystemFont, sans-serif";
   drawFittedText(context, data.activity, 84, footerY, 850);
-  context.fillStyle = "#969696";
+  context.fillStyle = theme.colors.textSecondary;
   context.font = "600 28px -apple-system, BlinkMacSystemFont, sans-serif";
   context.fillText(data.date, 84, footerY + 62);
 
-  context.fillStyle = "#d7ad19";
+  context.fillStyle = theme.colors.primary;
   roundedRect(context, 84, 1230, 110, 8, 4);
   context.fill();
 

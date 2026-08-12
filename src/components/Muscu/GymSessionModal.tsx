@@ -35,7 +35,7 @@ export default function GymSessionModal({
     style={{
       position: "fixed",
       inset: 0,
-      background: "rgba(0,0,0,.75)",
+      background: "rgba(12,11,11,.75)",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",

@@ -41,7 +41,7 @@ export default function Textarea({
           padding: "16px",
           borderRadius: "14px",
           border: `1px solid ${theme.colors.border}`,
-          background: "#13213a",
+          background: theme.colors.surfaceSecondary,
           color: theme.colors.text,
           fontSize: Typography.input,
           resize: "vertical",

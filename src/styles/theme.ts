@@ -1,22 +1,22 @@
 export const theme = {
   colors: {
-    background: "#0B0B0B",
-
-    card: "#171717",
-
-    primary: "#D7AD19",
-
-    primaryLight: "#E6C044",
-
-    border: "#2E2E2E",
-
-    text: "#FFFFFF",
-
-    textSecondary: "#969696",
+    background: "#0C0B0B",
+    navigation: "#111010",
+    card: "#151313",
+    surfaceSecondary: "#1B1717",
+    primary: "#7D2335",
+    primaryPressed: "#701F31",
+    primaryLight: "#E7D9C4",
+    achievement: "#D7AD19",
+    border: "#322B2B",
+    borderStrong: "#4A3E3E",
+    text: "#F3EADC",
+    textSecondary: "#B9AA96",
+    textMuted: "#948676",
 
     success: "#22C55E",
-
     danger: "#EF4444",
+    warning: "#F59E0B",
   },
 
   radius: {

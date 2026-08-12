@@ -2,11 +2,33 @@
 :root {
   --rl-font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
     "Segoe UI", sans-serif;
-  --rl-text-primary: #ffffff;
-  --rl-text-secondary: #969696;
-  --rl-text-muted: #838383;
-  --rl-accent: #d7ad19;
-  --rl-page-background: #000000;
+  /* Palette RunLog — noir chaud, ivoire et bordeaux. */
+  --rl-page-background: #0c0b0b;
+  --rl-surface-navigation: #111010;
+  --rl-surface-card: #151313;
+  --rl-surface-secondary: #1b1717;
+  --rl-border: #322b2b;
+  --rl-border-strong: #4a3e3e;
+
+  --rl-accent: #7d2335;
+  --rl-accent-rgb: 125, 35, 53;
+  /* Variante de texte : nécessaire pour les petits libellés sur fond OLED. */
+  --rl-accent-text: #c87988;
+  --rl-accent-pressed: #701f31;
+  --rl-accent-soft: rgba(125, 35, 53, 0.14);
+  --rl-accent-border: rgba(125, 35, 53, 0.48);
+  --rl-ivory: #e7d9c4;
+  --rl-ivory-rgb: 231, 217, 196;
+  --rl-achievement: #d7ad19;
+  --rl-achievement-rgb: 215, 173, 25;
+  --rl-achievement-soft: rgba(var(--rl-achievement-rgb), 0.12);
+
+  --rl-text-primary: #f3eadc;
+  --rl-text-secondary: #b9aa96;
+  --rl-text-muted: #948676;
+  --rl-success: #22c55e;
+  --rl-danger: #ef4444;
+  --rl-warning: #f59e0b;
 
   --rl-type-page-title: clamp(1.8rem, 7vw, 2.2rem);
   --rl-type-section-title: 1.1rem;
@@ -38,12 +60,12 @@
   --text: var(--rl-text-secondary);
   --text-h: var(--rl-text-primary);
   --bg: var(--rl-page-background);
-  --border: #2e2e2e;
-  --code-bg: #171717;
+  --border: var(--rl-border);
+  --code-bg: var(--rl-surface-card);
   --accent: var(--rl-accent);
-  --accent-bg: rgba(215, 173, 25, 0.1);
-  --accent-border: rgba(215, 173, 25, 0.5);
-  --social-bg: rgba(23, 23, 23, 0.5);
+  --accent-bg: var(--rl-accent-soft);
+  --accent-border: var(--rl-accent-border);
+  --social-bg: rgba(21, 19, 19, 0.72);
   --shadow: none;
 
   --sans: var(--rl-font-family);

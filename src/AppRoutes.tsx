@@ -18,6 +18,7 @@ import Notes from "./pages/Notes";
 import Forecast from "./pages/Forecast";
 import GymComparison from "./pages/GymComparison";
 import ExerciseLibrary from "./pages/ExerciseLibrary";
+import ExerciseDetail from "./pages/ExerciseDetail";
 import EditGym from "./pages/EditGym";
 export default function AppRoutes() {
   return (
@@ -51,6 +52,10 @@ export default function AppRoutes() {
 <Route
   path="/exercise-library"
   element={<ExerciseLibrary />}
+/>
+<Route
+  path="/exercise-library/:exerciseId"
+  element={<ExerciseDetail />}
 />
 <Route
   path="/muscu/edit/:id"

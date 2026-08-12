@@ -72,7 +72,7 @@ export default function AthleteField({
             border: "none",
 
             background:
-              "rgba(212,175,55,.10)",
+              "rgba(125,35,53,.10)",
 
             display: "flex",
 
@@ -148,7 +148,7 @@ export default function AthleteField({
           border: `1px solid ${theme.colors.border}`,
 
           background:
-            "rgba(212,175,55,.08)",
+            "rgba(125,35,53,.08)",
 
           display: "flex",
 

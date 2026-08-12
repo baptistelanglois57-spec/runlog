@@ -1,5 +1,353 @@
-.gym-comparison-page { width: min(100%, 720px); margin: 0 auto; color: var(--rl-text-primary); animation: gym-comparison-in .32s ease both; }.gym-comparison-page__header { display: grid; grid-template-columns: 44px 1fr 44px; align-items: center; margin-bottom: 27px; }.gym-comparison-page__header h1 { grid-column: 2; margin: 0; color: var(--rl-text-primary); font-family: var(--rl-font-family); font-size: var(--rl-type-page-title); font-weight: var(--rl-weight-display); letter-spacing: -.055em; line-height: var(--rl-line-page-title); text-align: center; }.gym-comparison-page__header > span { grid-column: 3; }.gym-comparison-page__back { display: grid; width: 44px; height: 44px; place-items: center; border: 1px solid #303034; border-radius: 15px; background: #18181a; color: var(--rl-accent); cursor: pointer; transition: transform .18s ease, background .18s ease; }.gym-comparison-page__back:active { transform: scale(.93); background: #242427; }
-.gym-comparison-page__form { display: grid; gap: 12px; padding: 15px; border: 1px solid #29292d; border-radius: 22px; background: #171719; }.gym-comparison-page__session { display: grid; gap: 8px; }.gym-comparison-page__session-label { display: flex; align-items: center; gap: 7px; color: var(--rl-text-primary); font-size: var(--rl-type-body); font-weight: var(--rl-weight-bold); }.gym-comparison-page__session-label button { display: grid; width: 22px; height: 22px; padding: 0; place-items: center; border: 1px solid #353539; border-radius: 50%; background: transparent; color: var(--rl-text-secondary); cursor: pointer; }.gym-comparison-page__session > p { margin: 0; padding: 10px 12px; border-radius: 13px; background: #202023; color: var(--rl-text-secondary); font-size: var(--rl-type-caption); line-height: var(--rl-line-body); }.gym-comparison-page__session select { width: 100%; min-height: 48px; padding: 0 13px; border: 1px solid #303034; border-radius: 14px; background: #111113; color: var(--rl-text-primary); font-size: var(--rl-type-control); font-weight: var(--rl-weight-semibold); }.gym-comparison-page__submit { width: 100%; min-height: 50px; margin-top: 3px; border: 1px solid rgba(212,175,55,.45); border-radius: 15px; background: var(--rl-accent); color: #17130a; font-size: var(--rl-type-button); font-weight: var(--rl-weight-bold); cursor: pointer; transition: transform .18s ease, filter .18s ease; }.gym-comparison-page__submit:active { transform: scale(.98); filter: brightness(.94); }
-.gym-comparison-results { display: grid; gap: 14px; margin-top: 28px; }.gym-comparison-exercise { overflow: hidden; border: 1px solid #29292d; border-radius: 23px; background: #171719; }.gym-comparison-exercise__title { display: flex; align-items: center; gap: 9px; padding: 17px 17px 15px; }.gym-comparison-exercise__title > span { display: grid; width: 33px; height: 33px; flex: 0 0 auto; place-items: center; border-radius: 11px; background: rgba(212,175,55,.12); color: var(--rl-accent); }.gym-comparison-exercise__title h2 { overflow: hidden; margin: 0; color: var(--rl-text-primary); font-family: var(--rl-font-family); font-size: var(--rl-type-card-title); font-weight: var(--rl-weight-bold); letter-spacing: -.018em; text-overflow: ellipsis; white-space: nowrap; }.gym-comparison-exercise__sets { margin: 0 12px; overflow: hidden; border: 1px solid #303034; border-radius: 17px; background: #111113; }.gym-comparison-exercise__sets-header, .gym-comparison-exercise__set-row { display: grid; grid-template-columns: 37px minmax(0,1fr) 20px minmax(0,1fr); align-items: center; column-gap: 7px; }.gym-comparison-exercise__sets-header { padding: 11px 10px; border-bottom: 1px solid #303034; color: var(--rl-text-secondary); font-size: var(--rl-type-caption); font-weight: var(--rl-weight-bold); letter-spacing: .06em; text-transform: uppercase; }.gym-comparison-exercise__sets-header > span:nth-child(2), .gym-comparison-exercise__sets-header > span:last-child { text-align: center; }.gym-comparison-exercise__set-row { min-height: 51px; padding: 10px; border-bottom: 1px solid #29292d; }.gym-comparison-exercise__set-row:last-child { border-bottom: 0; }.gym-comparison-exercise__set-number { color: var(--rl-text-secondary); font-size: var(--rl-type-caption); font-weight: var(--rl-weight-bold); }.gym-comparison-exercise__set-row svg { color: #68686f; }.gym-comparison-exercise__set-value { overflow: hidden; color: var(--rl-text-primary); font-family: var(--rl-font-family); font-size: var(--rl-type-body); font-weight: var(--rl-weight-bold); letter-spacing: -.02em; text-align: center; text-overflow: ellipsis; white-space: nowrap; }.gym-comparison-exercise__set-value--improved { color: #22c55e; }
-.gym-comparison-exercise__evolution { display: grid; gap: 10px; margin: 17px; padding-top: 16px; border-top: 1px solid #29292d; }.gym-comparison-exercise__evolution > div:first-child { display: flex; align-items: center; gap: 7px; color: var(--rl-accent); font-size: var(--rl-type-caption); font-weight: var(--rl-weight-bold); }.gym-comparison-exercise__evolution > div:not(:first-child) { display: flex; align-items: center; gap: 9px; color: var(--rl-text-secondary); font-size: var(--rl-type-body); line-height: var(--rl-line-body); }.gym-comparison-exercise__evolution > div:not(:first-child) > span:first-child { width: 5px; height: 5px; flex: 0 0 auto; border-radius: 50%; background: var(--rl-accent); }.gym-comparison-exercise__verdict { margin: 0 12px 12px; padding: 15px; border: 1px solid color-mix(in srgb, var(--verdict-color), transparent 35%); border-radius: 17px; background: color-mix(in srgb, var(--verdict-color), transparent 88%); }.gym-comparison-exercise__verdict > div { color: var(--verdict-color); font-size: var(--rl-type-body); font-weight: var(--rl-weight-bold); }.gym-comparison-exercise__verdict p { margin: 7px 0 0; color: var(--rl-text-primary); font-size: var(--rl-type-body); line-height: var(--rl-line-body); }
-@keyframes gym-comparison-in { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }@media (min-width: 600px) { .gym-comparison-page__form { grid-template-columns: repeat(2, minmax(0, 1fr)); }.gym-comparison-page__submit { grid-column: 1 / -1; }.gym-comparison-exercise__sets { margin-inline: 17px; }.gym-comparison-exercise__sets-header, .gym-comparison-exercise__set-row { grid-template-columns: 56px minmax(0,1fr) 28px minmax(0,1fr); }.gym-comparison-exercise__evolution { margin-inline: 21px; }.gym-comparison-exercise__verdict { margin: 0 17px 17px; } }
+.gym-comparison-page {
+  width: min(100%, 720px);
+  margin: 0 auto;
+  color: var(--rl-text-primary);
+  animation: gym-comparison-in 0.3s ease both;
+}
+
+.gym-comparison-page__header {
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.gym-comparison-page__header h1 {
+  grid-column: 2;
+  margin: 0;
+  color: var(--rl-text-primary);
+  font-family: var(--rl-font-family);
+  font-size: var(--rl-type-page-title);
+  font-weight: var(--rl-weight-display);
+  letter-spacing: -0.055em;
+  line-height: var(--rl-line-page-title);
+  text-align: center;
+}
+
+.gym-comparison-page__header > span {
+  grid-column: 3;
+}
+
+.gym-comparison-page__back {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  place-items: center;
+  border: 1px solid var(--rl-border-strong);
+  border-radius: 15px;
+  background: var(--rl-surface-secondary);
+  color: var(--rl-accent-text);
+  cursor: pointer;
+  transition: transform 180ms ease, background 180ms ease;
+}
+
+.gym-comparison-page__back:active {
+  transform: scale(0.93);
+  background: var(--rl-surface-secondary);
+}
+
+.gym-comparison-selector {
+  display: grid;
+  gap: 9px;
+  padding: 15px;
+  border: 1px solid var(--rl-border);
+  border-radius: 22px;
+  background: var(--rl-surface-card);
+}
+
+.gym-comparison-selector > label {
+  color: var(--rl-text-primary);
+  font-size: var(--rl-type-card-title);
+  font-weight: var(--rl-weight-bold);
+}
+
+.gym-comparison-selector > select {
+  width: 100%;
+  min-height: 50px;
+  padding: 0 13px;
+  border: 1px solid var(--rl-border-strong);
+  border-radius: 15px;
+  background: var(--rl-surface-secondary);
+  color: var(--rl-text-primary);
+  font-size: var(--rl-type-control);
+  font-weight: var(--rl-weight-semibold);
+}
+
+.gym-comparison-selector__exercises {
+  display: flex;
+  gap: 8px;
+  margin: 5px -15px -1px;
+  padding: 5px 15px 2px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  overscroll-behavior-inline: contain;
+}
+
+.gym-comparison-selector__exercises::-webkit-scrollbar {
+  display: none;
+}
+
+.gym-comparison-selector__chip {
+  min-height: 39px;
+  flex: 0 0 auto;
+  padding: 0 13px;
+  border: 1px solid var(--rl-border-strong);
+  border-radius: 999px;
+  background: var(--rl-surface-secondary);
+  color: var(--rl-text-secondary);
+  font-size: var(--rl-type-caption);
+  font-weight: var(--rl-weight-semibold);
+  white-space: nowrap;
+  transition: transform 180ms ease, border-color 180ms ease, color 180ms ease, background 180ms ease;
+}
+
+.gym-comparison-selector__chip--active {
+  border-color: rgba(var(--rl-accent-rgb), 0.32);
+  background: rgba(var(--rl-accent-rgb), 0.12);
+  color: var(--rl-accent-text);
+}
+
+.gym-comparison-selector__chip:active {
+  transform: scale(0.97);
+}
+
+.gym-comparison-result {
+  display: grid;
+  gap: 11px;
+  margin-top: 18px;
+}
+
+.gym-comparison-result__title {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 10px;
+  padding: 15px;
+  border: 1px solid var(--rl-border);
+  border-radius: 20px;
+  background: var(--rl-surface-card);
+}
+
+.gym-comparison-result__title > span {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(var(--rl-accent-rgb), 0.11);
+  color: var(--rl-accent-text);
+}
+
+.gym-comparison-result__title > div {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.gym-comparison-result__title small {
+  color: var(--rl-text-muted);
+  font-size: var(--rl-type-caption);
+}
+
+.gym-comparison-result__title h2 {
+  overflow: hidden;
+  margin: 0;
+  color: var(--rl-text-primary);
+  font-size: var(--rl-type-card-title);
+  font-weight: var(--rl-weight-bold);
+  line-height: var(--rl-line-card-title);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.gym-comparison-occurrence {
+  padding: 15px;
+  border: 1px solid var(--rl-border);
+  border-radius: 21px;
+  background: var(--rl-surface-card);
+}
+
+.gym-comparison-occurrence > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.gym-comparison-occurrence > header > div {
+  display: grid;
+  gap: 3px;
+}
+
+.gym-comparison-occurrence > header span {
+  color: var(--rl-text-muted);
+  font-size: var(--rl-type-caption);
+  font-weight: var(--rl-weight-semibold);
+}
+
+.gym-comparison-occurrence > header strong {
+  color: var(--rl-text-primary);
+  font-size: var(--rl-type-card-title);
+  font-weight: var(--rl-weight-bold);
+}
+
+.gym-comparison-occurrence > header svg {
+  color: var(--rl-accent-text);
+}
+
+.gym-comparison-occurrence > small {
+  display: block;
+  margin-top: 5px;
+  color: var(--rl-text-secondary);
+  font-size: var(--rl-type-caption);
+}
+
+.gym-comparison-occurrence__sets {
+  margin-top: 13px;
+  overflow: hidden;
+  border: 1px solid var(--rl-border-strong);
+  border-radius: 15px;
+  background: var(--rl-surface-secondary);
+}
+
+.gym-comparison-occurrence__sets > div {
+  display: flex;
+  min-height: 43px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 11px;
+  border-bottom: 1px solid var(--rl-border);
+}
+
+.gym-comparison-occurrence__sets > div:last-child {
+  border-bottom: 0;
+}
+
+.gym-comparison-occurrence__sets span {
+  color: var(--rl-text-muted);
+  font-size: var(--rl-type-caption);
+  font-weight: var(--rl-weight-semibold);
+}
+
+.gym-comparison-occurrence__sets strong {
+  color: var(--rl-text-primary);
+  font-size: var(--rl-type-body);
+  font-weight: var(--rl-weight-bold);
+  white-space: nowrap;
+}
+
+.gym-comparison-evolution,
+.gym-comparison-advice,
+.gym-comparison-result__empty,
+.gym-comparison-page__state {
+  padding: 16px;
+  border: 1px solid var(--rl-border);
+  border-radius: 21px;
+  background: var(--rl-surface-card);
+}
+
+.gym-comparison-evolution > header,
+.gym-comparison-advice > header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--rl-accent-text);
+}
+
+.gym-comparison-evolution h3 {
+  margin: 0;
+  color: var(--rl-text-primary);
+  font-size: var(--rl-type-card-title);
+  font-weight: var(--rl-weight-bold);
+}
+
+.gym-comparison-evolution > div {
+  display: flex;
+  gap: 7px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.gym-comparison-evolution > div span {
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: rgba(var(--rl-accent-rgb), 0.1);
+  color: var(--rl-accent-text);
+  font-size: var(--rl-type-caption);
+  font-weight: var(--rl-weight-bold);
+}
+
+.gym-comparison-advice {
+  border-color: color-mix(in srgb, var(--verdict-color), transparent 58%);
+  background: color-mix(in srgb, var(--verdict-color), transparent 90%);
+}
+
+.gym-comparison-advice > header {
+  color: var(--verdict-color);
+  font-size: var(--rl-type-caption);
+  font-weight: var(--rl-weight-bold);
+}
+
+.gym-comparison-advice > strong {
+  display: block;
+  margin-top: 11px;
+  color: var(--rl-text-primary);
+  font-size: var(--rl-type-card-title);
+}
+
+.gym-comparison-advice > p,
+.gym-comparison-result__empty p {
+  margin: 6px 0 0;
+  color: var(--rl-text-secondary);
+  font-size: var(--rl-type-body-secondary);
+  line-height: var(--rl-line-body);
+}
+
+.gym-comparison-result__empty,
+.gym-comparison-page__state {
+  text-align: center;
+}
+
+.gym-comparison-result__empty strong,
+.gym-comparison-page__state strong {
+  display: block;
+  color: var(--rl-text-primary);
+  font-size: var(--rl-type-card-title);
+}
+
+.gym-comparison-page__state span {
+  display: block;
+  margin-top: 6px;
+  color: var(--rl-text-secondary);
+  font-size: var(--rl-type-body-secondary);
+}
+
+@keyframes gym-comparison-in {
+  from { opacity: 0; transform: translateY(7px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (min-width: 600px) {
+  .gym-comparison-result {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .gym-comparison-result__title,
+  .gym-comparison-evolution,
+  .gym-comparison-advice,
+  .gym-comparison-result__empty {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gym-comparison-page,
+  .gym-comparison-page__back,
+  .gym-comparison-selector__chip {
+    animation: none;
+    transition: none;
+  }
+}

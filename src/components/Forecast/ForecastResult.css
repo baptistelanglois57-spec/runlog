@@ -1,9 +1,9 @@
 .forecast-result {
   margin-top: 24px;
   overflow: hidden;
-  border: 1px solid #29292d;
+  border: 1px solid var(--rl-border);
   border-radius: 23px;
-  background: #171719;
+  background: var(--rl-surface-card);
   color: var(--rl-text-primary);
 }
 
@@ -12,8 +12,8 @@
   align-items: flex-start;
   justify-content: space-between;
   padding: 22px 20px 20px;
-  border-bottom: 1px solid #2b2b2f;
-  background: linear-gradient(145deg, #1c1b18, #171719);
+  border-bottom: 1px solid var(--rl-border);
+  background: linear-gradient(145deg, var(--rl-surface-card), var(--rl-surface-card));
 }
 
 .forecast-result__hero > div {
@@ -40,7 +40,7 @@
 .forecast-result__metric > span,
 .forecast-result__reasons svg,
 .forecast-result--empty > svg {
-  color: var(--rl-accent);
+  color: var(--rl-accent-text);
 }
 
 .forecast-result__range {
@@ -49,7 +49,7 @@
   justify-content: space-between;
   gap: 14px;
   padding: 14px 20px;
-  border-bottom: 1px solid #29292d;
+  border-bottom: 1px solid var(--rl-border);
 }
 
 .forecast-result__range strong {
@@ -70,9 +70,9 @@
   min-height: 105px;
   align-content: space-between;
   padding: 13px;
-  border: 1px solid #2c2c30;
+  border: 1px solid var(--rl-border);
   border-radius: 18px;
-  background: #1c1c1f;
+  background: var(--rl-surface-secondary);
 }
 
 .forecast-result__metric > span {
@@ -81,7 +81,7 @@
   height: 30px;
   place-items: center;
   border-radius: 10px;
-  background: rgba(212, 175, 55, 0.11);
+  background: rgba(var(--rl-accent-rgb), 0.11);
 }
 
 .forecast-result__metric small {
@@ -105,8 +105,8 @@
   gap: 12px;
   margin: 0 14px;
   padding: 16px 6px;
-  border-top: 1px solid #29292d;
-  border-bottom: 1px solid #29292d;
+  border-top: 1px solid var(--rl-border);
+  border-bottom: 1px solid var(--rl-border);
 }
 
 .forecast-result__model > div {

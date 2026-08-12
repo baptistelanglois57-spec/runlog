@@ -15,7 +15,7 @@ export default function PrimaryButton(
         border: "none",
         borderRadius: 14,
         background: theme.colors.primary,
-        color: "#000",
+        color: theme.colors.text,
         fontWeight: 700,
         fontSize: Typography.button,
         cursor: "pointer",

@@ -18,9 +18,9 @@ export default function IconBox({
 
         borderRadius: UI.RADIUS_SMALL,
 
-        background: "rgba(212,175,55,.10)",
+        background: "rgba(125,35,53,.10)",
 
-        border: "1px solid rgba(212,175,55,.15)",
+        border: "1px solid rgba(125,35,53,.18)",
 
         display: "flex",
 

@@ -1,117 +1,111 @@
-import { ArrowRight, Dumbbell, TrendingUp } from "lucide-react";
+import { CalendarDays, Dumbbell, Lightbulb, TrendingUp } from "lucide-react";
 import type { CSSProperties } from "react";
 
+import type { ExerciseComparison } from "../../utils/gymComparison";
+import {
+  formatGymDate,
+  formatGymNumber,
+  type ExerciseHistoryEntry,
+} from "../../utils/gymExerciseHistory";
+import type { GymSet } from "../../types/Gym/GymSet";
+
 type Props = {
-  comparison: any[];
+  exerciseName: string;
+  currentEntry: ExerciseHistoryEntry | null;
+  previousEntry: ExerciseHistoryEntry | null;
+  comparison: ExerciseComparison | null;
+  reliableHistoryAvailable: boolean;
 };
 
+function formatSet(set: GymSet) {
+  const reps = typeof set.reps === "number" && Number.isFinite(set.reps) ? set.reps : null;
+  const weight = typeof set.weight === "number" && Number.isFinite(set.weight) ? set.weight : null;
+
+  if (reps !== null && weight !== null) return `${formatGymNumber(reps)} × ${formatGymNumber(weight)} kg`;
+  if (reps !== null) return `${formatGymNumber(reps)} reps`;
+  if (weight !== null) return `${formatGymNumber(weight)} kg`;
+  return "—";
+}
+
+function OccurrenceCard({ label, entry }: { label: string; entry: ExerciseHistoryEntry }) {
+  return (
+    <section className="gym-comparison-occurrence">
+      <header>
+        <div>
+          <span>{label}</span>
+          <strong>{formatGymDate(entry.sessionDate)}</strong>
+        </div>
+        <CalendarDays size={17} strokeWidth={2.2} />
+      </header>
+      <small>{entry.sessionName}</small>
+      <div className="gym-comparison-occurrence__sets">
+        {entry.sets.map((set, index) => (
+          <div key={index}>
+            <span>Série {index + 1}</span>
+            <strong>{formatSet(set)}</strong>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export default function GymComparisonResult({
+  exerciseName,
+  currentEntry,
+  previousEntry,
   comparison,
+  reliableHistoryAvailable,
 }: Props) {
   return (
-    <div className="gym-comparison-results">
-      {comparison.map((exercise, index) => (
-        <article key={index} className="gym-comparison-exercise">
-          {/* TITRE */}
+    <div className="gym-comparison-result">
+      <div className="gym-comparison-result__title">
+        <span><Dumbbell size={19} /></span>
+        <div>
+          <small>Exercice sélectionné</small>
+          <h2>{exerciseName}</h2>
+        </div>
+      </div>
 
-          <div className="gym-comparison-exercise__title">
-            <span><Dumbbell size={19} /></span>
-            <h2>{exercise.name}</h2>
-          </div>
+      {!reliableHistoryAvailable || !currentEntry ? (
+        <div className="gym-comparison-result__empty">
+          <strong>Historique fiable indisponible</strong>
+          <p>Cette ancienne entrée ne correspond pas exactement à un exercice unique de la bibliothèque.</p>
+        </div>
+      ) : (
+        <>
+          <OccurrenceCard label="Séance actuelle" entry={currentEntry} />
 
-          <div className="gym-comparison-exercise__sets">
-            <div className="gym-comparison-exercise__sets-header">
-              <span>Série</span>
-              <span>Séance A</span>
-              <span aria-hidden="true" />
-              <span>Séance B</span>
+          {previousEntry ? (
+            <OccurrenceCard label="Séance précédente" entry={previousEntry} />
+          ) : (
+            <div className="gym-comparison-result__empty">
+              <strong>Première séance enregistrée</strong>
+              <p>Aucune performance précédente n’est disponible pour cet exercice.</p>
             </div>
-            {Array.from({
-              length: Math.max(
-                exercise.previousSets.length,
-                exercise.currentSets.length
-              ),
-            }).map((_, i) => {
-              const previous =
-                exercise.previousSets[i];
+          )}
 
-              const current =
-                exercise.currentSets[i];
-
-              const previousReps =
-                previous?.reps ?? 0;
-
-              const currentReps =
-                current?.reps ?? 0;
-
-              const previousWeight =
-                previous?.weight ?? 0;
-
-              const currentWeight =
-                current?.weight ?? 0;
-
-              const improved =
-                currentWeight >
-                  previousWeight ||
-                (currentWeight ===
-                  previousWeight &&
-                  currentReps >
-                    previousReps);
-
-              return (
-                <div key={i} className="gym-comparison-exercise__set-row">
-                  <span className="gym-comparison-exercise__set-number">S{i + 1}</span>
-                  <span className="gym-comparison-exercise__set-value">
-                    {previous
-                      ? `${previous.reps ?? "-"} × ${
-                          previous.weight ??
-                          "-"
-                        }`
-                      : "—"}
-                  </span>
-                  <ArrowRight size={15} aria-hidden="true" />
-                  <span className={`gym-comparison-exercise__set-value${improved ? " gym-comparison-exercise__set-value--improved" : ""}`}>
-                    {current
-                      ? `${current.reps ?? "-"} × ${
-                          current.weight ??
-                          "-"
-                        }`
-                      : "—"}
-                  </span>
+          {comparison && (
+            <>
+              <section className="gym-comparison-evolution">
+                <header><TrendingUp size={18} /> <h3>Évolution</h3></header>
+                <div>
+                  {comparison.evolution.map((item) => <span key={item}>{item}</span>)}
                 </div>
-              );
-            })}
-          </div>
+              </section>
 
-          <div className="gym-comparison-exercise__evolution">
-            <div><TrendingUp size={17} /> Évolution</div>
-
-            {exercise.evolution.map(
-              (
-                item: string,
-                i: number
-              ) => (
-                <div key={i}>
-                  <span aria-hidden="true" />
-                  <span>{item}</span>
-                </div>
-              )
-            )}
-          </div>
-
-          <div
-            className="gym-comparison-exercise__verdict"
-            style={{ "--verdict-color": exercise.verdictColor } as CSSProperties}
-          >
-            <div>
-              {exercise.verdict}
-            </div>
-            <p>
-              {exercise.advice}
-            </p>
-          </div>
-        </article>
-      ))}
+              <section
+                className="gym-comparison-advice"
+                style={{ "--verdict-color": comparison.verdictColor } as CSSProperties}
+              >
+                <header><Lightbulb size={18} /> <span>Conseil RunLog</span></header>
+                <strong>{comparison.verdict}</strong>
+                <p>{comparison.advice}</p>
+              </section>
+            </>
+          )}
+        </>
+      )}
     </div>
   );
 }

@@ -13,8 +13,8 @@
   min-width: 0;
   min-height: 100svh;
   min-height: 100dvh;
-  background: #000;
-  color: #fff;
+  background: var(--rl-page-background);
+  color: var(--rl-text-primary);
 }
 
 .app-container {
@@ -50,10 +50,10 @@
   justify-content: space-evenly;
   padding: 0 7px;
   transform: translateX(-50%);
-  border: 1px solid rgba(255, 255, 255, 0.085);
+  border: 1px solid rgba(231, 217, 196, 0.1);
   border-radius: 999px;
-  background: rgba(20, 20, 21, 0.91);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.34), inset 0 1px rgba(255, 255, 255, 0.025);
+  background: rgba(17, 16, 16, 0.94);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.34), inset 0 1px rgba(231, 217, 196, 0.025);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   box-sizing: border-box;
@@ -77,7 +77,7 @@
 
 .bottom-navigation__item--active {
   width: 64px;
-  color: var(--rl-accent);
+  color: var(--rl-accent-text);
 }
 
 .bottom-navigation__item:active {
@@ -97,8 +97,9 @@
 }
 
 .bottom-navigation__item--active .bottom-navigation__icon {
-  border-color: rgba(215, 173, 25, 0.12);
-  background: rgba(215, 173, 25, 0.1);
+  border-color: rgba(125, 35, 53, 0.42);
+  background: var(--rl-accent);
+  color: var(--rl-ivory);
 }
 
 .bottom-navigation__label {

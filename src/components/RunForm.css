@@ -20,17 +20,17 @@
   height: 44px;
   padding: 0;
   place-items: center;
-  border: 1px solid #303034;
+  border: 1px solid var(--rl-border-strong);
   border-radius: 15px;
-  background: #18181a;
-  color: var(--rl-accent);
+  background: var(--rl-surface-secondary);
+  color: var(--rl-accent-text);
   cursor: pointer;
   transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
 }
 
 .run-form-header__back:active {
   transform: scale(0.94);
-  background: #242427;
+  background: var(--rl-surface-secondary);
 }
 
 .run-form-header h1 {
@@ -57,10 +57,10 @@
   justify-content: center;
   gap: 6px;
   padding: 0 12px;
-  border: 1px solid rgba(215, 173, 25, 0.42);
+  border: 1px solid rgba(var(--rl-accent-rgb), 0.42);
   border-radius: 14px;
   background: var(--rl-accent);
-  color: #161108;
+  color: var(--rl-text-primary);
   font: inherit;
   font-size: var(--rl-type-button);
   font-weight: var(--rl-weight-bold);
@@ -72,7 +72,7 @@
 
 .run-form-save:active {
   transform: scale(0.95);
-  background: #e2bb2e;
+  background: var(--rl-accent);
 }
 
 .run-form-page__sections {
@@ -84,9 +84,9 @@
   display: grid;
   gap: 15px;
   padding: 16px;
-  border: 1px solid #29292d;
+  border: 1px solid var(--rl-border);
   border-radius: 22px;
-  background: #171719;
+  background: var(--rl-surface-card);
 }
 
 .run-form-card__heading,
@@ -99,7 +99,7 @@
 .run-form-card__heading h2,
 .run-form-fields__section-title h2 {
   margin: 0;
-  color: #fff;
+  color: var(--rl-text-primary);
   font-size: var(--rl-type-section-title);
   font-weight: var(--rl-weight-bold);
   letter-spacing: -0.025em;
@@ -110,10 +110,10 @@
   width: 29px;
   height: 29px;
   place-items: center;
-  border: 1px solid rgba(215, 173, 25, 0.16);
+  border: 1px solid rgba(var(--rl-accent-rgb), 0.16);
   border-radius: 10px;
-  background: rgba(215, 173, 25, 0.1);
-  color: var(--rl-accent);
+  background: rgba(var(--rl-accent-rgb), 0.1);
+  color: var(--rl-accent-text);
 }
 
 .run-form-field {
@@ -135,7 +135,7 @@
 
 .run-form-field__label svg,
 .run-form-fields__time-heading svg {
-  color: var(--rl-accent);
+  color: var(--rl-accent-text);
 }
 
 .run-form-page input,
@@ -144,9 +144,9 @@
   min-width: 0;
   min-height: 50px;
   padding: 0 12px;
-  border: 1px solid #303034;
+  border: 1px solid var(--rl-border-strong);
   border-radius: 15px;
-  background: #111113;
+  background: var(--rl-surface-secondary);
   color: var(--rl-text-primary);
   font: inherit;
   font-size: var(--rl-type-control);
@@ -165,7 +165,7 @@
 
 .run-form-page select {
   padding-right: 31px;
-  background-image: linear-gradient(45deg, transparent 50%, #d7ad19 50%), linear-gradient(135deg, #d7ad19 50%, transparent 50%);
+  background-image: linear-gradient(45deg, transparent 50%, var(--rl-accent) 50%), linear-gradient(135deg, var(--rl-accent) 50%, transparent 50%);
   background-position: calc(100% - 16px) 22px, calc(100% - 11px) 22px;
   background-repeat: no-repeat;
   background-size: 5px 5px, 5px 5px;
@@ -178,9 +178,9 @@
 
 .run-form-page input:focus,
 .run-form-page select:focus {
-  border-color: rgba(215, 173, 25, 0.72);
-  background-color: #151513;
-  box-shadow: 0 0 0 3px rgba(215, 173, 25, 0.1);
+  border-color: rgba(var(--rl-accent-rgb), 0.72);
+  background-color: var(--rl-surface-card);
+  box-shadow: 0 0 0 3px rgba(var(--rl-accent-rgb), 0.1);
 }
 
 .run-form-page input:active,

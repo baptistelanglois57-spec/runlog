@@ -1,4 +1,5 @@
 import type { LucideIcon } from "lucide-react";
+import { theme } from "../styles/theme";
 
 type StatsCardProps = {
   title: string;
@@ -31,7 +32,7 @@ export default function StatsCard({
         >
           <Icon
             size={18}
-            color="#D4AF37"
+            color={theme.colors.primaryLight}
             strokeWidth={2.3}
           />
         </div>

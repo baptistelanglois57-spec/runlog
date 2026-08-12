@@ -73,7 +73,7 @@ export default function ExerciseLibraryModal({
       style={{
         position: "fixed",
         inset: 0,
-        background: "rgba(0,0,0,.75)",
+        background: "rgba(12,11,11,.75)",
         backdropFilter: "blur(8px)",
         display: "flex",
         justifyContent: "center",
@@ -241,7 +241,7 @@ export default function ExerciseLibraryModal({
               border: "none",
               background:
                 theme.colors.primary,
-              color: "#000",
+              color: theme.colors.text,
               fontWeight: 700,
               cursor: "pointer",
               fontSize: Typography.button,

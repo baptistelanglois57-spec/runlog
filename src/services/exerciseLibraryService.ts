@@ -7,6 +7,22 @@ import type {
 
 const TABLE = "exercise_library";
 
+type ExerciseLibraryRow = {
+  id: string;
+  name: string;
+  muscle_group: MuscleGroup;
+  created_at: string;
+};
+
+function mapExercise(exercise: ExerciseLibraryRow): ExerciseLibrary {
+  return {
+    id: exercise.id,
+    name: exercise.name,
+    muscleGroup: exercise.muscle_group,
+    createdAt: exercise.created_at,
+  };
+}
+
 export async function getExercises(): Promise<
   ExerciseLibrary[]
 > {
@@ -25,16 +41,7 @@ export async function getExercises(): Promise<
     return [];
   }
 
-  return (data ?? []).map(
-    (exercise: any) => ({
-      id: exercise.id,
-      name: exercise.name,
-      muscleGroup:
-        exercise.muscle_group,
-      createdAt:
-        exercise.created_at,
-    })
-  );
+  return (data ?? []).map(mapExercise);
 }
 
 export async function getExerciseNames(): Promise<
@@ -50,40 +57,46 @@ export async function getExerciseNames(): Promise<
 export async function addExercise(
   name: string,
   muscleGroup: MuscleGroup
-): Promise<void> {
+): Promise<ExerciseLibrary | null> {
   const cleanName =
     name.trim();
 
   if (!cleanName) {
-    return;
+    return null;
   }
 
   const { data: existing } =
     await supabase
       .from(TABLE)
-      .select("id")
+      .select("*")
       .ilike("name", cleanName)
       .maybeSingle();
 
   if (existing) {
-    return;
+    return mapExercise(existing);
   }
 
-  const { error } =
+  const { data, error } =
     await supabase
       .from(TABLE)
       .insert({
         name: cleanName,
         muscle_group:
           muscleGroup,
-      });
+      })
+      .select("*")
+      .single();
 
   if (error) {
     console.error(
       "Erreur addExercise :",
       error
     );
+
+    return null;
   }
+
+  return data ? mapExercise(data) : null;
 }
 
 export async function updateExercise(

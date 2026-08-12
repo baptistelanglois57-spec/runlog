@@ -41,7 +41,7 @@ export default function EditAthleteModal({
         inset: 0,
 
         background:
-          "rgba(0,0,0,.65)",
+          "rgba(12,11,11,.65)",
 
         display: "flex",
 
@@ -112,7 +112,7 @@ export default function EditAthleteModal({
             border: `1px solid ${theme.colors.border}`,
 
             background:
-              "#111",
+              theme.colors.surfaceSecondary,
 
             color:
               theme.colors.text,
@@ -169,7 +169,7 @@ export default function EditAthleteModal({
               background:
                 theme.colors.primary,
 
-              color: "#000",
+              color: theme.colors.text,
 
               fontWeight: 700,
 

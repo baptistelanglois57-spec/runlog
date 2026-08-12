@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import { Clock3, Plus, Trash2 } from "lucide-react";
 
@@ -15,6 +15,7 @@ import type { GymSession } from "../../types/GymSession";
 import type { GymExercise } from "../../types/Gym/GymExercise";
 
 import { addExercise } from "../../services/exerciseLibraryService";
+import { resolveExerciseIdentity } from "../../utils/gymExerciseHistory";
 
 type Props = {
   exercise: GymExercise;
@@ -27,9 +28,10 @@ type Props = {
 
   index: number;
 
-  onExerciseNameChange: (
+  onExerciseSelectionChange: (
     exerciseIndex: number,
-    value: string
+    libraryExerciseId: string | null,
+    exerciseName: string
   ) => void;
 
   onSetChange: (
@@ -70,7 +72,7 @@ export default function ExerciseCard({
   exerciseLibrary,
   refreshExercises,
   index,
-  onExerciseNameChange,
+  onExerciseSelectionChange,
   onSetChange,
   onAddSet,
   onDeleteSet,
@@ -82,8 +84,19 @@ export default function ExerciseCard({
   const [showLibraryModal, setShowLibraryModal] =
     useState(false);
 
-  const [selectedGroup, setSelectedGroup] =
-    useState<MuscleGroup>("Pectoraux");
+  const resolution = useMemo(
+    () => resolveExerciseIdentity(exercise, exerciseLibrary),
+    [exercise, exerciseLibrary]
+  );
+
+  const resolvedLibraryExercise = useMemo(
+    () => exerciseLibrary.find((item) => item.id === resolution.exerciseId) ?? null,
+    [exerciseLibrary, resolution.exerciseId]
+  );
+
+  const [selectedGroup, setSelectedGroup] = useState<MuscleGroup>(
+    resolvedLibraryExercise?.muscleGroup ?? "Pectoraux"
+  );
 
   const filteredExercises =
     useMemo(
@@ -99,36 +112,21 @@ export default function ExerciseCard({
       ]
     );
 
-  useEffect(() => {
-    if (
-      exercise.name &&
-      !filteredExercises.some(
-        (e) =>
-          e.name === exercise.name
-      )
-    ) {
-      onExerciseNameChange(
-        index,
-        ""
-      );
-    }
-  }, [selectedGroup]);
-
   async function handleCreateExercise(
     value: string,
     muscleGroup: MuscleGroup
   ) {
-    await addExercise(
+    const createdExercise = await addExercise(
       value,
       muscleGroup
     );
 
     await refreshExercises();
 
-    onExerciseNameChange(
-      index,
-      value
-    );
+    if (createdExercise) {
+      setSelectedGroup(createdExercise.muscleGroup);
+      onExerciseSelectionChange(index, createdExercise.id, createdExercise.name);
+    }
 
     setShowLibraryModal(false);
   }
@@ -152,7 +150,14 @@ export default function ExerciseCard({
             <span>Groupe musculaire</span>
             <select
               value={selectedGroup}
-              onChange={(event) => setSelectedGroup(event.target.value as MuscleGroup)}
+              onChange={(event) => {
+                const nextGroup = event.target.value as MuscleGroup;
+                setSelectedGroup(nextGroup);
+
+                if (resolvedLibraryExercise?.muscleGroup !== nextGroup) {
+                  onExerciseSelectionChange(index, null, "");
+                }
+              }}
             >
                 {muscleGroups.map(
                   (group) => (
@@ -169,8 +174,17 @@ export default function ExerciseCard({
           <label>
             <span>Exercice</span>
             <select
-              value={exercise.name}
-              onChange={(event) => onExerciseNameChange(index, event.target.value)}
+              value={resolution.exerciseId ?? ""}
+              onChange={(event) => {
+                const selectedExercise = exerciseLibrary.find(
+                  (item) => item.id === event.target.value
+                );
+                onExerciseSelectionChange(
+                  index,
+                  selectedExercise?.id ?? null,
+                  selectedExercise?.name ?? ""
+                );
+              }}
             >
                 <option value="">
                   Choisir un exercice
@@ -182,9 +196,7 @@ export default function ExerciseCard({
                       key={
                         exercise.id
                       }
-                      value={
-                        exercise.name
-                      }
+                      value={exercise.id}
                     >
                       {exercise.name}
                     </option>
@@ -237,6 +249,8 @@ export default function ExerciseCard({
           setShowHistory(false)
         }
         exerciseName={exercise.name}
+        exerciseId={resolution.exerciseId}
+        exerciseLibrary={exerciseLibrary}
         sessions={historySessions}
       />
 

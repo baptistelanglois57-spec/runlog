@@ -29,7 +29,7 @@ export default function Button({
   const colors = {
     primary: theme.colors.primary,
     success: theme.colors.primary,
-    danger: "#ef4444",
+    danger: theme.colors.danger,
     secondary: theme.colors.card,
   };
 
@@ -42,7 +42,7 @@ export default function Button({
         color:
           variant === "secondary"
             ? theme.colors.text
-            : "#000",
+            : theme.colors.text,
 
         border:
           variant === "secondary"

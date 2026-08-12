@@ -274,7 +274,7 @@ value={
           background:
             theme.colors.primary,
 
-          color: "#000",
+          color: theme.colors.text,
 
           border: "none",
 

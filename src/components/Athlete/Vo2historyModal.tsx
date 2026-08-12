@@ -26,7 +26,7 @@ export default function Vo2HistoryModal({
         position: "fixed",
         inset: 0,
 
-        background: "rgba(0,0,0,.65)",
+        background: "rgba(12,11,11,.65)",
 
         display: "flex",
         justifyContent: "center",

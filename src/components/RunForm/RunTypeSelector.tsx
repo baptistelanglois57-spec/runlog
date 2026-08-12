@@ -59,7 +59,7 @@ export default function RunTypeSelector({
         <h3
           style={{
             margin: 0,
-            color: "white",
+            color: theme.colors.text,
             fontSize: "22px",
           }}
         >
@@ -70,7 +70,7 @@ export default function RunTypeSelector({
           style={{
             marginTop: "10px",
             marginBottom: 0,
-            color: "rgba(255,255,255,.85)",
+            color: "rgba(243,234,220,.85)",
             fontSize: "15px",
           }}
         >
@@ -92,7 +92,7 @@ export default function RunTypeSelector({
         icon="🏃"
         title="Entraînement"
         subtitle="Séance personnelle"
-        color="#a1a1a1"
+        color={theme.colors.primary}
         onClick={() =>
           onChange("training")
         }
@@ -103,7 +103,7 @@ export default function RunTypeSelector({
         icon="🏁"
         title="Compétition"
         subtitle="Course officielle"
-        color="#a1a1a1"
+        color={theme.colors.primary}
         onClick={() =>
           onChange("race")
         }

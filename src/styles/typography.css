@@ -145,7 +145,7 @@
 .app-shell .pace-record-card__row > span,
 .app-shell .discipline-area-card__score,
 .app-shell .gym-comparison-exercise__evolution > div:first-child {
-  color: var(--rl-accent);
+  color: var(--rl-accent-text);
 }
 
 .app-shell .home-stat-card__unit,
@@ -271,7 +271,7 @@
 
 .note-card__date,
 .note-details__date {
-  color: var(--rl-accent);
+  color: var(--rl-accent-text);
   font-size: var(--rl-type-caption);
 }
 

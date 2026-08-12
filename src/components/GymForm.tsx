@@ -75,60 +75,68 @@ const [
       },
     ]);
 
+  async function refreshExerciseLibrary() {
+    const library = await getExercises();
+    setExerciseLibrary(
+      library.filter((exercise) => exercise.muscleGroup !== "Course à pied")
+    );
+  }
+
   useEffect(() => {
-    loadData();
-  }, []);
+    let active = true;
 
-  async function loadData() {
- const [sessions, exercises] =
-  await Promise.all([
-    getGymSessions(),
-    getExercises(),
-  ]);
+    async function loadData() {
+      const [sessions, library] = await Promise.all([
+        getGymSessions(),
+        getExercises(),
+      ]);
 
-setHistorySessions(sessions);
+      if (!active) return;
 
-setExerciseLibrary(
-  exercises.filter(
-    (exercise) =>
-      exercise.muscleGroup !==
-      "Course à pied"
-  )
-);
-    if (editingId) {
-      const session =
-        await getGymSessionById(
-          editingId
-        );
+      setHistorySessions(sessions);
+      setExerciseLibrary(
+        library.filter((exercise) => exercise.muscleGroup !== "Course à pied")
+      );
 
-      if (session) {
-        setDate(session.date);
-        setName(session.name);
-        setComment(
-          session.comment ?? ""
-        );
-        setExercises(
-          session.exercises
-        );
+      if (editingId) {
+        const session = await getGymSessionById(editingId);
+
+        if (!active) return;
+
+        if (session) {
+          setDate(session.date);
+          setName(session.name);
+          setComment(session.comment ?? "");
+          setExercises(session.exercises);
+        }
       }
+
+      setLoading(false);
     }
 
-    setLoading(false);
-  }
+    loadData();
+
+    return () => {
+      active = false;
+    };
+  }, [editingId]);
+
     if (loading) {
     return null;
   }
 
-  function updateExerciseName(
+  function updateExerciseSelection(
     exerciseIndex: number,
-    value: string
+    libraryExerciseId: string | null,
+    exerciseName: string
   ) {
     setExercises((prev) =>
       prev.map((exercise, index) =>
         index === exerciseIndex
           ? {
               ...exercise,
-              name: value,
+              name: exerciseName,
+              libraryExerciseId: libraryExerciseId ?? undefined,
             }
           : exercise
       )
@@ -352,11 +360,11 @@ setExerciseLibrary(
   exerciseLibrary
 }
               refreshExercises={
-                loadData
+                refreshExerciseLibrary
               }
               index={index}
-              onExerciseNameChange={
-                updateExerciseName
+              onExerciseSelectionChange={
+                updateExerciseSelection
               }
               onSetChange={updateSet}
               onAddSet={addSet}

@@ -1,4 +1,5 @@
 import { Circle, CircleHelp, X } from "lucide-react";
+import { theme } from "../../styles/theme";
 
 type AgendaLegendModalProps = {
   isOpen: boolean;
@@ -8,7 +9,7 @@ type AgendaLegendModalProps = {
 const legendItems = [
   { color: "#3B82F6", title: "Entraînement" },
   { color: "#F59E0B", title: "Salle" },
-  { color: "#FFFFFF", title: "Course" },
+  { color: theme.colors.primaryLight, title: "Course" },
   { color: "#4CAF50", title: "Séance réalisée" },
   { color: "#EF4444", title: "Séance non réalisée" },
 ];

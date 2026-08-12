@@ -15,7 +15,7 @@ export default function Stat({
   return (
     <div
       style={{
-        background: "rgba(255,255,255,.02)",
+        background: "rgba(231,217,196,.02)",
 
         border: `1px solid ${theme.colors.border}`,
 

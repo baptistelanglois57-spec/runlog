@@ -21,7 +21,7 @@ function SummaryCard({ label, value, icon, tone = "default" }: SummaryCardProps)
 function ActivityScoreCard({ stats }: { stats: DisciplineStats }) {
   return <section className="discipline-score-card" aria-label="Score global de discipline">
     <div className="discipline-score-card__copy"><p>Score global</p><h2>Votre régularité<br />en un regard.</h2><span>{stats.completed} objectifs tenus sur {stats.planned}</span></div>
-    <div className="discipline-score-ring" style={{ background: `conic-gradient(#d4af37 ${stats.percentage}%, rgba(255,255,255,.09) 0)` }}><div><strong>{stats.percentage}<small>%</small></strong><span>respect</span></div></div>
+    <div className="discipline-score-ring" style={{ background: `conic-gradient(var(--rl-accent) ${stats.percentage}%, rgba(var(--rl-ivory-rgb),.09) 0)` }}><div><strong>{stats.percentage}<small>%</small></strong><span>respect</span></div></div>
   </section>;
 }
 

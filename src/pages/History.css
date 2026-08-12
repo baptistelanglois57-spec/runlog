@@ -1,8 +1,8 @@
 .history-page {
-  --history-surface: #171719;
-  --history-surface-raised: #1b1b1e;
-  --history-border: rgba(255, 255, 255, 0.075);
-  --history-border-strong: rgba(255, 255, 255, 0.11);
+  --history-surface: var(--rl-surface-card);
+  --history-surface-raised: var(--rl-surface-secondary);
+  --history-border: rgba(var(--rl-ivory-rgb), 0.075);
+  --history-border-strong: rgba(var(--rl-ivory-rgb), 0.11);
   width: min(100%, 720px);
   margin: 0 auto;
   animation: history-page-in 340ms ease both;
@@ -18,8 +18,8 @@
 .history-empty-state {
   border: 1px solid var(--history-border);
   border-radius: 24px;
-  background: linear-gradient(155deg, #19191c, #151517);
-  box-shadow: inset 0 1px rgba(255, 255, 255, 0.035);
+  background: linear-gradient(155deg, var(--rl-surface-secondary), var(--rl-surface-card));
+  box-shadow: inset 0 1px rgba(var(--rl-ivory-rgb), 0.035);
 }
 
 .history-loading {
@@ -53,13 +53,13 @@
   overflow: hidden;
   border: 1px solid var(--history-border);
   border-radius: 20px;
-  background: linear-gradient(155deg, #19191c, #151517);
-  box-shadow: inset 0 1px rgba(255, 255, 255, 0.035);
+  background: linear-gradient(155deg, var(--rl-surface-secondary), var(--rl-surface-card));
+  box-shadow: inset 0 1px rgba(var(--rl-ivory-rgb), 0.035);
 }
 
 .history-summary-card:first-child {
-  border-color: rgba(215, 173, 25, 0.18);
-  background: radial-gradient(circle at 0 0, rgba(215, 173, 25, 0.075), transparent 52%), linear-gradient(155deg, #1a1917, #151517);
+  border-color: rgba(var(--rl-accent-rgb), 0.18);
+  background: radial-gradient(circle at 0 0, rgba(var(--rl-accent-rgb), 0.075), transparent 52%), linear-gradient(155deg, var(--rl-surface-card), var(--rl-surface-card));
 }
 
 .history-summary-card__icon,
@@ -68,9 +68,9 @@
   display: grid;
   flex: 0 0 auto;
   place-items: center;
-  border: 1px solid rgba(215, 173, 25, 0.08);
-  background: rgba(215, 173, 25, 0.11);
-  color: var(--rl-accent);
+  border: 1px solid rgba(var(--rl-accent-rgb), 0.08);
+  background: rgba(var(--rl-accent-rgb), 0.11);
+  color: var(--rl-accent-text);
 }
 
 .history-summary-card__icon {
@@ -109,7 +109,7 @@
 
 .history-summary-card__copy small {
   margin-left: 3px;
-  color: var(--rl-accent);
+  color: var(--rl-accent-text);
   font-family: var(--rl-font-family);
   font-size: var(--rl-type-unit);
   font-weight: var(--rl-weight-bold);
@@ -124,8 +124,8 @@
   padding: 4px;
   border: 1px solid var(--history-border);
   border-radius: 18px;
-  background: #151517;
-  box-shadow: inset 0 1px rgba(255, 255, 255, 0.025);
+  background: var(--rl-surface-card);
+  box-shadow: inset 0 1px rgba(var(--rl-ivory-rgb), 0.025);
 }
 
 .history-filters__button {
@@ -155,14 +155,14 @@
 }
 
 .history-filters__button--active {
-  border-color: rgba(215, 173, 25, 0.2);
-  background: rgba(215, 173, 25, 0.13);
+  border-color: rgba(var(--rl-accent-rgb), 0.2);
+  background: rgba(var(--rl-accent-rgb), 0.13);
   color: var(--rl-text-primary);
-  box-shadow: inset 0 1px rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 1px rgba(var(--rl-ivory-rgb), 0.04);
 }
 
 .history-filters__button--active svg {
-  color: var(--rl-accent);
+  color: var(--rl-accent-text);
 }
 
 .history-filters__button:active,
@@ -195,16 +195,16 @@
   gap: 7px;
   padding: 0 13px;
   border-radius: 14px;
-  background: #18181a;
-  color: var(--rl-accent);
+  background: var(--rl-surface-secondary);
+  color: var(--rl-accent-text);
   font-size: var(--rl-type-caption);
   font-weight: var(--rl-weight-bold);
 }
 
 .history-export-button:active,
 .history-month__export:active {
-  border-color: rgba(215, 173, 25, 0.32);
-  background: rgba(215, 173, 25, 0.1);
+  border-color: rgba(var(--rl-accent-rgb), 0.32);
+  background: rgba(var(--rl-accent-rgb), 0.1);
 }
 
 .history-month-list {
@@ -216,14 +216,14 @@
   overflow: hidden;
   border: 1px solid var(--history-border);
   border-radius: 24px;
-  background: linear-gradient(155deg, #19191c, #151517);
-  box-shadow: inset 0 1px rgba(255, 255, 255, 0.035);
+  background: linear-gradient(155deg, var(--rl-surface-secondary), var(--rl-surface-card));
+  box-shadow: inset 0 1px rgba(var(--rl-ivory-rgb), 0.035);
   transition: border-color 200ms ease, background 200ms ease;
 }
 
 .history-month--open {
-  border-color: rgba(215, 173, 25, 0.19);
-  background: linear-gradient(155deg, #1a1a1d, #151517);
+  border-color: rgba(var(--rl-accent-rgb), 0.19);
+  background: linear-gradient(155deg, var(--rl-surface-secondary), var(--rl-surface-card));
 }
 
 .history-month__header {
@@ -287,12 +287,12 @@
 }
 
 .history-month__metric--accent {
-  color: var(--rl-accent);
+  color: var(--rl-accent-text);
 }
 
 .history-month__chevron {
   flex: 0 0 auto;
-  color: var(--rl-accent);
+  color: var(--rl-accent-text);
   transition: transform 200ms ease;
 }
 
@@ -306,37 +306,37 @@
   flex: 0 0 auto;
   padding: 0;
   border-radius: 13px;
-  background: #202023;
-  color: var(--rl-accent);
+  background: var(--rl-surface-secondary);
+  color: var(--rl-accent-text);
 }
 
 .history-month__runs {
   display: grid;
   gap: 9px;
   padding: 4px 10px 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.055);
+  border-top: 1px solid rgba(var(--rl-ivory-rgb), 0.055);
   animation: history-month-open 200ms ease both;
 }
 
 .history-run-card {
   padding: 14px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(var(--rl-ivory-rgb), 0.07);
   border-radius: 20px;
-  background: #1d1d20;
-  box-shadow: inset 0 1px rgba(255, 255, 255, 0.03);
+  background: var(--rl-surface-secondary);
+  box-shadow: inset 0 1px rgba(var(--rl-ivory-rgb), 0.03);
   transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
 }
 
 .history-run-card--race {
-  border-color: rgba(215, 173, 25, 0.16);
-  background: radial-gradient(circle at 100% 0, rgba(215, 173, 25, 0.06), transparent 44%), #1d1d20;
+  border-color: rgba(var(--rl-accent-rgb), 0.16);
+  background: radial-gradient(circle at 100% 0, rgba(var(--rl-accent-rgb), 0.06), transparent 44%), var(--rl-surface-secondary);
 }
 
 .history-run-card:active {
   transform: scale(0.988);
-  border-color: rgba(215, 173, 25, 0.25);
-  background: #212124;
+  border-color: rgba(var(--rl-accent-rgb), 0.25);
+  background: var(--rl-surface-secondary);
 }
 
 .history-run-card__header {
@@ -390,7 +390,7 @@
 }
 
 .history-run-card__date svg {
-  color: var(--rl-accent);
+  color: var(--rl-accent-text);
 }
 
 .history-run-card__distance {
@@ -432,7 +432,7 @@
   gap: 4px;
   padding: 6px 4px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(var(--rl-ivory-rgb), 0.07);
   border-radius: 14px;
   background: rgba(0, 0, 0, 0.16);
 }
@@ -442,14 +442,14 @@
   height: 23px;
   border: 0;
   border-radius: 8px;
-  background: rgba(215, 173, 25, 0.08);
+  background: rgba(var(--rl-accent-rgb), 0.08);
 }
 
 .history-mini-stat__value {
   display: block;
   max-width: 100%;
   overflow: hidden;
-  color: #ededee;
+  color: var(--rl-text-primary);
   font-size: var(--rl-type-caption);
   font-weight: var(--rl-weight-semibold);
   line-height: 1.15;
@@ -486,7 +486,7 @@
   gap: 10px;
   margin-top: 12px;
   padding-top: 11px;
-  border-top: 1px solid rgba(255, 255, 255, 0.055);
+  border-top: 1px solid rgba(var(--rl-ivory-rgb), 0.055);
 }
 
 .history-run-card__surface {
@@ -499,7 +499,7 @@
 }
 
 .history-run-card__surface svg {
-  color: var(--rl-accent);
+  color: var(--rl-accent-text);
 }
 
 .history-run-card__actions {
@@ -513,11 +513,11 @@
   height: 38px;
   padding: 0;
   border-radius: 12px;
-  background: #242427;
+  background: var(--rl-surface-secondary);
 }
 
 .history-run-card__action--edit {
-  color: var(--rl-accent);
+  color: var(--rl-accent-text);
 }
 
 .history-run-card__action--share {
@@ -529,13 +529,13 @@
 }
 
 .history-run-card__action--edit:active {
-  border-color: rgba(215, 173, 25, 0.32);
-  background: rgba(215, 173, 25, 0.1);
+  border-color: rgba(var(--rl-accent-rgb), 0.32);
+  background: rgba(var(--rl-accent-rgb), 0.1);
 }
 
 .history-run-card__action--share:active {
-  border-color: rgba(255, 255, 255, 0.18);
-  background: #2b2b2e;
+  border-color: rgba(var(--rl-ivory-rgb), 0.18);
+  background: var(--rl-border);
 }
 
 .history-run-card__action--delete:active {
@@ -559,10 +559,10 @@
   height: 42px;
   margin-bottom: 4px;
   place-items: center;
-  border: 1px solid rgba(215, 173, 25, 0.12);
+  border: 1px solid rgba(var(--rl-accent-rgb), 0.12);
   border-radius: 14px;
-  background: rgba(215, 173, 25, 0.1);
-  color: var(--rl-accent);
+  background: rgba(var(--rl-accent-rgb), 0.1);
+  color: var(--rl-accent-text);
 }
 
 .history-empty-state h2 {

@@ -21,7 +21,7 @@
 
 .athlete-page__header h1 {
   margin: 0;
-  color: #fff;
+  color: var(--rl-text-primary);
   font-family: var(--rl-font-family);
   font-size: var(--rl-type-page-title);
   font-weight: var(--rl-weight-display);
@@ -41,9 +41,9 @@
 }
 
 .athlete-icon-button {
-  border: 1px solid #303034;
-  background: #18181a;
-  color: #fff;
+  border: 1px solid var(--rl-border-strong);
+  background: var(--rl-surface-secondary);
+  color: var(--rl-text-primary);
   cursor: pointer;
   transition: transform 180ms ease, background 180ms ease;
 }
@@ -55,13 +55,13 @@
 }
 
 .athlete-icon-button:active {
-  background: #242427;
+  background: var(--rl-surface-secondary);
 }
 
 .athlete-header-mark {
-  border: 1px solid rgba(215, 173, 25, 0.18);
-  background: rgba(215, 173, 25, 0.1);
-  color: var(--rl-accent);
+  border: 1px solid rgba(var(--rl-accent-rgb), 0.18);
+  background: rgba(var(--rl-accent-rgb), 0.1);
+  color: var(--rl-accent-text);
 }
 
 .athlete-section {
@@ -77,7 +77,7 @@
 
 .athlete-section__heading h2 {
   margin: 0;
-  color: #fff;
+  color: var(--rl-text-primary);
   font-family: var(--rl-font-family);
   font-size: var(--rl-type-section-title);
   font-weight: var(--rl-weight-bold);
@@ -103,10 +103,10 @@
   min-width: 0;
   min-height: 125px;
   padding: 14px;
-  border: 1px solid #29292d;
+  border: 1px solid var(--rl-border);
   border-radius: 20px;
-  background: #171719;
-  color: #fff;
+  background: var(--rl-surface-card);
+  color: var(--rl-text-primary);
   font-family: inherit;
   text-align: left;
   cursor: pointer;
@@ -114,12 +114,12 @@
 }
 
 .athlete-metric-card:hover {
-  border-color: #39393e;
+  border-color: var(--rl-border-strong);
 }
 
 .athlete-metric-card--emphasis {
-  border-color: #393221;
-  background: #1a1916;
+  border-color: var(--rl-accent-border);
+  background: var(--rl-surface-card);
 }
 
 .athlete-metric-card__icon {
@@ -128,13 +128,13 @@
   height: 29px;
   place-items: center;
   border-radius: 10px;
-  background: #29292d;
-  color: #d4d3d6;
+  background: var(--rl-border);
+  color: var(--rl-text-primary);
 }
 
 .athlete-metric-card--emphasis .athlete-metric-card__icon {
-  background: rgba(215, 173, 25, 0.13);
-  color: var(--rl-accent);
+  background: rgba(var(--rl-accent-rgb), 0.13);
+  color: var(--rl-accent-text);
 }
 
 .athlete-metric-card strong {
@@ -142,7 +142,7 @@
   align-self: end;
   margin-top: 14px;
   overflow: visible;
-  color: #fff;
+  color: var(--rl-text-primary);
   font-family: var(--rl-font-family);
   font-size: var(--rl-type-metric);
   font-weight: var(--rl-weight-display);
@@ -176,7 +176,7 @@
   display: block;
   margin-top: 7px;
   overflow: hidden;
-  color: #e7e6e8;
+  color: var(--rl-text-primary);
   font-size: var(--rl-type-caption);
   font-weight: var(--rl-weight-bold);
   text-overflow: ellipsis;
@@ -210,9 +210,9 @@
   align-items: center;
   gap: 11px;
   padding: 14px;
-  border: 1px solid #29292d;
+  border: 1px solid var(--rl-border);
   border-radius: 20px;
-  background: #171719;
+  background: var(--rl-surface-card);
   color: var(--rl-text-secondary);
   font: inherit;
   text-align: left;
@@ -221,7 +221,7 @@
 }
 
 .athlete-history-link:hover {
-  border-color: #39393e;
+  border-color: var(--rl-border-strong);
 }
 
 .athlete-history-link__icon {
@@ -230,8 +230,8 @@
   height: 36px;
   place-items: center;
   border-radius: 12px;
-  background: rgba(215, 173, 25, 0.12);
-  color: var(--rl-accent);
+  background: rgba(var(--rl-accent-rgb), 0.12);
+  color: var(--rl-accent-text);
 }
 
 .athlete-history-link__copy {
@@ -241,7 +241,7 @@
 }
 
 .athlete-history-link strong {
-  color: #fff;
+  color: var(--rl-text-primary);
   font-size: var(--rl-type-card-title);
   font-weight: var(--rl-weight-bold);
   letter-spacing: -0.025em;
@@ -256,7 +256,7 @@
 }
 
 .athlete-history-link > svg {
-  color: #76767d;
+  color: var(--rl-text-muted);
 }
 
 .athlete-page__loading {
@@ -272,8 +272,8 @@
   width: 36px;
   height: 36px;
   margin: 0 auto;
-  border: 3px solid #2c2b28;
-  border-top-color: var(--rl-accent);
+  border: 3px solid var(--rl-border);
+  border-top-color: var(--rl-accent-text);
   border-radius: 50%;
   animation: athlete-spin 0.8s linear infinite;
 }
