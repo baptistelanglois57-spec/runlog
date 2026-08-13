@@ -317,9 +317,22 @@
   white-space: nowrap;
 }
 
-.run-share-card__footer time {
+.run-share-card__footer-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.run-share-card__footer time,
+.run-share-card__footer-meta > span {
   color: var(--rl-text-muted);
   font-size: var(--rl-type-caption);
+}
+
+.run-share-card__footer-meta > span {
+  color: var(--rl-accent-text);
+  font-weight: var(--rl-weight-bold);
 }
 
 .run-share-modal__actions {

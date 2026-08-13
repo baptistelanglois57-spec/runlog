@@ -8,6 +8,14 @@ import App from "./App";
 import "./styles/typography.css";
 import { theme } from "./styles/theme";
 
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/runlog-sw.js", { scope: "/" }).catch((error) => {
+      console.warn("Le service worker RunLog n'a pas pu être enregistré.", error);
+    });
+  });
+}
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>

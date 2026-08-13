@@ -4,6 +4,7 @@ import CalendarDay from "./CalendarDay";
 import EventModal from "./EventModal";
 import type { AgendaDayStatus } from "../../utils/agenda";
 import { getEvents, saveEvent, updateEvent, deleteEvent } from "../../services/eventService";
+import { syncEventReminders } from "../../services/eventReminderService";
 import { getRuns } from "../../services/runService";
 import { getGymSessions } from "../../services/gymService";
 import { getAgendaDayStatus } from "../../utils/agenda";
@@ -45,9 +46,12 @@ export default function CalendarGrid({ month }: CalendarGridProps) {
     setRuns(runData);
     setGymSessions(gymData);
     setLoading(false);
+    void syncEventReminders(eventData);
   }
 
   useEffect(() => {
+    // Chargement asynchrone initial ; les mises à jour ont lieu après la requête.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadData();
   }, []);
 

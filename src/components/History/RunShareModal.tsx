@@ -179,8 +179,10 @@ export default function RunShareModal({ run, onClose }: RunShareModalProps) {
                 <Gauge size={17} strokeWidth={2.2} />
                 <strong>{data.activity}</strong>
               </div>
-              <time>{data.date}</time>
-              <span aria-hidden="true" />
+              <div className="run-share-card__footer-meta">
+                <time>{data.date}</time>
+                {data.surface && <span>{data.surface}</span>}
+              </div>
             </footer>
           </article>
         </div>

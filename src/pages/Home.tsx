@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import Header from "../components/Header";
 import StatsCard from "../components/StatsCard";
@@ -42,14 +44,17 @@ import NotificationModal from "../components/Notifications/NotificationModal";
 import {
   getNotifications,
   markAllAsRead,
+  markNotificationAsRead,
   cleanupNotifications,
   cleanupLegacyRecordNotificationDuplicates,
+  deleteNotification,
 } from "../services/notificationService";
 
 import { theme } from "../styles/theme";
 import "./Home.css";
 
 export default function Home() {
+  const navigate = useNavigate();
   const [runs, setRuns] = useState<Run[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
   const [notifications, setNotifications] =
@@ -107,6 +112,8 @@ const hasUnreadNotifications =
         className="home-page__header"
       >
         <button
+          type="button"
+          aria-label="Ouvrir les notifications"
           onClick={() =>
             setNotificationOpen(true)
           }
@@ -183,6 +190,32 @@ const hasUnreadNotifications =
             await getNotifications();
 
           setNotifications(updated);
+        }}
+        onOpenNotification={async (notification) => {
+          if (notification.entity !== "event-reminder" && notification.entity !== "daily-schedule") return;
+          if (!notification.read) {
+            await markNotificationAsRead(notification.id);
+            setNotifications((current) => current.map((item) =>
+              item.id === notification.id ? { ...item, read: true } : item
+            ));
+          }
+          setNotificationOpen(false);
+          navigate("/agenda");
+        }}
+        onDeleteNotification={async (notification) => {
+          setNotifications((current) => current.filter((item) => item.id !== notification.id));
+          const deleted = await deleteNotification(notification.id);
+          if (deleted) {
+            toast.success("Notification supprimée");
+            return;
+          }
+
+          setNotifications((current) =>
+            [...current, notification].sort(
+              (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            )
+          );
+          toast.error("La notification n’a pas pu être supprimée");
         }}
       />
       </div>

@@ -1,5 +1,6 @@
 import { supabase } from "../lib/supabase";
 import type { Event } from "../types/Event";
+import { cancelEventReminder, syncEventReminder } from "./eventReminderService";
 
 const TABLE = "events";
 
@@ -24,7 +25,10 @@ export async function saveEvent(event: Event): Promise<void> {
 
   if (error) {
     console.error("Erreur saveEvent :", error);
+    return;
   }
+
+  await syncEventReminder(event);
 }
 
 export async function updateEvent(event: Event): Promise<void> {
@@ -32,6 +36,7 @@ export async function updateEvent(event: Event): Promise<void> {
     .from(TABLE)
     .update({
       date: event.date,
+      time: event.time ?? null,
       type: event.type,
       name: event.name,
       notes: event.notes,
@@ -40,7 +45,10 @@ export async function updateEvent(event: Event): Promise<void> {
 
   if (error) {
     console.error("Erreur updateEvent :", error);
+    return;
   }
+
+  await syncEventReminder(event);
 }
 
 export async function deleteEvent(id: string): Promise<void> {
@@ -51,7 +59,10 @@ export async function deleteEvent(id: string): Promise<void> {
 
   if (error) {
     console.error("Erreur deleteEvent :", error);
+    return;
   }
+
+  await cancelEventReminder(id);
 }
 
 export async function getEventByDate(

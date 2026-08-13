@@ -1,8 +1,10 @@
 import { ArrowLeft, Bell } from "lucide-react";
+import { useState } from "react";
 import { createPortal } from "react-dom";
 
 import type { Notification } from "../../types/Notification";
 import NotificationCard from "./NotificationCard";
+import PushNotificationToggle from "./PushNotificationToggle";
 import "./Notifications.css";
 
 type Props = {
@@ -10,6 +12,8 @@ type Props = {
   notifications: Notification[];
   onClose: () => void;
   onReadAll: () => void;
+  onOpenNotification?: (notification: Notification) => void;
+  onDeleteNotification: (notification: Notification) => void;
 };
 
 export default function NotificationModal({
@@ -17,7 +21,10 @@ export default function NotificationModal({
   notifications,
   onClose,
   onReadAll,
+  onOpenNotification,
+  onDeleteNotification,
 }: Props) {
+  const [openSwipeId, setOpenSwipeId] = useState<string | null>(null);
   if (!open) return null;
 
   return createPortal(
@@ -28,6 +35,15 @@ export default function NotificationModal({
         aria-modal="true"
         aria-label="Notifications"
         onClick={(event) => event.stopPropagation()}
+        onPointerDown={(event) => {
+          const target = event.target as Element;
+          const touchedNotificationId = target
+            .closest<HTMLElement>(".notification-swipe")
+            ?.dataset.notificationId;
+          if (openSwipeId && touchedNotificationId !== openSwipeId) {
+            setOpenSwipeId(null);
+          }
+        }}
       >
         <header className="notifications-sheet__header">
           <button type="button" aria-label="Retour" onClick={onClose}>
@@ -47,18 +63,32 @@ export default function NotificationModal({
             </div>
           ) : (
             notifications.map((notification) => (
-              <NotificationCard key={notification.id} notification={notification} />
+              <NotificationCard
+                key={notification.id}
+                notification={notification}
+                onOpen={onOpenNotification}
+                onDelete={(item) => {
+                  setOpenSwipeId(null);
+                  onDeleteNotification(item);
+                }}
+                isSwipeOpen={openSwipeId === notification.id}
+                onSwipeOpen={() => setOpenSwipeId(notification.id)}
+                onSwipeClose={() => setOpenSwipeId(null)}
+              />
             ))
           )}
         </div>
 
-        <button
-          className="notifications-sheet__read-all"
-          type="button"
-          onClick={onReadAll}
-        >
-          Tout marquer comme lu
-        </button>
+        <footer className="notifications-sheet__footer">
+          <PushNotificationToggle />
+          <button
+            className="notifications-sheet__read-all"
+            type="button"
+            onClick={onReadAll}
+          >
+            Tout marquer comme lu
+          </button>
+        </footer>
       </section>
     </div>,
     document.body

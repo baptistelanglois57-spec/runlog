@@ -40,7 +40,7 @@ export default function EventDetails({
           <h2>{label}</h2>
           <p>
             <CalendarDays size={14} />
-            {displayDate}
+            {displayDate}{event.time ? ` · ${event.time}` : ""}
           </p>
         </div>
       </header>

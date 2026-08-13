@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import type { ReactNode } from "react";
 
 import { getRuns } from "../services/runService";
 
@@ -36,7 +37,12 @@ import {
   getBestPaceHeartRateZone,
 } from "../utils/records";
 
-import { getAveragePace, getTotalElevation } from "../utils/stats";
+import {
+  getAveragePace,
+  getTerrainVolumes,
+  getTotalElevation,
+  type TerrainVolumePeriod,
+} from "../utils/stats";
 import PaceRecordCard from "../components/Records/PaceRecordCard";
 import "./Records.css";
 
@@ -44,6 +50,7 @@ export default function Records() {
   const [runs, setRuns] = useState<Run[]>([]);
   const [loading, setLoading] =
     useState(true);
+  const [terrainPeriod, setTerrainPeriod] = useState<TerrainVolumePeriod>("total");
 
   async function loadRuns() {
     const data = await getRuns();
@@ -89,6 +96,7 @@ export default function Records() {
 
   const totalElevation =
     getTotalElevation(runs);
+  const terrainVolumes = getTerrainVolumes(runs, terrainPeriod);
 
   const hr130 =
     getBestPaceHeartRateZone(
@@ -440,6 +448,50 @@ export default function Records() {
       />
     </RecordSection>
 
+    <RecordSection title="Répartition terrain" fullWidth>
+      <section className="terrain-volumes" aria-label="Volumes Route et Trail">
+        <div className="terrain-volumes__periods" role="group" aria-label="Période">
+          {([
+            ["month", "Mois"],
+            ["year", "Année"],
+            ["total", "Total"],
+          ] as const).map(([period, label]) => (
+            <button
+              key={period}
+              className={terrainPeriod === period ? "terrain-volumes__period terrain-volumes__period--active" : "terrain-volumes__period"}
+              type="button"
+              onClick={() => setTerrainPeriod(period)}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+
+        <div className="terrain-volumes__list">
+          <TerrainVolumeRow
+            icon={<Route size={18} />}
+            label="Route"
+            volume={terrainVolumes.road}
+            totalDistance={terrainVolumes.total.distance}
+          />
+          <TerrainVolumeRow
+            icon={<Mountain size={18} />}
+            label="Trail"
+            volume={terrainVolumes.trail}
+            totalDistance={terrainVolumes.total.distance}
+          />
+          {terrainVolumes.unknown.count > 0 && (
+            <TerrainVolumeRow
+              icon={<LockKeyhole size={18} />}
+              label="Non classé"
+              volume={terrainVolumes.unknown}
+              totalDistance={terrainVolumes.total.distance}
+            />
+          )}
+        </div>
+      </section>
+    </RecordSection>
+
     {/* COMPÉTITIONS */}
 
     <RecordSection title="Compétitions" variant="list">
@@ -513,4 +565,26 @@ export default function Records() {
     </RecordSection>
   </main>
 );
+}
+
+type TerrainVolumeRowProps = {
+  icon: ReactNode;
+  label: string;
+  volume: { count: number; distance: number; elevation: number };
+  totalDistance: number;
+};
+
+function TerrainVolumeRow({ icon, label, volume, totalDistance }: TerrainVolumeRowProps) {
+  const share = totalDistance > 0 ? Math.round((volume.distance / totalDistance) * 100) : 0;
+
+  return (
+    <div className="terrain-volumes__row">
+      <span className="terrain-volumes__icon" aria-hidden="true">{icon}</span>
+      <div className="terrain-volumes__copy">
+        <strong>{label}</strong>
+        <span>{volume.count} {volume.count > 1 ? "sorties" : "sortie"} · {volume.elevation.toLocaleString("fr-FR")} m D+{totalDistance > 0 ? ` · ${share} %` : ""}</span>
+      </div>
+      <strong className="terrain-volumes__distance">{volume.distance.toFixed(1)} km</strong>
+    </div>
+  );
 }

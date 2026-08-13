@@ -32,6 +32,7 @@ export default function EventForm({
 }: EventFormProps) {
   const [name, setName] = useState(event?.name ?? "");
   const [notes, setNotes] = useState(event?.notes ?? "");
+  const [time, setTime] = useState(event?.time ?? "");
   const isEditing = !!event;
   const { label, Icon } = getEventPresentation(type);
 
@@ -46,6 +47,7 @@ export default function EventForm({
       type,
       name: name.trim(),
       notes: notes.trim(),
+      time: time || undefined,
     });
   }
 
@@ -87,6 +89,18 @@ export default function EventForm({
             }
           />
         </div>
+
+        {(type === "training" || type === "race") && (
+          <div>
+            <FormLabel>Heure (facultative)</FormLabel>
+            <InputField
+              type="time"
+              value={time}
+              onChange={(input) => setTime(input.target.value)}
+              aria-label="Heure de l'événement"
+            />
+          </div>
+        )}
 
         <div>
           <FormLabel>Notes</FormLabel>

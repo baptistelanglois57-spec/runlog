@@ -10,6 +10,7 @@ export type RunSharePresentation = {
   heartRate: string | null;
   activity: string;
   activityKind: string;
+  surface: string | null;
   date: string;
   competitionName: string | null;
   ranking: string | null;
@@ -48,6 +49,7 @@ export function getRunSharePresentation(run: Run): RunSharePresentation {
     heartRate: run.averageHeartRate ? `${run.averageHeartRate} bpm` : null,
     activity: cleanActivityName(run.name),
     activityKind: run.type === "race" ? "Compétition" : "Entraînement",
+    surface: run.surface === "road" ? "Route" : run.surface === "trail" ? "Trail" : null,
     date: formatLongDate(run.date),
     competitionName: run.type === "race" && run.competitionName ? run.competitionName : null,
     ranking: run.type === "race" ? ranking : null,
@@ -214,6 +216,11 @@ export async function createRunShareImage(run: Run) {
   context.fillStyle = theme.colors.textSecondary;
   context.font = "600 28px -apple-system, BlinkMacSystemFont, sans-serif";
   context.fillText(data.date, 84, footerY + 62);
+  if (data.surface) {
+    context.textAlign = "right";
+    context.fillText(data.surface, 996, footerY + 62);
+    context.textAlign = "left";
+  }
 
   context.fillStyle = theme.colors.primary;
   roundedRect(context, 84, 1230, 110, 8, 4);

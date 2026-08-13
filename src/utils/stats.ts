@@ -1,5 +1,84 @@
 import type { Run } from "../types/Run";
 
+export type TerrainVolumePeriod = "month" | "year" | "total";
+
+export type TerrainVolume = {
+  count: number;
+  distance: number;
+  elevation: number;
+};
+
+export type TerrainVolumes = {
+  road: TerrainVolume;
+  trail: TerrainVolume;
+  unknown: TerrainVolume;
+  total: TerrainVolume;
+};
+
+const EMPTY_TERRAIN_VOLUME: TerrainVolume = {
+  count: 0,
+  distance: 0,
+  elevation: 0,
+};
+
+function isInTerrainVolumePeriod(
+  run: Run,
+  period: TerrainVolumePeriod,
+  referenceDate: Date
+) {
+  if (period === "total") return true;
+  const date = new Date(run.date);
+  if (Number.isNaN(date.getTime())) return false;
+
+  if (period === "year") {
+    return date.getFullYear() === referenceDate.getFullYear();
+  }
+
+  return date.getFullYear() === referenceDate.getFullYear()
+    && date.getMonth() === referenceDate.getMonth();
+}
+
+/**
+ * Répartition centralisée des sorties running par terrain réel. Les anciennes
+ * données sans terrain sont volontairement comptées à part, jamais forcées en Route.
+ */
+export function getTerrainVolumes(
+  runs: Run[],
+  period: TerrainVolumePeriod = "total",
+  referenceDate = new Date()
+): TerrainVolumes {
+  const volumes: TerrainVolumes = {
+    road: { ...EMPTY_TERRAIN_VOLUME },
+    trail: { ...EMPTY_TERRAIN_VOLUME },
+    unknown: { ...EMPTY_TERRAIN_VOLUME },
+    total: { ...EMPTY_TERRAIN_VOLUME },
+  };
+
+  runs.forEach((run) => {
+    if (run.type === "gym" || !isInTerrainVolumePeriod(run, period, referenceDate)) {
+      return;
+    }
+
+    const distance = Number(run.distance);
+    const elevation = Number(run.elevation);
+    const safeDistance = Number.isFinite(distance) && distance > 0 ? distance : 0;
+    const safeElevation = Number.isFinite(elevation) && elevation > 0 ? elevation : 0;
+    const surface = (run as Partial<Run>).surface;
+    const target = surface === "road" ? volumes.road
+      : surface === "trail" ? volumes.trail
+        : volumes.unknown;
+
+    target.count += 1;
+    target.distance += safeDistance;
+    target.elevation += safeElevation;
+    volumes.total.count += 1;
+    volumes.total.distance += safeDistance;
+    volumes.total.elevation += safeElevation;
+  });
+
+  return volumes;
+}
+
 /* ===========================
    DISTANCE SEMAINE
    Lundi -> Dimanche

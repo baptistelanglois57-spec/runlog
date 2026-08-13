@@ -136,3 +136,102 @@
 .pace-record-card__highlight {
   background: var(--rl-surface-card);
 }
+
+.terrain-volumes {
+  overflow: hidden;
+  border: 1px solid var(--rl-border);
+  border-radius: 22px;
+  background: var(--rl-surface-card);
+}
+
+.terrain-volumes__periods {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 5px;
+  margin: 12px;
+  padding: 4px;
+  border-radius: 14px;
+  background: var(--rl-surface-secondary);
+}
+
+.terrain-volumes__period {
+  min-height: 34px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--rl-text-muted);
+  font: inherit;
+  font-size: var(--rl-type-caption);
+  font-weight: var(--rl-weight-bold);
+  cursor: pointer;
+  transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.terrain-volumes__period--active {
+  background: var(--rl-accent);
+  color: var(--rl-text-primary);
+}
+
+.terrain-volumes__period:active {
+  transform: scale(0.96);
+}
+
+.terrain-volumes__list {
+  display: grid;
+  border-top: 1px solid var(--rl-border);
+}
+
+.terrain-volumes__row {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: 38px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 16px;
+  border-bottom: 1px solid var(--rl-border);
+}
+
+.terrain-volumes__row:last-child {
+  border-bottom: 0;
+}
+
+.terrain-volumes__icon {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 11px;
+  background: rgba(var(--rl-accent-rgb), 0.12);
+  color: var(--rl-accent-text);
+}
+
+.terrain-volumes__copy {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.terrain-volumes__copy > strong {
+  color: var(--rl-text-primary);
+  font-size: var(--rl-type-card-title);
+  font-weight: var(--rl-weight-bold);
+}
+
+.terrain-volumes__copy > span {
+  overflow: hidden;
+  color: var(--rl-text-muted);
+  font-size: var(--rl-type-caption);
+  line-height: var(--rl-line-caption);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.terrain-volumes__distance {
+  color: var(--rl-text-primary);
+  font-size: var(--rl-type-metric);
+  font-weight: var(--rl-weight-display);
+  letter-spacing: -0.055em;
+  line-height: var(--rl-line-metric);
+  text-align: right;
+  white-space: nowrap;
+}

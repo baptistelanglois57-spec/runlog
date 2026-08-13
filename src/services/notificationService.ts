@@ -34,7 +34,7 @@ export async function addNotification(
 
 export async function deleteNotification(
   id: string
-): Promise<void> {
+): Promise<boolean> {
   const { error } = await supabase
     .from(TABLE)
     .delete()
@@ -42,7 +42,10 @@ export async function deleteNotification(
 
   if (error) {
     console.error("Erreur deleteNotification :", error);
+    return false;
   }
+
+  return true;
 }
 
 export async function deleteNotificationsByEntity(
@@ -302,6 +305,7 @@ export async function cleanupNotifications(): Promise<void> {
     .delete()
     .eq("read", true)
     .neq("type", "record")
+    .neq("entity", "event-reminder")
     .lt("createdAt", limit);
 
   if (error) {
