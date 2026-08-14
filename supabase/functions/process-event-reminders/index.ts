@@ -4,7 +4,6 @@ import {
   buildDailyScheduleMessage,
   getDailyScheduleDedupeKey,
   getParisDateTime,
-  isDailyScheduleWindow,
   type DailyScheduleEvent,
 } from "../_shared/dailySchedule.ts";
 
@@ -95,6 +94,23 @@ async function deliverPushBatch(
   return result;
 }
 
+async function loadDailyScheduleEvents(
+  supabase: ReturnType<typeof createClient>,
+  dateKey: string
+) {
+  const { data, error } = await supabase
+    .from("events")
+    .select("id, date, time, type, name")
+    .eq("date", dateKey)
+    .in("type", ["training", "race", "gym"])
+    .order("time", { ascending: true, nullsFirst: false });
+
+  return {
+    events: (data ?? []) as DailyScheduleEvent[],
+    error: error?.message ?? null,
+  };
+}
+
 Deno.serve(async (request) => {
   if (request.method !== "POST") {
     return new Response("Method not allowed", { status: 405 });
@@ -155,126 +171,156 @@ Deno.serve(async (request) => {
   let dailySchedule: Record<string, unknown> = {
     processed: false,
     date: requestedTestDate,
-    reason: "outside-window",
+    reason: "pending",
   };
 
-  if (isDailyTest || isDailyScheduleWindow()) {
-    const { data: eventData, error: eventError } = await supabase
-      .from("events")
-      .select("id, date, time, type, name")
-      .eq("date", requestedTestDate)
-      .in("type", ["training", "race", "gym"])
-      .order("time", { ascending: true, nullsFirst: false });
-
+  if (isDailyTest) {
+    const { events, error: eventError } = await loadDailyScheduleEvents(supabase, requestedTestDate);
     if (eventError) {
-      console.error("daily schedule events", eventError);
-      dailySchedule = { processed: false, date: requestedTestDate, error: eventError.message };
+      console.error("daily-schedule-test events", { date: requestedTestDate, error: eventError });
+      dailySchedule = { processed: false, test: true, date: requestedTestDate, error: eventError };
+    } else if (events.length === 0) {
+      dailySchedule = {
+        processed: true,
+        test: true,
+        date: requestedTestDate,
+        eventCount: 0,
+        pushSent: 0,
+        reason: "no-events",
+      };
     } else {
-      const dailyEvents = (eventData ?? []) as DailyScheduleEvent[];
-      const message = buildDailyScheduleMessage(dailyEvents);
+      const push = await deliverPushBatch(supabase, activeSubscriptions, {
+        title: "Programme du jour",
+        message: buildDailyScheduleMessage(events),
+      });
+      dailySchedule = {
+        processed: true,
+        test: true,
+        date: requestedTestDate,
+        eventCount: events.length,
+        subscriptionsFound: activeSubscriptions.length,
+        pushSent: push.sent,
+        pushFailures: push.failures,
+        providerStatusCodes: push.providerStatusCodes,
+      };
+    }
+  } else {
+    // Chaque passage du cron tente la journée locale. La réclamation atomique
+    // rend le rattrapage robuste, même si le passage de 00:00 a été manqué.
+    const { data: claimed, error: claimError } = await supabase
+      .rpc("claim_daily_schedule", { target_date: requestedTestDate });
 
-      if (isDailyTest) {
-        if (dailyEvents.length === 0) {
-          dailySchedule = {
-            processed: true,
-            test: true,
-            date: requestedTestDate,
-            eventCount: 0,
-            pushSent: 0,
-            reason: "no-events",
-          };
-        } else {
-          const push = await deliverPushBatch(supabase, activeSubscriptions, {
-            title: "Programme du jour",
-            message,
-          });
-          dailySchedule = {
-            processed: true,
-            test: true,
-            date: requestedTestDate,
-            eventCount: dailyEvents.length,
-            subscriptionsFound: activeSubscriptions.length,
-            pushSent: push.sent,
-            pushFailures: push.failures,
-            providerStatusCodes: push.providerStatusCodes,
-          };
-        }
+    if (claimError) {
+      console.error("daily-schedule claim", { date: requestedTestDate, error: claimError.message });
+      dailySchedule = { processed: false, date: requestedTestDate, error: claimError.message };
+    } else if (!claimed) {
+      dailySchedule = {
+        processed: false,
+        date: requestedTestDate,
+        reason: "already-processed",
+      };
+    } else {
+      const { events, error: eventError } = await loadDailyScheduleEvents(supabase, requestedTestDate);
+      if (eventError) {
+        await supabase.from("daily_schedule_deliveries").update({
+          status: "failed",
+          last_error: eventError,
+          updated_at: new Date().toISOString(),
+        }).eq("schedule_date", requestedTestDate);
+        console.error("daily-schedule events", { date: requestedTestDate, error: eventError });
+        dailySchedule = { processed: false, date: requestedTestDate, error: eventError };
+      } else if (events.length === 0) {
+        await supabase.from("daily_schedule_deliveries").update({
+          status: "no-events",
+          event_ids: [],
+          updated_at: new Date().toISOString(),
+        }).eq("schedule_date", requestedTestDate);
+        dailySchedule = {
+          processed: true,
+          date: requestedTestDate,
+          eventCount: 0,
+          reason: "no-events",
+        };
+        console.info("daily-schedule", dailySchedule);
       } else {
-        const { data: claimed, error: claimError } = await supabase
-          .rpc("claim_daily_schedule", { target_date: requestedTestDate });
+        const entityId = getDailyScheduleDedupeKey(requestedTestDate);
+        let notificationId = crypto.randomUUID();
+        let shouldSendPush = true;
+        let canDeliver = true;
+        const { error: notificationError } = await supabase.from("notifications").insert({
+          id: notificationId,
+          type: "daily_schedule",
+          action: "open-agenda",
+          entity: "daily-schedule",
+          entityId,
+          icon: "calendar-days",
+          title: "Programme du jour",
+          message: buildDailyScheduleMessage(events),
+          createdAt: new Date().toISOString(),
+          read: false,
+        });
 
-        if (claimError) {
-          console.error("claim_daily_schedule", claimError);
-          dailySchedule = { processed: false, date: requestedTestDate, error: claimError.message };
-        } else if (!claimed) {
-          dailySchedule = {
-            processed: false,
-            date: requestedTestDate,
-            reason: "already-processed",
-          };
-        } else if (dailyEvents.length === 0) {
+        if (notificationError?.code === "23505") {
+          const { data: existingNotification, error: existingNotificationError } = await supabase
+            .from("notifications")
+            .select("id")
+            .eq("entity", "daily-schedule")
+            .eq("entityId", entityId)
+            .maybeSingle();
+          if (existingNotificationError || !existingNotification) {
+            const error = existingNotificationError?.message ?? notificationError.message;
+            await supabase.from("daily_schedule_deliveries").update({
+              status: "failed",
+              last_error: error,
+              updated_at: new Date().toISOString(),
+            }).eq("schedule_date", requestedTestDate);
+            dailySchedule = { processed: false, date: requestedTestDate, error };
+            canDeliver = false;
+          } else {
+            notificationId = existingNotification.id;
+            shouldSendPush = false;
+          }
+        } else if (notificationError) {
           await supabase.from("daily_schedule_deliveries").update({
-            status: "no-events",
-            event_ids: [],
+            status: "failed",
+            last_error: notificationError.message,
+            updated_at: new Date().toISOString(),
+          }).eq("schedule_date", requestedTestDate);
+          dailySchedule = { processed: false, date: requestedTestDate, error: notificationError.message };
+          canDeliver = false;
+        }
+
+        if (canDeliver) {
+          const push = shouldSendPush
+            ? await deliverPushBatch(supabase, activeSubscriptions, {
+              title: "Programme du jour",
+              message: buildDailyScheduleMessage(events),
+            })
+            : { sent: 0, failures: 0, providerStatusCodes: [] };
+          const pushStatus = push.sent > 0
+            ? "sent"
+            : push.failures > 0
+              ? "failed"
+              : "not-configured";
+
+          await supabase.from("daily_schedule_deliveries").update({
+            status: "sent",
+            notification_id: notificationId,
+            event_ids: events.map((event) => event.id),
+            push_status: pushStatus,
             updated_at: new Date().toISOString(),
           }).eq("schedule_date", requestedTestDate);
           dailySchedule = {
             processed: true,
             date: requestedTestDate,
-            eventCount: 0,
-            reason: "no-events",
+            eventCount: events.length,
+            subscriptionsFound: activeSubscriptions.length,
+            pushSent: push.sent,
+            pushFailures: push.failures,
+            providerStatusCodes: push.providerStatusCodes,
+            notificationId,
           };
-        } else {
-          const notificationId = crypto.randomUUID();
-          const entityId = getDailyScheduleDedupeKey(requestedTestDate);
-          const { error: notificationError } = await supabase.from("notifications").insert({
-            id: notificationId,
-            type: "daily_schedule",
-            action: "open-agenda",
-            entity: "daily-schedule",
-            entityId,
-            icon: "calendar-days",
-            title: "Programme du jour",
-            message,
-            createdAt: new Date().toISOString(),
-            read: false,
-          });
-
-          if (notificationError && notificationError.code !== "23505") {
-            await supabase.from("daily_schedule_deliveries").update({
-              status: "failed",
-              last_error: notificationError.message,
-              updated_at: new Date().toISOString(),
-            }).eq("schedule_date", requestedTestDate);
-            dailySchedule = { processed: false, date: requestedTestDate, error: notificationError.message };
-          } else {
-            const push = await deliverPushBatch(supabase, activeSubscriptions, {
-              title: "Programme du jour",
-              message,
-            });
-            const pushStatus = push.sent > 0
-              ? "sent"
-              : push.failures > 0
-                ? "failed"
-                : "not-configured";
-
-            await supabase.from("daily_schedule_deliveries").update({
-              status: "sent",
-              notification_id: notificationId,
-              event_ids: dailyEvents.map((event) => event.id),
-              push_status: pushStatus,
-              updated_at: new Date().toISOString(),
-            }).eq("schedule_date", requestedTestDate);
-            dailySchedule = {
-              processed: true,
-              date: requestedTestDate,
-              eventCount: dailyEvents.length,
-              subscriptionsFound: activeSubscriptions.length,
-              pushSent: push.sent,
-              pushFailures: push.failures,
-              providerStatusCodes: push.providerStatusCodes,
-            };
-          }
+          console.info("daily-schedule", dailySchedule);
         }
       }
     }

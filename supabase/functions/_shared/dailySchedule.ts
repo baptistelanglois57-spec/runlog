@@ -39,11 +39,6 @@ export function getParisDateTime(now = new Date()): ParisDateTime {
   };
 }
 
-export function isDailyScheduleWindow(now = new Date()) {
-  const paris = getParisDateTime(now);
-  return paris.hour === 0 && paris.minute < 10;
-}
-
 export function getDailyScheduleDedupeKey(dateKey: string, userId?: string | null) {
   return `daily-schedule:${dateKey}:${userId ?? "anonymous"}`;
 }

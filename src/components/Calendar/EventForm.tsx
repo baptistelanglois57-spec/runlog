@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Activity, CalendarDays, Dumbbell, Flag } from "lucide-react";
+import { Activity, CalendarDays, Dumbbell, Flag, X } from "lucide-react";
 
 import { formatDateKey } from "../../utils/dateKey";
 import type { Event, EventType } from "../../types/Event";
@@ -8,12 +8,17 @@ import InputField from "../UI/InputField";
 import PrimaryButton from "../UI/PrimaryButton";
 import SecondaryButton from "../UI/SecondaryButton";
 import TextareaField from "../UI/TextareaField";
+import {
+  PremiumPanelFooter,
+  PremiumPanelHeader,
+} from "../UI/PremiumPanel";
 
 type EventFormProps = {
   type: EventType;
   date: Date;
   event?: Event;
   onBack: () => void;
+  onClose: () => void;
   onSave: (event: Event) => void;
 };
 
@@ -28,6 +33,7 @@ export default function EventForm({
   date,
   event,
   onBack,
+  onClose,
   onSave,
 }: EventFormProps) {
   const [name, setName] = useState(event?.name ?? "");
@@ -61,18 +67,30 @@ export default function EventForm({
 
   return (
     <div className="agenda-event-form">
-      <header className="agenda-event-form__header">
-        <span className={`agenda-event-form__type agenda-event-form__type--${type}`}>
-          <Icon size={19} />
-        </span>
-        <div>
-          <h2>{label}</h2>
-          <p>
+      <PremiumPanelHeader
+        title={label}
+        subtitle={
+          <>
             <CalendarDays size={14} />
             {displayDate}
-          </p>
-        </div>
-      </header>
+          </>
+        }
+        leading={
+          <span className={`agenda-event-form__type agenda-event-form__type--${type}`}>
+            <Icon size={19} />
+          </span>
+        }
+        trailing={
+          <button
+            className="premium-panel__icon-button"
+            type="button"
+            onClick={onClose}
+            aria-label="Fermer"
+          >
+            <X size={19} />
+          </button>
+        }
+      />
 
       <div className="agenda-event-form__fields">
         <div>
@@ -113,12 +131,12 @@ export default function EventForm({
         </div>
       </div>
 
-      <div className="agenda-event-form__actions">
+      <PremiumPanelFooter className="agenda-event-form__actions">
         <SecondaryButton onClick={onBack}>Retour</SecondaryButton>
         <PrimaryButton onClick={handleSave}>
           {isEditing ? "Enregistrer" : "Créer"}
         </PrimaryButton>
-      </div>
+      </PremiumPanelFooter>
     </div>
   );
 }

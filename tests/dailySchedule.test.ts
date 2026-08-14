@@ -5,7 +5,6 @@ import {
   buildDailyScheduleMessage,
   getDailyScheduleDedupeKey,
   getParisDateTime,
-  isDailyScheduleWindow,
   type DailyScheduleEvent,
 } from "../supabase/functions/_shared/dailySchedule.ts";
 
@@ -20,14 +19,26 @@ function event(overrides: Partial<DailyScheduleEvent> = {}): DailyScheduleEvent 
   };
 }
 
-test("Europe/Paris : minuit été est détecté malgré l'UTC", () => {
-  const now = new Date("2026-08-13T22:03:00.000Z");
-  assert.deepEqual(getParisDateTime(now), {
+test("Europe/Paris : le même jour local est calculé à 00:02 comme à 00:12", () => {
+  const at0002 = new Date("2026-08-13T22:02:00.000Z");
+  const at0012 = new Date("2026-08-13T22:12:00.000Z");
+  const lateMorning = new Date("2026-08-14T09:30:00.000Z");
+
+  assert.deepEqual(getParisDateTime(at0002), {
     dateKey: "2026-08-14",
     hour: 0,
-    minute: 3,
+    minute: 2,
   });
-  assert.equal(isDailyScheduleWindow(now), true);
+  assert.deepEqual(getParisDateTime(at0012), {
+    dateKey: "2026-08-14",
+    hour: 0,
+    minute: 12,
+  });
+  assert.deepEqual(getParisDateTime(lateMorning), {
+    dateKey: "2026-08-14",
+    hour: 11,
+    minute: 30,
+  });
 });
 
 test("Europe/Paris : minuit hiver tient compte du changement d'heure", () => {

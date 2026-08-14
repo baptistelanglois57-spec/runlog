@@ -166,7 +166,6 @@ export default function GymComparison() {
               </div>
             ) : selectedExercise ? (
               <GymComparisonResult
-                exerciseName={selectedExercise.name || "Exercice"}
                 currentEntry={currentEntry}
                 previousEntry={previousEntry}
                 comparison={comparison}

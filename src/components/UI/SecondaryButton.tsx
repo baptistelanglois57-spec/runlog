@@ -1,5 +1,4 @@
-import { theme } from "../../styles/theme";
-import { Typography } from "../../styles/ui";
+import "./FormControls.css";
 
 type Props =
   React.ButtonHTMLAttributes<HTMLButtonElement>;
@@ -7,28 +6,12 @@ type Props =
 export default function SecondaryButton(
   props: Props
 ) {
+  const { className = "", ...buttonProps } = props;
+
   return (
     <button
-      {...props}
-      style={{
-        height: 52,
-
-        border: `1px solid ${theme.colors.border}`,
-
-        borderRadius: 14,
-
-        background: theme.colors.card,
-
-        color: theme.colors.text,
-
-        fontWeight: 600,
-
-        fontSize: Typography.button,
-
-        cursor: "pointer",
-
-        ...props.style,
-      }}
+      {...buttonProps}
+      className={`rl-secondary-button ${className}`.trim()}
     />
   );
 }

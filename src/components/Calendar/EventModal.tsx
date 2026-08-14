@@ -1,8 +1,14 @@
 import { useEffect, useState } from "react";
-import { Activity, Dumbbell, Flag, X } from "lucide-react";
+import { Activity, CalendarPlus, Dumbbell, Flag, X } from "lucide-react";
+import { createPortal } from "react-dom";
 
 import EventDetails from "./EventDetails";
 import EventForm from "./EventForm";
+import {
+  PremiumPanel,
+  PremiumPanelFooter,
+  PremiumPanelHeader,
+} from "../UI/PremiumPanel";
 import type { Event, EventType } from "../../types/Event";
 
 type EventModalProps = {
@@ -55,9 +61,14 @@ export default function EventModal({
     year: "numeric",
   });
 
-  return (
+  return createPortal(
     <div className="agenda-modal" role="presentation">
-      <div className="agenda-modal__panel" role="dialog" aria-modal="true">
+      <PremiumPanel
+        variant="modal"
+        className="agenda-modal__panel"
+        role="dialog"
+        aria-modal="true"
+      >
         {view === "details" && event && (
           <EventDetails
             event={event}
@@ -69,10 +80,25 @@ export default function EventModal({
 
         {view === "select" && (
           <div className="agenda-event-select">
-            <div className="agenda-modal__heading">
-              <p>{displayDate}</p>
-              <h2>Nouvel événement</h2>
-            </div>
+            <PremiumPanelHeader
+              title="Nouvel événement"
+              subtitle={displayDate}
+              leading={
+                <span className="premium-panel__header-icon" aria-hidden="true">
+                  <CalendarPlus size={19} />
+                </span>
+              }
+              trailing={
+                <button
+                  className="premium-panel__icon-button"
+                  type="button"
+                  onClick={onClose}
+                  aria-label="Fermer"
+                >
+                  <X size={19} />
+                </button>
+              }
+            />
 
             <div className="agenda-event-select__choices">
               {eventChoices.map(({ type, label, Icon }) => (
@@ -93,14 +119,15 @@ export default function EventModal({
               ))}
             </div>
 
-            <button
-              className="agenda-modal__dismiss"
-              type="button"
-              onClick={onClose}
-            >
-              <X size={18} />
-              Annuler
-            </button>
+            <PremiumPanelFooter>
+              <button
+                className="agenda-modal__dismiss"
+                type="button"
+                onClick={onClose}
+              >
+                Annuler
+              </button>
+            </PremiumPanelFooter>
           </div>
         )}
 
@@ -109,6 +136,7 @@ export default function EventModal({
             type={selectedType}
             date={selectedDate}
             onBack={() => setView("select")}
+            onClose={onClose}
             onSave={onCreate}
           />
         )}
@@ -119,10 +147,12 @@ export default function EventModal({
             date={selectedDate}
             event={event}
             onBack={() => setView("details")}
+            onClose={onClose}
             onSave={onUpdate}
           />
         )}
-      </div>
-    </div>
+      </PremiumPanel>
+    </div>,
+    document.body
   );
 }

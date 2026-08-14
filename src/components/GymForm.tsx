@@ -4,6 +4,11 @@ import toast from "react-hot-toast";
 import { CalendarDays, ChevronLeft, NotebookPen, Plus, Save } from "lucide-react";
 
 import ExerciseCard from "./Muscu/ExerciseCard";
+import {
+  PremiumPanel,
+  PremiumPanelFooter,
+  PremiumPanelHeader,
+} from "./UI/PremiumPanel";
 
 import {
   getGymSessions,
@@ -310,86 +315,87 @@ const [
 
   return (
     <div className="gym-form-page">
-      <header className="gym-form-page__header">
-        <button type="button" onClick={() => navigate("/muscu")} aria-label="Retour aux séances">
-          <ChevronLeft size={22} />
-        </button>
-        <h1>{isEditing ? "Modifier la séance" : "Nouvelle séance"}</h1>
-        <button
-          type="button"
-          className="gym-form-page__save"
-          onClick={() => {
-            const form = document.getElementById("gym-form") as HTMLFormElement;
-            form?.requestSubmit();
-          }}
-        >
-          <Save size={17} />
-          {isEditing ? "Modifier" : "Enregistrer"}
-        </button>
-      </header>
+      <PremiumPanel variant="page" className="gym-form-page__panel">
+        <PremiumPanelHeader
+          title={isEditing ? "Modifier la séance" : "Nouvelle séance"}
+          titleAs="h1"
+          leading={
+            <button
+              className="premium-panel__icon-button"
+              type="button"
+              onClick={() => navigate("/muscu")}
+              aria-label="Retour aux séances"
+            >
+              <ChevronLeft size={21} />
+            </button>
+          }
+        />
 
-      <form id="gym-form" onSubmit={handleSubmit} className="gym-form-page__form">
-        <section className="gym-form-page__details">
-          <label>
-            <span>Nom de la séance</span>
-            <input
-              type="text"
-              value={name}
-              onChange={(event) => setName(event.target.value)}
-            />
-          </label>
-          <label className="gym-form-page__date-field">
-            <span><CalendarDays size={15} /> Date</span>
-            <input
-              type="date"
-              value={date}
-              onChange={(event) => setDate(event.target.value)}
-            />
-          </label>
-        </section>
+        <form id="gym-form" onSubmit={handleSubmit} className="gym-form-page__form">
+          <div className="gym-form-page__content">
+            <section className="gym-form-page__details">
+              <label>
+                <span>Nom de la séance</span>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(event) => setName(event.target.value)}
+                />
+              </label>
+              <label className="gym-form-page__date-field">
+                <span><CalendarDays size={15} /> Date</span>
+                <input
+                  type="date"
+                  value={date}
+                  onChange={(event) => setDate(event.target.value)}
+                />
+              </label>
+            </section>
 
-        {exercises.map(
-          (exercise, index) => (
-            <ExerciseCard
-              key={exercise.id}
-              exercise={exercise}
-              historySessions={
-                historySessions
-              }
-             exerciseLibrary={
-  exerciseLibrary
-}
-              refreshExercises={
-                refreshExerciseLibrary
-              }
-              index={index}
-              onExerciseSelectionChange={
-                updateExerciseSelection
-              }
-              onSetChange={updateSet}
-              onAddSet={addSet}
-              onDeleteSet={
-                deleteSet
-              }
-              onDeleteExercise={
-                deleteExercise
-              }
-            />
-          )
-        )}
+            {exercises.map(
+              (exercise, index) => (
+                <ExerciseCard
+                  key={exercise.id}
+                  exercise={exercise}
+                  historySessions={historySessions}
+                  exerciseLibrary={exerciseLibrary}
+                  refreshExercises={refreshExerciseLibrary}
+                  index={index}
+                  onExerciseSelectionChange={updateExerciseSelection}
+                  onSetChange={updateSet}
+                  onAddSet={addSet}
+                  onDeleteSet={deleteSet}
+                  onDeleteExercise={deleteExercise}
+                />
+              )
+            )}
 
-        <button type="button" onClick={addExercise} className="gym-form-page__add-exercise">
-          <Plus size={18} /> Ajouter un exercice
-        </button>
-        <label className="gym-form-page__comment">
-          <span><NotebookPen size={15} /> Commentaire</span>
-          <textarea
-            value={comment}
-            onChange={(event) => setComment(event.target.value)}
-            placeholder="Notes sur la séance, ressenti, progression..."
-          />
-        </label>
-      </form>
+            <button
+              type="button"
+              onClick={addExercise}
+              className="gym-form-page__add-exercise"
+            >
+              <Plus size={18} /> Ajouter un exercice
+            </button>
+
+            <label className="gym-form-page__comment">
+              <span><NotebookPen size={15} /> Commentaire</span>
+              <textarea
+                value={comment}
+                onChange={(event) => setComment(event.target.value)}
+                placeholder="Notes sur la séance, ressenti, progression..."
+              />
+            </label>
+          </div>
+
+          <PremiumPanelFooter>
+            <button type="submit" className="gym-form-page__save">
+              <Save size={17} />
+              {isEditing ? "Modifier" : "Enregistrer"}
+            </button>
+          </PremiumPanelFooter>
+        </form>
+      </PremiumPanel>
     </div>
   );
 }

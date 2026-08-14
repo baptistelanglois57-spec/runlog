@@ -1,26 +1,17 @@
 import type { ButtonHTMLAttributes } from "react";
-import { theme } from "../../styles/theme";
-import { Typography } from "../../styles/ui";
+import "./FormControls.css";
 
 type Props = ButtonHTMLAttributes<HTMLButtonElement>;
 
 export default function PrimaryButton(
   props: Props
 ) {
+  const { className = "", ...buttonProps } = props;
+
   return (
     <button
-      {...props}
-      style={{
-        height: 52,
-        border: "none",
-        borderRadius: 14,
-        background: theme.colors.primary,
-        color: theme.colors.text,
-        fontWeight: 700,
-        fontSize: Typography.button,
-        cursor: "pointer",
-        ...props.style,
-      }}
+      {...buttonProps}
+      className={`rl-primary-button ${className}`.trim()}
     />
   );
 }

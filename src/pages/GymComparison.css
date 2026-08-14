@@ -115,51 +115,7 @@
 .gym-comparison-result {
   display: grid;
   gap: 11px;
-  margin-top: 18px;
-}
-
-.gym-comparison-result__title {
-  display: flex;
-  min-width: 0;
-  align-items: center;
-  gap: 10px;
-  padding: 15px;
-  border: 1px solid var(--rl-border);
-  border-radius: 20px;
-  background: var(--rl-surface-card);
-}
-
-.gym-comparison-result__title > span {
-  display: grid;
-  width: 36px;
-  height: 36px;
-  flex: 0 0 auto;
-  place-items: center;
-  border-radius: 12px;
-  background: rgba(var(--rl-accent-rgb), 0.11);
-  color: var(--rl-accent-text);
-}
-
-.gym-comparison-result__title > div {
-  display: grid;
-  min-width: 0;
-  gap: 3px;
-}
-
-.gym-comparison-result__title small {
-  color: var(--rl-text-muted);
-  font-size: var(--rl-type-caption);
-}
-
-.gym-comparison-result__title h2 {
-  overflow: hidden;
-  margin: 0;
-  color: var(--rl-text-primary);
-  font-size: var(--rl-type-card-title);
-  font-weight: var(--rl-weight-bold);
-  line-height: var(--rl-line-card-title);
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  margin-top: 14px;
 }
 
 .gym-comparison-occurrence {

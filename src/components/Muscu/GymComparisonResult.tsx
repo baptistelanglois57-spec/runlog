@@ -1,4 +1,4 @@
-import { CalendarDays, Dumbbell, Lightbulb, TrendingUp } from "lucide-react";
+import { CalendarDays, Lightbulb, TrendingUp } from "lucide-react";
 import type { CSSProperties } from "react";
 
 import type { ExerciseComparison } from "../../utils/gymComparison";
@@ -10,7 +10,6 @@ import {
 import type { GymSet } from "../../types/Gym/GymSet";
 
 type Props = {
-  exerciseName: string;
   currentEntry: ExerciseHistoryEntry | null;
   previousEntry: ExerciseHistoryEntry | null;
   comparison: ExerciseComparison | null;
@@ -51,7 +50,6 @@ function OccurrenceCard({ label, entry }: { label: string; entry: ExerciseHistor
 }
 
 export default function GymComparisonResult({
-  exerciseName,
   currentEntry,
   previousEntry,
   comparison,
@@ -59,14 +57,6 @@ export default function GymComparisonResult({
 }: Props) {
   return (
     <div className="gym-comparison-result">
-      <div className="gym-comparison-result__title">
-        <span><Dumbbell size={19} /></span>
-        <div>
-          <small>Exercice sélectionné</small>
-          <h2>{exerciseName}</h2>
-        </div>
-      </div>
-
       {!reliableHistoryAvailable || !currentEntry ? (
         <div className="gym-comparison-result__empty">
           <strong>Historique fiable indisponible</strong>

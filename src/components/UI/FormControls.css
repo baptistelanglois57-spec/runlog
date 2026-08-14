@@ -1,0 +1,91 @@
+.rl-form-label {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--rl-text-secondary);
+  font-size: var(--rl-type-caption);
+  font-weight: var(--rl-weight-bold);
+  letter-spacing: 0;
+  line-height: var(--rl-line-caption);
+  text-transform: none;
+}
+
+.rl-input,
+.rl-textarea {
+  width: 100%;
+  border: 1px solid rgba(var(--rl-ivory-rgb), 0.11);
+  border-radius: 15px;
+  outline: none;
+  background: var(--rl-surface-secondary);
+  color: var(--rl-text-primary);
+  font-family: var(--rl-font-family);
+  font-size: var(--rl-type-control);
+  line-height: var(--rl-line-control);
+  box-sizing: border-box;
+  transition: border-color 180ms ease, background-color 180ms ease;
+}
+
+.rl-input {
+  min-height: 50px;
+  padding: 0 14px;
+}
+
+.rl-textarea {
+  min-height: 116px;
+  padding: 13px 14px;
+  resize: vertical;
+}
+
+.rl-input::placeholder,
+.rl-textarea::placeholder {
+  color: var(--rl-text-muted);
+}
+
+.rl-input:focus,
+.rl-textarea:focus {
+  border-color: rgba(var(--rl-accent-rgb), 0.7);
+  background: var(--rl-surface-navigation);
+}
+
+.rl-primary-button,
+.rl-secondary-button {
+  min-height: 50px;
+  padding: 0 16px;
+  border-radius: 15px;
+  font-family: var(--rl-font-family);
+  font-size: var(--rl-type-button);
+  font-weight: var(--rl-weight-bold);
+  cursor: pointer;
+  transition: transform 180ms ease, background-color 180ms ease,
+    border-color 180ms ease;
+}
+
+.rl-primary-button {
+  border: 1px solid rgba(var(--rl-accent-rgb), 0.62);
+  background: var(--rl-accent);
+  color: var(--rl-text-primary);
+}
+
+.rl-primary-button:hover,
+.rl-primary-button:active {
+  background: var(--rl-accent-pressed);
+}
+
+.rl-secondary-button {
+  border: 1px solid rgba(var(--rl-ivory-rgb), 0.11);
+  background: var(--rl-surface-secondary);
+  color: var(--rl-text-primary);
+}
+
+.rl-primary-button:active,
+.rl-secondary-button:active {
+  transform: scale(0.98);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rl-input,
+  .rl-textarea,
+  .rl-primary-button,
+  .rl-secondary-button {
+    transition: none;
+  }
+}

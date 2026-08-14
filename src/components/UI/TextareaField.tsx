@@ -1,5 +1,4 @@
-import { theme } from "../../styles/theme";
-import { Typography } from "../../styles/ui";
+import "./FormControls.css";
 
 type Props =
   React.TextareaHTMLAttributes<HTMLTextAreaElement>;
@@ -7,34 +6,12 @@ type Props =
 export default function TextareaField(
   props: Props
 ) {
+  const { className = "", ...textareaProps } = props;
+
   return (
     <textarea
-      {...props}
-      style={{
-        width: "100%",
-
-        minHeight: 130,
-
-        padding: 16,
-
-        borderRadius: 14,
-
-        border: `1px solid ${theme.colors.border}`,
-
-        background: theme.colors.background,
-
-        color: theme.colors.text,
-
-        resize: "vertical",
-
-        fontSize: Typography.input,
-
-        outline: "none",
-
-        boxSizing: "border-box",
-
-        ...props.style,
-      }}
+      {...textareaProps}
+      className={`rl-textarea ${className}`.trim()}
     />
   );
 }

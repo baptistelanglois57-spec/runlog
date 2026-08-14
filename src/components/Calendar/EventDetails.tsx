@@ -1,8 +1,12 @@
-import { Activity, CalendarDays, Dumbbell, Flag } from "lucide-react";
+import { Activity, CalendarDays, Dumbbell, Flag, X } from "lucide-react";
 
 import type { Event } from "../../types/Event";
 import PrimaryButton from "../UI/PrimaryButton";
 import SecondaryButton from "../UI/SecondaryButton";
+import {
+  PremiumPanelFooter,
+  PremiumPanelHeader,
+} from "../UI/PremiumPanel";
 
 type EventDetailsProps = {
   event: Event;
@@ -32,30 +36,44 @@ export default function EventDetails({
 
   return (
     <div className="agenda-event-details">
-      <header className="agenda-event-details__header">
-        <span className={`agenda-event-details__type agenda-event-details__type--${event.type}`}>
-          <Icon size={19} />
-        </span>
-        <div>
-          <h2>{label}</h2>
-          <p>
+      <PremiumPanelHeader
+        title={label}
+        subtitle={
+          <>
             <CalendarDays size={14} />
             {displayDate}{event.time ? ` · ${event.time}` : ""}
-          </p>
+          </>
+        }
+        leading={
+          <span className={`agenda-event-details__type agenda-event-details__type--${event.type}`}>
+            <Icon size={19} />
+          </span>
+        }
+        trailing={
+          <button
+            className="premium-panel__icon-button"
+            type="button"
+            onClick={onClose}
+            aria-label="Fermer"
+          >
+            <X size={19} />
+          </button>
+        }
+      />
+
+      <div className="agenda-event-details__content">
+        <div className="agenda-event-details__card">
+          <span>Nom</span>
+          <strong>{event.name}</strong>
         </div>
-      </header>
 
-      <div className="agenda-event-details__card">
-        <span>Nom</span>
-        <strong>{event.name}</strong>
+        <div className="agenda-event-details__card">
+          <span>Notes</span>
+          <p>{event.notes?.trim() ? event.notes : "Aucune note"}</p>
+        </div>
       </div>
 
-      <div className="agenda-event-details__card">
-        <span>Notes</span>
-        <p>{event.notes?.trim() ? event.notes : "Aucune note"}</p>
-      </div>
-
-      <div className="agenda-event-details__actions">
+      <PremiumPanelFooter className="agenda-event-details__actions">
         <PrimaryButton onClick={onEdit}>Modifier</PrimaryButton>
         <button
           className="agenda-event-details__delete"
@@ -64,11 +82,8 @@ export default function EventDetails({
         >
           Supprimer
         </button>
-      </div>
-
-      <SecondaryButton onClick={onClose} style={{ width: "100%" }}>
-        Fermer
-      </SecondaryButton>
+        <SecondaryButton onClick={onClose}>Fermer</SecondaryButton>
+      </PremiumPanelFooter>
     </div>
   );
 }
