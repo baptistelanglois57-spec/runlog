@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Share2 } from "lucide-react";
+import toast from "react-hot-toast";
 
 import AppContainer from "../components/Layout/AppContainer";
 import GymComparisonResult from "../components/Muscu/GymComparisonResult";
@@ -8,14 +9,15 @@ import { getExercises } from "../services/exerciseLibraryService";
 import { getGymSessions } from "../services/gymService";
 import type { ExerciseLibrary } from "../types/Gym/ExerciseLibrary";
 import type { GymSession } from "../types/GymSession";
-import { compareExerciseOccurrences } from "../utils/gymComparison";
+import { getGymExerciseComparisonContext } from "../utils/gymComparison";
 import {
   createExerciseHistoryIndex,
   formatGymDate,
-  getExerciseHistory,
-  getPreviousExerciseOccurrence,
-  resolveExerciseIdentity,
 } from "../utils/gymExerciseHistory";
+import {
+  buildGymComparisonShareText,
+  shareGymComparisonText,
+} from "../utils/gymComparisonShare";
 
 import "./GymComparison.css";
 
@@ -26,6 +28,7 @@ export default function GymComparison() {
   const [selectedSessionId, setSelectedSessionId] = useState("");
   const [selectedExerciseOccurrenceId, setSelectedExerciseOccurrenceId] = useState("");
   const [loading, setLoading] = useState(true);
+  const [sharing, setSharing] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -65,40 +68,47 @@ export default function GymComparison() {
   ) ?? -1;
   const selectedExercise =
     selectedExerciseIndex >= 0 ? selectedSession?.exercises[selectedExerciseIndex] ?? null : null;
-  const resolution = selectedExercise
-    ? resolveExerciseIdentity(selectedExercise, library)
-    : null;
-  const resolvedExerciseId = resolution?.exerciseId ?? null;
-
-  const currentEntry = useMemo(() => {
-    if (!selectedSession || !resolvedExerciseId || selectedExerciseIndex < 0) return null;
-    return getExerciseHistory(resolvedExerciseId, historyIndex).find(
-      (entry) =>
-        entry.sessionId === selectedSession.id &&
-        entry.exerciseIndex === selectedExerciseIndex
-    ) ?? null;
-  }, [historyIndex, resolvedExerciseId, selectedExerciseIndex, selectedSession]);
-
-  const previousEntry = useMemo(() => {
-    if (!currentEntry) return null;
-    return getPreviousExerciseOccurrence(
-      currentEntry,
-      getExerciseHistory(currentEntry.exerciseId, historyIndex)
-    );
-  }, [currentEntry, historyIndex]);
-
-  const comparison = useMemo(
+  const selectedComparison = useMemo(
     () =>
-      currentEntry && previousEntry
-        ? compareExerciseOccurrences(previousEntry.exercise, currentEntry.exercise)
+      selectedSession && selectedExerciseIndex >= 0
+        ? getGymExerciseComparisonContext(
+            selectedSession,
+            selectedExerciseIndex,
+            library,
+            historyIndex
+          )
         : null,
-    [currentEntry, previousEntry]
+    [historyIndex, library, selectedExerciseIndex, selectedSession]
   );
 
   function handleSessionChange(sessionId: string) {
     const session = sessions.find((item) => item.id === sessionId);
     setSelectedSessionId(sessionId);
     setSelectedExerciseOccurrenceId(session?.exercises[0]?.id ?? "");
+  }
+
+  async function handleShare() {
+    if (!selectedSession || selectedSession.exercises.length === 0 || sharing) return;
+
+    const text = buildGymComparisonShareText({
+      session: selectedSession,
+      library,
+      historyIndex,
+    });
+
+    setSharing(true);
+    try {
+      const result = await shareGymComparisonText(
+        text,
+        `RunLog — Comparaison ${selectedSession.name}`
+      );
+      if (result === "copied") toast.success("Comparaison copiée");
+    } catch (error) {
+      console.error(error);
+      toast.error("Impossible de partager la comparaison.");
+    } finally {
+      setSharing(false);
+    }
   }
 
   return (
@@ -127,7 +137,19 @@ export default function GymComparison() {
         ) : (
           <>
             <section className="gym-comparison-selector">
-              <label htmlFor="comparison-session">Séance analysée</label>
+              <div className="gym-comparison-selector__heading">
+                <label htmlFor="comparison-session">Séance analysée</label>
+                <button
+                  type="button"
+                  className="gym-comparison-selector__share"
+                  aria-label="Partager la comparaison complète de la séance"
+                  disabled={sharing || !selectedSession || selectedSession.exercises.length === 0}
+                  onClick={handleShare}
+                >
+                  <Share2 size={17} strokeWidth={2.2} />
+                  {sharing ? "Partage…" : "Partager"}
+                </button>
+              </div>
               <select
                 id="comparison-session"
                 value={selectedSessionId}
@@ -166,10 +188,10 @@ export default function GymComparison() {
               </div>
             ) : selectedExercise ? (
               <GymComparisonResult
-                currentEntry={currentEntry}
-                previousEntry={previousEntry}
-                comparison={comparison}
-                reliableHistoryAvailable={Boolean(resolution?.exerciseId)}
+                currentEntry={selectedComparison?.currentEntry ?? null}
+                previousEntry={selectedComparison?.previousEntry ?? null}
+                comparison={selectedComparison?.comparison ?? null}
+                reliableHistoryAvailable={Boolean(selectedComparison?.resolution.exerciseId)}
               />
             ) : null}
           </>

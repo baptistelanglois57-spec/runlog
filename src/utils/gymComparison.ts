@@ -1,4 +1,14 @@
 import type { GymExercise } from "../types/Gym/GymExercise";
+import type { ExerciseLibrary } from "../types/Gym/ExerciseLibrary";
+import type { GymSession } from "../types/GymSession";
+import {
+  getExerciseHistory,
+  getPreviousExerciseOccurrence,
+  resolveExerciseIdentity,
+  type ExerciseHistoryEntry,
+  type ExerciseHistoryIndex,
+  type ExerciseResolution,
+} from "./gymExerciseHistory.ts";
 
 export type ExerciseComparison = {
   name: string;
@@ -8,6 +18,15 @@ export type ExerciseComparison = {
   verdict: string;
   verdictColor: string;
   advice: string;
+};
+
+export type GymExerciseComparisonContext = {
+  exercise: GymExercise;
+  libraryExercise: ExerciseLibrary | null;
+  resolution: ExerciseResolution;
+  currentEntry: ExerciseHistoryEntry | null;
+  previousEntry: ExerciseHistoryEntry | null;
+  comparison: ExerciseComparison | null;
 };
 
 function totalReps(exercise: GymExercise) {
@@ -102,5 +121,46 @@ export function compareExerciseOccurrences(
     verdict,
     verdictColor,
     advice,
+  };
+}
+
+/**
+ * Source de vérité commune pour l'écran Comparaison et ses exports.
+ * L'occurrence précédente est toujours résolue par l'identifiant canonique.
+ */
+export function getGymExerciseComparisonContext(
+  session: GymSession,
+  exerciseIndex: number,
+  library: ExerciseLibrary[],
+  historyIndex: ExerciseHistoryIndex
+): GymExerciseComparisonContext | null {
+  const exercise = session.exercises[exerciseIndex];
+  if (!exercise) return null;
+
+  const resolution = resolveExerciseIdentity(exercise, library);
+  const libraryExercise = resolution.exerciseId
+    ? library.find((item) => item.id === resolution.exerciseId) ?? null
+    : null;
+  const history = resolution.exerciseId
+    ? getExerciseHistory(resolution.exerciseId, historyIndex)
+    : [];
+  const currentEntry = history.find(
+    (entry) =>
+      entry.sessionId === session.id && entry.exerciseIndex === exerciseIndex
+  ) ?? null;
+  const previousEntry = currentEntry
+    ? getPreviousExerciseOccurrence(currentEntry, history)
+    : null;
+  const comparison = currentEntry && previousEntry
+    ? compareExerciseOccurrences(previousEntry.exercise, currentEntry.exercise)
+    : null;
+
+  return {
+    exercise,
+    libraryExercise,
+    resolution,
+    currentEntry,
+    previousEntry,
+    comparison,
   };
 }

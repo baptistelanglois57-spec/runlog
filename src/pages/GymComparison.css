@@ -56,10 +56,53 @@
   background: var(--rl-surface-card);
 }
 
-.gym-comparison-selector > label {
+.gym-comparison-selector__heading {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.gym-comparison-selector__heading > label {
   color: var(--rl-text-primary);
   font-size: var(--rl-type-card-title);
   font-weight: var(--rl-weight-bold);
+}
+
+.gym-comparison-selector__share {
+  display: inline-flex;
+  min-height: 42px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 12px;
+  border: 1px solid rgba(var(--rl-accent-rgb), 0.58);
+  border-radius: 14px;
+  background: var(--rl-accent);
+  color: var(--rl-ivory);
+  font-family: var(--rl-font-family);
+  font-size: var(--rl-type-button);
+  font-weight: var(--rl-weight-bold);
+  cursor: pointer;
+  transition: transform 180ms ease, background-color 180ms ease,
+    opacity 180ms ease;
+}
+
+.gym-comparison-selector__share:active {
+  transform: scale(0.97);
+  background: var(--rl-accent-pressed);
+}
+
+.gym-comparison-selector__share:focus-visible {
+  outline: 2px solid var(--rl-ivory);
+  outline-offset: 2px;
+}
+
+.gym-comparison-selector__share:disabled {
+  cursor: default;
+  opacity: 0.55;
 }
 
 .gym-comparison-selector > select {
@@ -291,7 +334,6 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .gym-comparison-result__title,
   .gym-comparison-evolution,
   .gym-comparison-advice,
   .gym-comparison-result__empty {
@@ -299,10 +341,23 @@
   }
 }
 
+@media (max-width: 359px) {
+  .gym-comparison-selector__heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  .gym-comparison-selector__share {
+    width: 100%;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .gym-comparison-page,
   .gym-comparison-page__back,
-  .gym-comparison-selector__chip {
+  .gym-comparison-selector__chip,
+  .gym-comparison-selector__share {
     animation: none;
     transition: none;
   }
