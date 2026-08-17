@@ -192,7 +192,13 @@ const hasUnreadNotifications =
           setNotifications(updated);
         }}
         onOpenNotification={async (notification) => {
-          if (notification.entity !== "event-reminder" && notification.entity !== "daily-schedule") return;
+          const gymRecordExerciseId = notification.action.startsWith("gym_record:")
+            ? notification.action.slice("gym_record:".length)
+            : null;
+          const isAgendaReminder = notification.entity === "event-reminder"
+            || notification.entity === "daily-schedule";
+
+          if (!isAgendaReminder && !gymRecordExerciseId) return;
           if (!notification.read) {
             await markNotificationAsRead(notification.id);
             setNotifications((current) => current.map((item) =>
@@ -200,7 +206,9 @@ const hasUnreadNotifications =
             ));
           }
           setNotificationOpen(false);
-          navigate("/agenda");
+          navigate(gymRecordExerciseId
+            ? `/exercise-library/${gymRecordExerciseId}`
+            : "/agenda");
         }}
         onDeleteNotification={async (notification) => {
           setNotifications((current) => current.filter((item) => item.id !== notification.id));

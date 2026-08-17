@@ -20,6 +20,7 @@ import {
 import {
   getExercises,
 } from "../services/exerciseLibraryService";
+import { syncGymExerciseRecordNotifications } from "../services/gymRecordNotificationService";
 
 import type { GymSession } from "../types/GymSession";
 import type { GymExercise } from "../types/Gym/GymExercise";
@@ -290,6 +291,13 @@ const [
           session
         );
 
+        await syncGymExerciseRecordNotifications({
+          previousSessions: historySessions,
+          savedSession: session,
+          library: exerciseLibrary,
+          isEditing: true,
+        });
+
         toast.success(
           "Séance modifiée !"
         );
@@ -297,6 +305,13 @@ const [
         await saveGymSession(
           session
         );
+
+        await syncGymExerciseRecordNotifications({
+          previousSessions: historySessions,
+          savedSession: session,
+          library: exerciseLibrary,
+          isEditing: false,
+        });
 
         toast.success(
           "Séance enregistrée !"

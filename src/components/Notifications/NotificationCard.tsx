@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 
 import type { Notification } from "../../types/Notification";
+import { parseGymRecordNotificationPayload } from "../../utils/gymRecordNotificationPayload";
 import { parseRecordNotificationPayload } from "../../utils/recordNotificationPayload";
 
 const SWIPE_WIDTH = 108;
@@ -51,7 +52,10 @@ export default function NotificationCard({
   const recordPayload = notification.type === "record"
     ? parseRecordNotificationPayload(notification.message)
     : null;
-  const NotificationIcon = notification.type === "record"
+  const gymRecordPayload = notification.type === "gym_record"
+    ? parseGymRecordNotificationPayload(notification.message)
+    : null;
+  const NotificationIcon = notification.type === "record" || notification.type === "gym_record"
     ? Trophy
     : notification.type === "note"
       ? Pin
@@ -67,8 +71,10 @@ export default function NotificationCard({
     month: "short",
   });
   const isNavigable = notification.entity === "event-reminder"
-    || notification.entity === "daily-schedule";
+    || notification.entity === "daily-schedule"
+    || notification.entity === "gym-record";
   const translateX = dragOffset ?? (isSwipeOpen ? -SWIPE_WIDTH : 0);
+  const cardClassName = `notification-card${gymRecordPayload ? " notification-card--gym-record" : ""}${isNavigable ? " notification-card--action" : ""}${notification.read ? "" : " notification-card--unread"}${dragOffset === null ? "" : " notification-card--dragging"}`;
 
   function handlePointerDown(event: ReactPointerEvent<HTMLElement>) {
     if (event.pointerType === "mouse" && event.button !== 0) return;
@@ -123,7 +129,7 @@ export default function NotificationCard({
 
   const content = (
     <>
-      <span className="notification-card__icon" aria-hidden="true">
+      <span className={`notification-card__icon${gymRecordPayload ? " notification-card__icon--achievement" : ""}`} aria-hidden="true">
         <NotificationIcon size={19} strokeWidth={2.2} />
       </span>
 
@@ -136,7 +142,21 @@ export default function NotificationCard({
           <time>{date}</time>
         </div>
 
-        {recordPayload ? (
+        {gymRecordPayload ? (
+          <div className="notification-card__record notification-card__gym-record">
+            <div className="notification-card__record-main">
+              <span>{gymRecordPayload.exerciseName}</span>
+              <strong>{gymRecordPayload.value}</strong>
+            </div>
+
+            <div className="notification-card__comparison">
+              <div>
+                <span>Ancienne meilleure série</span>
+                <strong>{gymRecordPayload.previousValue}</strong>
+              </div>
+            </div>
+          </div>
+        ) : recordPayload ? (
           <div className="notification-card__record">
             <div className="notification-card__record-main">
               <span>{recordPayload.label}</span>
@@ -192,7 +212,7 @@ export default function NotificationCard({
       {isNavigable ? (
         <button
           {...gestureProps}
-          className={`notification-card notification-card--action${notification.read ? "" : " notification-card--unread"}${dragOffset === null ? "" : " notification-card--dragging"}`}
+          className={cardClassName}
           type="button"
           style={{ transform: `translate3d(${translateX}px, 0, 0)` }}
         >
@@ -201,7 +221,7 @@ export default function NotificationCard({
       ) : (
         <article
           {...gestureProps}
-          className={`notification-card${notification.read ? "" : " notification-card--unread"}${dragOffset === null ? "" : " notification-card--dragging"}`}
+          className={cardClassName}
           style={{ transform: `translate3d(${translateX}px, 0, 0)` }}
         >
           {content}

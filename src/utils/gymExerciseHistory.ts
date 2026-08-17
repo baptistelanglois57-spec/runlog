@@ -44,6 +44,12 @@ export type BestExercisePerformance = {
   setVolume: number | null;
 };
 
+/**
+ * Tolérance utilisée pour les comparaisons d'1RM estimé : elle évite qu'un
+ * écart de flottant imperceptible soit interprété comme un nouveau record.
+ */
+export const EXERCISE_PERFORMANCE_EPSILON = 0.01;
+
 type LegacyGymExercise = GymExercise & {
   exerciseId?: string;
   exercise_id?: string;
@@ -271,6 +277,48 @@ export function getBestExercisePerformance(
         setVolume: repetitionBased.setVolume,
       }
     : null;
+}
+
+/**
+ * Retourne le score déjà utilisé par getBestExercisePerformance. Les séries
+ * chargées sont comparées par 1RM Epley estimé, les séries sans charge par
+ * répétitions. Les deux modes ne sont volontairement pas mélangés.
+ */
+export function getExercisePerformanceScore(
+  performance: BestExercisePerformance
+) {
+  if (performance.mode === "weighted") {
+    return performance.estimatedOneRepMax;
+  }
+
+  return finitePositive(performance.set.reps);
+}
+
+/**
+ * Une égalité, y compris due à l'arrondi flottant de la formule d'Epley,
+ * n'est pas une amélioration. Un exercice qui change de mode reste
+ * volontairement non comparable afin de ne jamais fabriquer un record.
+ */
+export function isExercisePerformanceImprovement(
+  current: BestExercisePerformance,
+  previous: BestExercisePerformance
+) {
+  if (current.mode !== previous.mode) {
+    return false;
+  }
+
+  const currentScore = getExercisePerformanceScore(current);
+  const previousScore = getExercisePerformanceScore(previous);
+
+  if (currentScore === null || previousScore === null) {
+    return false;
+  }
+
+  const tolerance = current.mode === "weighted"
+    ? EXERCISE_PERFORMANCE_EPSILON
+    : 0;
+
+  return currentScore > previousScore + tolerance;
 }
 
 export function formatGymNumber(value: number) {

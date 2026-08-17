@@ -8,6 +8,7 @@ import GymSessionModal from "../components/Muscu/GymSessionModal";
 
 import type { GymSession } from "../types/GymSession";
 import { deleteGymSession, getGymSessions } from "../services/gymService";
+import { deleteGymRecordNotificationsForSession } from "../services/notificationService";
 
 import "./Muscu.css";
 
@@ -32,7 +33,12 @@ export default function Muscu() {
       return;
     }
 
-    await deleteGymSession(id);
+    const deleted = await deleteGymSession(id);
+    if (!deleted) {
+      return;
+    }
+
+    await deleteGymRecordNotificationsForSession(id);
     await loadSessions();
   }
 

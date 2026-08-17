@@ -83,6 +83,24 @@ export async function deleteRecordNotificationsForRun(
   }
 }
 
+/** Supprime uniquement les achievements Musculation créés par une séance. */
+export async function deleteGymRecordNotificationsForSession(
+  sessionId: string
+): Promise<void> {
+  const { error } = await supabase
+    .from(TABLE)
+    .delete()
+    .eq("type", "gym_record")
+    .eq("runId", sessionId);
+
+  if (error) {
+    console.error(
+      "Erreur deleteGymRecordNotificationsForSession :",
+      error
+    );
+  }
+}
+
 export async function deleteObsoleteRecordNotificationsForRun(
   runId: string,
   validEntityIds: string[]

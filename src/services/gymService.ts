@@ -59,7 +59,7 @@ export async function updateGymSession(
 
 export async function deleteGymSession(
   id: string
-): Promise<void> {
+): Promise<boolean> {
   const { error } = await supabase
     .from(TABLE)
     .delete()
@@ -67,7 +67,10 @@ export async function deleteGymSession(
 
   if (error) {
     console.error("Erreur deleteGymSession :", error);
+    return false;
   }
+
+  return true;
 }
 
 export async function getGymSessionById(

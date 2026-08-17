@@ -7,7 +7,8 @@ export type NotificationType =
   | "gym"
   | "stats"
   | "note"
-  | "daily_schedule";
+  | "daily_schedule"
+  | "gym_record";
 export type Notification = {
   id: string;
 
